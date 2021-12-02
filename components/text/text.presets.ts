@@ -24,7 +24,7 @@ export const presets = {
   /**
    * A bold version of the default text.
    */
-  logo: { ...BASE, fontFamily: typography.primaryBold, fontSize: 36, letterSpacing: -2, fontWeight: "900" } as TextStyle,
+  logo: { ...BASE, fontFamily: typography.logo, fontSize: 36, letterSpacing: -2, fontWeight: "900" } as TextStyle,
 
   /**
    * A bold version of the default text.
