@@ -8,6 +8,8 @@ import {
     TextField,
 } from "../components"
 import { useNavigation } from '@react-navigation/native';
+import { Formik } from "formik";
+import { useFormState, useFormDispatch } from "../contexts/form-context";
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -43,31 +45,64 @@ const INPUT: TextStyle = {
 export default function PhoneNumberScreen() {
     const navigation = useNavigation();
 
+    const form = React.useRef();
+    const dispatch = useFormDispatch();
+    const { values: formValues, errors: formErrors } = useFormState("customer");
+
+    React.useEffect(() => {
+        console.log("values: ", formValues);
+        const unsubscribe = navigation.addListener("blur", () => {
+            if (form.current) {
+                const { values, errors } = form.current;
+                dispatch({
+                    type: "UPDATE_FORM",
+                    payload: {
+                        id: "customer",
+                        data: { values, errors }
+                    }
+                });
+            }
+        });
+
+        return unsubscribe;
+    }, [navigation]);
+
     return (
-        <Screen style={CONTAINER}>
-            <View style={CENTER}>
-                <Text preset="header" text="Verify your phone number." />
-            </View>
+        <Formik
+            innerRef={form}
+            initialValues={formValues}
+            initialErrors={formErrors}
+            enableReinitialize
+        >
+            {({ values, handleChange }) => (
+                <Screen style={CONTAINER}>
+                    <View style={CENTER}>
+                        <Text preset="header" text="Verify your phone number." />
+                    </View>
 
-            <View style={CENTER}>
-                <TextField
-                    inputStyle={INPUT}
-                    placeholder="704.444.4444"
-                    keyboardType="phone-pad"
-                />
-            </View>
+                    <View style={CENTER}>
+                        <TextField
+                            inputStyle={INPUT}
+                            placeholder="704.444.4444"
+                            keyboardType="phone-pad"
+                            value={values.phonenumber}
+                            onChangeText={handleChange("phonenumber")}
+                        />
+                    </View>
 
-            <View style={CENTER}>
-                <Text style={TEXTCENTER} preset="secondary">
-                    By continuing, you are confirming that you have read and understood the
-                    <TouchableOpacity>
-                        <Text style={{ textDecorationLine: 'underline' }} preset="secondary"> Privacy Policy</Text>
-                    </TouchableOpacity>
-                </Text>
-                <Button style={{ width: '100%' }} text="Next" preset="primary" onPress={() => navigation.navigate('VerifyNumber')} />
-            </View>
+                    <View style={CENTER}>
+                        <Text style={TEXTCENTER} preset="secondary">
+                            By continuing, you are confirming that you have read and understood the
+                            <TouchableOpacity>
+                                <Text style={{ textDecorationLine: 'underline' }} preset="secondary"> Privacy Policy</Text>
+                            </TouchableOpacity>
+                        </Text>
+                        <Button style={{ width: '100%' }} text="Next" preset="primary" onPress={() => navigation.navigate('VerifyNumber')} />
+                    </View>
 
-        </Screen>
+                </Screen>
+            )}
+        </Formik>
     );
 }
 

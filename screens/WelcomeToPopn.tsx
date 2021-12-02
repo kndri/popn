@@ -38,19 +38,20 @@ const INPUT: TextStyle = {
 }
 
 export default function WelcomeToPopn() {
-    const navigation = useNavigation();
-    return (
-        <Screen style={CONTAINER}>
-        	<View style={CENTER}>
-            <Text preset="logo" text="Welcome to POPN!" />
-          </View>
+	const navigation = useNavigation();
+	return (
+		<Screen style={CONTAINER}>
+			<View style={CENTER}>
+				<Text preset="logo" text="Welcome to POPN!" />
+			</View>
 
-          <View style={CENTER}>
-            <Text preset="logo" text="Coming Soon!" />
-          </View>
-					<Button text="Get Started" preset="primary" onPress={() => Alert.alert("pressed")} />
-        </Screen>
-    );
+			<View style={CENTER}>
+				<Text preset="logo" text="Coming Soon!" />
+			</View>
+			{/* <Button text="Get Started" preset="primary" onPress={() => Alert.alert("pressed")} /> */}
+			<Button text="Get Started" preset="primary" onPress={() => navigation.navigate('Splash')} />
+		</Screen>
+	);
 }
 
 
