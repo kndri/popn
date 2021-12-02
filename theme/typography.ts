@@ -26,6 +26,8 @@ export const typography = {
 
   primarySemiBold: Platform.select({ ios: "SFProDisplay-SemiBold", android: "SFProDisplay-SemiBold" }),
 
+  primaryBold: Platform.select({ ios: "SFProDisplay-Bold", android: "SFProDisplay-Bold" }),
+
 
   /**
    * An alternate font used for perhaps titles and stuff.

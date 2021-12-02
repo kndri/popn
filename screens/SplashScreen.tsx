@@ -1,17 +1,15 @@
 import * as React from 'react';
-import { View, ViewStyle, TextStyle, ImageStyle, Platform, TouchableOpacity, Alert } from "react-native"
+import { View, ViewStyle, TextStyle, } from "react-native"
 import { color, spacing } from "../theme"
 import {
     Button,
     Screen,
-    Text,
-    AutoImage as Image,
+    Text
   } from "../components"
 
 import { useNavigation } from '@react-navigation/native';
 
-const FULL: ViewStyle = { flex: 1 }
-
+// Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[7],
@@ -25,10 +23,6 @@ const HEADER: ViewStyle = {
 	alignItems: 'center',
 }
 
-const LOGO: TextStyle = {
-	paddingBottom: spacing[1]
-}
-
 export default function WelcomeToPopn() {
     const navigation = useNavigation();
     return (
@@ -37,7 +31,7 @@ export default function WelcomeToPopn() {
             <Text preset="logo" text="POPN" />
 		        <Text text="display the hype." />
           </View>
-					<Button text="Get Started" preset="primary" onPress={() => Alert.alert("pressed")} />
+					<Button text="Get Started" preset="primary" onPress={() => navigation.navigate('Age')} />
         </Screen>
     );
 }
