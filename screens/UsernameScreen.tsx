@@ -85,6 +85,8 @@ export default function UserNameScreen() {
                             keyboardType="default"
                             value={values.username}
                             onChangeText={handleChange("username")}
+                            autoCapitalize='none'
+                            autoCorrect={false}
                         />
                     </View>
 
