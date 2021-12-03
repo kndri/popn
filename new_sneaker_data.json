@@ -1,0 +1,346 @@
+[
+ {
+   "id": 1,
+   "brand": "Jordan ",
+   "primary_name": "Jordan 11 Retro",
+   "secondary_name": "Cool Grey ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png"
+ },
+ {
+   "id": 2,
+   "brand": "Nike",
+   "primary_name": "Nike Dunk Low",
+   "secondary_name": "Retro White Black ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_dunk_low_retro_white_black.png"
+ },
+ {
+   "id": 3,
+   "brand": "Nike",
+   "primary_name": "Nike Air Force 1 Low",
+   "secondary_name": "White",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_air_force_1_low_white.png"
+ },
+ {
+   "id": 4,
+   "brand": "Jordan",
+   "primary_name": "Jordan 1 Retro High OG",
+   "secondary_name": "Bordeaux",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_1_retro_high_og_bordeaux.png"
+ },
+ {
+   "id": 5,
+   "brand": "Jordan",
+   "primary_name": "Jordan 2 Retro Low SP",
+   "secondary_name": "Off-White Black Blue",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_2_retro_low_sp_off_white_black_blue.png"
+ },
+ {
+   "id": 6,
+   "brand": "Jordan",
+   "primary_name": "Jordan 12 Retro",
+   "secondary_name": "Royalty Taxi",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_12_retro_royalty_taxi.png"
+ },
+ {
+   "id": 7,
+   "brand": "Jordan",
+   "primary_name": "Jordan 4 Retro",
+   "secondary_name": "Lightning",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_4_retro_lightning.png"
+ },
+ {
+   "id": 8,
+   "brand": "Nike",
+   "primary_name": "Nike Dunk Low Retro",
+   "secondary_name": "White Black",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_dunk_low_retro_white_black_(gs).png"
+ },
+ {
+   "id": 9,
+   "brand": "Jordan",
+   "primary_name": "Jordan 3 Retro",
+   "secondary_name": "Patchwork Camo",
+   "image_url": ""
+ },
+ {
+   "id": 10,
+   "brand": "adidas",
+   "primary_name": "adidas Yeezy Boost 350 V2",
+   "secondary_name": "Light",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/adidas_yeezy_boost_350_v2_light.png"
+ },
+ {
+   "id": 11,
+   "brand": "Nike",
+   "primary_name": "Nike Dunk Low",
+   "secondary_name": "White Black ",
+   "image_url": ""
+ },
+ {
+   "id": 12,
+   "brand": "Jordan",
+   "primary_name": "Jordan 5 Retro",
+   "secondary_name": "OFF-WHITE Sail",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/adidas_yeezy_foam_rnnr_ochre.png"
+ },
+ {
+   "id": 13,
+   "brand": "adidas",
+   "primary_name": "adidas Yeezy Foam RNNR",
+   "secondary_name": "Ochre",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/adidas_yeezy_foam_rnnr_ochre.png"
+ },
+ {
+   "id": 14,
+   "brand": "Nike",
+   "primary_name": "Nike Blazer Low",
+   "secondary_name": "sacai KAWS Neptune Blue",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_blazer_low_sacai_neptune_blue.png"
+ },
+ {
+   "id": 15,
+   "brand": "adidas",
+   "primary_name": "adidas Yeezy Boost 350 V2",
+   "secondary_name": "MX Oat",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/adidas_yeezy_boost_350_v2_mx_oat.png"
+ },
+ {
+   "id": 16,
+   "brand": "Nike",
+   "primary_name": "Nike Dunk Low",
+   "secondary_name": "Georgetown",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_dunk_low_georgetown.png"
+ },
+ {
+   "id": 17,
+   "brand": "adidas",
+   "primary_name": "adidas Yeezy Slide",
+   "secondary_name": "Pure",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/adidas_yeezy_slide_pure.png"
+ },
+ {
+   "id": 18,
+   "brand": "Jordan",
+   "primary_name": "Jordan 3 Retro",
+   "secondary_name": "Pine Green",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_3_retro_pine_green.png"
+ },
+ {
+   "id": 19,
+   "brand": "Nike",
+   "primary_name": "Nike Air Force 1 Low",
+   "secondary_name": "Supreme White",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_air_force_1_low_supreme_white.png"
+ },
+ {
+   "id": 20,
+   "brand": "Jordan",
+   "primary_name": "Jordan 2 Retro Low SP",
+   "secondary_name": "Off-White White Red",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_2_retro_low_sp_off_white_white_red.png"
+ },
+ {
+   "id": 21,
+   "brand": "Jordan",
+   "primary_name": "Jordan 1 Mid",
+   "secondary_name": "Light Smoke Grey",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_1_mid_light_smoke_grey.png"
+ },
+ {
+   "id": 22,
+   "brand": "Jordan",
+   "primary_name": "Jordan 4 Retro",
+   "secondary_name": "Shimmer ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_4_retro_shimmer.png"
+ },
+ {
+   "id": 23,
+   "brand": "adidas",
+   "primary_name": "adidas Yeezy Foam RNNR",
+   "secondary_name": "Vermillion",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_5_retro_vermillion.png"
+ },
+ {
+   "id": 24,
+   "brand": "adidas",
+   "primary_name": "adidas yeezy boost 350 v2",
+   "secondary_name": "black red ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/adidas_yeezy_boost_350_v2_black_red.png"
+ },
+ {
+   "id": 25,
+   "brand": "Jordan",
+   "primary_name": "Jordan 1 Retro High",
+   "secondary_name": "Pollen",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_1_retro_high_pollen.png"
+ },
+ {
+   "id": 26,
+   "brand": "Nike",
+   "primary_name": "Nike Dunk High",
+   "secondary_name": "Panda ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_dunk_high_panda.png"
+ },
+ {
+   "id": 27,
+   "brand": "Jordan",
+   "primary_name": "Jordan 1 Low",
+   "secondary_name": "Mocha",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jorda_1_low_mocha.png"
+ },
+ {
+   "id": 28,
+   "brand": "Jordan",
+   "primary_name": "Jordan 1 Retro High",
+   "secondary_name": "White University Blue Black",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_1_retro_high_white_university_blue_black.png"
+ },
+ {
+   "id": 29,
+   "brand": "Jordan",
+   "primary_name": "Jordan 4 Retro",
+   "secondary_name": "White Oreo ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_4_retro_white_oreo.png"
+ },
+ {
+   "id": 30,
+   "brand": "Nike",
+   "primary_name": "Nike Dunk Low",
+   "secondary_name": "Next Nature Pale Coral",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_dunk_low_next_nature_pale_coral.png"
+ },
+ {
+   "id": 31,
+   "brand": "Jordan",
+   "primary_name": "Jordan 1 Retro High OG",
+   "secondary_name": "Seafoam ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_1_retro_high_og_seafoam.png"
+ },
+ {
+   "id": 32,
+   "brand": "Jordan",
+   "primary_name": "Jordan 11 Retro",
+   "secondary_name": "Animal Instinct ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_animal_instinct.png"
+ },
+ {
+   "id": 33,
+   "brand": "Nike",
+   "primary_name": "Nike Air Max 1",
+   "secondary_name": "Patta Waves Noise Aqua ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_air_max_1_patta_waves_noise_aqua.png"
+ },
+ {
+   "id": 34,
+   "brand": "adidas",
+   "primary_name": "adidas Yeezy Boost 700",
+   "secondary_name": "Faded Azure",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/adidas_yeezy_boost_700_faded_azure.png"
+ },
+ {
+   "id": 35,
+   "brand": "Jordan ",
+   "primary_name": "Jordan 1 Low",
+   "secondary_name": "Green Toe",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_1_low_green_toe.png"
+ },
+ {
+   "id": 36,
+   "brand": "Jordan",
+   "primary_name": "Jordan 5 Retro",
+   "secondary_name": "Raging Bull Red ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_5_retro_raging_bull_red.png"
+ },
+ {
+   "id": 37,
+   "brand": "Jordan",
+   "primary_name": "Jordan 5 Retro",
+   "secondary_name": "Moonlight ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_5_retro_moonlight.png"
+ },
+ {
+   "id": 38,
+   "brand": "Jordan",
+   "primary_name": "Jordan 1 Mid",
+   "secondary_name": "White Black Racer Blue",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_1_mid_white_black_racer_blue.png"
+ },
+ {
+   "id": 39,
+   "brand": "Jordan",
+   "primary_name": "Jordan 1 Retro High OG",
+   "secondary_name": "A Ma Maniére",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_1_retro_high_og_a_ma_maniere.png"
+ },
+ {
+   "id": 40,
+   "brand": "Jordan",
+   "primary_name": "Jordan 1 Retro High",
+   "secondary_name": "Electro Orange",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_1_retro_high_electro_orange.png"
+ },
+ {
+   "id": 41,
+   "brand": "Nike",
+   "primary_name": "Nike Dunk Low",
+   "secondary_name": "Championship Red ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_dunk_low_championship_red.png"
+ },
+ {
+   "id": 42,
+   "brand": "Nike",
+   "primary_name": "Nike Dunk Low",
+   "secondary_name": "Archeo Pink",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_air_force_1_low_'07_archeo_pink.png"
+ },
+ {
+   "id": 43,
+   "brand": "Jordan",
+   "primary_name": "Jordan 1 Mid",
+   "secondary_name": "Banned ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_1_mid_banned.png"
+ },
+ {
+   "id": 45,
+   "brand": "Nike",
+   "primary_name": "Nike Air Force 1 Low '07",
+   "secondary_name": "Black Black",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_air_force_1_low_'07_black_black.png"
+ },
+ {
+   "id": 46,
+   "brand": "Nike",
+   "primary_name": "Nike Blazer Low",
+   "secondary_name": "sacai KAWS Red",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_Blazer_low_sacai_red.png"
+ },
+ {
+   "id": 47,
+   "brand": "Jordan",
+   "primary_name": "Jordan 1 Low",
+   "secondary_name": "UNC ",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_1_low_unc.png"
+ },
+ {
+   "id": 48,
+   "brand": "Jordan",
+   "primary_name": "Jordan 5 Retro",
+   "secondary_name": "Off-White Black",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/jordan_5_retro_off_white_black.png"
+ },
+ {
+   "id": 49,
+   "brand": "Nike",
+   "primary_name": "Nike Blazer Mid 77",
+   "secondary_name": "White Indigo",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_blazer_mid_77_white_indigo.png"
+ },
+ {
+   "id": 50,
+   "brand": "Nike",
+   "primary_name": "Nike Air Force 1 Low SP",
+   "secondary_name": "Supreme Wheat",
+   "image_url": "https://popn-app.s3.amazonaws.com/sneakers/nike_air_force_1_low_sp_supreme_wheat.png"
+ }
+]
+

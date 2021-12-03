@@ -1,0 +1,32 @@
+type User @model {
+  id: ID!
+  username: String!
+  phone: String!
+  sneakers: [Sneaker] @connection(keyName: "byUser", fields: ["id"])
+}
+
+type Sneaker
+  @model
+  @key(
+    name: "byUser"
+    fields: ["userID", "createdAt"]
+  ) {
+  id: ID!
+  brand: String!
+  primaryName: String!
+  secondaryName: String!
+  image: String!
+  userID: ID!
+  user: User @connection(fields: ["userID"])
+  createdAt: String
+  verified: Boolean
+}
+
+type SneakerStore @model {
+  id: ID!
+  brand: String!
+  primaryName: String!
+  secondaryName: String!
+  image: String!
+}
+

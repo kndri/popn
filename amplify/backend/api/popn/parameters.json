@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "popn",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authpopn95903adb",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
