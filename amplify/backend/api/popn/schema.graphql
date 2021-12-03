@@ -1,5 +1,6 @@
 type User @model {
   id: ID!
+  age: String!
   username: String!
   phone: String!
   sneakers: [Sneaker] @connection(keyName: "byUser", fields: ["id"])

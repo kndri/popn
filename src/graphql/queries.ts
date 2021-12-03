@@ -6,6 +6,7 @@ export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
       id
+      age
       username
       phone
       sneakers {
@@ -36,6 +37,7 @@ export const listUsers = /* GraphQL */ `
     listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        age
         username
         phone
         sneakers {
@@ -59,6 +61,7 @@ export const getSneaker = /* GraphQL */ `
       userID
       user {
         id
+        age
         username
         phone
         sneakers {
@@ -89,6 +92,7 @@ export const listSneakers = /* GraphQL */ `
         userID
         user {
           id
+          age
           username
           phone
           createdAt

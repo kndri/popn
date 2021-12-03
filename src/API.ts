@@ -4,11 +4,13 @@
 
 export type CreateUserInput = {
   id?: string | null,
+  age: string,
   username: string,
   phone: string,
 };
 
 export type ModelUserConditionInput = {
+  age?: ModelStringInput | null,
   username?: ModelStringInput | null,
   phone?: ModelStringInput | null,
   and?: Array< ModelUserConditionInput | null > | null,
@@ -59,6 +61,7 @@ export type ModelSizeInput = {
 export type User = {
   __typename: "User",
   id: string,
+  age: string,
   username: string,
   phone: string,
   sneakers?: ModelSneakerConnection | null,
@@ -88,6 +91,7 @@ export type Sneaker = {
 
 export type UpdateUserInput = {
   id: string,
+  age?: string | null,
   username?: string | null,
   phone?: string | null,
 };
@@ -201,6 +205,7 @@ export type DeleteSneakerStoreInput = {
 
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
+  age?: ModelStringInput | null,
   username?: ModelStringInput | null,
   phone?: ModelStringInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
@@ -254,6 +259,7 @@ export type CreateUserMutation = {
   createUser?:  {
     __typename: "User",
     id: string,
+    age: string,
     username: string,
     phone: string,
     sneakers?:  {
@@ -286,6 +292,7 @@ export type UpdateUserMutation = {
   updateUser?:  {
     __typename: "User",
     id: string,
+    age: string,
     username: string,
     phone: string,
     sneakers?:  {
@@ -318,6 +325,7 @@ export type DeleteUserMutation = {
   deleteUser?:  {
     __typename: "User",
     id: string,
+    age: string,
     username: string,
     phone: string,
     sneakers?:  {
@@ -358,6 +366,7 @@ export type CreateSneakerMutation = {
     user?:  {
       __typename: "User",
       id: string,
+      age: string,
       username: string,
       phone: string,
       sneakers?:  {
@@ -390,6 +399,7 @@ export type UpdateSneakerMutation = {
     user?:  {
       __typename: "User",
       id: string,
+      age: string,
       username: string,
       phone: string,
       sneakers?:  {
@@ -422,6 +432,7 @@ export type DeleteSneakerMutation = {
     user?:  {
       __typename: "User",
       id: string,
+      age: string,
       username: string,
       phone: string,
       sneakers?:  {
@@ -499,6 +510,7 @@ export type GetUserQuery = {
   getUser?:  {
     __typename: "User",
     id: string,
+    age: string,
     username: string,
     phone: string,
     sneakers?:  {
@@ -534,6 +546,7 @@ export type ListUsersQuery = {
     items?:  Array< {
       __typename: "User",
       id: string,
+      age: string,
       username: string,
       phone: string,
       sneakers?:  {
@@ -563,6 +576,7 @@ export type GetSneakerQuery = {
     user?:  {
       __typename: "User",
       id: string,
+      age: string,
       username: string,
       phone: string,
       sneakers?:  {
@@ -598,6 +612,7 @@ export type ListSneakersQuery = {
       user?:  {
         __typename: "User",
         id: string,
+        age: string,
         username: string,
         phone: string,
         createdAt: string,
@@ -655,6 +670,7 @@ export type OnCreateUserSubscription = {
   onCreateUser?:  {
     __typename: "User",
     id: string,
+    age: string,
     username: string,
     phone: string,
     sneakers?:  {
@@ -682,6 +698,7 @@ export type OnUpdateUserSubscription = {
   onUpdateUser?:  {
     __typename: "User",
     id: string,
+    age: string,
     username: string,
     phone: string,
     sneakers?:  {
@@ -709,6 +726,7 @@ export type OnDeleteUserSubscription = {
   onDeleteUser?:  {
     __typename: "User",
     id: string,
+    age: string,
     username: string,
     phone: string,
     sneakers?:  {
@@ -744,6 +762,7 @@ export type OnCreateSneakerSubscription = {
     user?:  {
       __typename: "User",
       id: string,
+      age: string,
       username: string,
       phone: string,
       sneakers?:  {
@@ -771,6 +790,7 @@ export type OnUpdateSneakerSubscription = {
     user?:  {
       __typename: "User",
       id: string,
+      age: string,
       username: string,
       phone: string,
       sneakers?:  {
@@ -798,6 +818,7 @@ export type OnDeleteSneakerSubscription = {
     user?:  {
       __typename: "User",
       id: string,
+      age: string,
       username: string,
       phone: string,
       sneakers?:  {

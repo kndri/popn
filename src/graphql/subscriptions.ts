@@ -6,6 +6,7 @@ export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser {
     onCreateUser {
       id
+      age
       username
       phone
       sneakers {
@@ -31,6 +32,7 @@ export const onUpdateUser = /* GraphQL */ `
   subscription OnUpdateUser {
     onUpdateUser {
       id
+      age
       username
       phone
       sneakers {
@@ -56,6 +58,7 @@ export const onDeleteUser = /* GraphQL */ `
   subscription OnDeleteUser {
     onDeleteUser {
       id
+      age
       username
       phone
       sneakers {
@@ -88,6 +91,7 @@ export const onCreateSneaker = /* GraphQL */ `
       userID
       user {
         id
+        age
         username
         phone
         sneakers {
@@ -113,6 +117,7 @@ export const onUpdateSneaker = /* GraphQL */ `
       userID
       user {
         id
+        age
         username
         phone
         sneakers {
@@ -138,6 +143,7 @@ export const onDeleteSneaker = /* GraphQL */ `
       userID
       user {
         id
+        age
         username
         phone
         sneakers {
