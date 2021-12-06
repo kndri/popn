@@ -4,7 +4,7 @@ const FormStateContext = React.createContext();
 const FormDispatchContext = React.createContext();
 
 const initialState = {
-    customer: {
+    user: {
         values: {},
         errors: {}
     }
