@@ -18,8 +18,8 @@ import TabThreeScreen from '../screens/TabThreeScreen';
 import SplashScreen from '../screens/SplashScreen';
 import AgeScreen from '../screens/AgeScreen';
 import UserNameScreen from '../screens/UsernameScreen';
-import PhoneNumberScreen from '../screens/PhoneNumberScreen';
-import VerifyNumberScreen from '../screens/verifyPhoneScreen';
+import EmailScreen from '../screens/EmailScreen';
+import PasswordScreen from '../screens/PasswordScreen';
 import WelcomeToPopn from '../screens/WelcomeToPopn';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -27,10 +27,9 @@ import LinkingConfiguration from './LinkingConfiguration';
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
-      // linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      {/* <OnboardingNavigator /> */}
-      <RootNavigator />
+      <OnboardingNavigator />
+      {/* <RootNavigator /> */}
     </NavigationContainer>
   );
 }
@@ -43,8 +42,8 @@ function OnboardingNavigator() {
       <onboardingStack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
       <onboardingStack.Screen name="Age" component={AgeScreen} options={{ headerShown: false }} />
       <onboardingStack.Screen name="Username" component={UserNameScreen} options={{ headerShown: false }} />
-      <onboardingStack.Screen name="PhoneNumber" component={PhoneNumberScreen} options={{ headerShown: false }} />
-      <onboardingStack.Screen name="VerifyNumber" component={VerifyNumberScreen} options={{ headerShown: false }} />
+      <onboardingStack.Screen name="Email" component={EmailScreen} options={{ headerShown: false }} />
+      <onboardingStack.Screen name="Password" component={PasswordScreen} options={{ headerShown: false }} />
       <onboardingStack.Screen name="Welcome" component={WelcomeToPopn} options={{ headerShown: false }} />
     </onboardingStack.Navigator>
   );

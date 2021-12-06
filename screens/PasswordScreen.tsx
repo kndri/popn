@@ -19,9 +19,8 @@ const CONTAINER: ViewStyle = {
     paddingBottom: 90
 }
 
-const HEADER: ViewStyle = {
-    alignItems: 'center',
-    justifyContent: 'center',
+const HEADER: TextStyle = {
+	textAlign: 'center',
 }
 
 const CENTER: ViewStyle = {
@@ -45,14 +44,14 @@ export default function VerifyNumberScreen() {
     return (
         <Screen style={CONTAINER}>
             <View style={CENTER}>
-                <Text preset="header" text="Enter the code we've sent." />
+                <Text style={HEADER} preset="header" text="Create a password" />
             </View>
 
             <View style={CENTER}>
                 <TextField
                     inputStyle={INPUT}
-                    placeholder="4015"
-                    keyboardType="numeric"
+                    placeholder="Password"
+                    secureTextEntry
                 />
             </View>
 

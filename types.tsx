@@ -20,8 +20,8 @@ export type RootStackParamList = {
   Splash: undefined;
   Age: undefined;
   Username: undefined;
-  PhoneNumber: undefined;
-  VerifyNumber: undefined;
+  Email: undefined;
+  Password: undefined;
   Welcome: undefined;
 };
 

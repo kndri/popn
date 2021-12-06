@@ -15,21 +15,21 @@ import { useFormState, useFormDispatch } from "../contexts/form-context";
 // Styles
 const CONTAINER: ViewStyle = {
 	backgroundColor: color.transparent,
-	paddingHorizontal: spacing[7],
+	paddingHorizontal: spacing[5],
 	flex: 1,
 	justifyContent: 'space-between',
 	marginTop: 50,
 	paddingBottom: 90
 }
 
-const HEADER: ViewStyle = {
+const CENTER: ViewStyle = {
 	alignItems: 'center',
 	justifyContent: 'center',
 }
 
-const CENTER: ViewStyle = {
-	alignItems: 'center',
-	justifyContent: 'center',
+const HEADER: TextStyle = {
+	textAlign: 'center',
+	marginBottom: 10
 }
 
 const TEXTCENTER: TextStyle = {
@@ -76,7 +76,7 @@ export default function AgeScreen() {
 			{({ values, handleChange }) => (
 				<Screen style={CONTAINER}>
 					<View style={CENTER}>
-						<Text preset="header" text="How old are you?" />
+						<Text style={HEADER} preset="header" text="How old are you?" />
 						<Text preset="secondary" text="You must be  13 or older to use POPN" />
 					</View>
 
