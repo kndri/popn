@@ -8,6 +8,7 @@ import { useFormState, useFormDispatch } from "../contexts/form-context";
 
 import { signUp } from "../aws-functions/sign-up";
 import { signIn } from "../aws-functions/sign-in";
+import { checkLoggedUser } from "../aws-functions/check-logged-user";
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -19,9 +20,9 @@ const CONTAINER: ViewStyle = {
   paddingBottom: 90,
 };
 
-const HEADER: ViewStyle = {
-  alignItems: "center",
-  justifyContent: "center",
+const HEADER: TextStyle = {
+  textAlign: "center",
+  marginBottom: 10,
 };
 
 const CENTER: ViewStyle = {
@@ -39,7 +40,7 @@ const INPUT: TextStyle = {
   fontFamily: typography.primaryBold,
 };
 
-export default function PhoneNumberScreen() {
+export default function EmailScreen() {
   const navigation = useNavigation();
 
   const form = React.useRef();
@@ -74,16 +75,15 @@ export default function PhoneNumberScreen() {
       {({ values, handleChange }) => (
         <Screen style={CONTAINER}>
           <View style={CENTER}>
-            <Text preset="header" text="Verify your phone number." />
+            <Text style={HEADER} preset="header" text="Create a password" />
           </View>
 
           <View style={CENTER}>
             <TextField
               inputStyle={INPUT}
-              placeholder="704.444.4444"
-              keyboardType="phone-pad"
-              value={values.phonenumber}
-              onChangeText={handleChange("phonenumber")}
+              placeholder="Password"
+              secureTextEntry
+              onChangeText={handleChange("password")}
             />
           </View>
 
@@ -106,15 +106,22 @@ export default function PhoneNumberScreen() {
               text="Next"
               preset="primary"
               onPress={() => {
-                console.log(values);
-                try {
-                    // signUp(values.phonenumber, values.age, values.username)
-                  signIn(values.phonenumber);
 
-                  //   navigation.navigate("VerifyNumber");
+                var isError = false;
+                try {
+                  signUp(
+                    values.email,
+                    values.password,
+                    values.age,
+                    values.username
+                  ).then(() => {
+                    signIn(values.email, values.password);        
+                  });
                 } catch (error) {
+                  isError = true;
                   console.error("unable to sign up", error);
                 }
+                
               }}
             />
           </View>

@@ -14,23 +14,19 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
 
-import Colors from "../constants/Colors";
-import useColorScheme from "../hooks/useColorScheme";
-import TabOneScreen from "../screens/TabOneScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
-import TabThreeScreen from "../screens/TabThreeScreen";
-import SplashScreen from "../screens/SplashScreen";
-import AgeScreen from "../screens/AgeScreen";
-import UserNameScreen from "../screens/UsernameScreen";
-import PhoneNumberScreen from "../screens/PhoneNumberScreen";
-import VerifyNumberScreen from "../screens/verifyPhoneScreen";
-import WelcomeToPopn from "../screens/WelcomeToPopn";
-import {
-  RootStackParamList,
-  RootTabParamList,
-  RootTabScreenProps,
-} from "../types";
-import LinkingConfiguration from "./LinkingConfiguration";
+import Colors from '../constants/Colors';
+import useColorScheme from '../hooks/useColorScheme';
+import TabOneScreen from '../screens/TabOneScreen';
+import TabTwoScreen from '../screens/TabTwoScreen';
+import TabThreeScreen from '../screens/TabThreeScreen';
+import SplashScreen from '../screens/SplashScreen';
+import AgeScreen from '../screens/AgeScreen';
+import UserNameScreen from '../screens/UsernameScreen';
+import EmailScreen from '../screens/EmailScreen';
+import PasswordScreen from '../screens/PasswordScreen';
+import WelcomeToPopn from '../screens/WelcomeToPopn';
+import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import LinkingConfiguration from './LinkingConfiguration';
 
 export default function Navigation({
   colorScheme,
@@ -53,36 +49,12 @@ const onboardingStack = createNativeStackNavigator<RootStackParamList>();
 function OnboardingNavigator() {
   return (
     <onboardingStack.Navigator initialRouteName="Splash">
-      <onboardingStack.Screen
-        name="Splash"
-        component={SplashScreen}
-        options={{ headerShown: false }}
-      />
-      <onboardingStack.Screen
-        name="Age"
-        component={AgeScreen}
-        options={{ headerShown: false }}
-      />
-      <onboardingStack.Screen
-        name="Username"
-        component={UserNameScreen}
-        options={{ headerShown: false }}
-      />
-      <onboardingStack.Screen
-        name="PhoneNumber"
-        component={PhoneNumberScreen}
-        options={{ headerShown: false }}
-      />
-      <onboardingStack.Screen
-        name="VerifyNumber"
-        component={VerifyNumberScreen}
-        options={{ headerShown: false }}
-      />
-      <onboardingStack.Screen
-        name="Welcome"
-        component={WelcomeToPopn}
-        options={{ headerShown: false }}
-      />
+      <onboardingStack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+      <onboardingStack.Screen name="Age" component={AgeScreen} options={{ headerShown: false }} />
+      <onboardingStack.Screen name="Username" component={UserNameScreen} options={{ headerShown: false }} />
+      <onboardingStack.Screen name="Email" component={EmailScreen} options={{ headerShown: false }} />
+      <onboardingStack.Screen name="Password" component={PasswordScreen} options={{ headerShown: false }} />
+      <onboardingStack.Screen name="Welcome" component={WelcomeToPopn} options={{ headerShown: false }} />
     </onboardingStack.Navigator>
   );
 }

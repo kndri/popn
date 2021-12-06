@@ -3,23 +3,14 @@ import React, { useState, useEffect } from "react";
 import { initFonts } from "./assets/fonts";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import { FormProvider } from "./contexts/form-context";
-import Amplify  from 'aws-amplify';
+import Amplify from "aws-amplify";
+import awsconfig from "./src/aws-exports";
 
-Amplify.configure({
-  Auth: {
-    region: "us-east-1",
-    userPoolId: "us-east-1_xiIkkoYC2",
-    userPoolWebClientId:
-      "d3hvbrn1vcf028o8f0b1bcfg5",
-    authenticationFlowType: "CUSTOM_AUTH"
-  },
-});
-
+Amplify.configure(awsconfig);
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
