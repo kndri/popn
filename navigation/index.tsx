@@ -3,32 +3,45 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as React from 'react';
-import { ColorSchemeName } from 'react-native';
+import { FontAwesome } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as React from "react";
+import { ColorSchemeName } from "react-native";
 
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import TabThreeScreen from '../screens/TabThreeScreen';
-import SplashScreen from '../screens/SplashScreen';
-import AgeScreen from '../screens/AgeScreen';
-import UserNameScreen from '../screens/UsernameScreen';
-import PhoneNumberScreen from '../screens/PhoneNumberScreen';
-import VerifyNumberScreen from '../screens/verifyPhoneScreen';
-import WelcomeToPopn from '../screens/WelcomeToPopn';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
-import LinkingConfiguration from './LinkingConfiguration';
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
+import TabOneScreen from "../screens/TabOneScreen";
+import TabTwoScreen from "../screens/TabTwoScreen";
+import TabThreeScreen from "../screens/TabThreeScreen";
+import SplashScreen from "../screens/SplashScreen";
+import AgeScreen from "../screens/AgeScreen";
+import UserNameScreen from "../screens/UsernameScreen";
+import PhoneNumberScreen from "../screens/PhoneNumberScreen";
+import VerifyNumberScreen from "../screens/verifyPhoneScreen";
+import WelcomeToPopn from "../screens/WelcomeToPopn";
+import {
+  RootStackParamList,
+  RootTabParamList,
+  RootTabScreenProps,
+} from "../types";
+import LinkingConfiguration from "./LinkingConfiguration";
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+export default function Navigation({
+  colorScheme,
+}: {
+  colorScheme: ColorSchemeName;
+}) {
   return (
     <NavigationContainer
       // linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+    >
       {/* <OnboardingNavigator /> */}
       <RootNavigator />
     </NavigationContainer>
@@ -40,17 +53,39 @@ const onboardingStack = createNativeStackNavigator<RootStackParamList>();
 function OnboardingNavigator() {
   return (
     <onboardingStack.Navigator initialRouteName="Splash">
-      <onboardingStack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
-      <onboardingStack.Screen name="Age" component={AgeScreen} options={{ headerShown: false }} />
-      <onboardingStack.Screen name="Username" component={UserNameScreen} options={{ headerShown: false }} />
-      <onboardingStack.Screen name="PhoneNumber" component={PhoneNumberScreen} options={{ headerShown: false }} />
-      <onboardingStack.Screen name="VerifyNumber" component={VerifyNumberScreen} options={{ headerShown: false }} />
-      <onboardingStack.Screen name="Welcome" component={WelcomeToPopn} options={{ headerShown: false }} />
+      <onboardingStack.Screen
+        name="Splash"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="Age"
+        component={AgeScreen}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="Username"
+        component={UserNameScreen}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="PhoneNumber"
+        component={PhoneNumberScreen}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="VerifyNumber"
+        component={VerifyNumberScreen}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="Welcome"
+        component={WelcomeToPopn}
+        options={{ headerShown: false }}
+      />
     </onboardingStack.Navigator>
   );
 }
-
-
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -61,7 +96,11 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="Root"
+        component={OnboardingNavigator}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -81,30 +120,32 @@ function BottomTabNavigator() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
         headerShown: false,
-      }}>
+      }}
+    >
       <BottomTab.Screen
         name="TabOne"
         component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />
+        options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
+          title: "Home",
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         })}
       />
       <BottomTab.Screen
         name="TabTwo"
         component={TabTwoScreen}
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <TabBarIcon name="search-plus" color={color} />,
+          title: "Explore",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="search-plus" color={color} />
+          ),
         }}
       />
       <BottomTab.Screen
         name="TabThree"
         component={TabThreeScreen}
         options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />
-
+          title: "Profile",
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -115,7 +156,7 @@ function BottomTabNavigator() {
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
+  name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {
   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
