@@ -45,7 +45,7 @@ export default function EmailScreen() {
 
   const form = React.useRef();
   const dispatch = useFormDispatch();
-  const { values: formValues, errors: formErrors } = useFormState("customer");
+  const { values: formValues, errors: formErrors } = useFormState("user");
 
   React.useEffect(() => {
     console.log("values: ", formValues);
@@ -55,7 +55,7 @@ export default function EmailScreen() {
         dispatch({
           type: "UPDATE_FORM",
           payload: {
-            id: "customer",
+            id: "user",
             data: { values, errors },
           },
         });
