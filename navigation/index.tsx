@@ -26,8 +26,10 @@ import EmailScreen from '../screens/EmailScreen';
 import PasswordScreen from '../screens/PasswordScreen';
 import WelcomeToPopn from '../screens/WelcomeToPopn';
 import SignInScreen from '../screens/SignInScreen';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import ResetPasswordScreen from "../screens/ResetPasswordScreen";
 
 export default function Navigation({
   colorScheme,
@@ -55,6 +57,8 @@ function OnboardingNavigator() {
       <onboardingStack.Screen name="Password" component={PasswordScreen} options={{ headerShown: false }} />
       <onboardingStack.Screen name="Welcome" component={WelcomeToPopn} options={{ headerShown: false }} />
       <onboardingStack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
+      <onboardingStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
+      <onboardingStack.Screen name="ResetPassword" component={ResetPasswordScreen} options={{ headerShown: false }} />
     </onboardingStack.Navigator>
   );
 }

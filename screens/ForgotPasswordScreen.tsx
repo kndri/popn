@@ -6,7 +6,8 @@ import {
   Screen,
   Text,
   Header,
-  TextField
+  TextField,
+  AutoImage as Image
 } from "../components"
 
 import { useNavigation } from '@react-navigation/native';
@@ -24,10 +25,9 @@ const HEADER: ViewStyle = {
   alignItems: 'flex-start',
 }
 
-export default function SignInScreen() {
+export default function ForgotPasswordScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
 
   return (
     <Screen style={CONTAINER}>
@@ -38,8 +38,9 @@ export default function SignInScreen() {
       />
 
       <View style={HEADER}>
-        <Text preset="header" text="Sign in to POPN" />
-        <Text style={{ color: color.dim }} text="display the hype." />
+        <Image source={require("../assets/images/forgot_password_illustration.png")} />
+        <Text style={{marginBottom: 15}} preset="header" text="Forget your password?"  />
+        <Text text="Enter your email to reset password" />
       </View>
 
       <View>
@@ -56,27 +57,9 @@ export default function SignInScreen() {
             marginTop: 6
           }}
         />
-
-        <TextField
-          onChangeText={(value) => setPassword(value)}
-          value={password}
-          label="Password"
-          placeholder="Enter your password"
-          secureTextEntry
-          inputStyle={{
-            padding: 16,
-            borderWidth: 2,
-            borderRadius: 10,
-            borderColor: "black",
-            marginTop: 6
-          }}
-        />
-        <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-          <Button style={{ marginLeft: 5 }} preset="link" text="Forgot Password?" onPress={() => navigation.navigate('ForgotPassword')}></Button>
-        </View>
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-        <Button style={{ width: 160 }} text="Sign in" preset="primary" onPress={() => Alert.alert("Sign in pressed!")} />
+        <Button style={{ width: 160 }} text="Next" preset="primary" onPress={() => navigation.navigate("ResetPassword")} />
       </View>
     </Screen>
   );
