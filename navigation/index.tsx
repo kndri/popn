@@ -25,6 +25,7 @@ import UserNameScreen from '../screens/UsernameScreen';
 import EmailScreen from '../screens/EmailScreen';
 import PasswordScreen from '../screens/PasswordScreen';
 import WelcomeToPopn from '../screens/WelcomeToPopn';
+import SignInScreen from '../screens/SignInScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -36,8 +37,8 @@ export default function Navigation({
   return (
     <NavigationContainer
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      {/* <OnboardingNavigator /> */}
-      <RootNavigator />
+      <OnboardingNavigator />
+      {/* <RootNavigator /> */}
     </NavigationContainer>
   );
 }
@@ -53,6 +54,7 @@ function OnboardingNavigator() {
       <onboardingStack.Screen name="Email" component={EmailScreen} options={{ headerShown: false }} />
       <onboardingStack.Screen name="Password" component={PasswordScreen} options={{ headerShown: false }} />
       <onboardingStack.Screen name="Welcome" component={WelcomeToPopn} options={{ headerShown: false }} />
+      <onboardingStack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
     </onboardingStack.Navigator>
   );
 }
