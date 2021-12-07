@@ -6,11 +6,12 @@ import {
   Screen,
   Text,
   Header,
-  TextField
+  TextField,
+  AutoImage as Image
 } from "../components"
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@react-navigation/native';
-import { signIn } from '../aws-functions/sign-in';
+import { confirmNewPassword } from '../aws-functions/forgot-password';
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -25,13 +26,16 @@ const HEADER: ViewStyle = {
   alignItems: 'flex-start',
 }
 
-export default function SignInScreen() {
+export default function ResetPasswordScreen(props: any) {
+  const username = props.route.params;
   const navigation = useNavigation();
-  const [email, setEmail] = React.useState("");
+  const [code, setCode] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [confirmedPassword, setConfirmedPassword] = React.useState("");
 
   return (
-    <Screen style={CONTAINER}>
+    <KeyboardAwareScrollView>
+    <Screen style={CONTAINER} preset="scroll">
       <Header
         headerTx="demoScreen.howTo"
         leftIcon="back"
@@ -39,16 +43,17 @@ export default function SignInScreen() {
       />
 
       <View style={HEADER}>
-        <Text preset="header" text="Sign in to POPN" />
-        <Text style={{ color: color.dim }} text="display the hype." />
+        <Image source={require("../assets/images/reset_password_illustration.png")} />
+        <Text style={{ marginBottom: 15 }} preset="header" text="Reset your password?" />
+        <Text text="Enter the verification code and your new password" />
       </View>
 
       <View>
         <TextField
-          onChangeText={(value) => setEmail(value)}
-          value={email}
-          label="Email"
-          placeholder="Enter your email"
+          onChangeText={(value) => setCode(value)}
+          value={code}
+          label="Verification Code"
+          placeholder="4015"
           inputStyle={{
             padding: 16,
             borderWidth: 2,
@@ -61,8 +66,7 @@ export default function SignInScreen() {
         <TextField
           onChangeText={(value) => setPassword(value)}
           value={password}
-          label="Password"
-          placeholder="Enter your password"
+          label="New Password"
           secureTextEntry
           inputStyle={{
             padding: 16,
@@ -72,17 +76,26 @@ export default function SignInScreen() {
             marginTop: 6
           }}
         />
-        <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-          <Button style={{ marginLeft: 5 }} preset="link" text="Forgot Password?" onPress={() => navigation.navigate('ForgotPassword')}></Button>
-        </View>
+
+        <TextField
+          onChangeText={(value) => setConfirmedPassword(value)}
+          value={confirmedPassword}
+          label="Confirm Password"
+          secureTextEntry
+          inputStyle={{
+            padding: 16,
+            borderWidth: 2,
+            borderRadius: 10,
+            borderColor: "black",
+            marginTop: 6
+          }}
+        />
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-        <Button style={{ width: 160 }} text="Sign in" preset="primary" onPress={() => {
-          signIn(email, password).then()
-          
-          }} />
+        <Button style={{ width: 160 }} text="Sign in" preset="primary" onPress={() => confirmNewPassword(username ,code, password)} />
       </View>
     </Screen>
+    </KeyboardAwareScrollView>
   );
 }
 

@@ -14,20 +14,27 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
 
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import TabThreeScreen from '../screens/TabThreeScreen';
-import SplashScreen from '../screens/SplashScreen';
-import AgeScreen from '../screens/AgeScreen';
-import UserNameScreen from '../screens/UsernameScreen';
-import EmailScreen from '../screens/EmailScreen';
-import PasswordScreen from '../screens/PasswordScreen';
-import WelcomeToPopn from '../screens/WelcomeToPopn';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
-import LinkingConfiguration from './LinkingConfiguration';
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
+import TabOneScreen from "../screens/TabOneScreen";
+import TabTwoScreen from "../screens/TabTwoScreen";
+import TabThreeScreen from "../screens/TabThreeScreen";
+import SplashScreen from "../screens/SplashScreen";
+import AgeScreen from "../screens/AgeScreen";
+import UserNameScreen from "../screens/UsernameScreen";
+import EmailScreen from "../screens/EmailScreen";
+import PasswordScreen from "../screens/PasswordScreen";
+import WelcomeToPopn from "../screens/WelcomeToPopn";
 import SignInScreen from "../screens/SignInScreen";
+import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
+import {
+  RootStackParamList,
+  RootTabParamList,
+  RootTabScreenProps,
+} from "../types";
+import LinkingConfiguration from "./LinkingConfiguration";
+import ResetPasswordScreen from "../screens/ResetPasswordScreen";
+import { checkLoggedUser } from "../aws-functions/check-logged-user";
 
 export default function Navigation({
   colorScheme,
@@ -36,7 +43,8 @@ export default function Navigation({
 }) {
   return (
     <NavigationContainer
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+    >
       {/* <OnboardingNavigator /> */}
       <RootNavigator />
     </NavigationContainer>
@@ -48,14 +56,51 @@ const onboardingStack = createNativeStackNavigator<RootStackParamList>();
 function OnboardingNavigator() {
   return (
     <onboardingStack.Navigator initialRouteName="Splash">
-      <onboardingStack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
-      <onboardingStack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-      
-      <onboardingStack.Screen name="Age" component={AgeScreen} options={{ headerShown: false }} />
-      <onboardingStack.Screen name="Username" component={UserNameScreen} options={{ headerShown: false }} />
-      <onboardingStack.Screen name="Email" component={EmailScreen} options={{ headerShown: false }} />
-      <onboardingStack.Screen name="Password" component={PasswordScreen} options={{ headerShown: false }} />
-      <onboardingStack.Screen name="Welcome" component={WelcomeToPopn} options={{ headerShown: false }} />
+      <onboardingStack.Screen
+        name="Splash"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="Age"
+        component={AgeScreen}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="Username"
+        component={UserNameScreen}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="Email"
+        component={EmailScreen}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="Password"
+        component={PasswordScreen}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="Welcome"
+        component={WelcomeToPopn}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="SignIn"
+        component={SignInScreen}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="ResetPassword"
+        component={ResetPasswordScreen}
+        options={{ headerShown: false }}
+      />
     </onboardingStack.Navigator>
   );
 }
@@ -67,18 +112,42 @@ function OnboardingNavigator() {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const user = checkLoggedUser();
+  // create a function to check whether the user i logged in
+  React.useEffect(() => {
+    // check if the user is logged in
+    const user = checkLoggedUser();
+    if(!user.currentUser){
+      setLoggedIn(false)
+    }else{
+      setLoggedIn(true)
+    }
+
+  },[])
+
+
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {/* {loggedIn === false ? <Stack.Screen
         name="Root"
         component={OnboardingNavigator}
         options={{ headerShown: false }}
-      />
-       {/* <Stack.Screen
+      /> : <Stack.Screen
+      name="Root"
+      component={BottomTabNavigator}
+      options={{ headerShown: false }}
+    />} */}
+      {/* <Stack.Screen
+        name="Root"
+        component={OnboardingNavigator}
+        options={{ headerShown: false }}
+      /> */}
+      <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
         options={{ headerShown: false }}
-      /> */}
+      />
     </Stack.Navigator>
   );
 }

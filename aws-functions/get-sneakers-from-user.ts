@@ -17,8 +17,8 @@ import { checkLoggedUser } from "./check-logged-user";
           id: currentUser.attributes.sub,
         })
       );
-
       sneakerList = sneakersData.data.getUser.sneakers.items;
+     return sneakersData.data.getUser.sneakers.items;
 
       // travers through the array and save the notes with only the same bookID
     } catch (e) {

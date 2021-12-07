@@ -24,6 +24,8 @@ export type RootStackParamList = {
   Password: undefined;
   Welcome: undefined;
   SignIn: undefined;
+  ForgotPassword: undefined;
+  ResetPassword: any;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
