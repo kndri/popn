@@ -6,9 +6,6 @@ import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import { useFormState, useFormDispatch } from "../contexts/form-context";
 
-import { signUp } from "../aws-functions/sign-up";
-import { signIn } from "../aws-functions/sign-in";
-
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
