@@ -17,6 +17,7 @@ import {
 } from "../components";
 import sneakerData from "../new_sneaker_data.json";
 import { useNavigation } from "@react-navigation/native";
+import { addSneaker } from "../aws-functions/add-sneaker-to-users";
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -99,6 +100,7 @@ export default function TabTwoScreen() {
       setSearchedArray(searchedObjects);
     }
   }, [query]);
+  // TO-DO: add a use effect that will fetch the shoes in the database.
 
   const renderSneaker = ({ item }) => (
     <View
@@ -145,14 +147,14 @@ export default function TabTwoScreen() {
             marginBottom: 15,
           }}
           onPress={() => {
-            navigation.navigate("Password");
+            addSneaker(item);
           }}
         >
           <Text
             preset="bold"
             style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
           >
-            View
+            Claim
           </Text>
         </Button>
       </View>
