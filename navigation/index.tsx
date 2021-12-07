@@ -28,8 +28,8 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
   return (
     <NavigationContainer
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <OnboardingNavigator />
-      {/* <RootNavigator /> */}
+      {/* <OnboardingNavigator /> */}
+      <RootNavigator />
     </NavigationContainer>
   );
 }
