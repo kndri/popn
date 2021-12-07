@@ -117,7 +117,7 @@ export default function TabTwoScreen() {
         renderItem={renderSneaker}
         keyExtractor={(sneaker) => String(sneaker.id)}
         numColumns={2}
-        contentContainerStyle={{flex: 1,  justifyContent: 'space-between', alignItems: 'center'}} 
+        contentContainerStyle={{justifyContent: 'space-between', alignItems: 'center'}} 
       />
       </View>
     </Screen>
