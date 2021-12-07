@@ -97,7 +97,7 @@ export default function UserNameScreen() {
                                 <Text style={{ textDecorationLine: 'underline' }} preset="secondary"> Privacy Policy</Text>
                             </TouchableOpacity>
                         </Text>
-                        <Button style={{ width: '100%' }} text="Next" preset="primary" onPress={() => navigation.navigate('Password')} />
+                        <Button style={{ width: '100%' }} text="Next" preset="primary" onPress={() => navigation.navigate('Email')} />
                     </View>
 
                 </Screen>

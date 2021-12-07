@@ -1,26 +1,30 @@
-import  { Auth } from "aws-amplify";
-
+import { Auth } from "aws-amplify";
+import { Alert } from "react-native";
 
 export const signUp = async (
-  phoneNumber: string,
+  email: string,
+  password: string,
   age: string,
   username: string
 ) => {
-  try {
-    await Auth.signUp({
-       // format +01234567890 
-      username: "+1" + phoneNumber,
-      password: Date.now().toString(),
-      // attributes: {
-      //   age: age,
-     
-      //   name: username, // optional
+  if (password.length == 0) {
+    Alert.alert("Password cannot be empty.");
+  } else {
+    try {
+      await Auth.signUp({
+        username: email,
+        password: password,
+        // attributes: {
+        //   age: age,
 
-      //   // other custom attributes
-      // },
-    });
-  } catch (error) {
-    // Handle sign up error
-    console.error("An error has occured trying to sign in.", error);
+        //   name: username, // optional
+
+        //   // other custom attributes
+        // },
+      });
+    } catch (error) {
+      // Handle sign up error
+      console.error("An error has occured trying to sign in.", error);
+    }
   }
 };
