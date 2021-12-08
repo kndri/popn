@@ -129,7 +129,7 @@ function RootNavigator() {
 
   return (
     <Stack.Navigator>
-      {/* {loggedIn === false ? <Stack.Screen
+      {loggedIn === false ? <Stack.Screen
         name="Root"
         component={OnboardingNavigator}
         options={{ headerShown: false }}
@@ -137,17 +137,17 @@ function RootNavigator() {
       name="Root"
       component={BottomTabNavigator}
       options={{ headerShown: false }}
-    />} */}
+    />}
       {/* <Stack.Screen
         name="Root"
         component={OnboardingNavigator}
         options={{ headerShown: false }}
       /> */}
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
         options={{ headerShown: false }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 }

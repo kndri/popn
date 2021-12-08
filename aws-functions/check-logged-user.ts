@@ -11,7 +11,7 @@ export const checkLoggedUser = async () => {
  
   } catch {
     // Handle 3 error thrown for 3 incorrect attempts.
-    console.error("User not logged in");
+    // console.error("User not logged in");
   }
   return user;
 };

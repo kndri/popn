@@ -85,7 +85,7 @@ export default function EmailScreen() {
           </View>
 
           <View style={CENTER}>
-            <Text style={TEXTCENTER} preset="secondary">
+            {/* <Text style={TEXTCENTER} preset="secondary">
               By continuing, you are confirming that you have read and
               understood the
               <TouchableOpacity>
@@ -97,7 +97,7 @@ export default function EmailScreen() {
                   Privacy Policy
                 </Text>
               </TouchableOpacity>
-            </Text>
+            </Text> */}
             <Button
               style={{ width: "100%" }}
               text="Next"

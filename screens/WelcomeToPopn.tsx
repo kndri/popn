@@ -46,10 +46,15 @@ export default function WelcomeToPopn() {
 			</View>
 
 			<View style={CENTER}>
-				<Text preset="logo" text="Coming Soon!" />
+				<Text style={{fontSize: 16}}>
+					POPN is a sneakehead’s dream. A digital place to store your sneakers.
+					{"\n"}{"\n"}
+					Cop, POP (verify), and flex — we’re all about making it easier to show off your verified kicks and soon be able to trade them 👀
+					{"\n"}{"\n"}
+					Engaging with the community in a whole new way. Welcome to POPN.
+				</Text>
 			</View>
-			{/* <Button text="Get Started" preset="primary" onPress={() => Alert.alert("pressed")} /> */}
-			<Button text="Get Started" preset="primary" onPress={() => navigation.navigate('Splash')} />
+			<Button text="Create Account" preset="primary" onPress={() => navigation.navigate('Age')} />
 		</Screen>
 	);
 }
