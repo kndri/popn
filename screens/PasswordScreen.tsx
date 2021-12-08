@@ -1,14 +1,18 @@
 import * as React from "react";
-import { View, ViewStyle, TextStyle, TouchableOpacity } from "react-native";
+import {
+  View,
+  ViewStyle,
+  TextStyle,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { color, spacing, typography } from "../theme";
 import { Button, Screen, Text, TextField } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import { useFormState, useFormDispatch } from "../contexts/form-context";
-
-import { signUp } from "../aws-functions/sign-up";
-import { signIn } from "../aws-functions/sign-in";
-import { checkLoggedUser } from "../aws-functions/check-logged-user";
+import { useAuth } from "../contexts/auth";
+import { useToast } from "../components/Toast";
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -42,10 +46,13 @@ const INPUT: TextStyle = {
 
 export default function EmailScreen() {
   const navigation = useNavigation();
+  const toast = useToast();
 
   const form = React.useRef();
   const dispatch = useFormDispatch();
   const { values: formValues, errors: formErrors } = useFormState("user");
+  const { signUp } = useAuth();
+
 
   React.useEffect(() => {
     console.log("values: ", formValues);
@@ -106,22 +113,17 @@ export default function EmailScreen() {
               text="Next"
               preset="primary"
               onPress={() => {
-
-                var isError = false;
-                try {
+                if (values.email === "" || values.password === "") {
+                  //add toast here
+                  toast.show(`You must provide an email and passwordt`);
+                } else {
                   signUp(
                     values.email,
                     values.password,
                     values.age,
                     values.username
-                  ).then(() => {
-                    signIn(values.email, values.password);        
-                  });
-                } catch (error) {
-                  isError = true;
-                  console.error("unable to sign up", error);
+                  );
                 }
-                
               }}
             />
           </View>

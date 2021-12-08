@@ -35,6 +35,7 @@ import {
 import LinkingConfiguration from "./LinkingConfiguration";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
 import { checkLoggedUser } from "../aws-functions/check-logged-user";
+import { useAuth } from "../contexts/auth";
 
 export default function Navigation({
   colorScheme,
@@ -112,42 +113,28 @@ function OnboardingNavigator() {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  const [loggedIn, setLoggedIn] = React.useState(false);
-  const user = checkLoggedUser();
-  // create a function to check whether the user i logged in
-  React.useEffect(() => {
-    // check if the user is logged in
-    const user = checkLoggedUser();
-    if(!user.currentUser){
-      setLoggedIn(false)
-    }else{
-      setLoggedIn(true)
-    }
+  // const [loggedIn, setLoggedIn] = React.useState(false);
+  // const user = checkLoggedUser();
 
-  },[])
-
+  
+  const { session } = useAuth();
+  
 
   return (
     <Stack.Navigator>
-      {/* {loggedIn === false ? <Stack.Screen
-        name="Root"
-        component={OnboardingNavigator}
-        options={{ headerShown: false }}
-      /> : <Stack.Screen
-      name="Root"
-      component={BottomTabNavigator}
-      options={{ headerShown: false }}
-    />} */}
-      {/* <Stack.Screen
-        name="Root"
-        component={OnboardingNavigator}
-        options={{ headerShown: false }}
-      /> */}
-      <Stack.Screen
-        name="Root"
-        component={BottomTabNavigator}
-        options={{ headerShown: false }}
-      />
+      {session ? (
+        <Stack.Screen
+          name="Root"
+          component={BottomTabNavigator}
+          options={{ headerShown: false }}
+        />
+      ) : (
+        <Stack.Screen
+          name="Root"
+          component={OnboardingNavigator}
+          options={{ headerShown: false }}
+        />
+      )}
     </Stack.Navigator>
   );
 }

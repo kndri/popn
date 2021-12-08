@@ -1,34 +1,40 @@
-import * as React from 'react';
-import { View, ViewStyle, TextStyle, Alert } from "react-native"
-import { color, spacing } from "../theme"
-import {
-  Button,
-  Screen,
-  Text,
-  Header,
-  TextField
-} from "../components"
+import * as React from "react";
+import { View, ViewStyle, TextStyle, Alert } from "react-native";
+import { color, spacing } from "../theme";
+import { Button, Screen, Text, Header, TextField } from "../components";
 
-import { useNavigation } from '@react-navigation/native';
-import { signIn } from '../aws-functions/sign-in';
+import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../contexts/auth";
+import { useToast } from "../components/Toast";
 
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[7],
   flex: 1,
-  justifyContent: 'space-between',
-  paddingBottom: 90
-}
+  justifyContent: "space-between",
+  paddingBottom: 90,
+};
 
 const HEADER: ViewStyle = {
-  alignItems: 'flex-start',
-}
+  alignItems: "flex-start",
+};
 
 export default function SignInScreen() {
   const navigation = useNavigation();
+  const toast = useToast();
+
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const { signIn } = useAuth();
+
+  const onLoginPressed = () => {
+    if (email === "" || password === "") {
+      toast.show("You must provide an email and password");
+    } else {
+      signIn(email, password);
+    }
+  };
 
   return (
     <Screen style={CONTAINER}>
@@ -54,7 +60,7 @@ export default function SignInScreen() {
             borderWidth: 2,
             borderRadius: 10,
             borderColor: "black",
-            marginTop: 6
+            marginTop: 6,
           }}
         />
 
@@ -69,21 +75,26 @@ export default function SignInScreen() {
             borderWidth: 2,
             borderRadius: 10,
             borderColor: "black",
-            marginTop: 6
+            marginTop: 6,
           }}
         />
-        <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-          <Button style={{ marginLeft: 5 }} preset="link" text="Forgot Password?" onPress={() => navigation.navigate('ForgotPassword')}></Button>
+        <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+          <Button
+            style={{ marginLeft: 5 }}
+            preset="link"
+            text="Forgot Password?"
+            onPress={() => navigation.navigate("ForgotPassword")}
+          ></Button>
         </View>
       </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-        <Button style={{ width: 160 }} text="Sign in" preset="primary" onPress={() => {
-          signIn(email, password).then()
-          
-          }} />
+      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        <Button
+          style={{ width: 160 }}
+          text="Sign in"
+          preset="primary"
+          onPress={onLoginPressed}
+        />
       </View>
     </Screen>
   );
 }
-
-
