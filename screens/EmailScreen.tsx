@@ -1,9 +1,10 @@
 import * as React from "react";
-import { View, ViewStyle, TextStyle, TouchableOpacity } from "react-native";
+import { View, ViewStyle, TextStyle, TouchableOpacity, Alert } from "react-native";
 import { color, spacing, typography } from "../theme";
 import { Button, Screen, Text, TextField } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
+import * as yup from 'yup'
 import { useFormState, useFormDispatch } from "../contexts/form-context";
 
 // Styles
@@ -17,8 +18,8 @@ const CONTAINER: ViewStyle = {
 };
 
 const HEADER: TextStyle = {
-	textAlign: 'center',
-	marginBottom: 10
+  textAlign: 'center',
+  marginBottom: 10
 }
 
 const CENTER: ViewStyle = {
@@ -35,6 +36,14 @@ const TEXTCENTER: TextStyle = {
 const INPUT: TextStyle = {
   fontFamily: typography.primaryBold,
 };
+
+//email validation schema
+const emailValidationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Please enter valid email")
+    .required('Email Address is Required'),
+})
 
 export default function EmailScreen() {
   const navigation = useNavigation();
@@ -64,11 +73,13 @@ export default function EmailScreen() {
   return (
     <Formik
       innerRef={form}
+      validateOnMount={true}
+      validationSchema={emailValidationSchema}
       initialValues={formValues}
       initialErrors={formErrors}
       enableReinitialize
     >
-      {({ values, handleChange }) => (
+      {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
           <View style={CENTER}>
             <Text style={HEADER} preset="header" text="Enter your email." />
@@ -82,6 +93,10 @@ export default function EmailScreen() {
               value={values.email}
               onChangeText={handleChange("email")}
             />
+
+            {(errors.email || touched.email) &&
+              <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>
+            }
           </View>
 
           <View style={CENTER}>
@@ -98,7 +113,9 @@ export default function EmailScreen() {
                 </Text>
               </TouchableOpacity>
             </Text> */}
+
             <Button
+              disabled={!isValid}
               style={{ width: "100%" }}
               text="Next"
               preset="primary"
