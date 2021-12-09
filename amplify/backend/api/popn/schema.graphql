@@ -27,7 +27,7 @@ type Sneaker
 type SneakerStore @model {
   id: ID!
   brand: String!
-  primaryName: String!
-  secondaryName: String!
-  image: String!
+  primary_name: String!
+  secondary_name: String!
+  image_url: String!
 }

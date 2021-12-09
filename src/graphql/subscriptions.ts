@@ -163,9 +163,9 @@ export const onCreateSneakerStore = /* GraphQL */ `
     onCreateSneakerStore {
       id
       brand
-      primaryName
-      secondaryName
-      image
+      primary_name
+      secondary_name
+      image_url
       createdAt
       updatedAt
     }
@@ -176,9 +176,9 @@ export const onUpdateSneakerStore = /* GraphQL */ `
     onUpdateSneakerStore {
       id
       brand
-      primaryName
-      secondaryName
-      image
+      primary_name
+      secondary_name
+      image_url
       createdAt
       updatedAt
     }
@@ -189,9 +189,9 @@ export const onDeleteSneakerStore = /* GraphQL */ `
     onDeleteSneakerStore {
       id
       brand
-      primaryName
-      secondaryName
-      image
+      primary_name
+      secondary_name
+      image_url
       createdAt
       updatedAt
     }

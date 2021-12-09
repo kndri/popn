@@ -111,9 +111,9 @@ export const getSneakerStore = /* GraphQL */ `
     getSneakerStore(id: $id) {
       id
       brand
-      primaryName
-      secondaryName
-      image
+      primary_name
+      secondary_name
+      image_url
       createdAt
       updatedAt
     }
@@ -129,11 +129,9 @@ export const listSneakerStores = /* GraphQL */ `
       items {
         id
         brand
-        primaryName
-        secondaryName
-        image
-        createdAt
-        updatedAt
+        primary_name
+        secondary_name
+        image_url
       }
       nextToken
     }

@@ -16,8 +16,11 @@ import {
   AutoImage as Image,
 } from "../components";
 import sneakerData from "../new_sneaker_data.json";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { addSneaker } from "../aws-functions/add-sneaker-to-users";
+import { getSneakersFromUser } from "../aws-functions/get-sneakers-from-user";
+import { SneakerList } from "../types";
+import { getSneakersFromDB } from "../aws-functions/get-sneakers-from-db";
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -74,14 +77,17 @@ const SHADOW: ViewStyle = {
 export default function TabTwoScreen() {
   const navigation = useNavigation();
   const [query, setQuery] = React.useState("");
-  const [searchedArray, setSearchedArray] = React.useState(sneakerData);
+  const [searchedArray, setSearchedArray] = React.useState<SneakerList[]>([]);
+  const [collection, setCollection] = React.useState<any>([]);
+  const [sneakerDb, setSneakerDb] = React.useState<any>([]);
+  const isFocused = useIsFocused();
 
   React.useEffect(() => {
     if (query.length === 0) {
-      setSearchedArray(sneakerData);
+      setSearchedArray(sneakerDb);
     } else {
-      const searchedObjects = [];
-      sneakerData
+      const searchedObjects: any = [];
+      sneakerDb
         .filter(
           (sneakerObject) =>
             sneakerObject.primary_name
@@ -100,66 +106,164 @@ export default function TabTwoScreen() {
       setSearchedArray(searchedObjects);
     }
   }, [query]);
-  // TO-DO: add a use effect that will fetch the shoes in the database.
 
-  const renderSneaker = ({ item }) => (
-    <View
-      style={{
-        justifyContent: "space-evenly",
-        height: 150,
-        width: 150,
-        borderWidth: 1,
-        borderColor: "#EBEBEB",
-        borderRadius: 10,
-        marginBottom: 40,
-        marginHorizontal: 10,
-      }}
-    >
-      <View
-        style={{
-          justifyContent: "flex-start",
-          alignItems: "flex-start",
-          marginLeft: 10,
-          marginTop: 10,
-        }}
-      >
-        <Text
-          text={`${item.primary_name}`}
-          style={{ fontSize: 12, color: "#979797" }}
-        />
-        <Text text={`${item.secondary_name}`} style={{ fontSize: 10 }} />
-      </View>
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Image
-          source={{ uri: item.image_url }}
-          style={{ height: 81, width: 100, resizeMode: "contain" }}
-        />
-      </View>
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Button
-          preset="none"
+  const getSneakers = async () => {
+    const sneakerlist = await getSneakersFromUser().catch((error) =>
+      console.error(error)
+    );
+    const sneakersData = await getSneakersFromDB().catch((error) =>
+      console.error(error)
+    );
+
+    setSneakerDb(sneakersData);
+    setCollection(sneakerlist);
+  };
+
+  const checkClaimed = (item: any) => {
+    const found = collection.some((sneaker) => sneaker.id == item.id);
+
+    if (found) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  React.useEffect(() => {
+    getSneakers();
+  }, [isFocused]);
+
+  React.useEffect(() => {
+    console.log("sneakerdb", sneakerDb);
+  }, [sneakerDb]);
+  // create a function to check if this shoe exist in user db
+
+  const renderSneaker = ({ item }) => {
+    if (checkClaimed(item)) {
+      return (
+        <View
           style={{
-            justifyContent: "center",
-            width: "70%",
-            height: 20,
-            paddingVertical: 2,
+            justifyContent: "space-evenly",
+            height: 150,
+            width: 150,
+            borderWidth: 1,
+            borderColor: "#EBEBEB",
             borderRadius: 10,
-            marginBottom: 15,
-          }}
-          onPress={() => {
-            addSneaker(item);
+            marginBottom: 40,
+            marginHorizontal: 10,
+            opacity: 0.5,
           }}
         >
-          <Text
-            preset="bold"
-            style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
+          <View
+            style={{
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+              marginLeft: 10,
+              marginTop: 10,
+            }}
           >
-            Claim
-          </Text>
-        </Button>
-      </View>
-    </View>
-  );
+            <Text
+              text={`${item.primary_name}`}
+              style={{ fontSize: 12, color: "#979797" }}
+            />
+            <Text text={`${item.secondary_name}`} style={{ fontSize: 10 }} />
+          </View>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Image
+              source={{ uri: item.image_url }}
+              style={{ height: 81, width: 100, resizeMode: "contain" }}
+            />
+          </View>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Button
+              preset="none"
+              disabled
+              style={{
+                justifyContent: "center",
+                width: "70%",
+                height: 20,
+                paddingVertical: 2,
+                borderRadius: 10,
+                marginBottom: 15,
+              }}
+              onPress={() => {
+                addSneaker(item);
+
+                // then grey out the sneaker card
+              }}
+            >
+              <Text
+                preset="bold"
+                style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
+              >
+                Claimed
+              </Text>
+            </Button>
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View
+          style={{
+            justifyContent: "space-evenly",
+            height: 150,
+            width: 150,
+            borderWidth: 1,
+            borderColor: "#EBEBEB",
+            borderRadius: 10,
+            marginBottom: 40,
+            marginHorizontal: 10,
+          }}
+        >
+          <View
+            style={{
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+              marginLeft: 10,
+              marginTop: 10,
+            }}
+          >
+            <Text
+              text={`${item.primary_name}`}
+              style={{ fontSize: 12, color: "#979797" }}
+            />
+            <Text text={`${item.secondary_name}`} style={{ fontSize: 10 }} />
+          </View>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Image
+              source={{ uri: item.image_url }}
+              style={{ height: 81, width: 100, resizeMode: "contain" }}
+            />
+          </View>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Button
+              preset="none"
+              style={{
+                justifyContent: "center",
+                width: "70%",
+                height: 20,
+                paddingVertical: 2,
+                borderRadius: 10,
+                marginBottom: 15,
+              }}
+              onPress={() => {
+                addSneaker(item).then(() => getSneakers());
+                // then grey out the sneaker card
+              }}
+            >
+              <Text
+                preset="bold"
+                style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
+              >
+                Claim
+              </Text>
+            </Button>
+          </View>
+        </View>
+      );
+    }
+  };
 
   return (
     <Screen style={CONTAINER}>
