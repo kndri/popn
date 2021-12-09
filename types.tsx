@@ -41,8 +41,8 @@ export type RootTabParamList = {
 export interface Sneaker {
   brand: any;
   id: string;
-  primaryName: string;
-  secondaryName: string;
+  primary_name: string;
+  secondary_name: string;
   createdAt: string;
   verified: boolean;
   updatedAt: string;
@@ -50,7 +50,7 @@ export interface Sneaker {
   userID: string;
 }
 export interface SneakerList {
-  notes: Array<Sneaker>;
+  sneakers: Array<Sneaker>;
 }
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

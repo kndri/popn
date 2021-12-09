@@ -184,9 +184,9 @@ export const createSneakerStore = /* GraphQL */ `
     createSneakerStore(input: $input, condition: $condition) {
       id
       brand
-      primaryName
-      secondaryName
-      image
+      primary_name
+      secondary_name
+      image_url
       createdAt
       updatedAt
     }
@@ -200,9 +200,9 @@ export const updateSneakerStore = /* GraphQL */ `
     updateSneakerStore(input: $input, condition: $condition) {
       id
       brand
-      primaryName
-      secondaryName
-      image
+      primary_name
+      secondary_name
+      image_url
       createdAt
       updatedAt
     }
@@ -216,9 +216,9 @@ export const deleteSneakerStore = /* GraphQL */ `
     deleteSneakerStore(input: $input, condition: $condition) {
       id
       brand
-      primaryName
-      secondaryName
-      image
+      primary_name
+      secondary_name
+      image_url
       createdAt
       updatedAt
     }

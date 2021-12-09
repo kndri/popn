@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { color, spacing, typography } from "../theme";
 import { Button, Screen, Text, TextField } from "../components";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { getSneakersFromUser } from "../aws-functions/get-sneakers-from-user";
 import { SneakerList } from "../types";
 import { checkLoggedUser } from "../aws-functions/check-logged-user";
@@ -72,19 +72,26 @@ const INPUT: TextStyle = {
 
 export default function TabThreeScreen() {
   const navigation = useNavigation();
-  const [collection, setCollection] = React.useState<SneakerList[]>([]);
+  const [collection, setCollection] = React.useState<any>([]);
   const [username, setUsername] = React.useState("");
+  const isFocused = useIsFocused();
 
   const getSneakers = async () => {
     const sneakerlist = await getSneakersFromUser();
     const user = await checkLoggedUser();
     setUsername(user.userData.attributes["custom:name"])
-    setCollection(sneakerlist.sneakerList);
+    setCollection(sneakerlist);
   };
+  
+
+
+
   React.useEffect(() => {
     getSneakers();
     
-  }, []);
+  }, [isFocused]);
+
+ 
 
   const renderSneaker = ({ item }) => (
     <View
@@ -120,7 +127,7 @@ export default function TabThreeScreen() {
         />
       </View>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Button
+        {/* <Button
           preset="none"
           style={{
             justifyContent: "center",
@@ -140,7 +147,7 @@ export default function TabThreeScreen() {
           >
             View
           </Text>
-        </Button>
+        </Button> */}
       </View>
     </View>
   );

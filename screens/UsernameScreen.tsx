@@ -11,6 +11,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Formik } from "formik";
 import * as yup from 'yup'
 import { useFormState, useFormDispatch } from "../contexts/form-context";
+import { authService } from "../services/auth-service";
+import { useToast } from "../components/Toast";
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -51,6 +53,7 @@ const usernameValidationSchema = yup.object().shape({
 
 export default function UserNameScreen() {
   const navigation = useNavigation();
+  const toast = useToast();
 
   const form = React.useRef();
   const dispatch = useFormDispatch();
@@ -107,30 +110,29 @@ export default function UserNameScreen() {
           </View>
 
           <View style={CENTER}>
-            {/* <Text style={TEXTCENTER} preset="secondary">
-              By continuing, you are confirming that you have read and understood the
-              <TouchableOpacity>
-                <Text style={{ textDecorationLine: 'underline' }} preset="secondary"> Privacy Policy</Text>
-              </TouchableOpacity>
-            </Text> */}
-
             {(values.username && values.username.length >= 4) ?
               <Button
                 disabled={!isValid}
                 style={{ width: '100%' }}
                 text="Next"
                 preset="primary"
-                onPress={() => navigation.navigate('Email')}
+                onPress={async () => {
+                  const available = await authService.usernameAvailable(values.username);
+                  console.log('available', available)
+                  if (!available) {
+                    toast.show(`An account exists with this email already.`);
+                  } else {
+                    navigation.navigate('Email');
+                  }
+                }}
               /> :
               null
             }
-
-
-
           </View>
         </Screen>
-      )}
-    </Formik>
+      )
+      }
+    </Formik >
   );
 }
 
