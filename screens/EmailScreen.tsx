@@ -119,6 +119,7 @@ export default function EmailScreen() {
               </TouchableOpacity>
             </Text> */}
 
+
             <Button
               disabled={!isValid}
               style={{ width: "100%" }}
@@ -131,8 +132,10 @@ export default function EmailScreen() {
                 } else {
                   navigation.navigate('Password');
                 }
-                }}
+              }}
             />
+
+
           </View>
         </Screen>
       )}

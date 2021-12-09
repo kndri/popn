@@ -116,9 +116,9 @@ function RootNavigator() {
   // const [loggedIn, setLoggedIn] = React.useState(false);
   // const user = checkLoggedUser();
 
-  
+
   const { session } = useAuth();
-  
+
 
   return (
     <Stack.Navigator>

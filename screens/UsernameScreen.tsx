@@ -9,6 +9,7 @@ import {
 } from "../components"
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from "formik";
+import * as yup from 'yup'
 import { useFormState, useFormDispatch } from "../contexts/form-context";
 
 // Styles
@@ -40,12 +41,21 @@ const INPUT: TextStyle = {
   fontFamily: typography.primaryBold,
 }
 
+//username validation schema
+const usernameValidationSchema = yup.object().shape({
+  username: yup
+    .string()
+    .required("Must create username")
+    .min(4, "username must have at least 4 characters"),
+});
+
 export default function UserNameScreen() {
   const navigation = useNavigation();
 
   const form = React.useRef();
   const dispatch = useFormDispatch();
   const { values: formValues, errors: formErrors } = useFormState("user");
+  const nameLength;
 
   React.useEffect(() => {
 
@@ -56,7 +66,7 @@ export default function UserNameScreen() {
           type: "UPDATE_FORM",
           payload: {
             id: "user",
-            data: { values, errors }
+            data: { values, errors },
           }
         });
       }
@@ -68,11 +78,13 @@ export default function UserNameScreen() {
   return (
     <Formik
       innerRef={form}
+      validateOnBlur={true}
+      validationSchema={usernameValidationSchema}
       initialValues={formValues}
       initialErrors={formErrors}
       enableReinitialize
     >
-      {({ values, handleChange }) => (
+      {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
           <View style={CENTER}>
             <Text style={TEXTCENTER} preset="header" text="What's your username?" />
@@ -88,6 +100,10 @@ export default function UserNameScreen() {
               autoCapitalize='none'
               autoCorrect={false}
             />
+
+            {(errors.username || touched.username) &&
+              <Text style={{ fontSize: 10, color: 'red' }}>{errors.username}</Text>
+            }
           </View>
 
           <View style={CENTER}>
@@ -97,9 +113,21 @@ export default function UserNameScreen() {
                 <Text style={{ textDecorationLine: 'underline' }} preset="secondary"> Privacy Policy</Text>
               </TouchableOpacity>
             </Text> */}
-            <Button style={{ width: '100%' }} text="Next" preset="primary" onPress={() => navigation.navigate('Email')} />
-          </View>
 
+            {(values.username && values.username.length >= 4) ?
+              <Button
+                disabled={!isValid}
+                style={{ width: '100%' }}
+                text="Next"
+                preset="primary"
+                onPress={() => navigation.navigate('Email')}
+              /> :
+              null
+            }
+
+
+
+          </View>
         </Screen>
       )}
     </Formik>

@@ -9,6 +9,7 @@ import {
 } from "../components"
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from "formik";
+import * as yup from 'yup'
 import { useFormState, useFormDispatch } from "../contexts/form-context";
 
 
@@ -41,6 +42,15 @@ const INPUT: TextStyle = {
 	fontFamily: typography.primaryBold,
 }
 
+//age validation schema
+const ageValidationSchema = yup.object().shape({
+	age: yup
+		.number()
+		.required("Please supply your age")
+		.min(13, "You must be at least 13 years")
+	// .max(60, "You must be at most 60 years"),
+})
+
 export default function AgeScreen() {
 	const navigation = useNavigation();
 
@@ -49,7 +59,7 @@ export default function AgeScreen() {
 	const { values: formValues, errors: formErrors } = useFormState("user");
 
 	React.useEffect(() => {
-		
+
 		const unsubscribe = navigation.addListener("blur", () => {
 			if (form.current) {
 				const { values, errors } = form.current;
@@ -69,11 +79,13 @@ export default function AgeScreen() {
 	return (
 		<Formik
 			innerRef={form}
+			validateOnBlur={true}
+			validationSchema={ageValidationSchema}
 			initialValues={formValues}
 			initialErrors={formErrors}
 			enableReinitialize
 		>
-			{({ values, handleChange }) => (
+			{({ values, handleChange, errors, isValid, touched }) => (
 				<Screen style={CONTAINER}>
 					<View style={CENTER}>
 						<Text style={HEADER} preset="header" text="How old are you?" />
@@ -89,6 +101,9 @@ export default function AgeScreen() {
 							value={values.age}
 							onChangeText={handleChange("age")}
 						/>
+						{(errors.age || touched.age) &&
+							<Text style={{ fontSize: 10, color: 'red' }}>{errors.age}</Text>
+						}
 					</View>
 
 					<View style={CENTER}>
@@ -98,7 +113,17 @@ export default function AgeScreen() {
 								<Text style={{ textDecorationLine: 'underline' }} preset="secondary"> Privacy Policy</Text>
 							</TouchableOpacity>
 						</Text> */}
-						<Button style={{ width: '100%', }} text="Next" preset="primary" onPress={() => navigation.navigate('Username')} />
+
+						{values.age >= 13 &&
+							<Button
+								disabled={!isValid}
+								style={{ width: '100%', }}
+								text="Next"
+								preset="primary"
+								onPress={() => navigation.navigate('Username')} />
+						}
+
+
 					</View>
 				</Screen>
 			)}

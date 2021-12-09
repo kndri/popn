@@ -3,13 +3,12 @@ import {
   View,
   ViewStyle,
   TextStyle,
-  TouchableOpacity,
-  Alert,
 } from "react-native";
 import { color, spacing, typography } from "../theme";
 import { Button, Screen, Text, TextField } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
+import * as yup from 'yup'
 import { useFormState, useFormDispatch } from "../contexts/form-context";
 import { useAuth } from "../contexts/auth";
 import { useToast } from "../components/Toast";
@@ -30,7 +29,7 @@ const HEADER: TextStyle = {
 };
 
 const CENTER: ViewStyle = {
-  flexDirection: "row",
+  alignItems: "center",
   justifyContent: "center",
   margin: "auto",
 };
@@ -44,7 +43,18 @@ const INPUT: TextStyle = {
   fontFamily: typography.primaryBold,
 };
 
-export default function EmailScreen() {
+//password validation schema
+const passwordValidationSchema = yup.object().shape({
+  password: yup
+    .string()
+    .matches(/\w*[a-z]\w*/, "Password must have a small letter")
+    .matches(/\w*[A-Z]\w*/, "Password must have a capital letter")
+    .matches(/\d/, "Password must have a number")
+    .min(6, ({ min }) => `Password must be at least ${min} characters`)
+    .required('Password is required'),
+})
+
+export default function PasswordScreen() {
   const navigation = useNavigation();
   const toast = useToast();
 
@@ -74,24 +84,29 @@ export default function EmailScreen() {
   return (
     <Formik
       innerRef={form}
+      validateOnBlur={true}
+      validationSchema={passwordValidationSchema}
       initialValues={formValues}
       initialErrors={formErrors}
       enableReinitialize
     >
-      {({ values, handleChange }) => (
+      {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
           <View style={CENTER}>
             <Text style={HEADER} preset="header" text="Create a password" />
           </View>
 
-          <View>
+          <View style={CENTER}>
             <TextField
-              style={{ alignSelf: 'center' }}
               inputStyle={INPUT}
               placeholder="Password"
               secureTextEntry
               onChangeText={handleChange("password")}
             />
+
+            {(errors.password || touched.password) &&
+              <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
+            }
           </View>
 
           <View style={CENTER}>
@@ -108,7 +123,9 @@ export default function EmailScreen() {
                 </Text>
               </TouchableOpacity>
             </Text> */}
+
             <Button
+              disabled={!isValid}
               style={{ width: "100%" }}
               text="Next"
               preset="primary"
@@ -125,6 +142,7 @@ export default function EmailScreen() {
                 }
               }}
             />
+
           </View>
         </Screen>
       )}
