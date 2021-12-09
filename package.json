@@ -42,13 +42,9 @@
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
     "react-native-web": "0.17.1",
-<<<<<<< HEAD
-    "yup": "^0.32.11"
-=======
+    "yup": "^0.32.11",
     "jotai": "^1.0.0",
-    "@ui-kitten/components": "^5.0.0",
     "react-native-svg": "12.1.0"
->>>>>>> 7cd8d0663a512fd6b3a5ab75b662fd0c890af278
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

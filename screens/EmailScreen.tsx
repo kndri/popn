@@ -6,6 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as yup from 'yup'
 import { useFormState, useFormDispatch } from "../contexts/form-context";
+import { authService } from "../services/auth-service";
+import { useToast } from "../components/Toast";
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -47,14 +49,15 @@ const emailValidationSchema = yup.object().shape({
 
 export default function EmailScreen() {
   const navigation = useNavigation();
+  const toast = useToast();
 
   const form = React.useRef();
   const dispatch = useFormDispatch();
   const { values: formValues, errors: formErrors } = useFormState("user");
 
   React.useEffect(() => {
-    
-    const unsubscribe = navigation.addListener("blur", () => {
+
+    const unsubscribe = navigation.addListener("blur", async () => {
       if (form.current) {
         const { values, errors } = form.current;
         dispatch({
@@ -73,7 +76,7 @@ export default function EmailScreen() {
   return (
     <Formik
       innerRef={form}
-      validateOnMount={true}
+      validateOnBlur={true}
       validationSchema={emailValidationSchema}
       initialValues={formValues}
       initialErrors={formErrors}
@@ -121,9 +124,15 @@ export default function EmailScreen() {
               style={{ width: "100%" }}
               text="Next"
               preset="primary"
-              onPress={() => {
-                navigation.navigate('Password')
-              }}
+              onPress={async () => {
+                console.log('formValues.email', values.email );
+                const available = await authService.usernameAvailable(values.email);
+                if (!available) {
+                  toast.show(`An account exists with this email already.`);
+                } else {
+                  navigation.navigate('Password');
+                }
+                }}
             />
           </View>
         </Screen>

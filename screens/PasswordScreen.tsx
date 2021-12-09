@@ -55,7 +55,7 @@ export default function EmailScreen() {
 
 
   React.useEffect(() => {
-    
+
     const unsubscribe = navigation.addListener("blur", () => {
       if (form.current) {
         const { values, errors } = form.current;
@@ -87,7 +87,7 @@ export default function EmailScreen() {
 
           <View>
             <TextField
-              style={{ alignSelf: 'center'}}
+              style={{ alignSelf: 'center' }}
               inputStyle={INPUT}
               placeholder="Password"
               secureTextEntry
@@ -115,8 +115,7 @@ export default function EmailScreen() {
               preset="primary"
               onPress={() => {
                 if (values.email === "" || values.password === "") {
-                  //add toast here
-                  toast.show(`You must provide an email and passwordt`);
+                  toast.show(`You must provide an email and password`);
                 } else {
                   signUp(
                     values.email,

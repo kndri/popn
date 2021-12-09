@@ -5,7 +5,7 @@ import {
   Button,
   Screen,
   Text,
-  TextField,
+  TextField
 } from "../components"
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from "formik";
@@ -48,7 +48,7 @@ export default function UserNameScreen() {
   const { values: formValues, errors: formErrors } = useFormState("user");
 
   React.useEffect(() => {
-    
+
     const unsubscribe = navigation.addListener("blur", () => {
       if (form.current) {
         const { values, errors } = form.current;
