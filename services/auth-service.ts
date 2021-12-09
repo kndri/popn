@@ -57,7 +57,7 @@ const signUp = (
     password: _password,
     attributes: {
       "custom:age": age,
-      "custom:name": username, // optional
+      preferred_username: username
     },
   })
     .then((response) => {
@@ -92,17 +92,28 @@ const usernameAvailable = async (username: string) => {
   } catch (err: any) {
     switch ( err.code ) {
       case 'UserNotFoundException':
+        console.log('err', err);
+
           return true;
       case 'NotAuthorizedException':
+        console.log('err', err);
+
           return false;
       case 'AliasExistsException':
           // Email alias already exists
+          console.log('err', err);
+
           return false;
       case 'CodeMismatchException':
+        console.log('err', err);
+
           return false;
       case 'ExpiredCodeException':
+        console.log('err', err);
+
           return false;
       default:
+        console.log('err', err);
           return false;
     }
   }

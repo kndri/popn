@@ -10,6 +10,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from "formik";
 import { useFormState, useFormDispatch } from "../contexts/form-context";
+import { authService } from "../services/auth-service";
+import { useToast } from "../components/Toast";
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -42,6 +44,7 @@ const INPUT: TextStyle = {
 
 export default function UserNameScreen() {
   const navigation = useNavigation();
+  const toast = useToast();
 
   const form = React.useRef();
   const dispatch = useFormDispatch();
@@ -97,7 +100,20 @@ export default function UserNameScreen() {
                 <Text style={{ textDecorationLine: 'underline' }} preset="secondary"> Privacy Policy</Text>
               </TouchableOpacity>
             </Text> */}
-            <Button style={{ width: '100%' }} text="Next" preset="primary" onPress={() => navigation.navigate('Email')} />
+            <Button
+              style={{ width: '100%' }}
+              text="Next"
+              preset="primary"
+              onPress={async () => {
+                const available = await authService.usernameAvailable(values.username);
+                console.log('available', available)
+                if (!available) {
+                  toast.show(`An account exists with this email already.`);
+                } else {
+                  navigation.navigate('Email');
+                }
+              }}
+            />
           </View>
 
         </Screen>
