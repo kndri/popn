@@ -105,22 +105,24 @@ export default function EmailScreen() {
           </View>
 
           <View style={CENTER}>
-            <Button
-              disabled={!isValid}
-              style={{ width: "100%" }}
-              text="Next"
-              preset="primary"
-              onPress={async () => {
-                const available = await authService.usernameAvailable(values.email);
-                if (!available) {
-                  toast.show(`An account exists with this email already.`);
-                } else {
-                  navigation.navigate('Password');
-                }
-              }}
-            />
-
-
+            {(values.email && isValid) ?
+              <Button
+                disabled={!isValid}
+                style={{ width: "100%" }}
+                text="Next"
+                preset="primary"
+                onPress={async () => {
+                  const available = await authService.usernameAvailable(values.email);
+                  if (!available) {
+                    toast.show(`An account exists with this email already.`);
+                  } else {
+                    navigation.navigate('Password');
+                  }
+                }}
+              />
+              :
+              null
+            }
           </View>
         </Screen>
       )}

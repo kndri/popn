@@ -110,6 +110,7 @@ export default function PasswordScreen() {
           </View>
 
           <View style={CENTER}>
+          {(values.password && isValid) ?
             <Button
               disabled={!isValid}
               style={{ width: "100%" }}
@@ -127,7 +128,9 @@ export default function PasswordScreen() {
                   );
                 }
               }}
-            />
+            />:
+            null
+          }
 
           </View>
         </Screen>
