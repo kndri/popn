@@ -68,6 +68,8 @@ export default function ResetPasswordScreen(props: any) {
           value={password}
           label="New Password"
           secureTextEntry
+          autoCapitalize='none'
+          autoCorrect={false}
           inputStyle={{
             padding: 16,
             borderWidth: 2,
@@ -82,6 +84,8 @@ export default function ResetPasswordScreen(props: any) {
           value={confirmedPassword}
           label="Confirm Password"
           secureTextEntry
+          autoCapitalize='none'
+          autoCorrect={false}
           inputStyle={{
             padding: 16,
             borderWidth: 2,

@@ -30,7 +30,7 @@ const HEADER: TextStyle = {
 };
 
 const CENTER: ViewStyle = {
-  alignItems: "center",
+  flexDirection: "row",
   justifyContent: "center",
   margin: "auto",
 };
@@ -55,7 +55,7 @@ export default function EmailScreen() {
 
 
   React.useEffect(() => {
-    console.log("values: ", formValues);
+    
     const unsubscribe = navigation.addListener("blur", () => {
       if (form.current) {
         const { values, errors } = form.current;
@@ -85,8 +85,9 @@ export default function EmailScreen() {
             <Text style={HEADER} preset="header" text="Create a password" />
           </View>
 
-          <View style={CENTER}>
+          <View>
             <TextField
+              style={{ alignSelf: 'center'}}
               inputStyle={INPUT}
               placeholder="Password"
               secureTextEntry

@@ -53,7 +53,7 @@ export default function EmailScreen() {
   const { values: formValues, errors: formErrors } = useFormState("user");
 
   React.useEffect(() => {
-    console.log("values: ", formValues);
+    
     const unsubscribe = navigation.addListener("blur", () => {
       if (form.current) {
         const { values, errors } = form.current;
@@ -92,6 +92,8 @@ export default function EmailScreen() {
               keyboardType="email-address"
               value={values.email}
               onChangeText={handleChange("email")}
+              autoCapitalize='none'
+              autoCorrect={false}
             />
 
             {(errors.email || touched.email) &&

@@ -48,7 +48,7 @@ export default function UserNameScreen() {
   const { values: formValues, errors: formErrors } = useFormState("user");
 
   React.useEffect(() => {
-    console.log("values: ", formValues);
+    
     const unsubscribe = navigation.addListener("blur", () => {
       if (form.current) {
         const { values, errors } = form.current;

@@ -55,6 +55,8 @@ export default function SignInScreen() {
           value={email}
           label="Email"
           placeholder="Enter your email"
+          autoCapitalize='none'
+          autoCorrect={false}
           inputStyle={{
             padding: 16,
             borderWidth: 2,
