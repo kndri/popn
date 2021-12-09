@@ -79,7 +79,37 @@ const signUp = (
   });
 };
 
+const usernameAvailable = async (username: string) => {
+  // adapted from @herri16's solution: https://github.com/aws-amplify/amplify-js/issues/1067#issuecomment-436492775
+  try {
+    const res = await Auth.confirmSignUp(username, '000000', {
+      // If set to False, the API will throw an AliasExistsException error if the phone number/email used already exists as an alias with a different user
+      forceAliasCreation: false
+    });
+    
+    // this should always throw an error of some kind, but if for some reason this succeeds then the user probably exists.
+    return false;
+  } catch (err: any) {
+    switch ( err.code ) {
+      case 'UserNotFoundException':
+          return true;
+      case 'NotAuthorizedException':
+          return false;
+      case 'AliasExistsException':
+          // Email alias already exists
+          return false;
+      case 'CodeMismatchException':
+          return false;
+      case 'ExpiredCodeException':
+          return false;
+      default:
+          return false;
+    }
+  }
+}
+
 export const authService = {
   signIn,
   signUp,
+  usernameAvailable,
 };

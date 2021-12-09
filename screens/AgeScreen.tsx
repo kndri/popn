@@ -49,7 +49,7 @@ export default function AgeScreen() {
 	const { values: formValues, errors: formErrors } = useFormState("user");
 
 	React.useEffect(() => {
-	
+		
 		const unsubscribe = navigation.addListener("blur", () => {
 			if (form.current) {
 				const { values, errors } = form.current;

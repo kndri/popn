@@ -24,7 +24,7 @@ const state = atom(options);
 // global container for messages
 export default function ToastContainer() {
   const [toast, setToast] = useAtom(state);
-  const height = 50 + 44;
+  const height = 55 + 44;
   const show = useSharedValue(-height);
 
   const styles = {

@@ -5,7 +5,7 @@ import {
   Button,
   Screen,
   Text,
-  TextField,
+  TextField
 } from "../components"
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from "formik";

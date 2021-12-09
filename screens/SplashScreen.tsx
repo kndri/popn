@@ -32,12 +32,12 @@ export default function WelcomeToPopn() {
         <Text text="display the hype." />
       </View>
       <View>
-      <Button text="Get Started" preset="primary" onPress={() => navigation.navigate('Welcome')} />
+        <Button text="Get Started" preset="primary" onPress={() => navigation.navigate('Welcome')} />
 
-      <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: "center"}}>
-        <Text style={{ color: color.dim}} text="Already have an account?" />
-        <Button style={{marginLeft: 5}} preset="link" text="Sign In" onPress={() => navigation.navigate('SignIn')}></Button>
-      </View>
+        <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: "center" }}>
+          <Text style={{ color: color.dim }} text="Already have an account?" />
+          <Button style={{ marginLeft: 5 }} preset="link" text="Sign In" onPress={() => navigation.navigate('SignIn')}></Button>
+        </View>
       </View>
     </Screen>
   );
