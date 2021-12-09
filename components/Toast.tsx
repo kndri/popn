@@ -24,7 +24,7 @@ const state = atom(options);
 // global container for messages
 export default function ToastContainer() {
   const [toast, setToast] = useAtom(state);
-  const height = 150 + 44;
+  const height = 50 + 44;
   const show = useSharedValue(-height);
 
   const styles = {
@@ -38,7 +38,7 @@ export default function ToastContainer() {
       paddingTop: 10,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "black",
+      backgroundColor: "red",
       borderBottomLeftRadius: 10,
       borderBottomRightRadius: 10,
       transform: [{ translateY: show.value }],

@@ -139,3 +139,43 @@ export const listSneakerStores = /* GraphQL */ `
     }
   }
 `;
+export const sneakerByUser = /* GraphQL */ `
+  query SneakerByUser(
+    $userID: ID
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelSneakerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    sneakerByUser(
+      userID: $userID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        userID
+        user {
+          id
+          age
+          username
+          phone
+          createdAt
+          updatedAt
+        }
+        createdAt
+        verified
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

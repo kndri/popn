@@ -61,7 +61,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const _authData = await authService.signIn(email, password);
 
     // if there is an error alert the screen of the message
-    console.log("auth data", _authData);
+
     if (_authData.error) {
       toast.show(`${_authData.error}`);
     
@@ -90,7 +90,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const _authData = await authService.signUp(email, password, age, username);
 
     // if there is an error alert the screen of the message
-    console.log("auth data", _authData);
+
     if (_authData.error) {
       toast.show(`${_authData.error}`);
     } else {

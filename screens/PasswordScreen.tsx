@@ -55,7 +55,7 @@ export default function EmailScreen() {
 
 
   React.useEffect(() => {
-    console.log("values: ", formValues);
+   
     const unsubscribe = navigation.addListener("blur", () => {
       if (form.current) {
         const { values, errors } = form.current;

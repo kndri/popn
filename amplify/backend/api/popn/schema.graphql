@@ -11,6 +11,7 @@ type Sneaker
   @key(
     name: "byUser"
     fields: ["userID", "createdAt"]
+    queryField: "sneakerByUser"
   ) {
   id: ID!
   brand: String!
@@ -30,4 +31,3 @@ type SneakerStore @model {
   secondaryName: String!
   image: String!
 }
-

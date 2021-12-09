@@ -38,8 +38,23 @@ export type RootTabParamList = {
   TabTwo: undefined;
   TabThree: undefined;
 };
+export interface Sneaker {
+  brand: any;
+  id: string;
+  primaryName: string;
+  secondaryName: string;
+  createdAt: string;
+  verified: boolean;
+  updatedAt: string;
+  image: string;
+  userID: string;
+}
+export interface SneakerList {
+  notes: Array<Sneaker>;
+}
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
   BottomTabScreenProps<RootTabParamList, Screen>,
   NativeStackScreenProps<RootStackParamList>
 >;
+

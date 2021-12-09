@@ -250,6 +250,22 @@ export type ModelSneakerStoreConnection = {
   nextToken?: string | null,
 };
 
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type CreateUserMutationVariables = {
   input: CreateUserInput,
   condition?: ModelUserConditionInput | null,
@@ -660,6 +676,43 @@ export type ListSneakerStoresQuery = {
       secondaryName: string,
       image: string,
       createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type SneakerByUserQueryVariables = {
+  userID?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelSneakerFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type SneakerByUserQuery = {
+  sneakerByUser?:  {
+    __typename: "ModelSneakerConnection",
+    items?:  Array< {
+      __typename: "Sneaker",
+      id: string,
+      brand: string,
+      primaryName: string,
+      secondaryName: string,
+      image: string,
+      userID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        phone: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      createdAt?: string | null,
+      verified?: boolean | null,
       updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
