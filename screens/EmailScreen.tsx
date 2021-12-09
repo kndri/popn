@@ -125,7 +125,6 @@ export default function EmailScreen() {
               text="Next"
               preset="primary"
               onPress={async () => {
-                console.log('formValues.email', values.email );
                 const available = await authService.usernameAvailable(values.email);
                 if (!available) {
                   toast.show(`An account exists with this email already.`);
