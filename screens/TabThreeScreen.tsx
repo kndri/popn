@@ -23,7 +23,7 @@ const userImage = require("../assets/images/UserImage.png");
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
-  paddingHorizontal: spacing[7],
+  paddingHorizontal: spacing[3],
   flex: 1,
   marginTop: 44,
 };
@@ -31,6 +31,7 @@ const CONTAINER: ViewStyle = {
 const HEADER: ViewStyle = {
   alignItems: "center",
   justifyContent: "center",
+  paddingHorizontal: spacing[4],
 };
 
 const CENTER: ViewStyle = {
@@ -42,11 +43,13 @@ const PROFILE_HEADER: ViewStyle = {
   alignItems: "center",
   justifyContent: "space-between",
   paddingBottom: 17,
+  paddingHorizontal: spacing[4],
 };
 const PROFILE_DATA: ViewStyle = {
   flexDirection: "row",
   alignItems: "center",
   marginBottom: 20,
+  paddingHorizontal: spacing[4],
 };
 const PROFILE_IMAGE: ImageStyle = {
   marginRight: 20,
@@ -54,11 +57,12 @@ const PROFILE_IMAGE: ImageStyle = {
 
 const COLLECTION_CONTAINER: ViewStyle = {
   flex: 1,
-  flexDirection: "column",
 };
 
 const COLLECTION_HEADING: TextStyle = {
   textDecorationLine: "underline",
+  paddingHorizontal: spacing[5],
+  marginBottom: 22
 };
 
 const TEXTCENTER: TextStyle = {
@@ -169,7 +173,6 @@ export default function TabThreeScreen() {
 
       <View style={COLLECTION_CONTAINER}>
         <Text style={COLLECTION_HEADING} preset="bold" text="Collection" />
-
         <View style={{ flex: 1, justifyContent: "center" }}>
           {collection.length === 0 ? (
             <>

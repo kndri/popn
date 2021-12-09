@@ -27,7 +27,7 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[3],
   flex: 1,
-  marginTop: 25,
+  marginTop: 44,
 };
 const CENTER: ViewStyle = {
   alignItems: "center",
@@ -38,11 +38,14 @@ const CLAIM_HEADER: ViewStyle = {
   alignItems: "center",
   justifyContent: "space-between",
   paddingBottom: 17,
+  paddingHorizontal: spacing[4],
+
 };
 const CLAIM_SEARCH: ViewStyle = {
   justifyContent: "center",
   alignItems: "center",
   marginBottom: 20,
+  paddingHorizontal: spacing[4],
 };
 const COLLECTION_CONTAINER: ViewStyle = {
   flex: 1,
@@ -134,7 +137,6 @@ export default function TabTwoScreen() {
   }, [isFocused]);
 
   React.useEffect(() => {
-    console.log("sneakerdb", sneakerDb);
   }, [sneakerDb]);
   // create a function to check if this shoe exist in user db
 
