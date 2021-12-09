@@ -105,20 +105,6 @@ export default function EmailScreen() {
           </View>
 
           <View style={CENTER}>
-            {/* <Text style={TEXTCENTER} preset="secondary">
-              By continuing, you are confirming that you have read and
-              understood the
-              <TouchableOpacity>
-                <Text
-                  style={{ textDecorationLine: "underline" }}
-                  preset="secondary"
-                >
-                  {" "}
-                  Privacy Policy
-                </Text>
-              </TouchableOpacity>
-            </Text> */}
-
             <Button
               disabled={!isValid}
               style={{ width: "100%" }}

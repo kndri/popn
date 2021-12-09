@@ -92,12 +92,6 @@ export default function AgeScreen() {
 					</View>
 
 					<View style={CENTER}>
-						{/* <Text style={TEXTCENTER} preset="secondary">
-							By continuing, you are confirming that you have read and understood the
-							<TouchableOpacity>
-								<Text style={{ textDecorationLine: 'underline' }} preset="secondary"> Privacy Policy</Text>
-							</TouchableOpacity>
-						</Text> */}
 						<Button style={{ width: '100%', }} text="Next" preset="primary" onPress={() => navigation.navigate('Username')} />
 					</View>
 				</Screen>
