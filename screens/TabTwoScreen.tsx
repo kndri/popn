@@ -21,6 +21,8 @@ import { addSneaker } from "../aws-functions/add-sneaker-to-users";
 import { getSneakersFromUser } from "../aws-functions/get-sneakers-from-user";
 import { SneakerList } from "../types";
 import { getSneakersFromDB } from "../aws-functions/get-sneakers-from-db";
+import { useToast } from "../components/Toast";
+
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -79,6 +81,7 @@ const SHADOW: ViewStyle = {
 
 export default function TabTwoScreen() {
   const navigation = useNavigation();
+  const toast = useToast();
   const [query, setQuery] = React.useState("");
   const [searchedArray, setSearchedArray] = React.useState<SneakerList[]>([]);
   const [collection, setCollection] = React.useState<any>([]);
@@ -250,7 +253,11 @@ export default function TabTwoScreen() {
                 marginBottom: 15,
               }}
               onPress={() => {
-                addSneaker(item).then(() => getSneakers());
+                addSneaker(item).then(() => {
+                  // Add toast here
+                  toast.show(`Sneaker has been added to your showcase.`);
+                  getSneakers()
+                });
                 // then grey out the sneaker card
               }}
             >
