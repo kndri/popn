@@ -160,7 +160,9 @@ export default function TabThreeScreen() {
     <Screen style={CONTAINER}>
       <View style={PROFILE_HEADER}>
         <Text preset="header" text="Profile" />
-        <Image source={settingsIcon} />
+        <Button style={{backgroundColor: 'transparent'}} onPress={() => navigation.navigate('Settings', { screen: 'settings' })}>
+          <Image source={settingsIcon} />
+        </Button>
       </View>
 
       <View style={PROFILE_DATA}>

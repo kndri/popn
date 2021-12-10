@@ -26,6 +26,7 @@ export type RootStackParamList = {
   SignIn: undefined;
   ForgotPassword: undefined;
   ResetPassword: any;
+  Settings: NavigatorScreenParams<SettingsStackParamList> | undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -38,6 +39,13 @@ export type RootTabParamList = {
   TabTwo: undefined;
   TabThree: undefined;
 };
+
+export type SettingsStackParamList = {
+  settings: undefined;
+  changeEmail: undefined;
+  changePassword: undefined;
+}
+
 export interface Sneaker {
   brand: any;
   id: string;

@@ -27,10 +27,16 @@ import PasswordScreen from "../screens/PasswordScreen";
 import WelcomeToPopn from "../screens/WelcomeToPopn";
 import SignInScreen from "../screens/SignInScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
+import SettingsScreen from "../screens/SettingsScreen";
+import ChangeEmailScreen from "../screens/ChangeEmailScreen";
+import ChangePasswordScreen from "../screens/ChangePasswordScreen";
+
 import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
+  SettingsStackParamList
+
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
@@ -51,6 +57,9 @@ export default function Navigation({
     </NavigationContainer>
   );
 }
+
+const { Navigator, Screen } = createNativeStackNavigator();
+
 
 const onboardingStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -106,6 +115,21 @@ function OnboardingNavigator() {
   );
 }
 
+const settingStack = createNativeStackNavigator<SettingsStackParamList>();
+
+const SettingsNavigator = () => (
+  <settingStack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}
+    initialRouteName="settings"
+  >
+    <settingStack.Screen name="settings" component={SettingsScreen} />
+    <settingStack.Screen name="changeEmail" component={ChangeEmailScreen} />
+    <settingStack.Screen name="changePassword" component={ChangePasswordScreen} />
+  </settingStack.Navigator>
+);
+
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -123,11 +147,18 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       {session ? (
-        <Stack.Screen
-          name="Root"
-          component={BottomTabNavigator}
-          options={{ headerShown: false }}
-        />
+        <>
+          <Stack.Screen
+            name="Root"
+            component={BottomTabNavigator}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={SettingsNavigator}
+            options={{ headerShown: false }}
+          />
+        </>
       ) : (
         <Stack.Screen
           name="Root"
