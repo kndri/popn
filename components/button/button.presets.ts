@@ -28,6 +28,8 @@ export const viewPresets: Record<string, ViewStyle> = {
    */
   primary: { ...BASE_VIEW, backgroundColor: color.palette.black } as ViewStyle,
 
+  cta: { ...BASE_VIEW, backgroundColor: color.palette.black, width: 160 } as ViewStyle,
+
   /**
    * A button without extras.
    */

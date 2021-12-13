@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { View, ViewStyle, TextStyle, } from "react-native"
-import { color, spacing } from "../theme"
+import { color, spacing, typography } from "../theme"
 import {
   Button,
   Screen,
-  Text
+  Text,
+  AutoImage as Image
 } from "../components"
 
 import { useNavigation } from '@react-navigation/native';
+
+const logo = require("../assets/images/logo.png");
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -19,24 +22,30 @@ const CONTAINER: ViewStyle = {
   paddingBottom: 90
 }
 
-const HEADER: ViewStyle = {
-  alignItems: 'center',
+const LOGO_CONTAINER: ViewStyle = {
+	alignItems: 'center',
+	justifyContent: 'center',
+	flex: 1,
 }
 
 export default function WelcomeToPopn() {
   const navigation = useNavigation();
   return (
     <Screen style={CONTAINER}>
-      <View style={HEADER}>
-        <Text preset="logo" text="POPN" />
-        <Text text="display the hype." />
+      <View style={LOGO_CONTAINER}>
+        <Image source={logo} />
+        <Text style={{marginTop: 10}}>display the hype.</Text>
       </View>
+
       <View>
-        <Button text="Get Started" preset="primary" onPress={() => navigation.navigate('Welcome')} />
+        <Button text="Get Started" preset="primary" onPress={() => navigation.navigate('Username')}>
+          <Text style={{color: color.palette.white, fontFamily: typography.primarySemiBold, fontSize: 16}}>Get Started</Text>
+        </Button>
 
         <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: "center" }}>
-          <Text style={{ color: color.dim }} text="Already have an account?" />
-          <Button style={{ marginLeft: 5 }} preset="link" text="Sign In" onPress={() => navigation.navigate('SignIn')}></Button>
+          <Button preset="link" onPress={() => navigation.navigate('SignIn')}>
+            <Text style={{color: color.dim}}>I already have an account</Text>
+          </Button>
         </View>
       </View>
     </Screen>

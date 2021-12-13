@@ -18,13 +18,6 @@ export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
-  // Kick off initial async loading actions, like loading fonts and RootStore
-  useEffect(() => {
-    (async () => {
-      await initFonts();
-    })();
-  }, []);
-
   if (!isLoadingComplete) {
     return null;
   } else {

@@ -43,6 +43,10 @@ const INPUT: TextStyle = {
   fontFamily: typography.primaryBold,
 }
 
+const DISABLED: ViewStyle = {
+  backgroundColor: 'rgba(52, 52, 52, 0.25)',
+};
+
 //username validation schema
 const usernameValidationSchema = yup.object().shape({
   username: yup
@@ -58,7 +62,6 @@ export default function UserNameScreen() {
   const form = React.useRef();
   const dispatch = useFormDispatch();
   const { values: formValues, errors: formErrors } = useFormState("user");
-  const nameLength;
 
   React.useEffect(() => {
 
@@ -90,7 +93,8 @@ export default function UserNameScreen() {
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
           <View style={CENTER}>
-            <Text style={TEXTCENTER} preset="header" text="What's your username?" />
+            <Text style={TEXTCENTER} preset="header" text="Choose a username" />
+            <Text preset="secondary" text="This will be your POPN handle" />
           </View>
 
           <View style={CENTER}>
@@ -109,25 +113,23 @@ export default function UserNameScreen() {
             }
           </View>
 
-          <View style={CENTER}>
-            {(values.username && values.username.length >= 4) ?
-              <Button
-                disabled={!isValid}
-                style={{ width: '100%' }}
-                text="Next"
-                preset="primary"
-                onPress={async () => {
-                  const available = await authService.usernameAvailable(values.username);
-                  console.log('available', available)
-                  if (!available) {
-                    toast.show(`An account exists with this email already.`);
-                  } else {
-                    navigation.navigate('Email');
-                  }
-                }}
-              /> :
-              null
-            }
+
+          <View style={{ flexDirection: 'row', alignContent: 'flex-end', justifyContent: 'flex-end' }}>
+            <Button
+              disabled={!isValid}
+              style={!isValid ? DISABLED : null}
+              text="Continue"
+              preset="cta"
+              onPress={async () => {
+                const available = await authService.usernameAvailable(values.username);
+                console.log('available', available)
+                if (!available) {
+                  toast.show(`An account exists with this username already.`);
+                } else {
+                  navigation.navigate('Email');
+                }
+              }}
+            />
           </View>
         </Screen>
       )

@@ -22,20 +22,9 @@ export const typography = {
   /**
    * The primary font.  Used in most places.
    */
-  primary: Platform.select({ ios: "SFProDisplay", android: "SFProDisplay" }),
+  primary: Platform.select({ ios: "ReadexPro", android: "ReadexPro" }),
 
-  primarySemiBold: Platform.select({ ios: "SFProDisplay-SemiBold", android: "SFProDisplay-SemiBold" }),
+  primarySemiBold: Platform.select({ ios: "ReadexPro-SemiBold", android: "ReadexPro-SemiBold" }),
 
-  primaryBold: Platform.select({ ios: "SFProDisplay-Bold", android: "SFProDisplay-Bold" }),
-
-
-  /**
-   * An alternate font used for perhaps titles and stuff.
-   */
-  secondary: Platform.select({ ios: "Arial", android: "sans-serif" }),
-
-  /**
-   * Lets get fancy with a monospace font!
-   */
-  code: Platform.select({ ios: "Courier", android: "monospace" }),
+  primaryBold: Platform.select({ ios: "ReadexPro-Bold", android: "ReadexPro-Bold" }),
 }

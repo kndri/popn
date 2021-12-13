@@ -42,13 +42,16 @@ const INPUT: TextStyle = {
 	fontFamily: typography.primaryBold,
 }
 
+const DISABLED: ViewStyle = {
+  backgroundColor: 'rgba(52, 52, 52, 0.25)',
+};
+
 //age validation schema
 const ageValidationSchema = yup.object().shape({
 	age: yup
 		.number()
 		.required("Please supply your age")
 		.min(13, "You must be at least 13 years")
-	// .max(60, "You must be at most 60 years"),
 })
 
 export default function AgeScreen() {
@@ -89,7 +92,7 @@ export default function AgeScreen() {
 				<Screen style={CONTAINER}>
 					<View style={CENTER}>
 						<Text style={HEADER} preset="header" text="How old are you?" />
-						<Text preset="secondary" text="You must be  13 or older to use POPN" />
+						<Text preset="secondary" text="You must be 13 years old or older" />
 					</View>
 
 					<View style={CENTER}>
@@ -106,15 +109,13 @@ export default function AgeScreen() {
 						}
 					</View>
 
-					<View style={CENTER}>
-						{values.age >= 13 &&
+          <View style={{ flexDirection: 'row', alignContent: 'flex-end', justifyContent: 'flex-end' }}>
 							<Button
 								disabled={!isValid}
-								style={{ width: '100%', }}
-								text="Next"
-								preset="primary"
+								style={!isValid ? DISABLED : null}
+								text="Continue"
+								preset="cta"
 								onPress={() => navigation.navigate('Username')} />
-						}
 					</View>
 				</Screen>
 			)}

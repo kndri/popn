@@ -12,11 +12,16 @@ export default function useCachedResources() {
       try {
         SplashScreen.preventAutoHideAsync();
 
-        // // Load fonts
-        // await Font.loadAsync({
-        //   ...FontAwesome.font,
-        //   'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
-        // });
+        // Load fonts
+        await Font.loadAsync({
+          ...FontAwesome.font,
+          ReadexPro: require("../assets/fonts/ReadexPro-Regular.ttf"),
+          "ReadexPro-Light": require("../assets/fonts/ReadexPro-Light.ttf"),
+          "ReadexPro-Regular": require("../assets/fonts/ReadexPro-Regular.ttf"),
+          "ReadexPro-Medium": require("../assets/fonts/ReadexPro-Medium.ttf"),
+          "ReadexPro-SemiBold": require("../assets/fonts/ReadexPro-SemiBold.ttf"),
+          "ReadexPro-Bold": require("../assets/fonts/ReadexPro-Bold.ttf")
+        });
       } catch (e) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);

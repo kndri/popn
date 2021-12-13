@@ -92,7 +92,6 @@ export default function TabThreeScreen() {
 
   React.useEffect(() => {
     getSneakers();
-    
   }, [isFocused]);
 
  

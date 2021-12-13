@@ -34,7 +34,7 @@ export const presets = {
   /**
    * Large headers.
    */
-  header: { ...BASE, fontSize: 36, fontFamily: typography.primaryBold, } as TextStyle,
+  header: { ...BASE, fontSize: 24, fontFamily: typography.primaryBold, } as TextStyle,
 
   /**
    * Field labels that appear on forms above the inputs.

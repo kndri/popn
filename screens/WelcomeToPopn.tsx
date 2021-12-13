@@ -27,6 +27,7 @@ const HEADER: ViewStyle = {
 const CENTER: ViewStyle = {
 	alignItems: 'center',
 	justifyContent: 'center',
+	flex: 1,
 }
 
 const TEXTCENTER: TextStyle = {
