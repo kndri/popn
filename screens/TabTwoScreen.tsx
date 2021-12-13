@@ -83,7 +83,7 @@ export default function TabTwoScreen() {
   const navigation = useNavigation();
   const toast = useToast();
   const [query, setQuery] = React.useState("");
-  const [searchedArray, setSearchedArray] = React.useState<SneakerList[]>([]);
+  const [searchedArray, setSearchedArray] = React.useState<any>([]);
   const [collection, setCollection] = React.useState<any>([]);
   const [sneakerDb, setSneakerDb] = React.useState<any>([]);
   const isFocused = useIsFocused();
@@ -120,7 +120,7 @@ export default function TabTwoScreen() {
     const sneakersData = await getSneakersFromDB().catch((error) =>
       console.error(error)
     );
-
+    setSearchedArray(sneakersData);
     setSneakerDb(sneakersData);
     setCollection(sneakerlist);
   };

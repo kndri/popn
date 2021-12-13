@@ -62,7 +62,7 @@ const COLLECTION_CONTAINER: ViewStyle = {
 const COLLECTION_HEADING: TextStyle = {
   textDecorationLine: "underline",
   paddingHorizontal: spacing[5],
-  marginBottom: 22
+  marginBottom: 22,
 };
 
 const TEXTCENTER: TextStyle = {
@@ -83,18 +83,13 @@ export default function TabThreeScreen() {
   const getSneakers = async () => {
     const sneakerlist = await getSneakersFromUser();
     const user = await checkLoggedUser();
-    setUsername(user.userData.attributes["custom:name"])
+    setUsername(user.userData.attributes["custom:name"]);
     setCollection(sneakerlist);
   };
-  
-
-
 
   React.useEffect(() => {
     getSneakers();
   }, [isFocused]);
-
- 
 
   const renderSneaker = ({ item }) => (
     <View
@@ -130,7 +125,7 @@ export default function TabThreeScreen() {
         />
       </View>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
-        {/* <Button
+        <Button
           preset="none"
           style={{
             justifyContent: "center",
@@ -141,7 +136,7 @@ export default function TabThreeScreen() {
             marginBottom: 15,
           }}
           onPress={() => {
-           
+            navigation.navigate("ShoeDetails");
           }}
         >
           <Text
@@ -150,7 +145,7 @@ export default function TabThreeScreen() {
           >
             View
           </Text>
-        </Button> */}
+        </Button>
       </View>
     </View>
   );
@@ -159,7 +154,12 @@ export default function TabThreeScreen() {
     <Screen style={CONTAINER}>
       <View style={PROFILE_HEADER}>
         <Text preset="header" text="Profile" />
-        <Button style={{backgroundColor: 'transparent'}} onPress={() => navigation.navigate('Settings', { screen: 'settings' })}>
+        <Button
+          style={{ backgroundColor: "transparent" }}
+          onPress={() =>
+            navigation.navigate("Settings", { screen: "settings" })
+          }
+        >
           <Image source={settingsIcon} />
         </Button>
       </View>
