@@ -43,7 +43,7 @@ const INPUT: TextStyle = {
 }
 
 const DISABLED: ViewStyle = {
-  backgroundColor: 'rgba(52, 52, 52, 0.25)',
+	backgroundColor: 'rgba(52, 52, 52, 0.25)',
 };
 
 //age validation schema
@@ -109,13 +109,13 @@ export default function AgeScreen() {
 						}
 					</View>
 
-          <View style={{ flexDirection: 'row', alignContent: 'flex-end', justifyContent: 'flex-end' }}>
-							<Button
-								disabled={!isValid}
-								style={!isValid ? DISABLED : null}
-								text="Continue"
-								preset="cta"
-								onPress={() => navigation.navigate('Username')} />
+					<View style={{ flexDirection: 'row', alignContent: 'flex-end', justifyContent: 'flex-end' }}>
+						<Button
+							disabled={!isValid}
+							style={!isValid ? DISABLED : null}
+							text="Continue"
+							preset="cta"
+							onPress={() => navigation.navigate('Profile')} />
 					</View>
 				</Screen>
 			)}

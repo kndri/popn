@@ -21,6 +21,7 @@ import TabTwoScreen from "../screens/TabTwoScreen";
 import TabThreeScreen from "../screens/TabThreeScreen";
 import SplashScreen from "../screens/SplashScreen";
 import AgeScreen from "../screens/AgeScreen";
+import ProfilePicScreen from '../screens/ProfilePicScreen'
 import UserNameScreen from "../screens/UsernameScreen";
 import EmailScreen from "../screens/EmailScreen";
 import PasswordScreen from "../screens/PasswordScreen";
@@ -74,6 +75,11 @@ function OnboardingNavigator() {
       <onboardingStack.Screen
         name="Age"
         component={AgeScreen}
+        options={{ headerShown: false }}
+      />
+      <onboardingStack.Screen
+        name="Profile"
+        component={ProfilePicScreen}
         options={{ headerShown: false }}
       />
       <onboardingStack.Screen

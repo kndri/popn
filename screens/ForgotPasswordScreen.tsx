@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, ViewStyle, TextStyle, Alert } from "react-native"
-import { color, spacing } from "../theme"
+import { color, spacing, typography } from "../theme"
 import {
   Button,
   Screen,
@@ -19,12 +19,19 @@ const CONTAINER: ViewStyle = {
   paddingHorizontal: spacing[7],
   flex: 1,
   justifyContent: 'space-between',
-  paddingBottom: 90
+  paddingBottom: 90,
+
 }
 
 const HEADER: ViewStyle = {
-  alignItems: 'flex-start',
+  alignItems: 'center',
+  justifyContent: 'center',
 }
+
+const CENTER: ViewStyle = {
+  justifyContent: 'center', //Centered horizontally
+  flex: 1
+};
 
 export default function ForgotPasswordScreen() {
   const navigation = useNavigation();
@@ -39,12 +46,11 @@ export default function ForgotPasswordScreen() {
       />
 
       <View style={HEADER}>
-        <Image source={require("../assets/images/forgot_password_illustration.png")} />
-        <Text style={{marginBottom: 15}} preset="header" text="Forget your password?"  />
-        <Text text="Enter your email to reset password" />
+        <Text style={{ marginBottom: 15 }} preset="header" text="Forget your password?" />
+        <Text preset="secondary" text="Enter your email to reset password" />
       </View>
 
-      <View>
+      <View style={CENTER}>
         <TextField
           onChangeText={(value) => setEmail(value)}
           value={email}
@@ -56,13 +62,14 @@ export default function ForgotPasswordScreen() {
             padding: 16,
             borderWidth: 2,
             borderRadius: 10,
-            borderColor: "black",
-            marginTop: 6
+            borderColor: "#F4F5F6",
+            marginTop: 6,
           }}
         />
       </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-        <Button style={{ width: 160 }} text="Next" preset="primary" onPress={() => forgotPassword(email)} />
+      <View style={{ flexDirection: 'row', alignContent: 'flex-end', justifyContent: 'flex-end', top: 32 }}>
+        {/* <Button style={{ width: 160 }} text="Continue" preset="primary" onPress={() => forgotPassword(email)} /> */}
+        <Button style={{ width: 160 }} text="Continue" preset="cta" onPress={() => navigation.navigate('ResetPassword')} />
       </View>
     </Screen>
   );

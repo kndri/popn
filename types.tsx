@@ -24,6 +24,7 @@ export type RootStackParamList = {
   Password: undefined;
   Welcome: undefined;
   SignIn: undefined;
+  Profile: undefined;
   ForgotPassword: undefined;
   ResetPassword: any;
   Settings: NavigatorScreenParams<SettingsStackParamList> | undefined;

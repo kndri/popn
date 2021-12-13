@@ -43,6 +43,10 @@ const INPUT: TextStyle = {
   fontFamily: typography.primaryBold,
 };
 
+const DISABLED: ViewStyle = {
+  backgroundColor: 'rgba(52, 52, 52, 0.25)',
+};
+
 //password validation schema
 const passwordValidationSchema = yup.object().shape({
   password: yup
@@ -109,13 +113,13 @@ export default function PasswordScreen() {
             }
           </View>
 
-          <View style={CENTER}>
-          {(values.password && isValid) ?
+          <View style={{ flexDirection: 'row', alignContent: 'flex-end', justifyContent: 'flex-end' }}>
+            {/* {(values.password && isValid) ? */}
             <Button
               disabled={!isValid}
-              style={{ width: "100%" }}
-              text="Next"
-              preset="primary"
+              style={!isValid ? DISABLED : null}
+              text="Continue"
+              preset="cta"
               onPress={() => {
                 if (values.email === "" || values.password === "") {
                   toast.show(`You must provide an email and password`);
@@ -128,9 +132,9 @@ export default function PasswordScreen() {
                   );
                 }
               }}
-            />:
-            null
-          }
+            />
+
+            {/* } */}
 
           </View>
         </Screen>

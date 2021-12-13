@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View, ViewStyle, TextStyle, Alert } from "react-native";
-import { color, spacing } from "../theme";
+import { color, spacing, typography } from "../theme";
 import { Button, Screen, Text, Header, TextField } from "../components";
 
 import { useNavigation } from "@react-navigation/native";
@@ -12,12 +12,13 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[7],
   flex: 1,
-  justifyContent: "space-between",
+  // justifyContent: "space-between",
   paddingBottom: 90,
 };
 
 const HEADER: ViewStyle = {
-  alignItems: "flex-start",
+  alignItems: "center",
+  justifyContent: 'center',
 };
 
 export default function SignInScreen() {
@@ -60,7 +61,7 @@ export default function SignInScreen() {
           inputStyle={{
             padding: 16,
             borderWidth: 2,
-            borderRadius: 10,
+            borderRadius: 4,
             borderColor: "black",
             marginTop: 6,
           }}
@@ -75,7 +76,7 @@ export default function SignInScreen() {
           inputStyle={{
             padding: 16,
             borderWidth: 2,
-            borderRadius: 10,
+            borderRadius: 4,
             borderColor: "black",
             marginTop: 6,
           }}
@@ -89,11 +90,11 @@ export default function SignInScreen() {
           ></Button>
         </View>
       </View>
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+      <View style={{ flexDirection: "row", alignContent: 'flex-end', justifyContent: 'flex-end', top: 32 }}>
         <Button
           style={{ width: 160 }}
           text="Sign in"
-          preset="primary"
+          preset="cta"
           onPress={onLoginPressed}
         />
       </View>

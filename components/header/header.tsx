@@ -1,5 +1,5 @@
 import React from "react"
-import { View, ViewStyle} from "react-native"
+import { View, ViewStyle } from "react-native"
 import { HeaderProps } from "./header.props"
 import { Button } from "../button/button"
 import { Icon } from "../icon/icon"
@@ -25,7 +25,7 @@ export function Header(props: HeaderProps) {
     leftIcon,
     style,
   } = props
-  
+
   return (
     <View style={[ROOT, style]}>
       {leftIcon ? (
@@ -35,8 +35,8 @@ export function Header(props: HeaderProps) {
       ) : (
         <View style={LEFT} />
       )}
-     
-      
+
+
     </View>
   )
 }
