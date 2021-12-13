@@ -35,13 +35,14 @@ import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
-  SettingsStackParamList
-
+  SettingsStackParamList,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
 import { checkLoggedUser } from "../aws-functions/check-logged-user";
 import { useAuth } from "../contexts/auth";
+import ShoeDetailsScreen from "../screens/ShoeDetailsScreen";
+import ReferenceScreen from "../screens/ReferenceScreen";
 
 export default function Navigation({
   colorScheme,
@@ -59,7 +60,6 @@ export default function Navigation({
 }
 
 const { Navigator, Screen } = createNativeStackNavigator();
-
 
 const onboardingStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -126,7 +126,10 @@ const SettingsNavigator = () => (
   >
     <settingStack.Screen name="settings" component={SettingsScreen} />
     <settingStack.Screen name="changeEmail" component={ChangeEmailScreen} />
-    <settingStack.Screen name="changePassword" component={ChangePasswordScreen} />
+    <settingStack.Screen
+      name="changePassword"
+      component={ChangePasswordScreen}
+    />
   </settingStack.Navigator>
 );
 
@@ -140,9 +143,7 @@ function RootNavigator() {
   // const [loggedIn, setLoggedIn] = React.useState(false);
   // const user = checkLoggedUser();
 
-
   const { session } = useAuth();
-
 
   return (
     <Stack.Navigator>
@@ -156,6 +157,16 @@ function RootNavigator() {
           <Stack.Screen
             name="Settings"
             component={SettingsNavigator}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ShoeDetails"
+            component={ShoeDetailsScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Verify"
+            component={ReferenceScreen}
             options={{ headerShown: false }}
           />
         </>
