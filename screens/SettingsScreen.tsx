@@ -27,11 +27,6 @@ const settings = [
 
 const about = [
   {
-    id: "3",
-    pageSrc: "statement",
-    name: "Statement of faith",
-  },
-  {
     id: "4",
     pageSrc: "privacyPolicy",
     name: "Privacy Policy"

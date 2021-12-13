@@ -141,7 +141,6 @@ export default function TabTwoScreen() {
 
   React.useEffect(() => {
   }, [sneakerDb]);
-  // create a function to check if this shoe exist in user db
 
   const renderSneaker = ({ item }) => {
     if (checkClaimed(item)) {
