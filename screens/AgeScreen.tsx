@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Formik } from "formik";
 import * as yup from 'yup'
 import { useFormState, useFormDispatch } from "../contexts/form-context";
-
+import { useToast } from "../components/Toast";
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -56,7 +56,7 @@ const ageValidationSchema = yup.object().shape({
 
 export default function AgeScreen() {
 	const navigation = useNavigation();
-
+	const toast = useToast();
 	const form = React.useRef();
 	const dispatch = useFormDispatch();
 	const { values: formValues, errors: formErrors } = useFormState("user");
@@ -115,7 +115,14 @@ export default function AgeScreen() {
 							style={!isValid ? DISABLED : null}
 							text="Continue"
 							preset="cta"
-							onPress={() => navigation.navigate('Profile')} />
+							onPress={() => {
+								if (!values.age) {
+									toast.show(`You must enter your age to continue.`);
+								} else {
+									navigation.navigate('Profile');
+								}
+							}}
+						/>
 					</View>
 				</Screen>
 			)}

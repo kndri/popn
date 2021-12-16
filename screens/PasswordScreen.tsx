@@ -72,6 +72,7 @@ export default function PasswordScreen() {
     const unsubscribe = navigation.addListener("blur", () => {
       if (form.current) {
         const { values, errors } = form.current;
+        console.log(values);
         dispatch({
           type: "UPDATE_FORM",
           payload: {
@@ -81,7 +82,6 @@ export default function PasswordScreen() {
         });
       }
     });
-
     return unsubscribe;
   }, [navigation]);
 

@@ -10,13 +10,14 @@ import {
   FlatList,
 } from "react-native";
 import { color, spacing, typography } from "../theme";
-import { Button, Screen, Text, TextField } from "../components";
+import { Button, Screen, Text, Header } from "../components";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { getSneakersFromUser } from "../aws-functions/get-sneakers-from-user";
 import { SneakerList } from "../types";
 import { checkLoggedUser } from "../aws-functions/check-logged-user";
 
 //required images
+const messageIcon = require("../assets/images/message-button.png");
 const settingsIcon = require("../assets/images/SettingsIcon.png");
 const userImage = require("../assets/images/UserImage.png");
 
@@ -25,7 +26,6 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[3],
   flex: 1,
-  marginTop: 44,
 };
 
 const HEADER: ViewStyle = {
@@ -53,10 +53,21 @@ const PROFILE_DATA: ViewStyle = {
 };
 const PROFILE_IMAGE: ImageStyle = {
   marginRight: 20,
+  width: 96,
+  height: 96,
+  borderRadius: 48
 };
 
 const COLLECTION_CONTAINER: ViewStyle = {
   flex: 1,
+  marginTop: 47,
+  backgroundColor: 'white',
+  width: '100%',
+  borderTopLeftRadius: 32,
+  borderTopRightRadius: 32,
+  shadowColor: 'black',
+  shadowOpacity: 0.3,
+  shadowRadius: 10
 };
 
 const COLLECTION_HEADING: TextStyle = {
@@ -73,12 +84,36 @@ const TEXTCENTER: TextStyle = {
 const INPUT: TextStyle = {
   fontFamily: typography.primaryBold,
 };
+const BUTTON_VIEW: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  marginBottom: 20,
+  paddingHorizontal: spacing[4],
+  // backgroundColor: "#F4F6F9",
+  borderRadius: 50,
+  padding: 5,
+  paddingLeft: 0,
+  paddingRight: 0,
+  width: "95%",
+  alignSelf: "center",
+};
+
+const DATA_CONTAINER: ViewStyle = {
+  flex: 1,
+  backgroundColor: 'white',
+  width: '100%',
+  height: '100%',
+};
+
 
 export default function TabThreeScreen() {
   const navigation = useNavigation();
   const [collection, setCollection] = React.useState<any>([]);
   const [username, setUsername] = React.useState("");
   const isFocused = useIsFocused();
+  const [selection, setSelection] = React.useState(1);
 
   const getSneakers = async () => {
     const sneakerlist = await getSneakersFromUser();
@@ -150,10 +185,59 @@ export default function TabThreeScreen() {
     </View>
   );
 
+
+  const renderPosts = () => {
+    return (
+      <View>
+        <Text>You have no posts!</Text>
+      </View>
+    );
+  };
+
+  const renderCollection = () => {
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        {collection.length === 0 ? (
+          <>
+            <Text
+              style={TEXTCENTER}
+              preset="bold"
+              text="Your collection is empty."
+            />
+            <Button
+              style={{ marginTop: 20 }}
+              text="Start Collecting"
+              preset="primary"
+              onPress={() => navigation.navigate("TabTwo")}
+            />
+          </>
+        ) : (
+          <View style={COLLECTION_CONTAINER}>
+            <FlatList
+              data={collection}
+              renderItem={renderSneaker}
+              keyExtractor={(sneaker) => String(sneaker.id)}
+              numColumns={2}
+              contentContainerStyle={{
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            />
+          </View>
+        )}
+      </View>
+    );
+  };
+
+
   return (
     <Screen style={CONTAINER}>
       <View style={PROFILE_HEADER}>
-        <Text preset="header" text="Profile" />
+        <Header
+          headerTx="demoScreen.howTo"
+          leftIcon="back"
+          onLeftPress={() => navigation.goBack()}
+        />
         <Button
           style={{ backgroundColor: "transparent" }}
           onPress={() =>
@@ -166,44 +250,96 @@ export default function TabThreeScreen() {
 
       <View style={PROFILE_DATA}>
         <Image style={PROFILE_IMAGE} source={userImage} />
+
         <View>
-          <Text preset="bold" text="Darryl" />
-          <Text preset="secondary" text={username} />
+          <Text preset="bold" text="Albert Flores" />
+          <Text preset="secondary" text={'@AlbertFlores'} />
+
+          <View style={{ flexDirection: 'row' }}>
+            <Text preset="bold" text="Don Score:" />
+            <Text preset="bold" text=" 890" />
+          </View>
+
+          <View style={{ flexDirection: 'row' }}>
+            <Text preset="bold" text="Collection Value:" />
+            <Text preset="bold" text=" $250,000" />
+          </View>
+          {/* <Text preset="secondary" text={username} /> */}
         </View>
+
+      </View>
+
+      <View style={{ flexDirection: 'row' }}>
+        <Button
+          style={{ backgroundColor: "transparent", width: 48, height: 48 }}
+        // onPress={() =>
+        //   navigation.navigate("Messages", { screen: "messages" })
+        // }
+        >
+          <Image source={messageIcon} />
+        </Button>
+        <Button
+          style={{ width: 277, height: 48, borderRadius: 4, marginLeft: 10 }}
+          text="Edit Profile"
+          preset="primary"
+        // onPress={() => navigation.navigate("")}
+        />
       </View>
 
       <View style={COLLECTION_CONTAINER}>
-        <Text style={COLLECTION_HEADING} preset="bold" text="Collection" />
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          {collection.length === 0 ? (
-            <>
-              <Text
-                style={TEXTCENTER}
-                preset="bold"
-                text="Your collection is empty."
-              />
-              <Button
-                style={{ marginTop: 20 }}
-                text="Claim an item"
-                preset="primary"
-                onPress={() => navigation.navigate("TabTwo")}
-              />
-            </>
-          ) : (
-            <View style={COLLECTION_CONTAINER}>
-              <FlatList
-                data={collection}
-                renderItem={renderSneaker}
-                keyExtractor={(sneaker) => String(sneaker.id)}
-                numColumns={2}
-                contentContainerStyle={{
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              />
-            </View>
-          )}
+        <View style={BUTTON_VIEW}>
+          <Button
+            onPress={() => setSelection(1)}
+            style={[
+              {
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
+                borderTopLeftRadius: 30,
+                borderBottomLeftRadius: 30,
+                width: 120,
+              },
+              selection === 1
+                ? { borderTopRightRadius: 30, borderBottomRightRadius: 30 }
+                : { backgroundColor: "#F4F6F9" },
+            ]}
+          >
+            <Text
+              preset="bold"
+              style={[selection === 1 ? { color: "white" } : { color: "black" }]}
+            >
+              Collection
+            </Text>
+          </Button>
+          <Button
+            onPress={() => setSelection(2)}
+            style={[
+              { borderRadius: 0, width: 120 },
+              selection === 2
+                ? { borderRadius: 30 }
+                : { backgroundColor: "#F4F6F9" },
+            ]}
+          >
+            <Text
+              preset="bold"
+              style={[selection === 2 ? { color: "white" } : { color: "black" }]}
+            >
+              Posts
+            </Text>
+          </Button>
         </View>
+
+
+        <View style={DATA_CONTAINER}>
+          {selection === 1
+            ? renderCollection()
+            : selection === 2
+              ? renderPosts()
+              : null}
+        </View>
+
+
+
+
       </View>
     </Screen>
   );

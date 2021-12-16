@@ -12,6 +12,7 @@ const ROOT: ViewStyle = {
   paddingTop: spacing[5],
   paddingBottom: spacing[5],
   justifyContent: "flex-start",
+
 }
 
 const LEFT: ViewStyle = { width: 10 }
