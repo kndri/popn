@@ -18,7 +18,7 @@ const CONTAINER: ViewStyle = {
 
 const HEADER: ViewStyle = {
   alignItems: "center",
-  justifyContent: 'center',
+  justifyContent: "center",
 };
 
 export default function SignInScreen() {
@@ -30,6 +30,7 @@ export default function SignInScreen() {
   const { signIn } = useAuth();
 
   const onLoginPressed = () => {
+    //Generate User Token Server-Side
     if (email === "" || password === "") {
       toast.show("You must provide an email and password");
     } else {
@@ -56,7 +57,7 @@ export default function SignInScreen() {
           value={email}
           label="Email"
           placeholder="Enter your email"
-          autoCapitalize='none'
+          autoCapitalize="none"
           autoCorrect={false}
           inputStyle={{
             padding: 16,
@@ -90,7 +91,14 @@ export default function SignInScreen() {
           ></Button>
         </View>
       </View>
-      <View style={{ flexDirection: "row", alignContent: 'flex-end', justifyContent: 'flex-end', top: 32 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignContent: "flex-end",
+          justifyContent: "flex-end",
+          top: 32,
+        }}
+      >
         <Button
           style={{ width: 160 }}
           text="Sign in"

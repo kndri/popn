@@ -11,6 +11,13 @@ import { FormProvider } from "./contexts/form-context";
 import Amplify from "aws-amplify";
 import awsconfig from "./src/aws-exports.js";
 import ToastContainer from "./components/Toast";
+import stream from "getstream";
+
+// const client = stream.connect(
+//    the keys are on .env file
+//   'KEY',
+//   'SECRET KEY'
+// );
 
 Amplify.configure(awsconfig);
 
@@ -27,7 +34,7 @@ export default function App() {
           <SafeAreaProvider>
             <Navigation colorScheme={colorScheme} />
             <StatusBar />
-            <ToastContainer/>
+            <ToastContainer />
           </SafeAreaProvider>
         </FormProvider>
       </AuthProvider>
