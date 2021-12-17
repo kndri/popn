@@ -11,13 +11,12 @@ import { FormProvider } from "./contexts/form-context";
 import Amplify from "aws-amplify";
 import awsconfig from "./src/aws-exports.js";
 import ToastContainer from "./components/Toast";
-import stream from "getstream";
-
-// const client = stream.connect(
-//    the keys are on .env file
-//   'KEY',
-//   'SECRET KEY'
-// );
+import { StreamApp } from "expo-activity-feed";
+import {
+  STREAM_API_KEY,
+  STREAM_API_TOKEN,
+  STREAM_APP_ID,
+} from "react-native-dotenv";
 
 Amplify.configure(awsconfig);
 
@@ -30,13 +29,19 @@ export default function App() {
   } else {
     return (
       <AuthProvider>
-        <FormProvider>
-          <SafeAreaProvider>
-            <Navigation colorScheme={colorScheme} />
-            <StatusBar />
-            <ToastContainer />
-          </SafeAreaProvider>
-        </FormProvider>
+        <StreamApp
+          apiKey={STREAM_API_KEY}
+          appId={STREAM_APP_ID}
+          token={STREAM_API_TOKEN}
+        >
+          <FormProvider>
+            <SafeAreaProvider>
+              <Navigation colorScheme={colorScheme} />
+              <StatusBar />
+              <ToastContainer />
+            </SafeAreaProvider>
+          </FormProvider>
+        </StreamApp>
       </AuthProvider>
     );
   }

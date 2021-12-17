@@ -1,14 +1,10 @@
 import * as React from "react";
-import {
-  View,
-  ViewStyle,
-  TextStyle,
-} from "react-native";
+import { View, ViewStyle, TextStyle } from "react-native";
 import { color, spacing, typography } from "../theme";
 import { Button, Screen, Text, TextField } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
-import * as yup from 'yup'
+import * as yup from "yup";
 import { useFormState, useFormDispatch } from "../contexts/form-context";
 import { useAuth } from "../contexts/auth";
 import { useToast } from "../components/Toast";
@@ -44,7 +40,7 @@ const INPUT: TextStyle = {
 };
 
 const DISABLED: ViewStyle = {
-  backgroundColor: 'rgba(52, 52, 52, 0.25)',
+  backgroundColor: "rgba(52, 52, 52, 0.25)",
 };
 
 //password validation schema
@@ -55,8 +51,8 @@ const passwordValidationSchema = yup.object().shape({
     .matches(/\w*[A-Z]\w*/, "Password must have a capital letter")
     .matches(/\d/, "Password must have a number")
     .min(6, ({ min }) => `Password must be at least ${min} characters`)
-    .required('Password is required'),
-})
+    .required("Password is required"),
+});
 
 export default function PasswordScreen() {
   const navigation = useNavigation();
@@ -66,7 +62,6 @@ export default function PasswordScreen() {
   const dispatch = useFormDispatch();
   const { values: formValues, errors: formErrors } = useFormState("user");
   const { signUp } = useAuth();
-
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("blur", () => {
@@ -108,12 +103,20 @@ export default function PasswordScreen() {
               onChangeText={handleChange("password")}
             />
 
-            {(errors.password || touched.password) &&
-              <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
-            }
+            {(errors.password || touched.password) && (
+              <Text style={{ fontSize: 10, color: "red" }}>
+                {errors.password}
+              </Text>
+            )}
           </View>
 
-          <View style={{ flexDirection: 'row', alignContent: 'flex-end', justifyContent: 'flex-end' }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignContent: "flex-end",
+              justifyContent: "flex-end",
+            }}
+          >
             {/* {(values.password && isValid) ? */}
             <Button
               disabled={!isValid}
@@ -128,14 +131,14 @@ export default function PasswordScreen() {
                     values.email,
                     values.password,
                     values.age,
-                    values.username
+                    values.username,
+                    values.image
                   );
                 }
               }}
             />
 
             {/* } */}
-
           </View>
         </Screen>
       )}

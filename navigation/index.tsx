@@ -21,7 +21,7 @@ import TabTwoScreen from "../screens/TabTwoScreen";
 import TabThreeScreen from "../screens/TabThreeScreen";
 import SplashScreen from "../screens/SplashScreen";
 import AgeScreen from "../screens/AgeScreen";
-import ProfilePicScreen from '../screens/ProfilePicScreen'
+import ProfilePicScreen from "../screens/ProfilePicScreen";
 import UserNameScreen from "../screens/UsernameScreen";
 import EmailScreen from "../screens/EmailScreen";
 import PasswordScreen from "../screens/PasswordScreen";
