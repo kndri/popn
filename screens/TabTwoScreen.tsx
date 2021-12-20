@@ -23,6 +23,7 @@ import { SneakerList } from "../types";
 import { getSneakersFromDB } from "../aws-functions/get-sneakers-from-db";
 import { useToast } from "../components/Toast";
 
+const profile_icon = require("../assets/images/profile_icon.png");
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -38,9 +39,10 @@ const CENTER: ViewStyle = {
 const CLAIM_HEADER: ViewStyle = {
   flexDirection: "row",
   alignItems: "center",
-  justifyContent: "space-between",
+  justifyContent: "center",
   paddingBottom: 17,
   paddingHorizontal: spacing[4],
+  // backgroundColor: 'orange'
 
 };
 const CLAIM_SEARCH: ViewStyle = {
@@ -275,7 +277,16 @@ export default function TabTwoScreen() {
 
   return (
     <Screen style={CONTAINER}>
+
       <View style={CLAIM_HEADER}>
+        <Button
+          style={{ backgroundColor: "transparent", }}
+          onPress={() =>
+            navigation.navigate("UserProfile")
+          }
+        >
+          <Image source={profile_icon} />
+        </Button>
         <Text preset="header" text="Claim" />
       </View>
 
@@ -310,6 +321,6 @@ export default function TabTwoScreen() {
           }}
         />
       </View>
-    </Screen>
+    </Screen >
   );
 }

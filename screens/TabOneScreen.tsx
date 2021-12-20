@@ -32,7 +32,6 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[3],
   flex: 1,
-  marginTop: 44,
 };
 const CLAIM_HEADER: ViewStyle = {
   flexDirection: "row",
@@ -154,9 +153,9 @@ export default function TabOneScreen({
             backgroundColor: "transparent",
             alignContent: "flex-start",
           }}
-          // onPress={() =>
-          //   navigation.navigate("Settings", { screen: "settings" })
-          // }
+        // onPress={() =>
+        //   navigation.navigate("Settings", { screen: "settings" })
+        // }
         >
           <Image source={options} />
         </Button>
@@ -198,9 +197,9 @@ export default function TabOneScreen({
       <View style={CLAIM_HEADER}>
         <Button
           style={{ backgroundColor: "transparent" }}
-          // onPress={() =>
-          //   navigation.navigate("Settings", { screen: "settings" })
-          // }
+          onPress={() =>
+            navigation.navigate("UserProfile")
+          }
         >
           <Image source={profile_icon} />
         </Button>
@@ -212,9 +211,9 @@ export default function TabOneScreen({
             height: 40,
             width: 40,
           }}
-          // onPress={() =>
-          //   navigation.navigate("Settings", { screen: "settings" })
-          // }
+        // onPress={() =>
+        //   navigation.navigate("Settings", { screen: "settings" })
+        // }
         >
           <Image source={search_glass} />
         </Button>
@@ -287,8 +286,8 @@ export default function TabOneScreen({
         {selection === 1
           ? renderTrending()
           : selection === 2
-          ? renderFollowing()
-          : renderRanking()}
+            ? renderFollowing()
+            : renderRanking()}
       </View>
     </Screen>
   );

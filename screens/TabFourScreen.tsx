@@ -67,13 +67,13 @@ const SHADOW: ViewStyle = {
     shadowRadius: 3,
 };
 
-export default function TabThreeScreen() {
+export default function TabFourScreen() {
     const navigation = useNavigation();
 
     return (
         <Screen style={CONTAINER}>
             <View style={CENTER}>
-                <Text preset="header" text="Messages" />
+                <Text preset="header" text="Notifications" />
             </View>
         </Screen>
     );

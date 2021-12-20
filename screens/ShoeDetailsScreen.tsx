@@ -18,15 +18,11 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[3],
   flex: 1,
-  marginTop: 44,
+  // marginTop: 44,
 };
 
 const BACK_BUTTON: ViewStyle = {
   paddingHorizontal: spacing[4],
-  backgroundColor: color.dim,
-  width: 50,
-  height: 50,
-  borderRadius: 100,
 };
 
 const SHOE_HEADING: ViewStyle = {
@@ -97,12 +93,12 @@ const ShoeDetailsScreen = () => {
         style={{ backgroundColor: "red", padding: 0, margin: 0 }}
         config={{
           velocityThreshold: 0.1,
-          directionalOffsetThreshold: 60,
+          directionalOffsetThreshold: 10,
         }}
       >
         <Modal
           animationType="slide"
-          transparent={true}
+          // transparent={true}
           presentationStyle="formSheet"
           visible={modalVisible}
           onRequestClose={() => {

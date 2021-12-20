@@ -119,7 +119,7 @@ export default function AgeScreen() {
 								if (!values.age) {
 									toast.show(`You must enter your age to continue.`);
 								} else {
-									navigation.navigate('Profile');
+									navigation.navigate('ProfilePicture');
 								}
 							}}
 						/>

@@ -19,6 +19,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import TabThreeScreen from "../screens/TabThreeScreen";
+import TabFourScreen from "../screens/TabFourScreen";
 import SplashScreen from "../screens/SplashScreen";
 import AgeScreen from "../screens/AgeScreen";
 import ProfilePicScreen from '../screens/ProfilePicScreen'
@@ -29,8 +30,10 @@ import WelcomeToPopn from "../screens/WelcomeToPopn";
 import SignInScreen from "../screens/SignInScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+import UserProfileScreen from "../screens/UserProfileScreen";
 import ChangeEmailScreen from "../screens/ChangeEmailScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
+
 
 import {
   RootStackParamList,
@@ -78,7 +81,7 @@ function OnboardingNavigator() {
         options={{ headerShown: false }}
       />
       <onboardingStack.Screen
-        name="Profile"
+        name="ProfilePicture"
         component={ProfilePicScreen}
         options={{ headerShown: false }}
       />
@@ -166,6 +169,11 @@ function RootNavigator() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
+            name="UserProfile"
+            component={UserProfileScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="ShoeDetails"
             component={ShoeDetailsScreen}
             options={{ headerShown: false }}
@@ -198,7 +206,7 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabThree"
+      initialRouteName="TabOne"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
         headerShown: false,
@@ -216,9 +224,9 @@ function BottomTabNavigator() {
         name="TabTwo"
         component={TabTwoScreen}
         options={{
-          title: "Explore",
+          title: "Claim",
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="search-plus" color={color} />
+            <TabBarIcon name="search" color={color} />
           ),
         }}
       />
@@ -226,8 +234,16 @@ function BottomTabNavigator() {
         name="TabThree"
         component={TabThreeScreen}
         options={{
-          title: "Profile",
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+          title: "Messages",
+          tabBarIcon: ({ color }) => <TabBarIcon name="wechat" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="TabFour"
+        component={TabFourScreen}
+        options={{
+          title: "Notifications",
+          tabBarIcon: ({ color }) => <TabBarIcon name="bell" color={color} />,
         }}
       />
     </BottomTab.Navigator>
