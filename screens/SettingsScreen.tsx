@@ -54,108 +54,48 @@ const actions = [
     pageSrc: "rating",
     name: "Rating"
   },
+  // {
+  //   id: "9",
+  //   pageSrc: "deleteAccount",
+  //   name: "Delete Account"
+  // },
   {
     id: "9",
-    pageSrc: "deleteAccount",
-    name: "Delete Account"
-  },
-  {
-    id: "10",
     pageSrc: "signOut",
     name: "Sign Out"
   },
 
 ];
 
-
-
+//styles
 const CONTAINER: ViewStyle = {
   flex: 1,
-  backgroundColor: "#FEFAE0",
+  backgroundColor: "white",
   paddingHorizontal: spacing[6],
-  height: '100%'
-}
-const TEXT: TextStyle = {
-  color: color.palette.black,
-  fontFamily: Platform.select({
-    ios: "Poppins-Medium", // The font family name
-    android: "Poppins-Medium", // The file name
-  }),
-}
 
-const SEMI_BOLD: TextStyle = {
-  fontFamily: Platform.select({
-    ios: "Poppins-SemiBold", // The font family name
-    android: "Poppins-SemiBold", // The file name
-  }),
-}
-
-const BOLD: TextStyle = {
-  fontFamily: Platform.select({
-    ios: "Poppins-Bold", // The font family name
-    android: "Poppins-Bold", // The file name
-  }),
 }
 
 const HEADER: TextStyle = {
   paddingTop: spacing[8],
   paddingHorizontal: 0,
 }
-const HEADER_TITLE: TextStyle = {
-  ...HEADER,
-  ...TEXT,
-  ...SEMI_BOLD,
-  fontSize: 36,
-  marginLeft: 10
-}
+
 const HEADING_TITLE: TextStyle = {
-  ...HEADER,
-  ...TEXT,
-  ...SEMI_BOLD,
-  fontSize: 23,
   textAlign: 'center',
-  marginTop: -70,
-  marginBottom: 10
+  marginBottom: 5
 }
 
 const SETTINGS_NAME: TextStyle = {
-  ...TEXT,
-  color: "black",
-  paddingLeft: 0,
-  fontSize: 15,
   textAlign: "center",
   alignItems: "center",
 }
 const FLATLIST: ViewStyle = {
-  marginBottom: 25
+  marginBottom: 25,
+  borderWidth: 2,
+  borderColor: 'black',
+  borderRadius: 4
 }
 
-const SIGN_OUT: ViewStyle = {
-  width: "48%",
-  height: 50,
-  borderRadius: 20,
-  marginVertical: spacing[3],
-  paddingVertical: spacing[2],
-  backgroundColor: "black",
-  marginHorizontal: 3,
-  alignSelf: 'center',
-  marginTop: 80
-}
-const SIGN_OUT_TEXT: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  color: color.palette.white,
-  fontSize: 17,
-  letterSpacing: 0.5,
-}
-
-const LEO_IMAGE: ImageStyle = {
-  borderRadius: 100,
-  width: 80,
-  height: 80,
-  alignSelf: 'center',
-  marginTop: 40
-}
 const ARROW_ICON: ImageStyle = {
   width: 20,
   height: 20,
@@ -176,13 +116,9 @@ const SettingsScreen: FC<SettingsProps> = () => {
         leftIcon="back"
         onLeftPress={() => navigation.goBack()}
       />
-      <View style={{ flexDirection: 'row', bottom: 20 }}>
-        <Image source={userImage} style={LEO_IMAGE} />
-        <Text style={HEADER_TITLE}>Leo</Text>
-      </View>
 
       {/* flat list of settings options */}
-      <Text style={HEADING_TITLE}>Settings</Text>
+      <Text style={HEADING_TITLE} preset="header" text="Settings" />
       <View style={FLATLIST}>
         <FlatList
           scrollEnabled={false}
@@ -191,7 +127,7 @@ const SettingsScreen: FC<SettingsProps> = () => {
           // keyExtractor={(item, index) => index.toString()}
           data={settings}
           renderItem={({ item }) => (
-            <View style={{ backgroundColor: "white", paddingHorizontal: 20, }}>
+            <View style={{ backgroundColor: "white", paddingHorizontal: 20, borderRadius: 4 }}>
               <TouchableOpacity
                 onPress={() => navigation.navigate(item.pageSrc)}
               >
@@ -217,7 +153,8 @@ const SettingsScreen: FC<SettingsProps> = () => {
                     }}
                   >
                     {/* settings page name */}
-                    <Text style={SETTINGS_NAME}>{item.name}</Text>
+                    <Text style={SETTINGS_NAME} preset="bold" text={item.name} />
+                    {/* <Text style={SETTINGS_NAME}>{item.name}</Text> */}
                     <TouchableOpacity>
                       <Image source={arrow} style={ARROW_ICON} />
                     </TouchableOpacity>
@@ -229,7 +166,7 @@ const SettingsScreen: FC<SettingsProps> = () => {
         />
       </View>
 
-      <Text style={HEADING_TITLE}>About</Text>
+      <Text style={HEADING_TITLE} preset="header" text="About" />
       {/* flat list of about section */}
       <View style={FLATLIST}>
         <FlatList
@@ -239,7 +176,7 @@ const SettingsScreen: FC<SettingsProps> = () => {
           // keyExtractor={(item, index) => index.toString()}
           data={about}
           renderItem={({ item }) => (
-            <View style={{ backgroundColor: "white", paddingHorizontal: 20 }}>
+            <View style={{ backgroundColor: "white", paddingHorizontal: 20, borderRadius: 4 }}>
               <TouchableOpacity
               // onPress={() => navigation.navigate(item.pageSrc)}
               >
@@ -264,7 +201,7 @@ const SettingsScreen: FC<SettingsProps> = () => {
                     }}
                   >
                     {/* settings page name */}
-                    <Text style={SETTINGS_NAME}>{item.name}</Text>
+                    <Text style={SETTINGS_NAME} preset="bold" text={item.name} />
                     <TouchableOpacity>
                       <Image source={arrow} style={ARROW_ICON} />
                     </TouchableOpacity>
@@ -276,7 +213,7 @@ const SettingsScreen: FC<SettingsProps> = () => {
         />
       </View>
 
-      <Text style={HEADING_TITLE}>Actions</Text>
+      <Text style={HEADING_TITLE} preset="header" text="Actions" />
       {/* flat list of Actions options */}
       <View style={FLATLIST}>
         <FlatList
@@ -286,7 +223,7 @@ const SettingsScreen: FC<SettingsProps> = () => {
           // keyExtractor={(item, index) => index.toString()}
           data={actions}
           renderItem={({ item }) => (
-            <View style={{ backgroundColor: "white", paddingHorizontal: 20 }}>
+            <View style={{ backgroundColor: "white", paddingHorizontal: 20, borderRadius: 4 }}>
               <TouchableOpacity
               // onPress={() => navigation.navigate(item.pageSrc)}
               >
@@ -311,7 +248,7 @@ const SettingsScreen: FC<SettingsProps> = () => {
                     }}
                   >
                     {/* settings page name */}
-                    <Text style={SETTINGS_NAME}>{item.name}</Text>
+                    <Text style={SETTINGS_NAME} preset="bold" text={item.name} />
                     <TouchableOpacity>
                       <Image source={arrow} style={ARROW_ICON} />
                     </TouchableOpacity>

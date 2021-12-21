@@ -24,13 +24,14 @@ import { getSneakersFromDB } from "../aws-functions/get-sneakers-from-db";
 import { useToast } from "../components/Toast";
 
 const profile_icon = require("../assets/images/profile_icon.png");
+const search_icon = require("../assets/images/searchIcon.png");
 
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[3],
   flex: 1,
-  marginTop: 44,
+  // marginTop: 44,
 };
 const CENTER: ViewStyle = {
   alignItems: "center",
@@ -38,18 +39,25 @@ const CENTER: ViewStyle = {
 };
 const CLAIM_HEADER: ViewStyle = {
   flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "center",
   paddingBottom: 17,
   paddingHorizontal: spacing[4],
-  // backgroundColor: 'orange'
+  // backgroundColor: 'red',
+  alignItems: 'center',
+
 
 };
 const CLAIM_SEARCH: ViewStyle = {
+  flexDirection: 'row',
   justifyContent: "center",
   alignItems: "center",
   marginBottom: 20,
   paddingHorizontal: spacing[4],
+  backgroundColor: "#F4F6F9",
+  height: 48,
+  width: 335,
+  borderWidth: 1,
+  borderColor: "#F4F6F9",
+  borderRadius: 32
 };
 const COLLECTION_CONTAINER: ViewStyle = {
   flex: 1,
@@ -287,25 +295,26 @@ export default function TabTwoScreen() {
         >
           <Image source={profile_icon} />
         </Button>
-        <Text preset="header" text="Claim" />
+        <Text preset="header" text="Claim" style={{ left: 80 }} />
       </View>
 
       <View style={CLAIM_SEARCH}>
+        <Image source={search_icon} style={{ marginLeft: 17 }} />
         <TextInput
           style={{
             width: "100%",
-            height: 54,
+            height: 48,
             borderWidth: 1,
             paddingLeft: 20,
-            borderRadius: 10,
-            margin: 5,
-            borderColor: "black",
-            backgroundColor: "white",
+            borderRadius: 32,
+            borderColor: "#F4F6F9",
+            backgroundColor: "#F4F6F9",
           }}
           value={query}
           autoCorrect={false}
           onChangeText={(text) => setQuery(text)}
           placeholder="Search"
+          placeholderTextColor={'#878C90'}
         />
       </View>
 
