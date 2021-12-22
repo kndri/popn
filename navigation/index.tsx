@@ -33,6 +33,7 @@ import SettingsScreen from "../screens/SettingsScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
 import ChangeEmailScreen from "../screens/ChangeEmailScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
+import MessageRoomScreen from "../screens/MessageRoomScreen";
 
 
 import {
@@ -181,6 +182,11 @@ function RootNavigator() {
           <Stack.Screen
             name="Verify"
             component={ReferenceScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="MessageRoom"
+            component={MessageRoomScreen}
             options={{ headerShown: false }}
           />
         </>

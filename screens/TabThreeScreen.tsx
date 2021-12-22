@@ -9,6 +9,7 @@ import {
     Screen,
     Text,
     AutoImage as Image,
+    Button
 } from "../components";
 import { useNavigation } from "@react-navigation/native";
 
@@ -74,6 +75,11 @@ export default function TabThreeScreen() {
         <Screen style={CONTAINER}>
             <View style={CENTER}>
                 <Text preset="header" text="Messages" />
+                <Button
+                    text="View Your message"
+                    preset="cta"
+                    onPress={() => { navigation.navigate('MessageRoom'); }}
+                />
             </View>
         </Screen>
     );

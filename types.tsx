@@ -9,6 +9,7 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { QuickReplies, User } from "react-native-gifted-chat";
 
 declare global {
   namespace ReactNavigation {
@@ -34,6 +35,7 @@ export type RootStackParamList = {
   ShoeDetails: undefined;
   Verify: undefined;
   UserProfile: undefined;
+  MessageRoom: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -65,6 +67,24 @@ export interface Sneaker {
 }
 export interface SneakerList {
   sneakers: Array<Sneaker>;
+}
+
+export interface IMessage {
+  _id: string | number
+  text: string
+  createdAt: Date | number
+  user: User
+  image?: string
+  video?: string
+  audio?: string
+  system?: boolean
+  sent?: boolean
+  received?: boolean
+  pending?: boolean
+  quickReplies?: QuickReplies
+}
+export interface MessageList {
+  imessages: Array<IMessage>;
 }
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
