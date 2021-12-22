@@ -22,7 +22,7 @@ import TabThreeScreen from "../screens/TabThreeScreen";
 import TabFourScreen from "../screens/TabFourScreen";
 import SplashScreen from "../screens/SplashScreen";
 import AgeScreen from "../screens/AgeScreen";
-import ProfilePicScreen from '../screens/ProfilePicScreen'
+import ProfilePicScreen from "../screens/ProfilePicScreen";
 import UserNameScreen from "../screens/UsernameScreen";
 import EmailScreen from "../screens/EmailScreen";
 import PasswordScreen from "../screens/PasswordScreen";
@@ -48,6 +48,8 @@ import { checkLoggedUser } from "../aws-functions/check-logged-user";
 import { useAuth } from "../contexts/auth";
 import ShoeDetailsScreen from "../screens/ShoeDetailsScreen";
 import ReferenceScreen from "../screens/ReferenceScreen";
+import NewPostScreen from "../screens/NewPostScreen";
+import PostDetailsScreen from "../screens/PostDetailsScreen";
 
 export default function Navigation({
   colorScheme,
@@ -185,8 +187,13 @@ function RootNavigator() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="MessageRoom"
-            component={MessageRoomScreen}
+            name="NewPost"
+            component={NewPostScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="PostDetails"
+            component={PostDetailsScreen}
             options={{ headerShown: false }}
           />
         </>

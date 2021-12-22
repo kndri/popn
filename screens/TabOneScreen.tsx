@@ -22,11 +22,28 @@ import { getSneakersFromUser } from "../aws-functions/get-sneakers-from-user";
 import { RootTabScreenProps, SneakerList } from "../types";
 import { getSneakersFromDB } from "../aws-functions/get-sneakers-from-db";
 import { useToast } from "../components/Toast";
+import Feed from "../components/feed";
+import NewPostButton from "../components/newPostButton";
+
+// import {
+//   STREAM_API_KEY,
+//   STREAM_API_TOKEN,
+//   STREAM_APP_ID,
+// } from "react-native-dotenv";
+// import { connect, EnrichedActivity, NotificationActivity } from "getstream";
+
+// const client = connect(STREAM_API_KEY, STREAM_API_TOKEN, STREAM_APP_ID);
+// console.log(client);
 
 const profile_icon = require("../assets/images/profile_icon.png");
 const search_glass = require("../assets/images/search_glass.png");
 const default_user = require("../assets/images/UserImage.png");
 const options = require("../assets/images/More.png");
+const liked = require("../assets/images/Liked.png");
+const unliked = require("../assets/images/Unliked.png");
+const comment = require("../assets/images/comment.png");
+const share = require("../assets/images/share.png");
+const seen = require("../assets/images/seen.png");
 
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
@@ -83,6 +100,33 @@ const CARD_DATA: ViewStyle = {
   flex: 1,
 };
 
+const POST_CONTAINER: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+  paddingHorizontal: spacing[3],
+  marginBottom: 15,
+};
+const RIGHT_SIDE_POST: ViewStyle = {
+  display: "flex",
+  flexDirection: "column",
+  width: "90%",
+};
+const INTERACTIONS: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+};
+const INTERACTIONS_BUTTONS: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+  backgroundColor: "transparent",
+  alignContent: "flex-start",
+  flex: 0.5,
+};
+
+const BUTTON_TEXT: TextStyle = {
+  marginLeft: 5,
+};
+
 const users_data = [
   {
     id: 1,
@@ -116,10 +160,14 @@ const users_data = [
   },
 ];
 
+// dark grey 878C90
+// red FF1843
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
   const [selection, setSelection] = React.useState(1);
+  const [posts, setPosts] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   const renderUsers = ({ item }) => {
     return (
@@ -162,12 +210,81 @@ export default function TabOneScreen({
       </View>
     );
   };
-  const renderTrending = () => {
+  const renderPosts = ({ item }) => {
     return (
-      <View>
-        <Text>hello1</Text>
+      <View style={POST_CONTAINER}>
+        <Image
+          source={item.image_url}
+          style={{
+            resizeMode: "contain",
+            height: 40,
+            width: 40,
+            marginRight: 5,
+            // flex: 1,
+          }}
+        />
+        <View style={RIGHT_SIDE_POST}>
+          <Text
+            preset="header"
+            style={{
+              fontSize: 12,
+              margin: 5,
+            }}
+          >
+            {item.username}
+          </Text>
+          <Text
+            preset="default"
+            style={{
+              fontSize: 10,
+              margin: 5,
+            }}
+          >
+            {item.post_description}
+          </Text>
+          <View style={INTERACTIONS}>
+            <Button
+              style={INTERACTIONS_BUTTONS}
+              // onPress={() =>
+              //   navigation.navigate("Settings", { screen: "settings" })
+              // }
+            >
+              <Image source={unliked} />
+              <Text style={BUTTON_TEXT}>{item.likes} </Text>
+            </Button>
+            <Button
+              style={INTERACTIONS_BUTTONS}
+              // onPress={() =>
+              //   navigation.navigate("Settings", { screen: "settings" })
+              // }
+            >
+              <Image source={comment} />
+              <Text style={BUTTON_TEXT}>{item.comments} </Text>
+            </Button>
+            <Button
+              style={INTERACTIONS_BUTTONS}
+              // onPress={() =>
+              //   navigation.navigate("Settings", { screen: "settings" })
+              // }
+            >
+              <Image source={seen} />
+              <Text style={BUTTON_TEXT}>{item.seen} </Text>
+            </Button>
+            <Button
+              style={INTERACTIONS_BUTTONS}
+              // onPress={() =>
+              //   navigation.navigate("Settings", { screen: "settings" })
+              // }
+            >
+              <Image source={share} />
+            </Button>
+          </View>
+        </View>
       </View>
     );
+  };
+  const renderTrending = () => {
+    return <View style={COLLECTION_CONTAINER}>{<Feed />}</View>;
   };
   const renderRanking = () => {
     return (
@@ -185,11 +302,7 @@ export default function TabOneScreen({
     );
   };
   const renderFollowing = () => {
-    return (
-      <View>
-        <Text>hello3</Text>
-      </View>
-    );
+    return <View></View>;
   };
 
   return (
@@ -289,6 +402,7 @@ export default function TabOneScreen({
             ? renderFollowing()
             : renderRanking()}
       </View>
+      <NewPostButton />
     </Screen>
   );
 }

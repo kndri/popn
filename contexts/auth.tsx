@@ -2,6 +2,10 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthData, authService } from "../services/auth-service";
 import { useToast } from "../components/Toast";
+import { connect } from "getstream";
+// import { STREAM_API_KEY, STREAM_APP_ID } from "react-native-dotenv";
+
+// const client = connect(STREAM_API_KEY, STREAM_APP_ID);
 
 type AuthContextData = {
   authData?: AuthData;
@@ -12,9 +16,11 @@ type AuthContextData = {
     email: string,
     password: string,
     age: string,
-    username: string
+    username: string,
+    image: string
   ): Promise<void>;
   session: boolean;
+  userToken: string;
 };
 
 export type AuthProviderProps = {
@@ -28,6 +34,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const toast = useToast();
   const [authData, setAuthData] = useState<AuthData>();
   const [session, setSession] = useState<boolean>(false);
+  const [userToken, setUserToken] = useState<string>("");
 
   // the AuthContext start with loading equals true
   // and stay like this, until the data be load from Async Storage
@@ -64,8 +71,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     if (_authData.error) {
       toast.show(`${_authData.error}`);
-    
     } else {
+      // const token = client.createUserToken(email);
+
       // Set the data in the context, so the App can be notified
       // and send the user to the AuthStack
       setAuthData(_authData);
@@ -76,6 +84,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       // Set session to true
       setSession(true);
+      // setUserToken(token);
     }
   };
   // TODO: once the signUp screens are done add the parameters here and in the AuthContextData
@@ -83,17 +92,25 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     email: string,
     password: string,
     age: string,
-    username: string
+    username: string,
+    image: string
   ) => {
     // call the service passing credential (email and password).
     // In a real App this data will be provided by the user from some InputText components.
-    const _authData = await authService.signUp(email, password, age, username);
+    const _authData = await authService.signUp(
+      email,
+      password,
+      age,
+      username,
+      image
+    );
 
     // if there is an error alert the screen of the message
 
     if (_authData.error) {
       toast.show(`${_authData.error}`);
     } else {
+      // const token = client.createUserToken(email);
       // Set the data in the context, so the App can be notified
       // and send the user to the AuthStack
       setAuthData(_authData);
@@ -103,7 +120,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       AsyncStorage.setItem("@AuthData", JSON.stringify(_authData));
 
       // Set session to true
-      setSession(true);
+      // setSession(true);
+      // setUserToken(token);
+      signIn(email, password);
     }
   };
 
@@ -124,7 +143,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // This component will be used to encapsulate the whole App,
     // so all components will have access to the Context
     <AuthContext.Provider
-      value={{ authData, loading, signIn, signOut, signUp, session }}
+      value={{ authData, loading, signIn, signOut, signUp, session, userToken }}
     >
       {children}
     </AuthContext.Provider>

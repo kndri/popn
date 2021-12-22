@@ -8,7 +8,8 @@ export const onCreateUser = /* GraphQL */ `
       id
       age
       username
-      phone
+      email
+      avatarImageURL
       sneakers {
         items {
           id
@@ -23,6 +24,18 @@ export const onCreateUser = /* GraphQL */ `
         }
         nextToken
       }
+      posts {
+        items {
+          id
+          userID
+          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      following
+      follower
       createdAt
       updatedAt
     }
@@ -34,7 +47,8 @@ export const onUpdateUser = /* GraphQL */ `
       id
       age
       username
-      phone
+      email
+      avatarImageURL
       sneakers {
         items {
           id
@@ -49,6 +63,18 @@ export const onUpdateUser = /* GraphQL */ `
         }
         nextToken
       }
+      posts {
+        items {
+          id
+          userID
+          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      following
+      follower
       createdAt
       updatedAt
     }
@@ -60,7 +86,8 @@ export const onDeleteUser = /* GraphQL */ `
       id
       age
       username
-      phone
+      email
+      avatarImageURL
       sneakers {
         items {
           id
@@ -75,6 +102,18 @@ export const onDeleteUser = /* GraphQL */ `
         }
         nextToken
       }
+      posts {
+        items {
+          id
+          userID
+          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      following
+      follower
       createdAt
       updatedAt
     }
@@ -93,10 +132,16 @@ export const onCreateSneaker = /* GraphQL */ `
         id
         age
         username
-        phone
+        email
+        avatarImageURL
         sneakers {
           nextToken
         }
+        posts {
+          nextToken
+        }
+        following
+        follower
         createdAt
         updatedAt
       }
@@ -119,10 +164,16 @@ export const onUpdateSneaker = /* GraphQL */ `
         id
         age
         username
-        phone
+        email
+        avatarImageURL
         sneakers {
           nextToken
         }
+        posts {
+          nextToken
+        }
+        following
+        follower
         createdAt
         updatedAt
       }
@@ -145,15 +196,483 @@ export const onDeleteSneaker = /* GraphQL */ `
         id
         age
         username
-        phone
+        email
+        avatarImageURL
         sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        createdAt
+        updatedAt
+      }
+      createdAt
+      verified
+      updatedAt
+    }
+  }
+`;
+export const onCreatePost = /* GraphQL */ `
+  subscription OnCreatePost {
+    onCreatePost {
+      id
+      userID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        createdAt
+        updatedAt
+      }
+      description
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          text
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePost = /* GraphQL */ `
+  subscription OnUpdatePost {
+    onUpdatePost {
+      id
+      userID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        createdAt
+        updatedAt
+      }
+      description
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          text
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePost = /* GraphQL */ `
+  subscription OnDeletePost {
+    onDeletePost {
+      id
+      userID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        createdAt
+        updatedAt
+      }
+      description
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          text
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateComment = /* GraphQL */ `
+  subscription OnCreateComment {
+    onCreateComment {
+      id
+      text
+      userID
+      postID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        createdAt
+        updatedAt
+      }
+      post {
+        id
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          createdAt
+          updatedAt
+        }
+        description
+        likes {
+          nextToken
+        }
+        comments {
           nextToken
         }
         createdAt
         updatedAt
       }
       createdAt
-      verified
+      updatedAt
+    }
+  }
+`;
+export const onUpdateComment = /* GraphQL */ `
+  subscription OnUpdateComment {
+    onUpdateComment {
+      id
+      text
+      userID
+      postID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        createdAt
+        updatedAt
+      }
+      post {
+        id
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          createdAt
+          updatedAt
+        }
+        description
+        likes {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteComment = /* GraphQL */ `
+  subscription OnDeleteComment {
+    onDeleteComment {
+      id
+      text
+      userID
+      postID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        createdAt
+        updatedAt
+      }
+      post {
+        id
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          createdAt
+          updatedAt
+        }
+        description
+        likes {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateLike = /* GraphQL */ `
+  subscription OnCreateLike {
+    onCreateLike {
+      id
+      userID
+      postID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        createdAt
+        updatedAt
+      }
+      post {
+        id
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          createdAt
+          updatedAt
+        }
+        description
+        likes {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateLike = /* GraphQL */ `
+  subscription OnUpdateLike {
+    onUpdateLike {
+      id
+      userID
+      postID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        createdAt
+        updatedAt
+      }
+      post {
+        id
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          createdAt
+          updatedAt
+        }
+        description
+        likes {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteLike = /* GraphQL */ `
+  subscription OnDeleteLike {
+    onDeleteLike {
+      id
+      userID
+      postID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        createdAt
+        updatedAt
+      }
+      post {
+        id
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          createdAt
+          updatedAt
+        }
+        description
+        likes {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
       updatedAt
     }
   }

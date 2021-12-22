@@ -10,16 +10,60 @@ Parameters:
     Type: String
 
   
+  
+  
+  functionpopn09CreateAuthChallengeArn:
+    Type: String
+    Default: functionpopn09CreateAuthChallengeArn
+  
+  functionpopn09CreateAuthChallengeName:
+    Type: String
+    Default: functionpopn09CreateAuthChallengeName
+  
+  
+  
+  functionpopn09DefineAuthChallengeArn:
+    Type: String
+    Default: functionpopn09DefineAuthChallengeArn
+  
+  functionpopn09DefineAuthChallengeName:
+    Type: String
+    Default: functionpopn09DefineAuthChallengeName
+  
+  
+  
+  functionpopn09PreSignupArn:
+    Type: String
+    Default: functionpopn09PreSignupArn
+  
+  functionpopn09PreSignupName:
+    Type: String
+    Default: functionpopn09PreSignupName
+  
+  
+  
+  functionpopn09VerifyAuthChallengeResponseArn:
+    Type: String
+    Default: functionpopn09VerifyAuthChallengeResponseArn
+  
+  functionpopn09VerifyAuthChallengeResponseName:
+    Type: String
+    Default: functionpopn09VerifyAuthChallengeResponseName
+  
+  
+  
+  functionpopn09PreTokenGenerationArn:
+    Type: String
+    Default: functionpopn09PreTokenGenerationArn
+  
+  functionpopn09PreTokenGenerationName:
+    Type: String
+    Default: functionpopn09PreTokenGenerationName
+  
+  
+  
 
     
-  identityPoolName:
-    Type: String
-  
-            
-  
-  allowUnauthenticatedIdentities:
-    Type: String
-            
   resourceNameTruncated:
     Type: String
   
@@ -80,10 +124,10 @@ Parameters:
   userpoolClientGenerateSecret:
     Type: String
             
-    
   userpoolClientRefreshTokenValidity:
-    Type: Number
-          
+    Type: String
+  
+            
         
   userpoolClientWriteAttributes:
     Type: CommaDelimitedList
@@ -122,6 +166,22 @@ Parameters:
   usernameAttributes:
     Type: CommaDelimitedList
       
+  
+  userPoolGroups:
+    Type: String
+            
+  
+  adminQueries:
+    Type: String
+            
+  triggers:
+    Type: String
+  
+            
+  
+  hostedUI:
+    Type: String
+            
         
   userPoolGroupList:
     Type: CommaDelimitedList
@@ -135,6 +195,22 @@ Parameters:
   usernameCaseSensitive:
     Type: String
             
+      
+  parentStack:
+    Type: String
+        
+  authTriggerConnections:
+    Type: String
+  
+            
+  
+  breakCircularDependency:
+    Type: String
+            
+        
+  permissions:
+    Type: CommaDelimitedList
+      
         
   dependsOn:
     Type: CommaDelimitedList
@@ -153,7 +229,7 @@ Resources:
   # Created to allow the UserPool SMS Config to publish via the Simple Notification Service during MFA Process
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, 'popn95903adb_sns-role', !Join ['',[ 'sns', '95903adb', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, 'popn48ee3cd1_sns-role', !Join ['',[ 'sns', '48ee3cd1', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -165,10 +241,10 @@ Resources:
               - "sts:AssumeRole"
             Condition:
               StringEquals:
-                sts:ExternalId: popn95903adb_role_external_id
+                sts:ExternalId: popn48ee3cd1_role_external_id
       Policies:
         -
-          PolicyName: popn95903adb-sns-policy
+          PolicyName: popn48ee3cd1-sns-policy
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -194,6 +270,11 @@ Resources:
         
         -
           Name: email
+          Required: true
+          Mutable: true
+        
+        -
+          Name: preferred_username
           Required: true
           Mutable: true
         
@@ -225,7 +306,7 @@ Resources:
       SmsAuthenticationMessage: !Ref smsAuthenticationMessage
       SmsConfiguration:
         SnsCallerArn: !GetAtt SNSRole.Arn
-        ExternalId: popn95903adb_role_external_id
+        ExternalId: popn48ee3cd1_role_external_id
     
   
   UserPoolClientWeb:
@@ -233,7 +314,10 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: popn95903adb_app_clientWeb
+      ClientName: popn48ee3cd1_app_clientWeb
+      
+      ReadAttributes: !Ref userpoolClientReadAttributes
+      WriteAttributes: !Ref userpoolClientWriteAttributes
       
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
       UserPoolId: !Ref UserPool
@@ -243,7 +327,10 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: popn95903adb_app_client
+      ClientName: popn48ee3cd1_app_client
+      
+      ReadAttributes: !Ref userpoolClientReadAttributes
+      WriteAttributes: !Ref userpoolClientWriteAttributes
       
       GenerateSecret: !Ref userpoolClientGenerateSecret
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
@@ -254,7 +341,7 @@ Resources:
   # Created to execute Lambda which gets userpool app client config values
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',['upClientLambdaRole', '95903adb', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',['upClientLambdaRole', '48ee3cd1', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -308,7 +395,7 @@ Resources:
   # Marked as depending on UserPoolClientRole for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: popn95903adb_userpoolclient_lambda_iam_policy
+      PolicyName: popn48ee3cd1_userpoolclient_lambda_iam_policy
       Roles:
         - !Ref UserPoolClientRole
       PolicyDocument:
@@ -325,7 +412,7 @@ Resources:
   # Marked as depending on UserPoolClientLambdaPolicy for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: popn95903adb_userpoolclient_lambda_log_policy
+      PolicyName: popn48ee3cd1_userpoolclient_lambda_log_policy
       Roles:
         - !Ref UserPoolClientRole
       PolicyDocument:
@@ -358,50 +445,8 @@ Resources:
 
   
     
-  # BEGIN IDENTITY POOL RESOURCES
-  
-
-  IdentityPool:
-  # Always created
-    Type: AWS::Cognito::IdentityPool
-    Properties:
-      IdentityPoolName: !If [ShouldNotCreateEnvResources, 'popn95903adb_identitypool_95903adb', !Join ['',['popn95903adb_identitypool_95903adb', '__', !Ref env]]]
-      
-      CognitoIdentityProviders:
-        - ClientId:  !Ref UserPoolClient
-          ProviderName: !Sub
-            - cognito-idp.${region}.amazonaws.com/${client}
-            - { region: !Ref "AWS::Region",  client: !Ref UserPool}
-        - ClientId:  !Ref UserPoolClientWeb
-          ProviderName: !Sub
-            - cognito-idp.${region}.amazonaws.com/${client}
-            - { region: !Ref "AWS::Region",  client: !Ref UserPool}
-            
-      AllowUnauthenticatedIdentities: !Ref allowUnauthenticatedIdentities
-      
-    
-    DependsOn: UserPoolClientInputs
-    
-
-  IdentityPoolRoleMap:
-  # Created to map Auth and Unauth roles to the identity pool
-  # Depends on Identity Pool for ID ref
-    Type: AWS::Cognito::IdentityPoolRoleAttachment
-    Properties:
-      IdentityPoolId: !Ref IdentityPool
-      Roles:
-          unauthenticated: !Ref unauthRoleArn
-          authenticated: !Ref authRoleArn
-    DependsOn: IdentityPool
-  
 
 Outputs :
-  
-  IdentityPoolId:
-    Value: !Ref 'IdentityPool'
-    Description:  Id for the identity pool
-  IdentityPoolName:
-    Value: !GetAtt IdentityPool.Name
   
   
   
