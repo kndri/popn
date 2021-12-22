@@ -2,6 +2,10 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthData, authService } from "../services/auth-service";
 import { useToast } from "../components/Toast";
+import { connect } from "getstream";
+// import { STREAM_API_KEY, STREAM_APP_ID } from "react-native-dotenv";
+
+// const client = connect(STREAM_API_KEY, STREAM_APP_ID);
 
 type AuthContextData = {
   authData?: AuthData;
@@ -116,8 +120,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       AsyncStorage.setItem("@AuthData", JSON.stringify(_authData));
 
       // Set session to true
-      setSession(true);
+      // setSession(true);
       // setUserToken(token);
+      signIn(email, password);
     }
   };
 

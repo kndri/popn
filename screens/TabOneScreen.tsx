@@ -22,15 +22,18 @@ import { getSneakersFromUser } from "../aws-functions/get-sneakers-from-user";
 import { RootTabScreenProps, SneakerList } from "../types";
 import { getSneakersFromDB } from "../aws-functions/get-sneakers-from-db";
 import { useToast } from "../components/Toast";
-import {
-  STREAM_API_KEY,
-  STREAM_API_TOKEN,
-  STREAM_APP_ID,
-} from "react-native-dotenv";
-import { connect, EnrichedActivity, NotificationActivity } from "getstream";
+import Feed from "../components/feed";
+import NewPostButton from "../components/newPostButton";
 
-const client = connect(STREAM_API_KEY, STREAM_API_TOKEN, STREAM_APP_ID);
-console.log(client);
+// import {
+//   STREAM_API_KEY,
+//   STREAM_API_TOKEN,
+//   STREAM_APP_ID,
+// } from "react-native-dotenv";
+// import { connect, EnrichedActivity, NotificationActivity } from "getstream";
+
+// const client = connect(STREAM_API_KEY, STREAM_API_TOKEN, STREAM_APP_ID);
+// console.log(client);
 
 const profile_icon = require("../assets/images/profile_icon.png");
 const search_glass = require("../assets/images/search_glass.png");
@@ -156,58 +159,7 @@ const users_data = [
     score: "$536,160",
   },
 ];
-const users_posts = [
-  {
-    id: 1,
-    username: "@dannyy",
-    image_url: default_user,
-    post_description:
-      "Please note that some processing of your personal data may not require your consent.",
-    likes: "2.5k",
-    comments: "3.5k",
-    seen: "10k",
-  },
-  {
-    id: 2,
-    username: "@haslhoff",
-    image_url: default_user,
-    post_description:
-      "Please note that some processing of your personal data may not require your consent.",
-    likes: "2.5k",
-    comments: "3.5k",
-    seen: "10k",
-  },
-  {
-    id: 3,
-    username: "@antman",
-    image_url: default_user,
-    post_description:
-      "Please note that some processing of your personal data may not require your consent.",
-    likes: "2.5k",
-    comments: "3.5k",
-    seen: "10k",
-  },
-  {
-    id: 4,
-    username: "@ndri",
-    image_url: default_user,
-    post_description:
-      "Please note that some processing of your personal data may not require your consent.",
-    likes: "2.5k",
-    comments: "3.5k",
-    seen: "10k",
-  },
-  {
-    id: 5,
-    username: "@Mr.chang",
-    image_url: default_user,
-    post_description:
-      "Please note that some processing of your personal data may not require your consent.",
-    likes: "2.5k",
-    comments: "3.5k",
-    seen: "10k",
-  },
-];
+
 // dark grey 878C90
 // red FF1843
 export default function TabOneScreen({
@@ -332,21 +284,7 @@ export default function TabOneScreen({
     );
   };
   const renderTrending = () => {
-    return (
-      <View style={COLLECTION_CONTAINER}>
-        {/* <Text preset="header" style={{ marginBottom: 10 }}>
-          Don Rankings
-        </Text> */}
-        <FlatList
-          data={users_posts}
-          renderItem={renderPosts}
-          keyExtractor={(user) => String(user.id)}
-          // refreshing={loading}
-          // onRefresh={fetchPosts}
-          numColumns={1}
-        />
-      </View>
-    );
+    return <View style={COLLECTION_CONTAINER}>{<Feed />}</View>;
   };
   const renderRanking = () => {
     return (
@@ -364,11 +302,7 @@ export default function TabOneScreen({
     );
   };
   const renderFollowing = () => {
-    return (
-      <View>
-        <Text>hello3</Text>
-      </View>
-    );
+    return <View></View>;
   };
 
   return (
@@ -468,6 +402,7 @@ export default function TabOneScreen({
           ? renderFollowing()
           : renderRanking()}
       </View>
+      <NewPostButton />
     </Screen>
   );
 }

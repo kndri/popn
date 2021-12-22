@@ -6,3 +6,5 @@ declare module "react-native-dotenv" {
 }
 
 declare module "expo-activity-feed";
+
+declare module "getsocial-react-native-sdk";

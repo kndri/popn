@@ -44,6 +44,8 @@ import { checkLoggedUser } from "../aws-functions/check-logged-user";
 import { useAuth } from "../contexts/auth";
 import ShoeDetailsScreen from "../screens/ShoeDetailsScreen";
 import ReferenceScreen from "../screens/ReferenceScreen";
+import NewPostScreen from "../screens/NewPostScreen";
+import PostDetailsScreen from "../screens/PostDetailsScreen";
 
 export default function Navigation({
   colorScheme,
@@ -173,6 +175,16 @@ function RootNavigator() {
           <Stack.Screen
             name="Verify"
             component={ReferenceScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="NewPost"
+            component={NewPostScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="PostDetails"
+            component={PostDetailsScreen}
             options={{ headerShown: false }}
           />
         </>

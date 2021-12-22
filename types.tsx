@@ -33,6 +33,8 @@ export type RootStackParamList = {
   Settings: NavigatorScreenParams<SettingsStackParamList> | undefined;
   ShoeDetails: undefined;
   Verify: undefined;
+  NewPost: undefined;
+  PostDetails: undefined | any;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

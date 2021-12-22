@@ -80,7 +80,7 @@ const signUp = async (
     password: _password,
     attributes: {
       "custom:age": age,
-      "custom:picture": image_url,
+      "custom:profile_image": image_url,
       preferred_username: username,
     },
   })
