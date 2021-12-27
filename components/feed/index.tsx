@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import { View, FlatList } from "react-native";
 import { API, graphqlOperation } from "aws-amplify";
 
-// import { listTweets } from "../../src/graphql/queries";
 import Post from "../post";
-// import Tweet from "../Tweet";
-// import UserFleetsList from "../UserFleetsList";
+import { getPostFromDB } from "../../aws-functions/aws-functions";
 
 const default_user = require("../../assets/images/defaultUser.png");
 
@@ -62,15 +60,18 @@ const users_posts = [
   },
 ];
 
-const Feed = () => {
-  const [post, setPost] = useState([]);
+const Feed = ({ post, user }) => {
+  const [posts, setPosts] = useState<any>(post);
   const [loading, setLoading] = useState(false);
 
-  const fetchTweets = async () => {
+  const fetchPosts = async () => {
     setLoading(true);
     try {
-      const tweetsData = await API.graphql(graphqlOperation(listTweets));
-      setp(tweetsData.data.listTweets.items);
+      const postData = await getPostFromDB().catch((error) =>
+        console.error(error)
+      );
+
+      setPosts(postData);
     } catch (e) {
       console.log(e);
     } finally {
@@ -79,17 +80,17 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    // fetchTweets();
+    fetchPosts();
   }, []);
 
   return (
     <View style={{ width: "100%" }}>
       <FlatList
-        data={users_posts}
-        renderItem={({ item }) => <Post item={item} />}
+        data={posts}
+        renderItem={({ item }) => <Post post={item} user={user} />}
         keyExtractor={(item) => String(item.id)}
-        // refreshing={loading}
-        // onRefresh={fetchTweets}
+        refreshing={loading}
+        onRefresh={fetchPosts}
         // ListHeaderComponent={UserFleetsList}
       />
     </View>

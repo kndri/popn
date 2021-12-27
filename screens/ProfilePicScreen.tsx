@@ -92,6 +92,12 @@ export default function ProfilePicScreen() {
     return unsubscribe;
   }, [navigation]);
 
+  const handlePress = (handleChange) => {
+    handleChange(
+      "https://popn-app.s3.amazonaws.com/default_images/defaultUser.png"
+    );
+  };
+
   const pickImage = async (handleChange) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -99,6 +105,7 @@ export default function ProfilePicScreen() {
       aspect: [4, 3],
       quality: 1,
     });
+    console.log(result);
     if (!result.cancelled) {
       handleChange(result.uri);
     }
@@ -165,7 +172,14 @@ export default function ProfilePicScreen() {
               // style={!isValid ? DISABLED : null}
               text="Continue"
               preset="cta"
-              onPress={() => navigation.navigate("Password")}
+              onPress={() => {
+                if (values.image == undefined) {
+                  handlePress(handleChange("image"));
+                  navigation.navigate("Password");
+                } else {
+                  navigation.navigate("Password");
+                }
+              }}
             />
           </View>
         </Screen>

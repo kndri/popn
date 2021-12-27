@@ -10,12 +10,19 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import GestureRecognizer from "react-native-swipe-gestures";
 import { color, spacing } from "../theme";
+import { ImageStyle } from "react-native";
+import {
+  addLike,
+  checkLoggedUser,
+  likeDeletion,
+} from "../aws-functions/aws-functions";
 
 const liked = require("../assets/images/Liked.png");
 const unliked = require("../assets/images/Unliked.png");
 const comment = require("../assets/images/comment.png");
 const share = require("../assets/images/share.png");
 const seen = require("../assets/images/seen.png");
+const default_user = require("../assets/images/UserImage.png");
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -28,80 +35,188 @@ const POST_CONTAINER: ViewStyle = {
   flexDirection: "row",
   paddingHorizontal: spacing[3],
   marginBottom: 15,
-  marginTop: 25,
   paddingTop: 10,
 };
 const RIGHT_SIDE_POST: ViewStyle = {
   display: "flex",
   flexDirection: "column",
-  width: "80%",
+  width: "100%",
 };
 const INTERACTIONS: ViewStyle = {
   display: "flex",
   flexDirection: "row",
+  marginTop: 5,
+  borderBottomWidth: 1,
+  borderTopWidth: 1,
+  borderBottomColor: "grey",
+  borderTopColor: "grey",
 };
 const INTERACTIONS_BUTTONS: ViewStyle = {
   display: "flex",
   flexDirection: "row",
   backgroundColor: "transparent",
-  alignContent: "flex-start",
-  flex: 0.5,
+  flex: 0.3,
 };
 
 const BUTTON_TEXT: TextStyle = {
   marginLeft: 5,
+  fontSize: 15,
+};
+const PROFILE_HEADER: ViewStyle = {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  paddingBottom: 17,
+  paddingHorizontal: spacing[3],
+};
+const COMMENT_CONTAINER: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+  paddingHorizontal: spacing[3],
+  marginBottom: 15,
+};
+const RIGHT_SIDE_COMMENT: ViewStyle = {
+  display: "flex",
+  flexDirection: "column",
+  width: "80%",
+};
+
+const BUTTON_IMAGE: ImageStyle = {
+  width: 20,
+  height: 20,
 };
 
 const PostDetailsScreen = (props: any) => {
-  const { item } = props.route.params;
+  const { post, myLike } = props.route.params;
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
-  console.log("data", item);
+  const [user, setUser] = React.useState<string>("");
+  const [myLikes, setMyLike] = React.useState(myLike);
+  const [likesCount, setLikesCount] = React.useState(post.likes.items.length);
+  console.log("my ", myLikes);
+
+  const onLike = async () => {
+    if (myLikes === null || myLikes === undefined) {
+      const result = await addLike(post.id);
+      setMyLike(result.data.createLike);
+      setLikesCount(likesCount + 1);
+    } else {
+      await likeDeletion(myLikes.id);
+      setLikesCount(likesCount - 1);
+      setMyLike(null);
+    }
+  };
+
+  const renderPosts = ({ post }) => {
+    return (
+      <View style={COMMENT_CONTAINER}>
+        <Image
+          source={{ uri: post.user.avatarImageURL }}
+          style={{
+            resizeMode: "contain",
+            height: 40,
+            width: 40,
+            marginRight: 5,
+            // flex: 1,
+          }}
+        />
+        <View style={RIGHT_SIDE_COMMENT}>
+          <Text
+            preset="header"
+            style={{
+              fontSize: 12,
+              margin: 5,
+            }}
+          >
+            {post.user.username}
+          </Text>
+          <Text
+            preset="default"
+            style={{
+              fontSize: 10,
+              margin: 5,
+            }}
+          >
+            {post.description}
+          </Text>
+          {/* <View
+            style={{
+              alignItems: "flex-start",
+            }}
+          >
+            <Button
+              style={INTERACTIONS_BUTTONS}
+              // onPress={() =>
+              //   navigation.navigate("Settings", { screen: "settings" })
+              // }
+            >
+              <Image source={unliked} style={BUTTON_IMAGE} />
+              <Text style={BUTTON_TEXT}>{item.likes} </Text>
+            </Button>
+          </View> */}
+        </View>
+      </View>
+    );
+  };
 
   // GET COMMENTS FOR THIS CURRENT POST
 
   return (
     <Screen style={CONTAINER}>
-      <View style={POST_CONTAINER}>
-        <Image
-          source={item.image_url}
-          style={{
-            resizeMode: "contain",
-            height: 60,
-            width: 60,
-            marginRight: 5,
-            // flex: 1,
-          }}
+      <View style={PROFILE_HEADER}>
+        <Header
+          headerTx="demoScreen.howTo"
+          leftIcon="back"
+          onLeftPress={() => navigation.goBack()}
         />
+      </View>
+      <View style={POST_CONTAINER}>
         <View style={RIGHT_SIDE_POST}>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={{ uri: post.user.avatarImageURL }}
+              style={{
+                resizeMode: "contain",
+                height: 60,
+                width: 60,
+                marginRight: 5,
+                // flex: 1,
+              }}
+            />
+            <Text
+              preset="header"
+              style={{
+                fontSize: 18,
+                margin: 5,
+              }}
+            >
+              {post.user.username}
+            </Text>
+          </View>
+
           <Text
-            preset="header"
+            preset="default"
             style={{
               fontSize: 18,
               margin: 5,
             }}
           >
-            {item.username}
-          </Text>
-
-          <Text
-            preset="default"
-            style={{
-              fontSize: 15,
-              margin: 5,
-            }}
-          >
-            {item.post_description}
+            {post.description}
           </Text>
           <View style={INTERACTIONS}>
-            <Button
-              style={INTERACTIONS_BUTTONS}
-              // onPress={() =>
-              //   navigation.navigate("Settings", { screen: "settings" })
-              // }
-            >
-              <Image source={unliked} />
-              <Text style={BUTTON_TEXT}>{item.likes} </Text>
+            <Button style={INTERACTIONS_BUTTONS} onPress={() => onLike()}>
+              {myLikes === null || myLikes === undefined ? (
+                <Image source={unliked} style={BUTTON_IMAGE} />
+              ) : (
+                <Image source={liked} style={BUTTON_IMAGE} />
+              )}
+              <Text style={BUTTON_TEXT}>{likesCount} </Text>
             </Button>
             <Button
               style={INTERACTIONS_BUTTONS}
@@ -109,31 +224,30 @@ const PostDetailsScreen = (props: any) => {
               //   navigation.navigate("Settings", { screen: "settings" })
               // }
             >
-              <Image source={comment} />
-              <Text style={BUTTON_TEXT}>{item.comments} </Text>
+              <Image source={comment} style={BUTTON_IMAGE} />
+              {/* {post.comments.nextToken === null ? (
+                <Text style={BUTTON_TEXT}> 0 </Text>
+              ) : (
+                <Text style={BUTTON_TEXT}>{post.comments.length} </Text>
+              )} */}
             </Button>
-            <Button
+            {/* <Button
               style={INTERACTIONS_BUTTONS}
               // onPress={() =>
               //   navigation.navigate("Settings", { screen: "settings" })
               // }
             >
-              <Image source={seen} />
-              <Text style={BUTTON_TEXT}>{item.seen} </Text>
-            </Button>
-            <Button
-              style={INTERACTIONS_BUTTONS}
-              // onPress={() =>
-              //   navigation.navigate("Settings", { screen: "settings" })
-              // }
-            >
-              <Image source={share} />
-            </Button>
+              <Image source={share} style={BUTTON_IMAGE} />
+            </Button> */}
           </View>
         </View>
       </View>
       <View>
-        <FlatList />
+        {/* <FlatList
+          data={users_posts}
+          renderItem={renderPosts}
+          keyExtractor={(user) => String(user.id)}
+        /> */}
       </View>
     </Screen>
   );

@@ -67,7 +67,6 @@ export default function PasswordScreen() {
     const unsubscribe = navigation.addListener("blur", () => {
       if (form.current) {
         const { values, errors } = form.current;
-        console.log(values);
         dispatch({
           type: "UPDATE_FORM",
           payload: {
@@ -127,6 +126,8 @@ export default function PasswordScreen() {
                 if (values.email === "" || values.password === "") {
                   toast.show(`You must provide an email and password`);
                 } else {
+                  console.log("values", values);
+
                   signUp(
                     values.email,
                     values.password,

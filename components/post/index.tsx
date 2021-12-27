@@ -12,12 +12,18 @@ import {
   TextInput,
   FlatList,
 } from "react-native";
+import {
+  addLike,
+  checkLoggedUser,
+  likeDeletion,
+} from "../../aws-functions/aws-functions";
 
 const liked = require("../../assets/images/Liked.png");
 const unliked = require("../../assets/images/Unliked.png");
 const comment = require("../../assets/images/comment.png");
 const share = require("../../assets/images/share.png");
 const seen = require("../../assets/images/seen.png");
+const default_user = require("../../assets/images/defaultUser.png");
 
 const POST_CONTAINER: ViewStyle = {
   display: "flex",
@@ -46,17 +52,47 @@ const BUTTON_TEXT: TextStyle = {
   marginLeft: 5,
 };
 
-const Post = ({ item }) => {
+const Post = ({ post, user }) => {
   const navigation = useNavigation();
 
+  const [myLike, setMyLike] = React.useState(null);
+  const [likesCount, setLikesCount] = React.useState(post.likes.items.length);
+
+  React.useEffect(() => {
+    const searchedLike = post.likes.items.find(
+      (like: any) => like.userID === user
+    );
+
+    setMyLike(searchedLike);
+  }, []);
+
   const handlePress = () => {
-    navigation.navigate("PostDetails", { item });
+    navigation.navigate("PostDetails", { post, myLike });
   };
+  const onLike = async () => {
+    if (!user) {
+      return;
+    }
+
+    if (!myLike) {
+      const result = await addLike(post.id);
+      setMyLike(result.data.createLike);
+      setLikesCount(likesCount + 1);
+    } else {
+      await likeDeletion(myLike.id);
+      setLikesCount(likesCount - 1);
+      setMyLike(null);
+    }
+  };
+
+  // console.log(post);
+
   return (
     <TouchableOpacity onPress={() => handlePress()}>
       <View style={POST_CONTAINER}>
         <Image
-          source={item.image_url}
+          // have to check for image the default image in user data contains
+          source={{ uri: post.user.avatarImageURL }}
           style={{
             resizeMode: "contain",
             height: 40,
@@ -73,7 +109,7 @@ const Post = ({ item }) => {
               margin: 5,
             }}
           >
-            {item.username}
+            {post.user.username}
           </Text>
           <Text
             preset="default"
@@ -82,17 +118,12 @@ const Post = ({ item }) => {
               margin: 5,
             }}
           >
-            {item.post_description}
+            {post.description}
           </Text>
           <View style={INTERACTIONS}>
-            <Button
-              style={INTERACTIONS_BUTTONS}
-              // onPress={() =>
-              //   navigation.navigate("Settings", { screen: "settings" })
-              // }
-            >
-              <Image source={unliked} />
-              <Text style={BUTTON_TEXT}>{item.likes} </Text>
+            <Button style={INTERACTIONS_BUTTONS} onPress={() => onLike()}>
+              {!myLike ? <Image source={unliked} /> : <Image source={liked} />}
+              <Text style={BUTTON_TEXT}>{likesCount} </Text>
             </Button>
             <Button
               style={INTERACTIONS_BUTTONS}
@@ -101,7 +132,8 @@ const Post = ({ item }) => {
               // }
             >
               <Image source={comment} />
-              <Text style={BUTTON_TEXT}>{item.comments} </Text>
+
+              <Text style={BUTTON_TEXT}>{post.comments.items.length} </Text>
             </Button>
             <Button
               style={INTERACTIONS_BUTTONS}
@@ -110,7 +142,7 @@ const Post = ({ item }) => {
               // }
             >
               <Image source={seen} />
-              <Text style={BUTTON_TEXT}>{item.seen} </Text>
+              {/* <Text style={BUTTON_TEXT}>{item.seen} </Text> */}
             </Button>
             <Button
               style={INTERACTIONS_BUTTONS}

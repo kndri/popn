@@ -220,6 +220,7 @@ export const onCreatePost = /* GraphQL */ `
     onCreatePost {
       id
       userID
+      description
       user {
         id
         age
@@ -237,7 +238,6 @@ export const onCreatePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      description
       likes {
         items {
           id
@@ -269,6 +269,7 @@ export const onUpdatePost = /* GraphQL */ `
     onUpdatePost {
       id
       userID
+      description
       user {
         id
         age
@@ -286,7 +287,6 @@ export const onUpdatePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      description
       likes {
         items {
           id
@@ -318,6 +318,7 @@ export const onDeletePost = /* GraphQL */ `
     onDeletePost {
       id
       userID
+      description
       user {
         id
         age
@@ -335,7 +336,6 @@ export const onDeletePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      description
       likes {
         items {
           id
@@ -389,6 +389,7 @@ export const onCreateComment = /* GraphQL */ `
       post {
         id
         userID
+        description
         user {
           id
           age
@@ -400,7 +401,6 @@ export const onCreateComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        description
         likes {
           nextToken
         }
@@ -442,6 +442,7 @@ export const onUpdateComment = /* GraphQL */ `
       post {
         id
         userID
+        description
         user {
           id
           age
@@ -453,7 +454,6 @@ export const onUpdateComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        description
         likes {
           nextToken
         }
@@ -495,6 +495,7 @@ export const onDeleteComment = /* GraphQL */ `
       post {
         id
         userID
+        description
         user {
           id
           age
@@ -506,7 +507,6 @@ export const onDeleteComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        description
         likes {
           nextToken
         }
@@ -547,6 +547,7 @@ export const onCreateLike = /* GraphQL */ `
       post {
         id
         userID
+        description
         user {
           id
           age
@@ -558,7 +559,6 @@ export const onCreateLike = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        description
         likes {
           nextToken
         }
@@ -599,6 +599,7 @@ export const onUpdateLike = /* GraphQL */ `
       post {
         id
         userID
+        description
         user {
           id
           age
@@ -610,7 +611,6 @@ export const onUpdateLike = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        description
         likes {
           nextToken
         }
@@ -651,6 +651,7 @@ export const onDeleteLike = /* GraphQL */ `
       post {
         id
         userID
+        description
         user {
           id
           age
@@ -662,7 +663,6 @@ export const onDeleteLike = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        description
         likes {
           nextToken
         }

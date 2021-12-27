@@ -17,23 +17,22 @@ import {
 } from "../components";
 import sneakerData from "../new_sneaker_data.json";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { addSneaker } from "../aws-functions/add-sneaker-to-users";
-import { getSneakersFromUser } from "../aws-functions/get-sneakers-from-user";
+import {
+  addUserSneaker,
+  getSneakersFromUser,
+  getSneakersFromDB,
+  getPostFromDB,
+  checkLoggedUser,
+} from "../aws-functions/aws-functions";
+
 import { RootTabScreenProps, SneakerList } from "../types";
-import { getSneakersFromDB } from "../aws-functions/get-sneakers-from-db";
+
 import { useToast } from "../components/Toast";
 import Feed from "../components/feed";
 import NewPostButton from "../components/newPostButton";
-
-// import {
-//   STREAM_API_KEY,
-//   STREAM_API_TOKEN,
-//   STREAM_APP_ID,
-// } from "react-native-dotenv";
-// import { connect, EnrichedActivity, NotificationActivity } from "getstream";
-
-// const client = connect(STREAM_API_KEY, STREAM_API_TOKEN, STREAM_APP_ID);
-// console.log(client);
+import { API, Auth, graphqlOperation } from "aws-amplify";
+import { createUser } from "../src/graphql/mutations";
+import { getUser } from "../src/graphql/queries";
 
 const profile_icon = require("../assets/images/profile_icon.png");
 const search_glass = require("../assets/images/search_glass.png");
@@ -166,8 +165,57 @@ export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
   const [selection, setSelection] = React.useState(1);
+  const [user, setUser] = React.useState<string>("");
   const [posts, setPosts] = React.useState<any[]>([]);
+  const isFocused = useIsFocused();
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [post, setPost] = React.useState<any>([]);
+
+  const fetchPosts = async () => {
+    const postData = await getPostFromDB().catch((error) =>
+      console.error(error)
+    );
+    setPost(postData);
+  };
+
+  React.useEffect(() => {
+    fetchPosts();
+  }, [isFocused]);
+
+  const saveUserToDB = async (user: any) => {
+    await API.graphql(graphqlOperation(createUser, { input: user }));
+  };
+
+  React.useEffect(() => {
+    const updateUser = async () => {
+      // Get current authenticated user
+      const userInfo = await Auth.currentAuthenticatedUser({
+        bypassCache: true,
+      });
+      setUser(userInfo.attributes.sub);
+      if (userInfo) {
+        // Check if user already exists in database
+        const userData = await API.graphql(
+          graphqlOperation(getUser, { id: userInfo.attributes.sub })
+        );
+        if (!userData.data.getUser) {
+          const user = {
+            id: userInfo.attributes.sub,
+            age: userInfo.attributes["custom:age"],
+            username: userInfo.attributes.preferred_username,
+            email: userInfo.attributes.email,
+            avatarImageURL: userInfo.attributes["custom:profile_image"],
+            following: 0,
+            follower: 0,
+          };
+          await saveUserToDB(user);
+        } else {
+          console.log("User already exists");
+        }
+      }
+    };
+    updateUser();
+  }, []);
 
   const renderUsers = ({ item }) => {
     return (
@@ -201,9 +249,9 @@ export default function TabOneScreen({
             backgroundColor: "transparent",
             alignContent: "flex-start",
           }}
-        // onPress={() =>
-        //   navigation.navigate("Settings", { screen: "settings" })
-        // }
+          // onPress={() =>
+          //   navigation.navigate("Settings", { screen: "settings" })
+          // }
         >
           <Image source={options} />
         </Button>
@@ -284,7 +332,11 @@ export default function TabOneScreen({
     );
   };
   const renderTrending = () => {
-    return <View style={COLLECTION_CONTAINER}>{<Feed />}</View>;
+    return (
+      <View style={COLLECTION_CONTAINER}>
+        {<Feed post={post} user={user} />}
+      </View>
+    );
   };
   const renderRanking = () => {
     return (
@@ -310,9 +362,7 @@ export default function TabOneScreen({
       <View style={CLAIM_HEADER}>
         <Button
           style={{ backgroundColor: "transparent" }}
-          onPress={() =>
-            navigation.navigate("UserProfile")
-          }
+          onPress={() => navigation.navigate("UserProfile")}
         >
           <Image source={profile_icon} />
         </Button>
@@ -324,9 +374,9 @@ export default function TabOneScreen({
             height: 40,
             width: 40,
           }}
-        // onPress={() =>
-        //   navigation.navigate("Settings", { screen: "settings" })
-        // }
+          // onPress={() =>
+          //   navigation.navigate("Settings", { screen: "settings" })
+          // }
         >
           <Image source={search_glass} />
         </Button>
@@ -399,8 +449,8 @@ export default function TabOneScreen({
         {selection === 1
           ? renderTrending()
           : selection === 2
-            ? renderFollowing()
-            : renderRanking()}
+          ? renderFollowing()
+          : renderRanking()}
       </View>
       <NewPostButton />
     </Screen>

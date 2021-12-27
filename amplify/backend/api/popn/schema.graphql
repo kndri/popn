@@ -3,11 +3,11 @@ type User @model {
   age: String!
   username: String!
   email: String!
-  avatarImageURL: String
+  avatarImageURL: String!
   sneakers: [Sneaker] @connection(keyName: "byUser", fields: ["id"])
   posts: [Post] @connection(keyName: "byUser", fields: ["id"])
-  following: Int!
-  follower: Int!
+  following: Int
+  follower: Int
 }
 type Sneaker
   @model
@@ -38,7 +38,7 @@ type Post
   description: String
   user: User @connection(fields: ["userID"])
   likes: [Like] @connection(keyName: "byPost", fields: ["id"])
-  comments: [Comment] @connection(fields: ["id"])
+  comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
   createdAt: String
 }
 type Comment

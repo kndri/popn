@@ -139,6 +139,7 @@ export const getPost = /* GraphQL */ `
     getPost(id: $id) {
       id
       userID
+      description
       user {
         id
         age
@@ -156,7 +157,6 @@ export const getPost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      description
       likes {
         items {
           id
@@ -193,6 +193,7 @@ export const listPosts = /* GraphQL */ `
       items {
         id
         userID
+        description
         user {
           id
           age
@@ -204,12 +205,24 @@ export const listPosts = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        description
         likes {
-          nextToken
+          items {
+            id
+            createdAt
+            postID
+            updatedAt
+            userID
+          }
         }
         comments {
-          nextToken
+          items {
+            id
+            createdAt
+            postID
+            text
+            updatedAt
+            userID
+          }
         }
         createdAt
         updatedAt
@@ -245,6 +258,7 @@ export const getComment = /* GraphQL */ `
       post {
         id
         userID
+        description
         user {
           id
           age
@@ -256,7 +270,6 @@ export const getComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        description
         likes {
           nextToken
         }
@@ -402,6 +415,7 @@ export const postByUser = /* GraphQL */ `
       items {
         id
         userID
+        description
         user {
           id
           age
@@ -413,7 +427,6 @@ export const postByUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        description
         likes {
           nextToken
         }

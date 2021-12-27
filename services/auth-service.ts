@@ -47,6 +47,8 @@ const uploadImage = async (username: string, imageUrl: string) => {
 
     await Storage.put(key, blob);
 
+    console.log("key", key);
+
     return key;
   } catch (e) {
     console.log(e);
@@ -58,8 +60,8 @@ const signUp = async (
   email: string,
   _password: string,
   age: string,
-  image_url: string,
-  username: string
+  _username: string,
+  image_url: string
 ): Promise<AuthData> => {
   // this is a mock of an API call, in a real app
   // will be need connect with some real API,
@@ -71,9 +73,12 @@ const signUp = async (
 
   // variable to store user id
   let userId: any;
-  if (image_url.includes("s3") === false) {
-    image_url = await uploadImage(username, image_url);
+
+  console.log("image_url", image_url);
+  if (image_url.includes("defaultUser") === false) {
+    image_url = await uploadImage(_username, image_url);
   }
+  console.log("image_url", image_url);
 
   await Auth.signUp({
     username: email,
@@ -81,7 +86,7 @@ const signUp = async (
     attributes: {
       "custom:age": age,
       "custom:profile_image": image_url,
-      preferred_username: username,
+      preferred_username: _username,
     },
   })
     .then((response) => {

@@ -4,7 +4,6 @@ import {
   ViewStyle,
   TextStyle,
   ImageStyle,
-
   Image,
   Alert,
   FlatList,
@@ -12,9 +11,13 @@ import {
 import { color, spacing, typography } from "../theme";
 import { Button, Screen, Text, Header } from "../components";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { getSneakersFromUser } from "../aws-functions/get-sneakers-from-user";
+import {
+  getSneakersFromUser,
+  checkLoggedUser,
+  getCommentFromUser,
+  getPostFromUser,
+} from "../aws-functions/aws-functions";
 import { SneakerList } from "../types";
-import { checkLoggedUser } from "../aws-functions/check-logged-user";
 
 //required images
 const messageIcon = require("../assets/images/message-button.png");
@@ -44,7 +47,6 @@ const PROFILE_HEADER: ViewStyle = {
   justifyContent: "space-between",
   paddingBottom: 17,
   paddingHorizontal: spacing[5],
-
 };
 const PROFILE_DATA: ViewStyle = {
   flexDirection: "row",
@@ -56,19 +58,19 @@ const PROFILE_IMAGE: ImageStyle = {
   marginRight: 20,
   width: 96,
   height: 96,
-  borderRadius: 48
+  borderRadius: 48,
 };
 
 const COLLECTION_CONTAINER: ViewStyle = {
   flex: 1,
   marginTop: 47,
-  backgroundColor: 'white',
-  width: '100%',
+  backgroundColor: "white",
+  width: "100%",
   borderTopLeftRadius: 32,
   borderTopRightRadius: 32,
-  shadowColor: 'black',
+  shadowColor: "black",
   shadowOpacity: 0.3,
-  shadowRadius: 10
+  shadowRadius: 10,
 };
 
 const TEXTCENTER: TextStyle = {
@@ -91,11 +93,10 @@ const BUTTON_VIEW: ViewStyle = {
 
 const DATA_CONTAINER: ViewStyle = {
   flex: 1,
-  backgroundColor: 'white',
-  width: '100%',
-  height: '100%',
+  backgroundColor: "white",
+  width: "100%",
+  height: "100%",
 };
-
 
 export default function UserProfileScreen() {
   const navigation = useNavigation();
@@ -174,7 +175,6 @@ export default function UserProfileScreen() {
     </View>
   );
 
-
   const renderPosts = () => {
     return (
       <View style={CENTER}>
@@ -218,7 +218,6 @@ export default function UserProfileScreen() {
     );
   };
 
-
   return (
     <Screen style={CONTAINER}>
       <View style={PROFILE_HEADER}>
@@ -243,28 +242,25 @@ export default function UserProfileScreen() {
 
         <View style={{}}>
           <Text preset="header" text="Albert Flores" />
-          <Text preset="secondary" text={'@AlbertFlores'} />
+          <Text preset="secondary" text={"@AlbertFlores"} />
           {/* <Text preset="secondary" text={username} /> */}
 
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: "row" }}>
             <Text preset="bold" text="Don Score: " />
             <Text preset="bold" text="890" />
           </View>
 
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: "row" }}>
             <Text preset="bold" text="Collection Value: " />
             <Text preset="bold" text="$250,000" />
           </View>
         </View>
-
       </View>
 
-      <View style={{ flexDirection: 'row', paddingHorizontal: spacing[5], }}>
+      <View style={{ flexDirection: "row", paddingHorizontal: spacing[5] }}>
         <Button
           style={{ backgroundColor: "transparent", width: 48, height: 48 }}
-          onPress={() =>
-            navigation.navigate("TabThree")
-          }
+          onPress={() => navigation.navigate("TabThree")}
         >
           <Image source={messageIcon} />
         </Button>
@@ -272,7 +268,7 @@ export default function UserProfileScreen() {
           style={{ width: 262, height: 48, borderRadius: 4, marginLeft: 10 }}
           text="Edit Profile"
           preset="primary"
-        // onPress={() => navigation.navigate("")}
+          // onPress={() => navigation.navigate("")}
         />
       </View>
 
@@ -283,18 +279,25 @@ export default function UserProfileScreen() {
             style={[
               selection === 1
                 ? {
-                  borderRadius: 34,
-                  width: 101, margin: 2
-                }
+                    borderRadius: 34,
+                    width: 101,
+                    margin: 2,
+                  }
                 : {
-                  backgroundColor: "white", borderRadius: 34,
-                  width: 101, borderColor: "#E8EDF2", borderWidth: 1, margin: 2
-                },
+                    backgroundColor: "white",
+                    borderRadius: 34,
+                    width: 101,
+                    borderColor: "#E8EDF2",
+                    borderWidth: 1,
+                    margin: 2,
+                  },
             ]}
           >
             <Text
               preset="bold"
-              style={[selection === 1 ? { color: "white" } : { color: "black" }]}
+              style={[
+                selection === 1 ? { color: "white" } : { color: "black" },
+              ]}
             >
               Collection
             </Text>
@@ -304,37 +307,38 @@ export default function UserProfileScreen() {
             style={[
               selection === 2
                 ? {
-                  borderRadius: 34,
-                  width: 101,
-                  margin: 2
-                }
+                    borderRadius: 34,
+                    width: 101,
+                    margin: 2,
+                  }
                 : {
-                  backgroundColor: "white", borderRadius: 34,
-                  width: 101, borderColor: "#E8EDF2", borderWidth: 1, margin: 2
-                },
+                    backgroundColor: "white",
+                    borderRadius: 34,
+                    width: 101,
+                    borderColor: "#E8EDF2",
+                    borderWidth: 1,
+                    margin: 2,
+                  },
             ]}
           >
             <Text
               preset="bold"
-              style={[selection === 2 ? { color: "white" } : { color: "black" }]}
+              style={[
+                selection === 2 ? { color: "white" } : { color: "black" },
+              ]}
             >
               Posts
             </Text>
           </Button>
         </View>
 
-
         <View style={DATA_CONTAINER}>
           {selection === 1
             ? renderCollection()
             : selection === 2
-              ? renderPosts()
-              : null}
+            ? renderPosts()
+            : null}
         </View>
-
-
-
-
       </View>
     </Screen>
   );

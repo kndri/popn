@@ -35,7 +35,6 @@ import ChangeEmailScreen from "../screens/ChangeEmailScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import MessageRoomScreen from "../screens/MessageRoomScreen";
 
-
 import {
   RootStackParamList,
   RootTabParamList,
@@ -44,7 +43,7 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
-import { checkLoggedUser } from "../aws-functions/check-logged-user";
+import { checkLoggedUser } from "../aws-functions/aws-functions";
 import { useAuth } from "../contexts/auth";
 import ShoeDetailsScreen from "../screens/ShoeDetailsScreen";
 import ReferenceScreen from "../screens/ReferenceScreen";
@@ -238,9 +237,7 @@ function BottomTabNavigator() {
         component={TabTwoScreen}
         options={{
           title: "Claim",
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="search" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
         }}
       />
       <BottomTab.Screen

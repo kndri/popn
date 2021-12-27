@@ -60,7 +60,7 @@
         },
         "popn95903adbPreTokenGeneration": {
           "deploymentBucketName": "amplify-popn-dev-132355-deployment",
-          "s3Key": "amplify-builds/popn95903adbPreTokenGeneration-774b706a5472336a4b4d-build.zip"
+          "s3Key": "amplify-builds/popn95903adbPreTokenGeneration-4839363468636a6a3975-build.zip"
         },
         "popn09CreateAuthChallenge": {
           "deploymentBucketName": "amplify-popn-dev-132355-deployment",
@@ -80,7 +80,7 @@
         },
         "popn09PreTokenGeneration": {
           "deploymentBucketName": "amplify-popn-dev-132355-deployment",
-          "s3Key": "amplify-builds/popn09PreTokenGeneration-6475774f6261496d456a-build.zip"
+          "s3Key": "amplify-builds/popn09PreTokenGeneration-6d685056515633632b37-build.zip"
         }
       }
     }
