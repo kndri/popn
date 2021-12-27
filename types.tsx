@@ -69,7 +69,7 @@ export interface SneakerList {
   sneakers: Array<Sneaker>;
 }
 
-export interface IMessage {
+export interface ChatMessage {
   _id: string | number
   text: string
   createdAt: Date | number
@@ -84,7 +84,7 @@ export interface IMessage {
   quickReplies?: QuickReplies
 }
 export interface MessageList {
-  imessages: Array<IMessage>;
+  imessages: Array<ChatMessage>;
 }
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
