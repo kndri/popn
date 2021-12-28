@@ -166,7 +166,6 @@ export default function TabOneScreen({
 }: RootTabScreenProps<"TabOne">) {
   const [selection, setSelection] = React.useState(1);
   const [user, setUser] = React.useState<string>("");
-  const [posts, setPosts] = React.useState<any[]>([]);
   const isFocused = useIsFocused();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [post, setPost] = React.useState<any>([]);
@@ -214,6 +213,7 @@ export default function TabOneScreen({
         }
       }
     };
+
     updateUser();
   }, []);
 

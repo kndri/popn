@@ -23,7 +23,6 @@ const unliked = require("../../assets/images/Unliked.png");
 const comment = require("../../assets/images/comment.png");
 const share = require("../../assets/images/share.png");
 const seen = require("../../assets/images/seen.png");
-const default_user = require("../../assets/images/defaultUser.png");
 
 const POST_CONTAINER: ViewStyle = {
   display: "flex",
@@ -55,8 +54,11 @@ const BUTTON_TEXT: TextStyle = {
 const Post = ({ post, user }) => {
   const navigation = useNavigation();
 
-  const [myLike, setMyLike] = React.useState(null);
+  const [myLike, setMyLike] = React.useState();
   const [likesCount, setLikesCount] = React.useState(post.likes.items.length);
+  const [commentCount, setCommentCount] = React.useState(
+    post.comments.items.length
+  );
 
   React.useEffect(() => {
     const searchedLike = post.likes.items.find(
@@ -67,7 +69,12 @@ const Post = ({ post, user }) => {
   }, []);
 
   const handlePress = () => {
-    navigation.navigate("PostDetails", { post, myLike });
+    navigation.navigate("PostDetails", {
+      post,
+      myLike,
+      likesCount,
+      commentCount,
+    });
   };
   const onLike = async () => {
     if (!user) {
@@ -84,8 +91,6 @@ const Post = ({ post, user }) => {
       setMyLike(null);
     }
   };
-
-  // console.log(post);
 
   return (
     <TouchableOpacity onPress={() => handlePress()}>
@@ -133,17 +138,17 @@ const Post = ({ post, user }) => {
             >
               <Image source={comment} />
 
-              <Text style={BUTTON_TEXT}>{post.comments.items.length} </Text>
+              <Text style={BUTTON_TEXT}>{commentCount} </Text>
             </Button>
-            <Button
+            {/* <Button
               style={INTERACTIONS_BUTTONS}
               // onPress={() =>
               //   navigation.navigate("Settings", { screen: "settings" })
               // }
             >
               <Image source={seen} />
-              {/* <Text style={BUTTON_TEXT}>{item.seen} </Text> */}
-            </Button>
+              <Text style={BUTTON_TEXT}>{item.seen} </Text>
+            </Button> */}
             <Button
               style={INTERACTIONS_BUTTONS}
               // onPress={() =>

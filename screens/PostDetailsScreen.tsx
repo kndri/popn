@@ -87,22 +87,21 @@ const BUTTON_IMAGE: ImageStyle = {
 };
 
 const PostDetailsScreen = (props: any) => {
-  const { post, myLike } = props.route.params;
+  const { post, myLike, likesCount, commentCount } = props.route.params;
   const navigation = useNavigation();
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [user, setUser] = React.useState<string>("");
   const [myLikes, setMyLike] = React.useState(myLike);
-  const [likesCount, setLikesCount] = React.useState(post.likes.items.length);
-  console.log("my ", myLikes);
+  const [comments, setComments] = React.useState(post.comments.items);
+  const [likesCounts, setLikesCount] = React.useState(likesCount);
+  const [commentCnt, setCommentCnt] = React.useState(commentCount);
 
   const onLike = async () => {
     if (myLikes === null || myLikes === undefined) {
       const result = await addLike(post.id);
       setMyLike(result.data.createLike);
-      setLikesCount(likesCount + 1);
+      setLikesCount(likesCounts + 1);
     } else {
       await likeDeletion(myLikes.id);
-      setLikesCount(likesCount - 1);
+      setLikesCount(likesCounts - 1);
       setMyLike(null);
     }
   };
@@ -137,7 +136,7 @@ const PostDetailsScreen = (props: any) => {
               margin: 5,
             }}
           >
-            {post.description}
+            {post.text}
           </Text>
           {/* <View
             style={{
@@ -216,20 +215,18 @@ const PostDetailsScreen = (props: any) => {
               ) : (
                 <Image source={liked} style={BUTTON_IMAGE} />
               )}
-              <Text style={BUTTON_TEXT}>{likesCount} </Text>
+              <Text style={BUTTON_TEXT}>{likesCounts} </Text>
             </Button>
             <Button
               style={INTERACTIONS_BUTTONS}
-              // onPress={() =>
-              //   navigation.navigate("Settings", { screen: "settings" })
-              // }
+              onPress={() =>
+                // reusing new post screen to create a comment for the current post
+                // new post will need to be sent the current post props
+                navigation.navigate("NewPost")
+              }
             >
               <Image source={comment} style={BUTTON_IMAGE} />
-              {/* {post.comments.nextToken === null ? (
-                <Text style={BUTTON_TEXT}> 0 </Text>
-              ) : (
-                <Text style={BUTTON_TEXT}>{post.comments.length} </Text>
-              )} */}
+              <Text style={BUTTON_TEXT}>{commentCnt} </Text>
             </Button>
             {/* <Button
               style={INTERACTIONS_BUTTONS}
@@ -243,11 +240,11 @@ const PostDetailsScreen = (props: any) => {
         </View>
       </View>
       <View>
-        {/* <FlatList
-          data={users_posts}
-          renderItem={renderPosts}
+        <FlatList
+          data={comments}
+          renderItem={({ item }) => renderPosts(item)}
           keyExtractor={(user) => String(user.id)}
-        /> */}
+        />
       </View>
     </Screen>
   );
