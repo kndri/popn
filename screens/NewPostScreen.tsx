@@ -23,7 +23,11 @@ import Colors from "../constants/Colors";
 import { TextStyle } from "react-native";
 import { ImageStyle } from "react-native";
 import { spacing } from "../theme";
-import { addPost, checkLoggedUser } from "../aws-functions/aws-functions";
+import {
+  addComment,
+  addPost,
+  checkLoggedUser,
+} from "../aws-functions/aws-functions";
 import { useToast } from "../components/Toast";
 import { set } from "react-native-reanimated";
 
@@ -73,7 +77,8 @@ const IMAGE: ImageStyle = {
   height: 80,
 };
 
-export default function NewTweetScreen() {
+export default function NewTweetScreen(props: any) {
+  const { comment } = props.route.params;
   const [post, setPost] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const toast = useToast();
@@ -95,17 +100,35 @@ export default function NewTweetScreen() {
     });
   };
 
+  const onPostComment = async () => {
+    addComment({
+      postID: comment.id,
+      text: post,
+    }).then(() => {
+      navigation.goBack();
+    });
+  };
+
   return (
     <SafeAreaView style={CONTAINER}>
       <View style={HEADER_CONTAINER}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <AntDesign name="close" size={30} color={"black"} />
         </TouchableOpacity>
-        <TouchableOpacity style={BUTTON} onPress={onPostTweet}>
+        <TouchableOpacity
+          style={BUTTON}
+          onPress={comment ? onPostComment : onPostTweet}
+        >
           <Text style={BUTTON_TEXT}>Post</Text>
         </TouchableOpacity>
       </View>
       <View style={NEW_POST_CONTAINER}>
+        {comment ? (
+          <Text
+            style={{ marginBottom: 10, fontSize: 10, color: "lightgrey" }}
+          >{`Replying to  ${comment.user.username}`}</Text>
+        ) : null}
+
         <Image source={{ uri: imageUrl }} style={IMAGE} />
         <View style={INPUTS_CONTAINER}>
           <TextInput

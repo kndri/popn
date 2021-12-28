@@ -162,6 +162,17 @@ export const getPost = /* GraphQL */ `
           id
           userID
           postID
+          user {
+            id
+            age
+            username
+            email
+            avatarImageURL
+            following
+            follower
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -173,6 +184,17 @@ export const getPost = /* GraphQL */ `
           text
           userID
           postID
+          user {
+            id
+            age
+            username
+            email
+            avatarImageURL
+            following
+            follower
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -208,20 +230,20 @@ export const listPosts = /* GraphQL */ `
         likes {
           items {
             id
-            createdAt
-            postID
-            updatedAt
             userID
+            postID
+            createdAt
+            updatedAt
           }
         }
         comments {
           items {
             id
-            createdAt
-            postID
             text
-            updatedAt
             userID
+            postID
+            createdAt
+            updatedAt
           }
         }
         createdAt

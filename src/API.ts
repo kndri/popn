@@ -158,8 +158,8 @@ export type Comment = {
   text: string,
   userID: string,
   postID: string,
-  user?: User | null,
-  post?: Post | null,
+  user: User,
+  post: Post,
   createdAt?: string | null,
   updatedAt: string,
 };
@@ -923,7 +923,7 @@ export type CreateCommentMutation = {
     text: string,
     userID: string,
     postID: string,
-    user?:  {
+    user:  {
       __typename: "User",
       id: string,
       age: string,
@@ -942,8 +942,8 @@ export type CreateCommentMutation = {
       follower?: number | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    post?:  {
+    },
+    post:  {
       __typename: "Post",
       id: string,
       userID: string,
@@ -970,7 +970,7 @@ export type CreateCommentMutation = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    } | null,
+    },
     createdAt?: string | null,
     updatedAt: string,
   } | null,
@@ -988,7 +988,7 @@ export type UpdateCommentMutation = {
     text: string,
     userID: string,
     postID: string,
-    user?:  {
+    user:  {
       __typename: "User",
       id: string,
       age: string,
@@ -1007,8 +1007,8 @@ export type UpdateCommentMutation = {
       follower?: number | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    post?:  {
+    },
+    post:  {
       __typename: "Post",
       id: string,
       userID: string,
@@ -1035,7 +1035,7 @@ export type UpdateCommentMutation = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    } | null,
+    },
     createdAt?: string | null,
     updatedAt: string,
   } | null,
@@ -1053,7 +1053,7 @@ export type DeleteCommentMutation = {
     text: string,
     userID: string,
     postID: string,
-    user?:  {
+    user:  {
       __typename: "User",
       id: string,
       age: string,
@@ -1072,8 +1072,8 @@ export type DeleteCommentMutation = {
       follower?: number | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    post?:  {
+    },
+    post:  {
       __typename: "Post",
       id: string,
       userID: string,
@@ -1100,7 +1100,7 @@ export type DeleteCommentMutation = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    } | null,
+    },
     createdAt?: string | null,
     updatedAt: string,
   } | null,
@@ -1620,7 +1620,7 @@ export type GetCommentQuery = {
     text: string,
     userID: string,
     postID: string,
-    user?:  {
+    user:  {
       __typename: "User",
       id: string,
       age: string,
@@ -1639,8 +1639,8 @@ export type GetCommentQuery = {
       follower?: number | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    post?:  {
+    },
+    post:  {
       __typename: "Post",
       id: string,
       userID: string,
@@ -1667,7 +1667,7 @@ export type GetCommentQuery = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    } | null,
+    },
     createdAt?: string | null,
     updatedAt: string,
   } | null,
@@ -1688,7 +1688,7 @@ export type ListCommentsQuery = {
       text: string,
       userID: string,
       postID: string,
-      user?:  {
+      user:  {
         __typename: "User",
         id: string,
         age: string,
@@ -1699,15 +1699,15 @@ export type ListCommentsQuery = {
         follower?: number | null,
         createdAt: string,
         updatedAt: string,
-      } | null,
-      post?:  {
+      },
+      post:  {
         __typename: "Post",
         id: string,
         userID: string,
         description?: string | null,
         createdAt?: string | null,
         updatedAt: string,
-      } | null,
+      },
       createdAt?: string | null,
       updatedAt: string,
     } | null > | null,
@@ -1857,7 +1857,7 @@ export type CommentByUserQuery = {
       text: string,
       userID: string,
       postID: string,
-      user?:  {
+      user:  {
         __typename: "User",
         id: string,
         age: string,
@@ -1868,15 +1868,15 @@ export type CommentByUserQuery = {
         follower?: number | null,
         createdAt: string,
         updatedAt: string,
-      } | null,
-      post?:  {
+      },
+      post:  {
         __typename: "Post",
         id: string,
         userID: string,
         description?: string | null,
         createdAt?: string | null,
         updatedAt: string,
-      } | null,
+      },
       createdAt?: string | null,
       updatedAt: string,
     } | null > | null,
@@ -2293,7 +2293,7 @@ export type OnCreateCommentSubscription = {
     text: string,
     userID: string,
     postID: string,
-    user?:  {
+    user:  {
       __typename: "User",
       id: string,
       age: string,
@@ -2312,8 +2312,8 @@ export type OnCreateCommentSubscription = {
       follower?: number | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    post?:  {
+    },
+    post:  {
       __typename: "Post",
       id: string,
       userID: string,
@@ -2340,7 +2340,7 @@ export type OnCreateCommentSubscription = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    } | null,
+    },
     createdAt?: string | null,
     updatedAt: string,
   } | null,
@@ -2353,7 +2353,7 @@ export type OnUpdateCommentSubscription = {
     text: string,
     userID: string,
     postID: string,
-    user?:  {
+    user:  {
       __typename: "User",
       id: string,
       age: string,
@@ -2372,8 +2372,8 @@ export type OnUpdateCommentSubscription = {
       follower?: number | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    post?:  {
+    },
+    post:  {
       __typename: "Post",
       id: string,
       userID: string,
@@ -2400,7 +2400,7 @@ export type OnUpdateCommentSubscription = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    } | null,
+    },
     createdAt?: string | null,
     updatedAt: string,
   } | null,
@@ -2413,7 +2413,7 @@ export type OnDeleteCommentSubscription = {
     text: string,
     userID: string,
     postID: string,
-    user?:  {
+    user:  {
       __typename: "User",
       id: string,
       age: string,
@@ -2432,8 +2432,8 @@ export type OnDeleteCommentSubscription = {
       follower?: number | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    post?:  {
+    },
+    post:  {
       __typename: "Post",
       id: string,
       userID: string,
@@ -2460,7 +2460,7 @@ export type OnDeleteCommentSubscription = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    } | null,
+    },
     createdAt?: string | null,
     updatedAt: string,
   } | null,

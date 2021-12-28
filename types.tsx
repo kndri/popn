@@ -13,7 +13,7 @@ import { QuickReplies, User } from "react-native-gifted-chat";
 
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList { }
+    interface RootParamList extends RootStackParamList {}
   }
 }
 
@@ -36,7 +36,7 @@ export type RootStackParamList = {
   Verify: undefined;
   UserProfile: undefined;
   MessageRoom: undefined;
-  NewPost: undefined;
+  NewPost: undefined | any;
   PostDetails: undefined | any;
 };
 
@@ -72,18 +72,18 @@ export interface SneakerList {
 }
 
 export interface ChatMessage {
-  _id: string | number
-  text: string
-  createdAt: Date | number
-  user: User
-  image?: string
-  video?: string
-  audio?: string
-  system?: boolean
-  sent?: boolean
-  received?: boolean
-  pending?: boolean
-  quickReplies?: QuickReplies
+  _id: string | number;
+  text: string;
+  createdAt: Date | number;
+  user: User;
+  image?: string;
+  video?: string;
+  audio?: string;
+  system?: boolean;
+  sent?: boolean;
+  received?: boolean;
+  pending?: boolean;
+  quickReplies?: QuickReplies;
 }
 
 // export interface ChatRoom {
@@ -91,7 +91,6 @@ export interface ChatMessage {
 //   users: [User]
 //   lastMessage: ChatMessage
 // }
-
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
   CompositeScreenProps<

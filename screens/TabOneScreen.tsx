@@ -178,8 +178,12 @@ export default function TabOneScreen({
   };
 
   React.useEffect(() => {
-    fetchPosts();
-  }, [isFocused]);
+    const rerender = navigation.addListener("focus", () => {
+      if (isFocused) {
+        fetchPosts();
+      }
+    });
+  }, []);
 
   const saveUserToDB = async (user: any) => {
     await API.graphql(graphqlOperation(createUser, { input: user }));

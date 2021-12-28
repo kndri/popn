@@ -1,5 +1,11 @@
 import React, { FC } from "react";
-import { View, ViewStyle, TextStyle, FlatList } from "react-native";
+import {
+  View,
+  ViewStyle,
+  TextStyle,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import {
   Screen,
   Text,
@@ -14,6 +20,7 @@ import { ImageStyle } from "react-native";
 import {
   addLike,
   checkLoggedUser,
+  getCurrentPost,
   likeDeletion,
 } from "../aws-functions/aws-functions";
 
@@ -50,6 +57,9 @@ const INTERACTIONS: ViewStyle = {
   borderTopWidth: 1,
   borderBottomColor: "grey",
   borderTopColor: "grey",
+  height: 40,
+  alignItems: "center",
+  paddingLeft: 20,
 };
 const INTERACTIONS_BUTTONS: ViewStyle = {
   display: "flex",
@@ -61,6 +71,7 @@ const INTERACTIONS_BUTTONS: ViewStyle = {
 const BUTTON_TEXT: TextStyle = {
   marginLeft: 5,
   fontSize: 15,
+  textAlign: "center",
 };
 const PROFILE_HEADER: ViewStyle = {
   flexDirection: "row",
@@ -89,10 +100,30 @@ const BUTTON_IMAGE: ImageStyle = {
 const PostDetailsScreen = (props: any) => {
   const { post, myLike, likesCount, commentCount } = props.route.params;
   const navigation = useNavigation();
+  const isFocused = navigation.isFocused();
   const [myLikes, setMyLike] = React.useState(myLike);
-  const [comments, setComments] = React.useState(post.comments.items);
+  const [comments, setComments] = React.useState<any[]>([]);
   const [likesCounts, setLikesCount] = React.useState(likesCount);
-  const [commentCnt, setCommentCnt] = React.useState(commentCount);
+  const [commentCnt, setCommentCnt] = React.useState();
+
+  const fetchPost = async () => {
+    const result = await getCurrentPost(post.id);
+    setComments(result.comments.items);
+    setCommentCnt(result.comments.items.length);
+    // console.log("commensts", comments);
+  };
+
+  React.useEffect(() => {
+    fetchPost();
+  }, []);
+
+  React.useEffect(() => {
+    const rerender = navigation.addListener("focus", () => {
+      if (isFocused) {
+        fetchPost();
+      }
+    });
+  }, []);
 
   const onLike = async () => {
     if (myLikes === null || myLikes === undefined) {
@@ -106,7 +137,7 @@ const PostDetailsScreen = (props: any) => {
     }
   };
 
-  const renderPosts = ({ post }) => {
+  const renderPosts = (post) => {
     return (
       <View style={COMMENT_CONTAINER}>
         <Image
@@ -209,25 +240,28 @@ const PostDetailsScreen = (props: any) => {
             {post.description}
           </Text>
           <View style={INTERACTIONS}>
-            <Button style={INTERACTIONS_BUTTONS} onPress={() => onLike()}>
+            <TouchableOpacity
+              style={INTERACTIONS_BUTTONS}
+              onPress={() => onLike()}
+            >
               {myLikes === null || myLikes === undefined ? (
                 <Image source={unliked} style={BUTTON_IMAGE} />
               ) : (
                 <Image source={liked} style={BUTTON_IMAGE} />
               )}
               <Text style={BUTTON_TEXT}>{likesCounts} </Text>
-            </Button>
-            <Button
+            </TouchableOpacity>
+            <TouchableOpacity
               style={INTERACTIONS_BUTTONS}
               onPress={() =>
                 // reusing new post screen to create a comment for the current post
                 // new post will need to be sent the current post props
-                navigation.navigate("NewPost")
+                navigation.navigate("NewPost", { comment: post })
               }
             >
               <Image source={comment} style={BUTTON_IMAGE} />
               <Text style={BUTTON_TEXT}>{commentCnt} </Text>
-            </Button>
+            </TouchableOpacity>
             {/* <Button
               style={INTERACTIONS_BUTTONS}
               // onPress={() =>
@@ -244,6 +278,7 @@ const PostDetailsScreen = (props: any) => {
           data={comments}
           renderItem={({ item }) => renderPosts(item)}
           keyExtractor={(user) => String(user.id)}
+          style={{ height: "100%" }}
         />
       </View>
     </Screen>

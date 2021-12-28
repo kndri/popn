@@ -54,7 +54,7 @@ const BUTTON_TEXT: TextStyle = {
 const Post = ({ post, user }) => {
   const navigation = useNavigation();
 
-  const [myLike, setMyLike] = React.useState();
+  const [myLike, setMyLike] = React.useState<any>();
   const [likesCount, setLikesCount] = React.useState(post.likes.items.length);
   const [commentCount, setCommentCount] = React.useState(
     post.comments.items.length
@@ -132,9 +132,7 @@ const Post = ({ post, user }) => {
             </Button>
             <Button
               style={INTERACTIONS_BUTTONS}
-              // onPress={() =>
-              //   navigation.navigate("Settings", { screen: "settings" })
-              // }
+              onPress={() => navigation.navigate("NewPost", { comment: post })}
             >
               <Image source={comment} />
 
