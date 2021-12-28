@@ -187,7 +187,10 @@ function RootNavigator() {
           <Stack.Screen
             name="MessageRoom"
             component={MessageRoomScreen}
-            options={{ headerShown: false }}
+            options={({ route }) => ({
+              // title: route?.params?.name,
+              headerShown: false
+            })}
           />
         </>
       ) : (

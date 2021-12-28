@@ -35,7 +35,8 @@ const CENTER: ViewStyle = {
     flexDirection: 'row',
     alignItems: "center",
     // justifyContent: "center",
-    marginTop: 15,
+
+    // marginTop: 15,
     // backgroundColor: 'red',
     paddingHorizontal: spacing[3],
     borderBottomWidth: 2,
@@ -187,8 +188,9 @@ export default function MessageRoomScreen() {
                     headerTx="demoScreen.howTo"
                     leftIcon="back"
                     onLeftPress={() => navigation.goBack()}
+                    style={{ top: 12 }}
                 />
-                <Text preset="header" text="Message Room" style={{ left: 65 }} />
+                <Text preset="header" text="Message Room" style={{ left: 65, top: 12 }} />
             </View>
 
             <GiftedChat

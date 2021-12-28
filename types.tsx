@@ -35,7 +35,7 @@ export type RootStackParamList = {
   ShoeDetails: undefined;
   Verify: undefined;
   UserProfile: undefined;
-  MessageRoom: undefined;
+  MessageRoom: any;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -83,9 +83,13 @@ export interface ChatMessage {
   pending?: boolean
   quickReplies?: QuickReplies
 }
-export interface MessageList {
-  imessages: Array<ChatMessage>;
-}
+
+// export interface ChatRoom {
+//   id: string
+//   users: [User]
+//   lastMessage: ChatMessage
+// }
+
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
   CompositeScreenProps<
