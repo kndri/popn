@@ -75,7 +75,6 @@ const CHATROOMS = [
         createdAt: '05/15/2021'
     },
 
-
 ]
 
 
