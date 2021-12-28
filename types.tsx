@@ -71,7 +71,7 @@ export interface SneakerList {
   sneakers: Array<Sneaker>;
 }
 
-export interface IMessage {
+export interface ChatMessage {
   _id: string | number
   text: string
   createdAt: Date | number
@@ -85,9 +85,13 @@ export interface IMessage {
   pending?: boolean
   quickReplies?: QuickReplies
 }
-export interface MessageList {
-  imessages: Array<IMessage>;
-}
+
+// export interface ChatRoom {
+//   id: string
+//   users: [User]
+//   lastMessage: ChatMessage
+// }
+
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
   CompositeScreenProps<

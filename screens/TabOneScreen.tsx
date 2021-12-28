@@ -225,7 +225,7 @@ export default function TabOneScreen({
             preset="bold"
             style={{ fontSize: 18, marginLeft: 15, marginRight: 20 }}
           >
-            1
+            {item.id}
           </Text>
           <Image
             source={item.image_url}
