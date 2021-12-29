@@ -5,6 +5,7 @@ import {
   TextStyle,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import {
   Screen,
@@ -20,9 +21,12 @@ import { ImageStyle } from "react-native";
 import {
   addLike,
   checkLoggedUser,
+  commentDeletion,
   getCurrentPost,
   likeDeletion,
+  postDeletion,
 } from "../aws-functions/aws-functions";
+import Tooltip from "react-native-walkthrough-tooltip";
 
 const liked = require("../assets/images/Liked.png");
 const unliked = require("../assets/images/Unliked.png");
@@ -30,6 +34,7 @@ const comment = require("../assets/images/comment.png");
 const share = require("../assets/images/share.png");
 const seen = require("../assets/images/seen.png");
 const default_user = require("../assets/images/UserImage.png");
+const more = require("../assets/images/More.png");
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -105,6 +110,8 @@ const PostDetailsScreen = (props: any) => {
   const [comments, setComments] = React.useState<any[]>([]);
   const [likesCounts, setLikesCount] = React.useState(likesCount);
   const [commentCnt, setCommentCnt] = React.useState();
+  const [toolTipVisible, setToolTipVisible] = React.useState(false);
+  const [username, setUsername] = React.useState<any>();
 
   const fetchPost = async () => {
     const result = await getCurrentPost(post.id);
@@ -112,9 +119,14 @@ const PostDetailsScreen = (props: any) => {
     setCommentCnt(result.comments.items.length);
     // console.log("commensts", comments);
   };
+  const getUser = async () => {
+    const user = await checkLoggedUser();
+    setUsername(user.sub);
+  };
 
   React.useEffect(() => {
     fetchPost();
+    getUser();
   }, []);
 
   React.useEffect(() => {
@@ -136,6 +148,35 @@ const PostDetailsScreen = (props: any) => {
       setMyLike(null);
     }
   };
+  const createDeleteAlert = (commentID) =>
+    Alert.alert("Delete Post", "Are you sure you want to delete this Post?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          commentDeletion(commentID);
+          fetchPost();
+        },
+      },
+    ]);
+
+  const toolContent = (commentID) => (
+    <View>
+      {username === post.userID ? (
+        <TouchableOpacity onPress={() => createDeleteAlert(commentID)}>
+          <Text>Delete Post</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity>
+          <Text>Profile Page</Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  );
 
   const renderPosts = (post) => {
     return (
@@ -185,6 +226,26 @@ const PostDetailsScreen = (props: any) => {
             </Button>
           </View> */}
         </View>
+        <Tooltip
+          isVisible={toolTipVisible}
+          content={toolContent(post.id)}
+          arrowSize={{ width: 0, height: 0 }}
+          placement="bottom"
+          contentStyle={{
+            left: 110,
+            bottom: 70,
+            maxWidth: 200,
+          }}
+          arrowStyle={{ bottom: 60 }}
+          showChildInTooltip={false}
+          backgroundColor="transparent"
+          closeOnChildInteraction={false}
+          onClose={() => setToolTipVisible(false)}
+        >
+          <TouchableOpacity onPress={() => setToolTipVisible(true)}>
+            <Image source={more} />
+          </TouchableOpacity>
+        </Tooltip>
       </View>
     );
   };
