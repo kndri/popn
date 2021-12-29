@@ -6,13 +6,21 @@ export type CreateUserInput = {
   id?: string | null,
   age: string,
   username: string,
-  phone: string,
+  email: string,
+  avatarImageURL: string,
+  following?: number | null,
+  follower?: number | null,
+  status?: string | null,
 };
 
 export type ModelUserConditionInput = {
   age?: ModelStringInput | null,
   username?: ModelStringInput | null,
-  phone?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  avatarImageURL?: ModelStringInput | null,
+  following?: ModelIntInput | null,
+  follower?: ModelIntInput | null,
+  status?: ModelStringInput | null,
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
@@ -58,13 +66,31 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type User = {
   __typename: "User",
   id: string,
   age: string,
   username: string,
-  phone: string,
+  email: string,
+  avatarImageURL: string,
   sneakers?: ModelSneakerConnection | null,
+  posts?: ModelPostConnection | null,
+  following?: number | null,
+  follower?: number | null,
+  status?: string | null,
+  chatRoomUser?: ModelChatRoomUserConnection | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -89,11 +115,114 @@ export type Sneaker = {
   updatedAt: string,
 };
 
+export type ModelPostConnection = {
+  __typename: "ModelPostConnection",
+  items?:  Array<Post | null > | null,
+  nextToken?: string | null,
+};
+
+export type Post = {
+  __typename: "Post",
+  id: string,
+  userID: string,
+  description?: string | null,
+  user?: User | null,
+  likes?: ModelLikeConnection | null,
+  comments?: ModelCommentConnection | null,
+  createdAt?: string | null,
+  updatedAt: string,
+};
+
+export type ModelLikeConnection = {
+  __typename: "ModelLikeConnection",
+  items?:  Array<Like | null > | null,
+  nextToken?: string | null,
+};
+
+export type Like = {
+  __typename: "Like",
+  id: string,
+  userID: string,
+  postID: string,
+  user: User,
+  post: Post,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelCommentConnection = {
+  __typename: "ModelCommentConnection",
+  items?:  Array<Comment | null > | null,
+  nextToken?: string | null,
+};
+
+export type Comment = {
+  __typename: "Comment",
+  id: string,
+  text: string,
+  userID: string,
+  postID: string,
+  user?: User | null,
+  post?: Post | null,
+  createdAt?: string | null,
+  updatedAt: string,
+};
+
+export type ModelChatRoomUserConnection = {
+  __typename: "ModelChatRoomUserConnection",
+  items?:  Array<ChatRoomUser | null > | null,
+  nextToken?: string | null,
+};
+
+export type ChatRoomUser = {
+  __typename: "ChatRoomUser",
+  id: string,
+  userID: string,
+  chatRoomID: string,
+  user?: User | null,
+  chatRoom?: ChatRoom | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ChatRoom = {
+  __typename: "ChatRoom",
+  id: string,
+  chatRoomUsers?: ModelChatRoomUserConnection | null,
+  messages?: ModelMessageConnection | null,
+  lastMessageID: string,
+  lastMessage?: Message | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelMessageConnection = {
+  __typename: "ModelMessageConnection",
+  items?:  Array<Message | null > | null,
+  nextToken?: string | null,
+};
+
+export type Message = {
+  __typename: "Message",
+  id: string,
+  createdAt?: string | null,
+  text: string,
+  userID: string,
+  chatRoomID: string,
+  user?: User | null,
+  chatRoom?: ChatRoom | null,
+  updatedAt: string,
+};
+
 export type UpdateUserInput = {
   id: string,
   age?: string | null,
   username?: string | null,
-  phone?: string | null,
+  email?: string | null,
+  avatarImageURL?: string | null,
+  following?: number | null,
+  follower?: number | null,
+  status?: string | null,
 };
 
 export type DeleteUserInput = {
@@ -162,6 +291,87 @@ export type DeleteSneakerInput = {
   id: string,
 };
 
+export type CreatePostInput = {
+  id?: string | null,
+  userID: string,
+  description?: string | null,
+  createdAt?: string | null,
+};
+
+export type ModelPostConditionInput = {
+  userID?: ModelIDInput | null,
+  description?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelPostConditionInput | null > | null,
+  or?: Array< ModelPostConditionInput | null > | null,
+  not?: ModelPostConditionInput | null,
+};
+
+export type UpdatePostInput = {
+  id: string,
+  userID?: string | null,
+  description?: string | null,
+  createdAt?: string | null,
+};
+
+export type DeletePostInput = {
+  id: string,
+};
+
+export type CreateCommentInput = {
+  id?: string | null,
+  text: string,
+  userID: string,
+  postID: string,
+  createdAt?: string | null,
+};
+
+export type ModelCommentConditionInput = {
+  text?: ModelStringInput | null,
+  userID?: ModelIDInput | null,
+  postID?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelCommentConditionInput | null > | null,
+  or?: Array< ModelCommentConditionInput | null > | null,
+  not?: ModelCommentConditionInput | null,
+};
+
+export type UpdateCommentInput = {
+  id: string,
+  text?: string | null,
+  userID?: string | null,
+  postID?: string | null,
+  createdAt?: string | null,
+};
+
+export type DeleteCommentInput = {
+  id: string,
+};
+
+export type CreateLikeInput = {
+  id?: string | null,
+  userID: string,
+  postID: string,
+};
+
+export type ModelLikeConditionInput = {
+  userID?: ModelIDInput | null,
+  postID?: ModelIDInput | null,
+  and?: Array< ModelLikeConditionInput | null > | null,
+  or?: Array< ModelLikeConditionInput | null > | null,
+  not?: ModelLikeConditionInput | null,
+};
+
+export type UpdateLikeInput = {
+  id: string,
+  userID?: string | null,
+  postID?: string | null,
+};
+
+export type DeleteLikeInput = {
+  id: string,
+};
+
 export type CreateSneakerStoreInput = {
   id?: string | null,
   brand: string,
@@ -207,7 +417,11 @@ export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   age?: ModelStringInput | null,
   username?: ModelStringInput | null,
-  phone?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  avatarImageURL?: ModelStringInput | null,
+  following?: ModelIntInput | null,
+  follower?: ModelIntInput | null,
+  status?: ModelStringInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
@@ -231,6 +445,27 @@ export type ModelSneakerFilterInput = {
   and?: Array< ModelSneakerFilterInput | null > | null,
   or?: Array< ModelSneakerFilterInput | null > | null,
   not?: ModelSneakerFilterInput | null,
+};
+
+export type ModelPostFilterInput = {
+  id?: ModelIDInput | null,
+  userID?: ModelIDInput | null,
+  description?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelPostFilterInput | null > | null,
+  or?: Array< ModelPostFilterInput | null > | null,
+  not?: ModelPostFilterInput | null,
+};
+
+export type ModelCommentFilterInput = {
+  id?: ModelIDInput | null,
+  text?: ModelStringInput | null,
+  userID?: ModelIDInput | null,
+  postID?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelCommentFilterInput | null > | null,
+  or?: Array< ModelCommentFilterInput | null > | null,
+  not?: ModelCommentFilterInput | null,
 };
 
 export type ModelSneakerStoreFilterInput = {
@@ -266,6 +501,21 @@ export enum ModelSortDirection {
 }
 
 
+export type ModelCommentByUserCompositeKeyConditionInput = {
+  eq?: ModelCommentByUserCompositeKeyInput | null,
+  le?: ModelCommentByUserCompositeKeyInput | null,
+  lt?: ModelCommentByUserCompositeKeyInput | null,
+  ge?: ModelCommentByUserCompositeKeyInput | null,
+  gt?: ModelCommentByUserCompositeKeyInput | null,
+  between?: Array< ModelCommentByUserCompositeKeyInput | null > | null,
+  beginsWith?: ModelCommentByUserCompositeKeyInput | null,
+};
+
+export type ModelCommentByUserCompositeKeyInput = {
+  postID?: string | null,
+  createdAt?: string | null,
+};
+
 export type CreateUserMutationVariables = {
   input: CreateUserInput,
   condition?: ModelUserConditionInput | null,
@@ -277,7 +527,8 @@ export type CreateUserMutation = {
     id: string,
     age: string,
     username: string,
-    phone: string,
+    email: string,
+    avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
       items?:  Array< {
@@ -294,6 +545,20 @@ export type CreateUserMutation = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
+    posts?:  {
+      __typename: "ModelPostConnection",
+      items?:  Array< {
+        __typename: "Post",
+        id: string,
+        userID: string,
+        description?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    following?: number | null,
+    follower?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -310,7 +575,8 @@ export type UpdateUserMutation = {
     id: string,
     age: string,
     username: string,
-    phone: string,
+    email: string,
+    avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
       items?:  Array< {
@@ -327,6 +593,20 @@ export type UpdateUserMutation = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
+    posts?:  {
+      __typename: "ModelPostConnection",
+      items?:  Array< {
+        __typename: "Post",
+        id: string,
+        userID: string,
+        description?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    following?: number | null,
+    follower?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -343,7 +623,8 @@ export type DeleteUserMutation = {
     id: string,
     age: string,
     username: string,
-    phone: string,
+    email: string,
+    avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
       items?:  Array< {
@@ -360,6 +641,20 @@ export type DeleteUserMutation = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
+    posts?:  {
+      __typename: "ModelPostConnection",
+      items?:  Array< {
+        __typename: "Post",
+        id: string,
+        userID: string,
+        description?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    following?: number | null,
+    follower?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -384,11 +679,18 @@ export type CreateSneakerMutation = {
       id: string,
       age: string,
       username: string,
-      phone: string,
+      email: string,
+      avatarImageURL: string,
       sneakers?:  {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -417,11 +719,18 @@ export type UpdateSneakerMutation = {
       id: string,
       age: string,
       username: string,
-      phone: string,
+      email: string,
+      avatarImageURL: string,
       sneakers?:  {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -450,16 +759,593 @@ export type DeleteSneakerMutation = {
       id: string,
       age: string,
       username: string,
-      phone: string,
+      email: string,
+      avatarImageURL: string,
       sneakers?:  {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
       createdAt: string,
       updatedAt: string,
     } | null,
     createdAt?: string | null,
     verified?: boolean | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreatePostMutationVariables = {
+  input: CreatePostInput,
+  condition?: ModelPostConditionInput | null,
+};
+
+export type CreatePostMutation = {
+  createPost?:  {
+    __typename: "Post",
+    id: string,
+    userID: string,
+    description?: string | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    likes?:  {
+      __typename: "ModelLikeConnection",
+      items?:  Array< {
+        __typename: "Like",
+        id: string,
+        userID: string,
+        postID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items?:  Array< {
+        __typename: "Comment",
+        id: string,
+        text: string,
+        userID: string,
+        postID: string,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdatePostMutationVariables = {
+  input: UpdatePostInput,
+  condition?: ModelPostConditionInput | null,
+};
+
+export type UpdatePostMutation = {
+  updatePost?:  {
+    __typename: "Post",
+    id: string,
+    userID: string,
+    description?: string | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    likes?:  {
+      __typename: "ModelLikeConnection",
+      items?:  Array< {
+        __typename: "Like",
+        id: string,
+        userID: string,
+        postID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items?:  Array< {
+        __typename: "Comment",
+        id: string,
+        text: string,
+        userID: string,
+        postID: string,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeletePostMutationVariables = {
+  input: DeletePostInput,
+  condition?: ModelPostConditionInput | null,
+};
+
+export type DeletePostMutation = {
+  deletePost?:  {
+    __typename: "Post",
+    id: string,
+    userID: string,
+    description?: string | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    likes?:  {
+      __typename: "ModelLikeConnection",
+      items?:  Array< {
+        __typename: "Like",
+        id: string,
+        userID: string,
+        postID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items?:  Array< {
+        __typename: "Comment",
+        id: string,
+        text: string,
+        userID: string,
+        postID: string,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateCommentMutationVariables = {
+  input: CreateCommentInput,
+  condition?: ModelCommentConditionInput | null,
+};
+
+export type CreateCommentMutation = {
+  createComment?:  {
+    __typename: "Comment",
+    id: string,
+    text: string,
+    userID: string,
+    postID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    post?:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateCommentMutationVariables = {
+  input: UpdateCommentInput,
+  condition?: ModelCommentConditionInput | null,
+};
+
+export type UpdateCommentMutation = {
+  updateComment?:  {
+    __typename: "Comment",
+    id: string,
+    text: string,
+    userID: string,
+    postID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    post?:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteCommentMutationVariables = {
+  input: DeleteCommentInput,
+  condition?: ModelCommentConditionInput | null,
+};
+
+export type DeleteCommentMutation = {
+  deleteComment?:  {
+    __typename: "Comment",
+    id: string,
+    text: string,
+    userID: string,
+    postID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    post?:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateLikeMutationVariables = {
+  input: CreateLikeInput,
+  condition?: ModelLikeConditionInput | null,
+};
+
+export type CreateLikeMutation = {
+  createLike?:  {
+    __typename: "Like",
+    id: string,
+    userID: string,
+    postID: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    post:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateLikeMutationVariables = {
+  input: UpdateLikeInput,
+  condition?: ModelLikeConditionInput | null,
+};
+
+export type UpdateLikeMutation = {
+  updateLike?:  {
+    __typename: "Like",
+    id: string,
+    userID: string,
+    postID: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    post:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteLikeMutationVariables = {
+  input: DeleteLikeInput,
+  condition?: ModelLikeConditionInput | null,
+};
+
+export type DeleteLikeMutation = {
+  deleteLike?:  {
+    __typename: "Like",
+    id: string,
+    userID: string,
+    postID: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    post:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    },
+    createdAt: string,
     updatedAt: string,
   } | null,
 };
@@ -528,7 +1414,8 @@ export type GetUserQuery = {
     id: string,
     age: string,
     username: string,
-    phone: string,
+    email: string,
+    avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
       items?:  Array< {
@@ -545,6 +1432,20 @@ export type GetUserQuery = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
+    posts?:  {
+      __typename: "ModelPostConnection",
+      items?:  Array< {
+        __typename: "Post",
+        id: string,
+        userID: string,
+        description?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    following?: number | null,
+    follower?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -564,11 +1465,18 @@ export type ListUsersQuery = {
       id: string,
       age: string,
       username: string,
-      phone: string,
+      email: string,
+      avatarImageURL: string,
       sneakers?:  {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -594,11 +1502,18 @@ export type GetSneakerQuery = {
       id: string,
       age: string,
       username: string,
-      phone: string,
+      email: string,
+      avatarImageURL: string,
       sneakers?:  {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -630,12 +1545,237 @@ export type ListSneakersQuery = {
         id: string,
         age: string,
         username: string,
-        phone: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
         createdAt: string,
         updatedAt: string,
       } | null,
       createdAt?: string | null,
       verified?: boolean | null,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetPostQueryVariables = {
+  id: string,
+};
+
+export type GetPostQuery = {
+  getPost?:  {
+    __typename: "Post",
+    id: string,
+    userID: string,
+    description?: string | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    likes?:  {
+      __typename: "ModelLikeConnection",
+      items?:  Array< {
+        __typename: "Like",
+        id: string,
+        userID: string,
+        postID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items?:  Array< {
+        __typename: "Comment",
+        id: string,
+        text: string,
+        userID: string,
+        postID: string,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListPostsQueryVariables = {
+  filter?: ModelPostFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListPostsQuery = {
+  listPosts?:  {
+    __typename: "ModelPostConnection",
+    items?:  Array< {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        items?:  Array< {
+          __typename: "Like",
+          id: string,
+          createdAt: string,
+          postID: string,
+          updatedAt: string,
+          userID: string,
+        } | null > | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        items?:  Array< {
+          __typename: "Comment",
+          id: string,
+          createdAt?: string | null,
+          postID: string,
+          text: string,
+          updatedAt: string,
+          userID: string,
+        } | null > | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetCommentQueryVariables = {
+  id: string,
+};
+
+export type GetCommentQuery = {
+  getComment?:  {
+    __typename: "Comment",
+    id: string,
+    text: string,
+    userID: string,
+    postID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    post?:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListCommentsQueryVariables = {
+  filter?: ModelCommentFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListCommentsQuery = {
+  listComments?:  {
+    __typename: "ModelCommentConnection",
+    items?:  Array< {
+      __typename: "Comment",
+      id: string,
+      text: string,
+      userID: string,
+      postID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      post?:  {
+        __typename: "Post",
+        id: string,
+        userID: string,
+        description?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null,
+      createdAt?: string | null,
       updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
@@ -675,8 +1815,6 @@ export type ListSneakerStoresQuery = {
       primary_name: string,
       secondary_name: string,
       image_url: string,
-      createdAt: string,
-      updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
   } | null,
@@ -707,12 +1845,104 @@ export type SneakerByUserQuery = {
         id: string,
         age: string,
         username: string,
-        phone: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
         createdAt: string,
         updatedAt: string,
       } | null,
       createdAt?: string | null,
       verified?: boolean | null,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type PostByUserQueryVariables = {
+  userID?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelPostFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type PostByUserQuery = {
+  postByUser?:  {
+    __typename: "ModelPostConnection",
+    items?:  Array< {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type CommentByUserQueryVariables = {
+  userID?: string | null,
+  postIDCreatedAt?: ModelCommentByUserCompositeKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelCommentFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type CommentByUserQuery = {
+  commentByUser?:  {
+    __typename: "ModelCommentConnection",
+    items?:  Array< {
+      __typename: "Comment",
+      id: string,
+      text: string,
+      userID: string,
+      postID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      post?:  {
+        __typename: "Post",
+        id: string,
+        userID: string,
+        description?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null,
+      createdAt?: string | null,
       updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
@@ -725,7 +1955,8 @@ export type OnCreateUserSubscription = {
     id: string,
     age: string,
     username: string,
-    phone: string,
+    email: string,
+    avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
       items?:  Array< {
@@ -742,6 +1973,20 @@ export type OnCreateUserSubscription = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
+    posts?:  {
+      __typename: "ModelPostConnection",
+      items?:  Array< {
+        __typename: "Post",
+        id: string,
+        userID: string,
+        description?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    following?: number | null,
+    follower?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -753,7 +1998,8 @@ export type OnUpdateUserSubscription = {
     id: string,
     age: string,
     username: string,
-    phone: string,
+    email: string,
+    avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
       items?:  Array< {
@@ -770,6 +2016,20 @@ export type OnUpdateUserSubscription = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
+    posts?:  {
+      __typename: "ModelPostConnection",
+      items?:  Array< {
+        __typename: "Post",
+        id: string,
+        userID: string,
+        description?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    following?: number | null,
+    follower?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -781,7 +2041,8 @@ export type OnDeleteUserSubscription = {
     id: string,
     age: string,
     username: string,
-    phone: string,
+    email: string,
+    avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
       items?:  Array< {
@@ -798,6 +2059,20 @@ export type OnDeleteUserSubscription = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
+    posts?:  {
+      __typename: "ModelPostConnection",
+      items?:  Array< {
+        __typename: "Post",
+        id: string,
+        userID: string,
+        description?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    following?: number | null,
+    follower?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -817,11 +2092,18 @@ export type OnCreateSneakerSubscription = {
       id: string,
       age: string,
       username: string,
-      phone: string,
+      email: string,
+      avatarImageURL: string,
       sneakers?:  {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -845,11 +2127,18 @@ export type OnUpdateSneakerSubscription = {
       id: string,
       age: string,
       username: string,
-      phone: string,
+      email: string,
+      avatarImageURL: string,
       sneakers?:  {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -873,16 +2162,548 @@ export type OnDeleteSneakerSubscription = {
       id: string,
       age: string,
       username: string,
-      phone: string,
+      email: string,
+      avatarImageURL: string,
       sneakers?:  {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
       createdAt: string,
       updatedAt: string,
     } | null,
     createdAt?: string | null,
     verified?: boolean | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreatePostSubscription = {
+  onCreatePost?:  {
+    __typename: "Post",
+    id: string,
+    userID: string,
+    description?: string | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    likes?:  {
+      __typename: "ModelLikeConnection",
+      items?:  Array< {
+        __typename: "Like",
+        id: string,
+        userID: string,
+        postID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items?:  Array< {
+        __typename: "Comment",
+        id: string,
+        text: string,
+        userID: string,
+        postID: string,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdatePostSubscription = {
+  onUpdatePost?:  {
+    __typename: "Post",
+    id: string,
+    userID: string,
+    description?: string | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    likes?:  {
+      __typename: "ModelLikeConnection",
+      items?:  Array< {
+        __typename: "Like",
+        id: string,
+        userID: string,
+        postID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items?:  Array< {
+        __typename: "Comment",
+        id: string,
+        text: string,
+        userID: string,
+        postID: string,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeletePostSubscription = {
+  onDeletePost?:  {
+    __typename: "Post",
+    id: string,
+    userID: string,
+    description?: string | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    likes?:  {
+      __typename: "ModelLikeConnection",
+      items?:  Array< {
+        __typename: "Like",
+        id: string,
+        userID: string,
+        postID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    comments?:  {
+      __typename: "ModelCommentConnection",
+      items?:  Array< {
+        __typename: "Comment",
+        id: string,
+        text: string,
+        userID: string,
+        postID: string,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateCommentSubscription = {
+  onCreateComment?:  {
+    __typename: "Comment",
+    id: string,
+    text: string,
+    userID: string,
+    postID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    post?:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateCommentSubscription = {
+  onUpdateComment?:  {
+    __typename: "Comment",
+    id: string,
+    text: string,
+    userID: string,
+    postID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    post?:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteCommentSubscription = {
+  onDeleteComment?:  {
+    __typename: "Comment",
+    id: string,
+    text: string,
+    userID: string,
+    postID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    post?:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateLikeSubscription = {
+  onCreateLike?:  {
+    __typename: "Like",
+    id: string,
+    userID: string,
+    postID: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    post:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateLikeSubscription = {
+  onUpdateLike?:  {
+    __typename: "Like",
+    id: string,
+    userID: string,
+    postID: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    post:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteLikeSubscription = {
+  onDeleteLike?:  {
+    __typename: "Like",
+    id: string,
+    userID: string,
+    postID: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    post:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    },
+    createdAt: string,
     updatedAt: string,
   } | null,
 };

@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-identical-functions */
-import { Auth } from "aws-amplify";
+import { Auth, Storage } from "aws-amplify";
 import { Alert } from "react-native";
 
 export type AuthData = {
@@ -34,12 +34,34 @@ const signIn = (email: string, _password: string): Promise<AuthData> => {
     }, 1000);
   });
 };
+const uploadImage = async (username: string, imageUrl: string) => {
+  try {
+    const response = await fetch(imageUrl);
 
-const signUp = (
+    const blob = await response.blob();
+
+    const urlParts = imageUrl.split(".");
+    const extension = urlParts[urlParts.length - 1];
+
+    const key = `${username}.${extension}`;
+
+    await Storage.put(key, blob);
+
+    console.log("key", key);
+
+    return key;
+  } catch (e) {
+    console.log(e);
+  }
+  return "";
+};
+
+const signUp = async (
   email: string,
   _password: string,
   age: string,
-  username: string
+  _username: string,
+  image_url: string
 ): Promise<AuthData> => {
   // this is a mock of an API call, in a real app
   // will be need connect with some real API,
@@ -52,12 +74,19 @@ const signUp = (
   // variable to store user id
   let userId: any;
 
-  Auth.signUp({
+  console.log("image_url", image_url);
+  if (image_url.includes("defaultUser") === false) {
+    image_url = await uploadImage(_username, image_url);
+  }
+  console.log("image_url", image_url);
+
+  await Auth.signUp({
     username: email,
     password: _password,
     attributes: {
       "custom:age": age,
-      preferred_username: username
+      "custom:profile_image": image_url,
+      preferred_username: _username,
     },
   })
     .then((response) => {
@@ -82,42 +111,43 @@ const signUp = (
 const usernameAvailable = async (username: string) => {
   // adapted from @herri16's solution: https://github.com/aws-amplify/amplify-js/issues/1067#issuecomment-436492775
   try {
-    const res = await Auth.confirmSignUp(username, '000000', {
+    const res = await Auth.confirmSignUp(username, "000000", {
       // If set to False, the API will throw an AliasExistsException error if the phone number/email used already exists as an alias with a different user
-      forceAliasCreation: false
+      forceAliasCreation: false,
     });
-    
+
     // this should always throw an error of some kind, but if for some reason this succeeds then the user probably exists.
     return false;
   } catch (err: any) {
-    switch ( err.code ) {
-      case 'UserNotFoundException':
-        console.log('err', err);
+    switch (err.code) {
+      case "UserNotFoundException":
+        console.log("err", err);
 
-          return true;
-      case 'NotAuthorizedException':
-        console.log('err', err);
+        return true;
+      case "NotAuthorizedException":
+        console.log("err", err);
 
-          return false;
-      case 'AliasExistsException':
-          // Email alias already exists
-          console.log('err', err);
+        return false;
+      case "AliasExistsException":
+        // Email alias already exists0
 
-          return false;
-      case 'CodeMismatchException':
-        console.log('err', err);
+        console.log("err", err);
 
-          return false;
-      case 'ExpiredCodeException':
-        console.log('err', err);
+        return false;
+      case "CodeMismatchException":
+        console.log("err", err);
 
-          return false;
+        return false;
+      case "ExpiredCodeException":
+        console.log("err", err);
+
+        return false;
       default:
-        console.log('err', err);
-          return false;
+        console.log("err", err);
+        return false;
     }
   }
-}
+};
 
 export const authService = {
   signIn,

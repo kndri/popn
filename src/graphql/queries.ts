@@ -8,7 +8,8 @@ export const getUser = /* GraphQL */ `
       id
       age
       username
-      phone
+      email
+      avatarImageURL
       sneakers {
         items {
           id
@@ -23,6 +24,28 @@ export const getUser = /* GraphQL */ `
         }
         nextToken
       }
+      posts {
+        items {
+          id
+          userID
+          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      chatRoomUser {
+        items {
+          id
+          userID
+          chatRoomID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      following
+      follower
       createdAt
       updatedAt
     }
@@ -39,10 +62,16 @@ export const listUsers = /* GraphQL */ `
         id
         age
         username
-        phone
+        email
+        avatarImageURL
         sneakers {
           nextToken
         }
+        posts {
+          nextToken
+        }
+        following
+        follower
         createdAt
         updatedAt
       }
@@ -63,10 +92,16 @@ export const getSneaker = /* GraphQL */ `
         id
         age
         username
-        phone
+        email
+        avatarImageURL
         sneakers {
           nextToken
         }
+        posts {
+          nextToken
+        }
+        following
+        follower
         createdAt
         updatedAt
       }
@@ -94,12 +129,202 @@ export const listSneakers = /* GraphQL */ `
           id
           age
           username
-          phone
+          email
+          avatarImageURL
+          following
+          follower
           createdAt
           updatedAt
         }
         createdAt
         verified
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getPost = /* GraphQL */ `
+  query GetPost($id: ID!) {
+    getPost(id: $id) {
+      id
+      userID
+      description
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        createdAt
+        updatedAt
+      }
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          text
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPosts = /* GraphQL */ `
+  query ListPosts(
+    $filter: ModelPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        description
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          createdAt
+          updatedAt
+        }
+        likes {
+          items {
+            id
+            createdAt
+            postID
+            updatedAt
+            userID
+          }
+        }
+        comments {
+          items {
+            id
+            createdAt
+            postID
+            text
+            updatedAt
+            userID
+          }
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getComment = /* GraphQL */ `
+  query GetComment($id: ID!) {
+    getComment(id: $id) {
+      id
+      text
+      userID
+      postID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        createdAt
+        updatedAt
+      }
+      post {
+        id
+        userID
+        description
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          createdAt
+          updatedAt
+        }
+        likes {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listComments = /* GraphQL */ `
+  query ListComments(
+    $filter: ModelCommentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        text
+        userID
+        postID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          createdAt
+          updatedAt
+        }
+        post {
+          id
+          userID
+          description
+          createdAt
+          updatedAt
+        }
+        createdAt
         updatedAt
       }
       nextToken
@@ -165,12 +390,107 @@ export const sneakerByUser = /* GraphQL */ `
           id
           age
           username
-          phone
+          email
+          avatarImageURL
+          following
+          follower
           createdAt
           updatedAt
         }
         createdAt
         verified
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const postByUser = /* GraphQL */ `
+  query PostByUser(
+    $userID: ID
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    postByUser(
+      userID: $userID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
+        description
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          createdAt
+          updatedAt
+        }
+        likes {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const commentByUser = /* GraphQL */ `
+  query CommentByUser(
+    $userID: ID
+    $postIDCreatedAt: ModelCommentByUserCompositeKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelCommentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    commentByUser(
+      userID: $userID
+      postIDCreatedAt: $postIDCreatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        text
+        userID
+        postID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          createdAt
+          updatedAt
+        }
+        post {
+          id
+          userID
+          description
+          createdAt
+          updatedAt
+        }
+        createdAt
         updatedAt
       }
       nextToken

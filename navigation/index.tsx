@@ -22,7 +22,7 @@ import TabThreeScreen from "../screens/TabThreeScreen";
 import TabFourScreen from "../screens/TabFourScreen";
 import SplashScreen from "../screens/SplashScreen";
 import AgeScreen from "../screens/AgeScreen";
-import ProfilePicScreen from '../screens/ProfilePicScreen'
+import ProfilePicScreen from "../screens/ProfilePicScreen";
 import UserNameScreen from "../screens/UsernameScreen";
 import EmailScreen from "../screens/EmailScreen";
 import PasswordScreen from "../screens/PasswordScreen";
@@ -35,7 +35,6 @@ import ChangeEmailScreen from "../screens/ChangeEmailScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import MessageRoomScreen from "../screens/MessageRoomScreen";
 
-
 import {
   RootStackParamList,
   RootTabParamList,
@@ -44,10 +43,13 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
-import { checkLoggedUser } from "../aws-functions/check-logged-user";
+import { checkLoggedUser } from "../aws-functions/aws-functions";
 import { useAuth } from "../contexts/auth";
 import ShoeDetailsScreen from "../screens/ShoeDetailsScreen";
 import ReferenceScreen from "../screens/ReferenceScreen";
+import NewPostScreen from "../screens/NewPostScreen";
+import PostDetailsScreen from "../screens/PostDetailsScreen";
+import MessageContactsScreen from "../screens/MessageContactsScreen";
 
 export default function Navigation({
   colorScheme,
@@ -165,6 +167,11 @@ function RootNavigator() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
+            name="MessageContactsScreen"
+            component={MessageContactsScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="Settings"
             component={SettingsNavigator}
             options={{ headerShown: false }}
@@ -182,6 +189,16 @@ function RootNavigator() {
           <Stack.Screen
             name="Verify"
             component={ReferenceScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="NewPost"
+            component={NewPostScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="PostDetails"
+            component={PostDetailsScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -234,9 +251,7 @@ function BottomTabNavigator() {
         component={TabTwoScreen}
         options={{
           title: "Claim",
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="search" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
         }}
       />
       <BottomTab.Screen

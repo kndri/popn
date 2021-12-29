@@ -1,36 +1,35 @@
-import * as React from 'react';
-import { View, ViewStyle, TextStyle, Alert } from "react-native"
-import { color, spacing, typography } from "../theme"
+import * as React from "react";
+import { View, ViewStyle, TextStyle, Alert } from "react-native";
+import { color, spacing, typography } from "../theme";
 import {
   Button,
   Screen,
   Text,
   Header,
   TextField,
-  AutoImage as Image
-} from "../components"
+  AutoImage as Image,
+} from "../components";
 
-import { useNavigation } from '@react-navigation/native';
-import { forgotPassword } from '../aws-functions/forgot-password';
+import { useNavigation } from "@react-navigation/native";
+import { forgotPassword } from "../aws-functions/aws-functions";
 
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[7],
   flex: 1,
-  justifyContent: 'space-between',
+  justifyContent: "space-between",
   paddingBottom: 90,
-
-}
+};
 
 const HEADER: ViewStyle = {
-  alignItems: 'center',
-  justifyContent: 'center',
-}
+  alignItems: "center",
+  justifyContent: "center",
+};
 
 const CENTER: ViewStyle = {
-  justifyContent: 'center', //Centered horizontally
-  flex: 1
+  justifyContent: "center", //Centered horizontally
+  flex: 1,
 };
 
 export default function ForgotPasswordScreen() {
@@ -46,7 +45,11 @@ export default function ForgotPasswordScreen() {
       />
 
       <View style={HEADER}>
-        <Text style={{ marginBottom: 15 }} preset="header" text="Forget your password?" />
+        <Text
+          style={{ marginBottom: 15 }}
+          preset="header"
+          text="Forget your password?"
+        />
         <Text preset="secondary" text="Enter your email to reset password" />
       </View>
 
@@ -56,7 +59,7 @@ export default function ForgotPasswordScreen() {
           value={email}
           label="Email"
           placeholder="Enter your email"
-          autoCapitalize='none'
+          autoCapitalize="none"
           autoCorrect={false}
           inputStyle={{
             padding: 16,
@@ -67,12 +70,22 @@ export default function ForgotPasswordScreen() {
           }}
         />
       </View>
-      <View style={{ flexDirection: 'row', alignContent: 'flex-end', justifyContent: 'flex-end', top: 32 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignContent: "flex-end",
+          justifyContent: "flex-end",
+          top: 32,
+        }}
+      >
         {/* <Button style={{ width: 160 }} text="Continue" preset="primary" onPress={() => forgotPassword(email)} /> */}
-        <Button style={{ width: 160 }} text="Continue" preset="cta" onPress={() => navigation.navigate('ResetPassword')} />
+        <Button
+          style={{ width: 160 }}
+          text="Continue"
+          preset="cta"
+          onPress={() => navigation.navigate("ResetPassword")}
+        />
       </View>
     </Screen>
   );
 }
-
-

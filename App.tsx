@@ -2,7 +2,6 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { initFonts } from "./assets/fonts";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
@@ -11,13 +10,6 @@ import { FormProvider } from "./contexts/form-context";
 import Amplify from "aws-amplify";
 import awsconfig from "./src/aws-exports.js";
 import ToastContainer from "./components/Toast";
-import stream from "getstream";
-
-// const client = stream.connect(
-//    the keys are on .env file
-//   'KEY',
-//   'SECRET KEY'
-// );
 
 Amplify.configure(awsconfig);
 

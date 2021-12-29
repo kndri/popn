@@ -102,7 +102,6 @@ const ShoeDetailsScreen = () => {
           presentationStyle="formSheet"
           visible={modalVisible}
           onRequestClose={() => {
-            console.log("Modal has been closed.");
             setModalVisible(!modalVisible);
           }}
         >

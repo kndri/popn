@@ -17,10 +17,13 @@ import {
 } from "../components";
 import sneakerData from "../new_sneaker_data.json";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { addSneaker } from "../aws-functions/add-sneaker-to-users";
-import { getSneakersFromUser } from "../aws-functions/get-sneakers-from-user";
+import {
+  addUserSneaker,
+  getSneakersFromUser,
+  getSneakersFromDB,
+} from "../aws-functions/aws-functions";
 import { SneakerList } from "../types";
-import { getSneakersFromDB } from "../aws-functions/get-sneakers-from-db";
+
 import { useToast } from "../components/Toast";
 
 const profile_icon = require("../assets/images/profile_icon.png");
@@ -42,12 +45,10 @@ const CLAIM_HEADER: ViewStyle = {
   paddingBottom: 17,
   paddingHorizontal: spacing[4],
   // backgroundColor: 'red',
-  alignItems: 'center',
-
-
+  alignItems: "center",
 };
 const CLAIM_SEARCH: ViewStyle = {
-  flexDirection: 'row',
+  flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
   marginBottom: 20,
@@ -57,7 +58,7 @@ const CLAIM_SEARCH: ViewStyle = {
   width: 335,
   borderWidth: 1,
   borderColor: "#F4F6F9",
-  borderRadius: 32
+  borderRadius: 32,
 };
 const COLLECTION_CONTAINER: ViewStyle = {
   flex: 1,
@@ -149,8 +150,7 @@ export default function TabTwoScreen() {
     getSneakers();
   }, [isFocused]);
 
-  React.useEffect(() => {
-  }, [sneakerDb]);
+  React.useEffect(() => {}, [sneakerDb]);
 
   const renderSneaker = ({ item }) => {
     if (checkClaimed(item)) {
@@ -201,7 +201,7 @@ export default function TabTwoScreen() {
                 marginBottom: 15,
               }}
               onPress={() => {
-                addSneaker(item);
+                addUserSneaker(item);
 
                 // then grey out the sneaker card
               }}
@@ -262,10 +262,10 @@ export default function TabTwoScreen() {
                 marginBottom: 15,
               }}
               onPress={() => {
-                addSneaker(item).then(() => {
+                addUserSneaker(item).then(() => {
                   // Add toast here
                   toast.show(`Sneaker has been added to your showcase.`);
-                  getSneakers()
+                  getSneakers();
                 });
                 // then grey out the sneaker card
               }}
@@ -285,13 +285,10 @@ export default function TabTwoScreen() {
 
   return (
     <Screen style={CONTAINER}>
-
       <View style={CLAIM_HEADER}>
         <Button
-          style={{ backgroundColor: "transparent", }}
-          onPress={() =>
-            navigation.navigate("UserProfile")
-          }
+          style={{ backgroundColor: "transparent" }}
+          onPress={() => navigation.navigate("UserProfile")}
         >
           <Image source={profile_icon} />
         </Button>
@@ -314,7 +311,7 @@ export default function TabTwoScreen() {
           autoCorrect={false}
           onChangeText={(text) => setQuery(text)}
           placeholder="Search"
-          placeholderTextColor={'#878C90'}
+          placeholderTextColor={"#878C90"}
         />
       </View>
 
@@ -330,6 +327,6 @@ export default function TabTwoScreen() {
           }}
         />
       </View>
-    </Screen >
+    </Screen>
   );
 }

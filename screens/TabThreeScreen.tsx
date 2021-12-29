@@ -11,72 +11,15 @@ import {
     Screen,
     Text,
     AutoImage as Image,
-    Button
+    Button, NewMessageButton
 } from "../components";
 import { useNavigation } from "@react-navigation/native";
-
-
-// List of chat rooms
-const CHATROOMS = [
-    {
-        id: "1",
-        users: "https://placeimg.com/140/140/any",
-        sender: 'daniel atkins',
-        lastMessage: "This is the last message I sent.",
-        createdAt: '11/12/2021'
-    },
-    {
-        id: "2",
-        users: "https://placeimg.com/140/140/any",
-        sender: 'erin yeager',
-        lastMessage: "I need to get this to work.",
-        createdAt: '11/11/2021'
-    },
-    {
-        id: "3",
-        users: "https://placeimg.com/140/140/any",
-        sender: 'Captian america',
-        lastMessage: "This is the latest message of the day.",
-        createdAt: '10/3/2021'
-    },
-    {
-        id: "4",
-        users: "https://placeimg.com/140/140/any",
-        sender: 'weatherman',
-        lastMessage: "This weather is so stupid, we're not making it to 2040.",
-        createdAt: '05/15/2021'
-    },
-    {
-        id: "5",
-        users: "https://placeimg.com/140/140/any",
-        sender: 'daniel atkins',
-        lastMessage: "This is the last message I sent.",
-        createdAt: '11/12/2021'
-    },
-    {
-        id: "6",
-        users: "https://placeimg.com/140/140/any",
-        sender: 'erin yeager',
-        lastMessage: "I need to get this to work.",
-        createdAt: '11/11/2021'
-    },
-    {
-        id: "7",
-        users: "https://placeimg.com/140/140/any",
-        sender: 'Captian america',
-        lastMessage: "This is the latest message of the day.",
-        createdAt: '10/3/2021'
-    },
-    {
-        id: "8",
-        users: "https://placeimg.com/140/140/any",
-        sender: 'weatherman',
-        lastMessage: "This weather is so stupid, we're not making it to 2040.",
-        createdAt: '05/15/2021'
-    },
-
-]
-
+import {
+    API,
+    graphqlOperation,
+    Auth,
+} from 'aws-amplify';
+import { getUser } from '../src/graphql/queries';
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -114,6 +57,7 @@ const COLLECTION_CONTAINER: ViewStyle = {
 const TEXTCENTER: TextStyle = {
     textAlign: "center",
     alignItems: "center",
+    textAlignVertical: "center",
 };
 const INPUT: TextStyle = {
     fontFamily: typography.primaryBold,
@@ -167,51 +111,70 @@ const CARD_DATA: ViewStyle = {
 
 export default function TabThreeScreen() {
     const navigation = useNavigation();
+    const [chatRooms, setChatRooms] = React.useState([]);
 
-    // const onClick = () => {
-    //     navigation.navigate('ChatRoom', {
-    //         id: chatRoom.id,
-    //         name: otherUser.name,
-    //     })
-    // }
+    React.useEffect(() => {
+        const fetchChatRooms = async () => {
+            try {
+                const userInfo = await Auth.currentAuthenticatedUser();
 
-    const chatRooms = ({ item }) => {
+                const userData = await API.graphql(
+                    graphqlOperation(
+                        getUser, {
+                        id: userInfo.attributes.sub,
+                    }
+                    )
+                )
+
+                setChatRooms(userData.data.getUser.chatRoomUser.items)
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        fetchChatRooms();
+    }, []);
+
+
+    const renderChatRooms = ({ item }) => {
         return (
-            // Flat List Item
-            <TouchableOpacity style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: item.id, name: item.sender }); }}>
-                <View style={LEFT_SIDE}>
+            <>
+                {/* flat list item */}
+                <TouchableOpacity style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: item.id, name: item.sender }); }}>
+                    <View style={LEFT_SIDE}>
+                        <Image
+                            source={{ uri: `${item.users}` }}
+                            style={{
+                                resizeMode: "contain",
+                                height: 40,
+                                width: 40,
+                                marginRight: 5,
+                                borderRadius: 360
+                                // flex: 1,
+                            }}
+                        />
+                    </View>
+                    <View style={CARD_DATA}>
+                        <Text preset="bold">{item.sender}</Text>
+                        <Text style={{ marginTop: 3 }} preset="secondary">
+                            {item.lastMessage}
+                        </Text>
+                    </View>
+                    <View>
+                        <Text style={{ marginTop: 3 }} preset="secondary">
+                            {item.createdAt}
+                        </Text>
+                    </View>
 
-                    <Image
-                        source={{ uri: `${item.users}` }}
-                        style={{
-                            resizeMode: "contain",
-                            height: 40,
-                            width: 40,
-                            marginRight: 5,
-                            borderRadius: 360
-                            // flex: 1,
-                        }}
-                    />
-                </View>
-                <View style={CARD_DATA}>
-                    <Text preset="bold">{item.sender}</Text>
-                    <Text style={{ marginTop: 3 }} preset="secondary">
-                        {item.lastMessage}
-                    </Text>
-                </View>
-                <View>
-                    <Text style={{ marginTop: 3 }} preset="secondary">
-                        {item.createdAt}
-                    </Text>
-                </View>
+                </TouchableOpacity>
 
-            </TouchableOpacity>
+            </>
         );
     };
 
     return (
         <Screen style={CONTAINER}>
             <View style={{ height: '100%' }}>
+                {console.log('chatrooms: ', chatRooms.length === 0)}
                 <Text preset="header" text="Messages" />
                 {/* seperator */}
                 <View
@@ -222,17 +185,28 @@ export default function TabThreeScreen() {
                         marginTop: 15
                     }}
                 />
+                {chatRooms.length === 0 ? (
+                    <View style={{ height: '100%', justifyContent: 'center' }}>
+                        <Text
+                            style={TEXTCENTER}
+                            preset="bold"
+                            text="No Messages Found."
+                        />
+                    </View>
 
-                <FlatList
-                    data={CHATROOMS}
-                    renderItem={chatRooms}
-                    keyExtractor={item => item.id}
-                    scrollEnabled={true}
-                />
 
+                ) : (
+                    <FlatList
+                        data={chatRooms}
+                        renderItem={renderChatRooms}
+                        keyExtractor={item => item.id}
+                        scrollEnabled={true}
+                    />
+                )
+                }
             </View>
 
-
+            <NewMessageButton />
 
         </Screen>
     );

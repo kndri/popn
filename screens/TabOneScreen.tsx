@@ -17,16 +17,32 @@ import {
 } from "../components";
 import sneakerData from "../new_sneaker_data.json";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { addSneaker } from "../aws-functions/add-sneaker-to-users";
-import { getSneakersFromUser } from "../aws-functions/get-sneakers-from-user";
+import {
+  addUserSneaker,
+  getSneakersFromUser,
+  getSneakersFromDB,
+  getPostFromDB,
+  checkLoggedUser,
+} from "../aws-functions/aws-functions";
+
 import { RootTabScreenProps, SneakerList } from "../types";
-import { getSneakersFromDB } from "../aws-functions/get-sneakers-from-db";
+
 import { useToast } from "../components/Toast";
+import Feed from "../components/feed";
+import NewPostButton from "../components/new-post-button";
+import { API, Auth, graphqlOperation } from "aws-amplify";
+import { createUser } from "../src/graphql/mutations";
+import { getUser } from "../src/graphql/queries";
 
 const profile_icon = require("../assets/images/profile_icon.png");
 const search_glass = require("../assets/images/search_glass.png");
 const default_user = require("../assets/images/UserImage.png");
 const options = require("../assets/images/More.png");
+const liked = require("../assets/images/Liked.png");
+const unliked = require("../assets/images/Unliked.png");
+const comment = require("../assets/images/comment.png");
+const share = require("../assets/images/share.png");
+const seen = require("../assets/images/seen.png");
 
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
@@ -83,6 +99,33 @@ const CARD_DATA: ViewStyle = {
   flex: 1,
 };
 
+const POST_CONTAINER: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+  paddingHorizontal: spacing[3],
+  marginBottom: 15,
+};
+const RIGHT_SIDE_POST: ViewStyle = {
+  display: "flex",
+  flexDirection: "column",
+  width: "90%",
+};
+const INTERACTIONS: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+};
+const INTERACTIONS_BUTTONS: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+  backgroundColor: "transparent",
+  alignContent: "flex-start",
+  flex: 0.5,
+};
+
+const BUTTON_TEXT: TextStyle = {
+  marginLeft: 5,
+};
+
 const users_data = [
   {
     id: 1,
@@ -116,10 +159,63 @@ const users_data = [
   },
 ];
 
+// dark grey 878C90
+// red FF1843
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
   const [selection, setSelection] = React.useState(1);
+  const [user, setUser] = React.useState<string>("");
+  const isFocused = useIsFocused();
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [post, setPost] = React.useState<any>([]);
+
+  const fetchPosts = async () => {
+    const postData = await getPostFromDB().catch((error) =>
+      console.error(error)
+    );
+    setPost(postData);
+  };
+
+  React.useEffect(() => {
+    fetchPosts();
+  }, [isFocused]);
+
+  const saveUserToDB = async (user: any) => {
+    await API.graphql(graphqlOperation(createUser, { input: user }));
+  };
+
+  React.useEffect(() => {
+    const updateUser = async () => {
+      // Get current authenticated user
+      const userInfo = await Auth.currentAuthenticatedUser({
+        bypassCache: true,
+      });
+      setUser(userInfo.attributes.sub);
+      if (userInfo) {
+        // Check if user already exists in database
+        const userData = await API.graphql(
+          graphqlOperation(getUser, { id: userInfo.attributes.sub })
+        );
+        if (!userData.data.getUser) {
+          const user = {
+            id: userInfo.attributes.sub,
+            age: userInfo.attributes["custom:age"],
+            username: userInfo.attributes.preferred_username,
+            email: userInfo.attributes.email,
+            avatarImageURL: userInfo.attributes["custom:profile_image"],
+            following: 0,
+            follower: 0,
+          };
+          await saveUserToDB(user);
+        } else {
+          console.log("User already exists");
+        }
+      }
+    };
+
+    updateUser();
+  }, []);
 
   const renderUsers = ({ item }) => {
     return (
@@ -162,10 +258,83 @@ export default function TabOneScreen({
       </View>
     );
   };
+  const renderPosts = ({ item }) => {
+    return (
+      <View style={POST_CONTAINER}>
+        <Image
+          source={item.image_url}
+          style={{
+            resizeMode: "contain",
+            height: 40,
+            width: 40,
+            marginRight: 5,
+            // flex: 1,
+          }}
+        />
+        <View style={RIGHT_SIDE_POST}>
+          <Text
+            preset="header"
+            style={{
+              fontSize: 12,
+              margin: 5,
+            }}
+          >
+            {item.username}
+          </Text>
+          <Text
+            preset="default"
+            style={{
+              fontSize: 10,
+              margin: 5,
+            }}
+          >
+            {item.post_description}
+          </Text>
+          <View style={INTERACTIONS}>
+            <Button
+              style={INTERACTIONS_BUTTONS}
+            // onPress={() =>
+            //   navigation.navigate("Settings", { screen: "settings" })
+            // }
+            >
+              <Image source={unliked} />
+              <Text style={BUTTON_TEXT}>{item.likes} </Text>
+            </Button>
+            <Button
+              style={INTERACTIONS_BUTTONS}
+            // onPress={() =>
+            //   navigation.navigate("Settings", { screen: "settings" })
+            // }
+            >
+              <Image source={comment} />
+              <Text style={BUTTON_TEXT}>{item.comments} </Text>
+            </Button>
+            <Button
+              style={INTERACTIONS_BUTTONS}
+            // onPress={() =>
+            //   navigation.navigate("Settings", { screen: "settings" })
+            // }
+            >
+              <Image source={seen} />
+              <Text style={BUTTON_TEXT}>{item.seen} </Text>
+            </Button>
+            <Button
+              style={INTERACTIONS_BUTTONS}
+            // onPress={() =>
+            //   navigation.navigate("Settings", { screen: "settings" })
+            // }
+            >
+              <Image source={share} />
+            </Button>
+          </View>
+        </View>
+      </View>
+    );
+  };
   const renderTrending = () => {
     return (
-      <View>
-        <Text>hello1</Text>
+      <View style={COLLECTION_CONTAINER}>
+        {<Feed post={post} user={user} />}
       </View>
     );
   };
@@ -185,11 +354,7 @@ export default function TabOneScreen({
     );
   };
   const renderFollowing = () => {
-    return (
-      <View>
-        <Text>hello3</Text>
-      </View>
-    );
+    return <View></View>;
   };
 
   return (
@@ -197,9 +362,7 @@ export default function TabOneScreen({
       <View style={CLAIM_HEADER}>
         <Button
           style={{ backgroundColor: "transparent" }}
-          onPress={() =>
-            navigation.navigate("UserProfile")
-          }
+          onPress={() => navigation.navigate("UserProfile")}
         >
           <Image source={profile_icon} />
         </Button>
@@ -289,6 +452,7 @@ export default function TabOneScreen({
             ? renderFollowing()
             : renderRanking()}
       </View>
+      <NewPostButton />
     </Screen>
   );
 }

@@ -1,0 +1,110 @@
+type User @model {
+  id: ID!
+  age: String!
+  username: String!
+  email: String!
+  avatarImageURL: String!
+  sneakers: [Sneaker] @connection(keyName: "byUser", fields: ["id"])
+  posts: [Post] @connection(keyName: "byUser", fields: ["id"])
+  following: Int
+  follower: Int
+  status: String
+  chatRoomUser: [ChatRoomUser] @connection(keyName: "byUser", fields: ["id"])
+}
+type ChatRoomUser
+@model
+@key(name: "byUser", fields: ["userID", "chatRoomID"])
+@key(name: "byChatRoom", fields: ["chatRoomID", "userID"]) {
+  id: ID!
+  userID: ID!
+  chatRoomID: ID!
+  user: User @connection(fields: ["userID"])
+  chatRoom: ChatRoom @connection(fields: ["chatRoomID"])
+}
+type ChatRoom @model {
+  id: ID!
+  chatRoomUsers: [ChatRoomUser] @connection(keyName: "byChatRoom", fields: ["id"])
+  messages: [Message]  @connection(keyName: "byChatRoom", fields: ["id"])
+  lastMessageID: ID!
+  lastMessage: Message @connection(fields: ["lastMessageID"])
+}
+type Message
+@model
+@key(
+  name: "byChatRoom",
+  fields: ["chatRoomID", "createdAt"],
+  queryField: "messagesByChatRoom") {
+  id: ID!
+  createdAt: String
+  text: String!
+  userID: ID!
+  chatRoomID: ID!
+  user: User @connection(fields: ["userID"])
+  chatRoom: ChatRoom @connection(fields: ["chatRoomID"])
+}
+type Sneaker
+  @model
+  @key(
+    name: "byUser"
+    fields: ["userID", "createdAt"]
+    queryField: "sneakerByUser"
+  ) {
+  id: ID!
+  brand: String!
+  primaryName: String!
+  secondaryName: String!
+  image: String!
+  userID: ID!
+  user: User @connection(fields: ["userID"])
+  createdAt: String
+  verified: Boolean
+}
+type Post
+  @model
+  @key(
+    name: "byUser"
+    fields: ["userID", "createdAt"]
+    queryField: "postByUser"
+  ) {
+  id: ID!
+  userID: ID!
+  description: String
+  user: User @connection(fields: ["userID"])
+  likes: [Like] @connection(keyName: "byPost", fields: ["id"])
+  comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
+  createdAt: String
+}
+type Comment
+  @model
+  @key(
+    name: "byUser"
+    fields: ["userID", "postID", "createdAt"]
+    queryField: "commentByUser"
+  )
+  @key(name: "byPost", fields: ["postID", "userID", "createdAt"]) {
+  id: ID!
+  text: String!
+  userID: ID!
+  postID: ID!
+  user: User @connection(fields: ["userID"])
+  post: Post @connection(fields: ["postID"])
+  createdAt: String
+}
+type Like
+  @model(queries: null)
+  @key(name: "byUser", fields: ["userID", "postID"])
+  @key(name: "byPost", fields: ["postID", "userID"]) {
+  id: ID!
+  userID: ID!
+  postID: ID!
+  user: User! @connection(fields: ["userID"])
+  post: Post! @connection(fields: ["postID"])
+}
+
+type SneakerStore @model {
+  id: ID!
+  brand: String!
+  primary_name: String!
+  secondary_name: String!
+  image_url: String!
+}

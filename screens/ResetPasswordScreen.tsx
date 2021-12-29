@@ -1,17 +1,17 @@
-import * as React from 'react';
-import { View, ViewStyle, TextStyle, Alert } from "react-native"
-import { color, spacing } from "../theme"
+import * as React from "react";
+import { View, ViewStyle, TextStyle, Alert } from "react-native";
+import { color, spacing } from "../theme";
 import {
   Button,
   Screen,
   Text,
   Header,
   TextField,
-  AutoImage as Image
-} from "../components"
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { useNavigation } from '@react-navigation/native';
-import { confirmNewPassword } from '../aws-functions/forgot-password';
+  AutoImage as Image,
+} from "../components";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useNavigation } from "@react-navigation/native";
+import { confirmNewPassword } from "../aws-functions/aws-functions";
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -19,16 +19,16 @@ const CONTAINER: ViewStyle = {
   paddingHorizontal: spacing[7],
   flex: 1,
   // justifyContent: 'space-between',
-  paddingBottom: 90
-}
+  paddingBottom: 90,
+};
 
 const HEADER: ViewStyle = {
-  alignItems: 'center',
-}
+  alignItems: "center",
+};
 const CENTER: ViewStyle = {
-  justifyContent: 'center', //Centered horizontally
+  justifyContent: "center", //Centered horizontally
   flex: 1,
-  marginTop: 15
+  marginTop: 15,
 };
 
 export default function ResetPasswordScreen(props: any) {
@@ -48,7 +48,11 @@ export default function ResetPasswordScreen(props: any) {
       />
 
       <View style={HEADER}>
-        <Text style={{ marginBottom: 15 }} preset="header" text="Reset your password?" />
+        <Text
+          style={{ marginBottom: 15 }}
+          preset="header"
+          text="Reset your password?"
+        />
         <Text text="Enter your new password" />
       </View>
 
@@ -72,14 +76,14 @@ export default function ResetPasswordScreen(props: any) {
           value={password}
           label="New Password"
           secureTextEntry
-          autoCapitalize='none'
+          autoCapitalize="none"
           autoCorrect={false}
           inputStyle={{
             padding: 16,
             borderWidth: 2,
             borderRadius: 4,
             borderColor: "black",
-            marginTop: 6
+            marginTop: 6,
           }}
         />
 
@@ -88,23 +92,33 @@ export default function ResetPasswordScreen(props: any) {
           value={confirmedPassword}
           label="Confirm Password"
           secureTextEntry
-          autoCapitalize='none'
+          autoCapitalize="none"
           autoCorrect={false}
           inputStyle={{
             padding: 16,
             borderWidth: 2,
             borderRadius: 4,
             borderColor: "black",
-            marginTop: 6
+            marginTop: 6,
           }}
         />
       </View>
-      <View style={{ flexDirection: 'row', alignContent: 'flex-end', justifyContent: 'flex-end', top: 32 }}>
-        <Button style={{ width: 160 }} text="Continue" preset="primary" onPress={() => confirmNewPassword(username, code, password)} />
+      <View
+        style={{
+          flexDirection: "row",
+          alignContent: "flex-end",
+          justifyContent: "flex-end",
+          top: 32,
+        }}
+      >
+        <Button
+          style={{ width: 160 }}
+          text="Continue"
+          preset="primary"
+          onPress={() => confirmNewPassword(username, code, password)}
+        />
       </View>
     </Screen>
     /* </KeyboardAwareScrollView> */
   );
 }
-
-

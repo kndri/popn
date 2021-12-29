@@ -64,7 +64,7 @@ export default function MessageRoomScreen() {
                     name: 'React Native',
                     avatar: 'https://placeimg.com/140/140/any',
                 },
-                image: 'https://static.wikia.nocookie.net/naruto/images/d/d6/Naruto_Part_I.png/revision/latest?cb=20210223094656',
+                // image: 'https://static.wikia.nocookie.net/naruto/images/d/d6/Naruto_Part_I.png/revision/latest?cb=20210223094656',
             },
             {
                 _id: 2,
