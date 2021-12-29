@@ -18,7 +18,7 @@ const NewPostButton = () => {
   const navigation = useNavigation();
 
   const onPress = () => {
-    navigation.navigate("NewPost");
+    navigation.navigate("NewPost", { comment: null });
   };
 
   return (

@@ -100,7 +100,6 @@ export type MessageContactUser = {
 //   lastMessage: ChatMessage
 // }
 
-
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
   CompositeScreenProps<
     BottomTabScreenProps<RootTabParamList, Screen>,

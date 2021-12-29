@@ -16,6 +16,7 @@ import {
   postByUser,
   commentByUser,
   listComments,
+  getPost,
 } from "../src/graphql/queries";
 
 //stores shoes
@@ -68,6 +69,20 @@ export const getPostFromDB = async () => {
   return postList;
 };
 
+export const getCurrentPost = async (postID: any) => {
+  let postList: any;
+
+  const postData = await API.graphql(
+    graphqlOperation(getPost, {
+      id: postID,
+    })
+  );
+
+  postList = postData.data.getPost;
+
+  return postList;
+};
+
 export const getPostFromUser = async () => {
   let postList: any;
 
@@ -98,8 +113,9 @@ export const postDeletion = async (id: string) => {
   }
 };
 
-export const addComment = async (commentObject: Object) => {
+export const addComment = async (commentObject: any) => {
   try {
+    console.log("creating commetn", commentObject);
     // const currentUser = checkLoggedUser();
     const currentUser = await Auth.currentAuthenticatedUser({
       bypassCache: true,

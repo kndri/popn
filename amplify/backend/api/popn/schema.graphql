@@ -86,8 +86,8 @@ type Comment
   text: String!
   userID: ID!
   postID: ID!
-  user: User @connection(fields: ["userID"])
-  post: Post @connection(fields: ["postID"])
+  user: User! @connection(fields: ["userID"])
+  post: Post! @connection(fields: ["postID"])
   createdAt: String
 }
 type Like

@@ -1,8 +1,9 @@
 import React from "react";
 import { Button, Screen, Text, TextField, AutoImage as Image } from "..";
 import { useNavigation } from "@react-navigation/native";
-
+import { Alert } from "react-native";
 import { spacing } from "../../theme";
+import Tooltip from "react-native-walkthrough-tooltip";
 
 import {
   View,
@@ -11,18 +12,20 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
+  TouchableHighlight,
 } from "react-native";
 import {
   addLike,
   checkLoggedUser,
   likeDeletion,
+  postDeletion,
 } from "../../aws-functions/aws-functions";
 
 const liked = require("../../assets/images/Liked.png");
 const unliked = require("../../assets/images/Unliked.png");
 const comment = require("../../assets/images/comment.png");
 const share = require("../../assets/images/share.png");
-const seen = require("../../assets/images/seen.png");
+const more = require("../../assets/images/More.png");
 
 const POST_CONTAINER: ViewStyle = {
   display: "flex",
@@ -33,28 +36,40 @@ const POST_CONTAINER: ViewStyle = {
 const RIGHT_SIDE_POST: ViewStyle = {
   display: "flex",
   flexDirection: "column",
-  width: "90%",
+  flex: 1,
+
+  alignItems: "flex-start",
+
+  // width: "90%",
 };
 const INTERACTIONS: ViewStyle = {
   display: "flex",
   flexDirection: "row",
+  // justifyContent: "space-between",
 };
 const INTERACTIONS_BUTTONS: ViewStyle = {
   display: "flex",
   flexDirection: "row",
   backgroundColor: "transparent",
   alignContent: "flex-start",
-  flex: 0.5,
+  justifyContent: "space-between",
+  flex: 1,
 };
 
 const BUTTON_TEXT: TextStyle = {
   marginLeft: 5,
 };
+const MODAL_CONTAINER: ViewStyle = {
+  width: 500,
+  height: 500,
+  backgroundColor: "red",
+};
 
-const Post = ({ post, user }) => {
+const Post = ({ post, user, fetchPosts }) => {
   const navigation = useNavigation();
-
-  const [myLike, setMyLike] = React.useState();
+  const [toolTipVisible, setToolTipVisible] = React.useState(false);
+  const [myLike, setMyLike] = React.useState<any>();
+  const [username, setUsername] = React.useState<any>();
   const [likesCount, setLikesCount] = React.useState(post.likes.items.length);
   const [commentCount, setCommentCount] = React.useState(
     post.comments.items.length
@@ -66,6 +81,15 @@ const Post = ({ post, user }) => {
     );
 
     setMyLike(searchedLike);
+  }, []);
+
+  const getUser = async () => {
+    const user = await checkLoggedUser();
+    setUsername(user.sub);
+  };
+
+  React.useEffect(() => {
+    getUser();
   }, []);
 
   const handlePress = () => {
@@ -91,6 +115,36 @@ const Post = ({ post, user }) => {
       setMyLike(null);
     }
   };
+
+  const createDeleteAlert = () =>
+    Alert.alert("Delete Post", "Are you sure you want to delete this Post?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          postDeletion(post.id);
+          fetchPosts();
+        },
+      },
+    ]);
+
+  const toolContent = () => (
+    <View>
+      {username === post.userID ? (
+        <TouchableOpacity onPress={createDeleteAlert}>
+          <Text>Delete Post</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity>
+          <Text>Profile Page</Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  );
 
   return (
     <TouchableOpacity onPress={() => handlePress()}>
@@ -132,9 +186,7 @@ const Post = ({ post, user }) => {
             </Button>
             <Button
               style={INTERACTIONS_BUTTONS}
-              // onPress={() =>
-              //   navigation.navigate("Settings", { screen: "settings" })
-              // }
+              onPress={() => navigation.navigate("NewPost", { comment: post })}
             >
               <Image source={comment} />
 
@@ -159,6 +211,26 @@ const Post = ({ post, user }) => {
             </Button>
           </View>
         </View>
+        <Tooltip
+          isVisible={toolTipVisible}
+          content={toolContent()}
+          arrowSize={{ width: 0, height: 0 }}
+          placement="bottom"
+          contentStyle={{
+            left: 110,
+            bottom: 70,
+            maxWidth: 200,
+          }}
+          arrowStyle={{ bottom: 60 }}
+          showChildInTooltip={false}
+          backgroundColor="transparent"
+          closeOnChildInteraction={false}
+          onClose={() => setToolTipVisible(false)}
+        >
+          <TouchableOpacity onPress={() => setToolTipVisible(true)}>
+            <Image source={more} />
+          </TouchableOpacity>
+        </Tooltip>
       </View>
     </TouchableOpacity>
   );

@@ -108,13 +108,21 @@ export default function UserProfileScreen() {
   const getSneakers = async () => {
     const sneakerlist = await getSneakersFromUser();
     const user = await checkLoggedUser();
-    setUsername(user.userData.attributes["custom:name"]);
+    setUsername(user.preferred_username);
     setCollection(sneakerlist);
   };
 
   React.useEffect(() => {
+    const rerender = navigation.addListener("focus", () => {
+      if (isFocused) {
+        getSneakers();
+      }
+    });
+  }, []);
+
+  React.useEffect(() => {
     getSneakers();
-  }, [isFocused]);
+  }, []);
 
   const renderSneaker = ({ item }) => (
     <View

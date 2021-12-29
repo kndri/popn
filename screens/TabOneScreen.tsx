@@ -16,7 +16,11 @@ import {
   AutoImage as Image,
 } from "../components";
 import sneakerData from "../new_sneaker_data.json";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useFocusEffect,
+} from "@react-navigation/native";
 import {
   addUserSneaker,
   getSneakersFromUser,
@@ -177,9 +181,13 @@ export default function TabOneScreen({
     setPost(postData);
   };
 
-  React.useEffect(() => {
-    fetchPosts();
-  }, [isFocused]);
+  // React.useEffect(() => {
+  //   const rerender = navigation.addListener("focus", () => {
+  //     if (isFocused) {
+  //       fetchPosts();
+  //     }
+  //   });
+  // }, []);
 
   const saveUserToDB = async (user: any) => {
     await API.graphql(graphqlOperation(createUser, { input: user }));
@@ -213,7 +221,7 @@ export default function TabOneScreen({
         }
       }
     };
-
+    fetchPosts();
     updateUser();
   }, []);
 
