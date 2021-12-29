@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, FlatList } from "react-native";
 import { API, graphqlOperation } from "aws-amplify";
+import { useFocusEffect } from "@react-navigation/native";
 
 import Post from "../post";
 import { getPostFromDB } from "../../aws-functions/aws-functions";
@@ -77,20 +78,29 @@ const Feed = ({ post, user }) => {
     } finally {
       setLoading(false);
     }
+    console.log("remed");
   };
 
   useEffect(() => {
     fetchPosts();
   }, []);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchPosts();
+    }, [post])
+  );
   return (
     <View style={{ width: "100%" }}>
       <FlatList
         data={posts}
-        renderItem={({ item }) => <Post post={item} user={user} />}
+        renderItem={({ item }) => (
+          <Post post={item} user={user} fetchPosts={fetchPosts} />
+        )}
         keyExtractor={(item) => String(item.id)}
         refreshing={loading}
         onRefresh={fetchPosts}
+        style={{ height: "100%" }}
         // ListHeaderComponent={UserFleetsList}
       />
     </View>
