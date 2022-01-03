@@ -149,7 +149,6 @@ export default function TabThreeScreen() {
                                 width: 40,
                                 marginRight: 5,
                                 borderRadius: 360
-                                // flex: 1,
                             }}
                         />
                     </View>
@@ -174,17 +173,7 @@ export default function TabThreeScreen() {
     return (
         <Screen style={CONTAINER}>
             <View style={{ height: '100%' }}>
-                {console.log('chatrooms: ', chatRooms.length === 0)}
                 <Text preset="header" text="Messages" />
-                {/* seperator */}
-                <View
-                    style={{
-                        height: 2,
-                        width: "100%",
-                        backgroundColor: "black",
-                        marginTop: 15
-                    }}
-                />
                 {chatRooms.length === 0 ? (
                     <View style={{ height: '100%', justifyContent: 'center' }}>
                         <Text

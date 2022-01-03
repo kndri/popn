@@ -207,7 +207,7 @@ export const likeDeletion = async (id: string) => {
   }
 };
 
-export const checkLoggedUser = async (): Promise<string> => {
+export const checkLoggedUser = async (): Promise<any> => {
   const data = await Auth.currentAuthenticatedUser({
     bypassCache: true,
   }).catch((error) => {

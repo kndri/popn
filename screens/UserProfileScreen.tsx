@@ -18,6 +18,10 @@ import {
   getPostFromUser,
 } from "../aws-functions/aws-functions";
 import { SneakerList } from "../types";
+// NOTE: This should be refactored
+import { API, Auth, graphqlOperation } from "aws-amplify";
+import { createUser } from "../src/graphql/mutations";
+import { getUser } from "../src/graphql/queries";
 
 //required images
 const messageIcon = require("../assets/images/message-button.png");
@@ -102,15 +106,52 @@ export default function UserProfileScreen() {
   const navigation = useNavigation();
   const [collection, setCollection] = React.useState<any>([]);
   const [username, setUsername] = React.useState("");
+  const [user, setUser] = React.useState<any>();
+
   const isFocused = useIsFocused();
   const [selection, setSelection] = React.useState(1);
 
   const getSneakers = async () => {
     const sneakerlist = await getSneakersFromUser();
-    const user = await checkLoggedUser();
-    setUsername(user.preferred_username);
     setCollection(sneakerlist);
   };
+
+  const saveUserToDB = async (user: any) => {
+    await API.graphql(graphqlOperation(createUser, { input: user }));
+  };
+
+  React.useEffect(() => {
+    const getUser = async () => {
+      console.log('ran getUser')
+      // Get current authenticated user
+      const user = await checkLoggedUser();
+      console.log("user: ", user)
+
+      if (user) {
+        // Check if user already exists in database
+        const userData = await API.graphql(
+          graphqlOperation(getUser, { id: user.sub })
+        );
+        if (!userData.data.getUser) {
+          const userObj = {
+            id: user.sub,
+            age: user["custom:age"],
+            username: user.preferred_username,
+            email: user.email,
+            avatarImageURL: user["custom:profile_image"],
+            following: 0,
+            follower: 0,
+          };
+          await saveUserToDB(userObj);
+        } else {
+          console.log("User already exists");
+        }
+      }
+
+      // setUser(user);
+    }
+    getUser();
+  }, []);
 
   React.useEffect(() => {
     const rerender = navigation.addListener("focus", () => {

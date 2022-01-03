@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-identical-functions */
-import { Auth, Storage } from "aws-amplify";
-import { Alert } from "react-native";
+import { API, Auth, graphqlOperation, Storage } from "aws-amplify";
+import { createUser } from "../src/graphql/mutations";
 
 export type AuthData = {
   // token: string
@@ -35,25 +35,34 @@ const signIn = (email: string, _password: string): Promise<AuthData> => {
   });
 };
 const uploadImage = async (username: string, imageUrl: string) => {
-  try {
-    const response = await fetch(imageUrl);
+    console.log('uploadImage RUNNNINNNG');
+    console.log('imageUrl: ', imageUrl);
+    // const image = await fetch(imageUrl);
+    // console.log('image: ', image);
+    // const imageBlob = await image.blob();
+    // console.log('imageBlob: ', imageBlob);
+    // const key = `${username}_profileImage`;
+    // console.log('key: ', key);
 
-    const blob = await response.blob();
+    // const imageResponse = await Storage.put(key, imageBlob, {
+    //   level: "public"
+    // });
+    // console.log('imageResponse: ', imageResponse);
+    // const uploadedImageUrl = `https://popnd82dea5bd54c4b12aa305515ccc9e5e8132355-dev.s3.amazonaws.com/${key}`;
+    // console.log('uploadedImageUrl: ', uploadedImageUrl);
 
-    const urlParts = imageUrl.split(".");
-    const extension = urlParts[urlParts.length - 1];
+    // return uploadedImageUrl;
 
-    const key = `${username}.${extension}`;
+  const response = await fetch(imageUrl);
+  const blob = await response.blob();
+      console.log('blob: ', blob);
 
-    await Storage.put(key, blob);
-
-    console.log("key", key);
-
-    return key;
-  } catch (e) {
-    console.log(e);
-  }
-  return "";
+  const fileName = `${username}ProfileImage.jpeg`;
+  await Storage.put(fileName, blob, {
+    contentType: 'image/jpeg',
+    level: 'private'
+  }).then(data => console.log('uploadImageData: ', data))
+    .catch(err => console.log('uploadImageErr: ', err))
 };
 
 const signUp = async (
@@ -63,10 +72,6 @@ const signUp = async (
   _username: string,
   image_url: string
 ): Promise<AuthData> => {
-  // this is a mock of an API call, in a real app
-  // will be need connect with some real API,
-  // send email and password, and if credential is corret
-  // the API will resolve with some token and another datas as the below
 
   // variable to check if there is an error
   let errorMessage: any;
@@ -74,11 +79,9 @@ const signUp = async (
   // variable to store user id
   let userId: any;
 
-  console.log("image_url", image_url);
   if (image_url.includes("defaultUser") === false) {
     image_url = await uploadImage(_username, image_url);
   }
-  console.log("image_url", image_url);
 
   await Auth.signUp({
     username: email,
@@ -90,7 +93,16 @@ const signUp = async (
     },
   })
     .then((response) => {
-      userId = response.user;
+      const user = {
+        id: response.userSub,
+        age: age,
+        username: _username,
+        avatarImageURL: image_url,
+        email: email,
+        following: 0,
+        follower: 0
+      } 
+      API.graphql(graphqlOperation(createUser, { input: user }));
     })
     .catch((error) => {
       errorMessage = error.message;
@@ -121,29 +133,17 @@ const usernameAvailable = async (username: string) => {
   } catch (err: any) {
     switch (err.code) {
       case "UserNotFoundException":
-        console.log("err", err);
-
         return true;
       case "NotAuthorizedException":
-        console.log("err", err);
-
         return false;
       case "AliasExistsException":
         // Email alias already exists0
-
-        console.log("err", err);
-
         return false;
       case "CodeMismatchException":
-        console.log("err", err);
-
         return false;
       case "ExpiredCodeException":
-        console.log("err", err);
-
         return false;
       default:
-        console.log("err", err);
         return false;
     }
   }

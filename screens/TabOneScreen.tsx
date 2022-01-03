@@ -163,8 +163,6 @@ const users_data = [
   },
 ];
 
-// dark grey 878C90
-// red FF1843
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
@@ -181,48 +179,8 @@ export default function TabOneScreen({
     setPost(postData);
   };
 
-  // React.useEffect(() => {
-  //   const rerender = navigation.addListener("focus", () => {
-  //     if (isFocused) {
-  //       fetchPosts();
-  //     }
-  //   });
-  // }, []);
-
-  const saveUserToDB = async (user: any) => {
-    await API.graphql(graphqlOperation(createUser, { input: user }));
-  };
-
   React.useEffect(() => {
-    const updateUser = async () => {
-      // Get current authenticated user
-      const userInfo = await Auth.currentAuthenticatedUser({
-        bypassCache: true,
-      });
-      setUser(userInfo.attributes.sub);
-      if (userInfo) {
-        // Check if user already exists in database
-        const userData = await API.graphql(
-          graphqlOperation(getUser, { id: userInfo.attributes.sub })
-        );
-        if (!userData.data.getUser) {
-          const user = {
-            id: userInfo.attributes.sub,
-            age: userInfo.attributes["custom:age"],
-            username: userInfo.attributes.preferred_username,
-            email: userInfo.attributes.email,
-            avatarImageURL: userInfo.attributes["custom:profile_image"],
-            following: 0,
-            follower: 0,
-          };
-          await saveUserToDB(user);
-        } else {
-          console.log("User already exists");
-        }
-      }
-    };
     fetchPosts();
-    updateUser();
   }, []);
 
   const renderUsers = ({ item }) => {

@@ -34,7 +34,6 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[3],
   flex: 1,
-  // marginTop: 44,
 };
 const CENTER: ViewStyle = {
   alignItems: "center",
@@ -42,9 +41,7 @@ const CENTER: ViewStyle = {
 };
 const CLAIM_HEADER: ViewStyle = {
   flexDirection: "row",
-  paddingBottom: 17,
   paddingHorizontal: spacing[4],
-  // backgroundColor: 'red',
   alignItems: "center",
 };
 const CLAIM_SEARCH: ViewStyle = {

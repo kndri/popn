@@ -116,7 +116,6 @@ export default function PasswordScreen() {
               justifyContent: "flex-end",
             }}
           >
-            {/* {(values.password && isValid) ? */}
             <Button
               disabled={!isValid}
               style={!isValid ? DISABLED : null}
@@ -138,8 +137,6 @@ export default function PasswordScreen() {
                 }
               }}
             />
-
-            {/* } */}
           </View>
         </Screen>
       )}

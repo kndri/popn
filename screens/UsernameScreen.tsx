@@ -100,7 +100,7 @@ export default function UserNameScreen() {
           <View style={CENTER}>
             <TextField
               inputStyle={INPUT}
-              placeholder="@Username"
+              placeholder="username"
               keyboardType="default"
               value={values.username}
               onChangeText={handleChange("username")}
@@ -122,7 +122,6 @@ export default function UserNameScreen() {
               preset="cta"
               onPress={async () => {
                 const available = await authService.usernameAvailable(values.username);
-                console.log('available', available)
                 if (!available) {
                   toast.show(`An account exists with this username already.`);
                 } else {

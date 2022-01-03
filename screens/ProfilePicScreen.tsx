@@ -3,7 +3,6 @@ import {
   View,
   ViewStyle,
   TextStyle,
-  TouchableOpacity,
   Platform,
 } from "react-native";
 import { color, spacing, typography } from "../theme";
@@ -11,12 +10,10 @@ import {
   Button,
   Screen,
   Text,
-  TextField,
   AutoImage as Image,
 } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
-import * as yup from "yup";
 import { useFormState, useFormDispatch } from "../contexts/form-context";
 import * as ImagePicker from "expo-image-picker";
 
@@ -39,7 +36,7 @@ const CENTER: ViewStyle = {
 
 const HEADER: TextStyle = {
   textAlign: "center",
-  marginBottom: 10,
+  marginBottom: 50,
 };
 
 const TEXTCENTER: TextStyle = {
@@ -105,7 +102,6 @@ export default function ProfilePicScreen() {
       aspect: [4, 3],
       quality: 1,
     });
-    console.log(result);
     if (!result.cancelled) {
       handleChange(result.uri);
     }
@@ -126,40 +122,18 @@ export default function ProfilePicScreen() {
             {values.image && values.image.length > 0 ? (
               <Image
                 source={{ uri: values.image }}
-                style={{ width: 200, height: 200, borderRadius: 100 }}
+                style={{ width: 150, height: 150, borderRadius: 100 }}
               />
             ) : (
-              <Image source={defaultImg} />
+              <Image source={defaultImg} style={{ width: 150, height: 150}} />
             )}
-          </View>
-
-          <View style={CENTER}>
             <Button
-              // disabled={!isValid}
-              // style={!isValid ? DISABLED : null}
               text="Choose from Library"
               preset="cta"
+              style={{ width: '75%', marginTop: 50 }}
               onPress={() => pickImage(handleChange("image"))}
             />
-
-            {/* <Button
-                    // disabled={!isValid}
-                    // style={!isValid ? DISABLED : null}
-                    text="Take Photo"
-                    preset="cta"
-                // onPress={() => navigation.navigate('Password')} 
-                /> */}
-
-            {/* <TextField
-                            inputStyle={INPUT}
-                            placeholder="Enter Age"
-                            keyboardType="numeric"
-                            maxLength={2}
-                            // value={values.age}
-                            onChangeText={handleChange("age")}
-                        /> */}
           </View>
-
           <View
             style={{
               flexDirection: "row",
@@ -168,8 +142,6 @@ export default function ProfilePicScreen() {
             }}
           >
             <Button
-              // disabled={!isValid}
-              // style={!isValid ? DISABLED : null}
               text="Continue"
               preset="cta"
               onPress={() => {

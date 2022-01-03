@@ -78,7 +78,6 @@ const Feed = ({ post, user }) => {
     } finally {
       setLoading(false);
     }
-    console.log("remed");
   };
 
   useEffect(() => {
