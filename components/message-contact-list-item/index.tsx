@@ -106,6 +106,8 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: 'space-between',
         padding: 10,
+        borderWidth: 1,
+        borderColor: 'black',
     },
     lefContainer: {
         flexDirection: 'row',
