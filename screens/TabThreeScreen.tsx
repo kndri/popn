@@ -21,25 +21,22 @@ import {
 } from 'aws-amplify';
 import { getUser } from '../src/graphql/queries';
 
+const profile_icon = require("../assets/images/profile_icon.png");
+
 // Styles
 const CONTAINER: ViewStyle = {
     backgroundColor: color.transparent,
-    // paddingHorizontal: spacing[3],
     flex: 1,
-    // marginTop: 44,
 };
 const CENTER: ViewStyle = {
     alignItems: "center",
     justifyContent: "center",
 
 };
-const CLAIM_HEADER: ViewStyle = {
+const HEADER: ViewStyle = {
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingBottom: 17,
     paddingHorizontal: spacing[4],
-
+    alignItems: "center",
 };
 const CLAIM_SEARCH: ViewStyle = {
     justifyContent: "center",
@@ -173,7 +170,15 @@ export default function TabThreeScreen() {
     return (
         <Screen style={CONTAINER}>
             <View style={{ height: '100%' }}>
-                <Text preset="header" text="Messages" />
+                <View style={HEADER}>
+                    <Button
+                        style={{ backgroundColor: "transparent" }}
+                        onPress={() => navigation.navigate("UserProfile")}
+                    >
+                        <Image source={profile_icon} />
+                    </Button>
+                    <Text preset="header" text="Messages" style={{ left: 80 }} />
+                </View>
                 {chatRooms.length === 0 ? (
                     <View style={{ height: '100%', justifyContent: 'center' }}>
                         <Text

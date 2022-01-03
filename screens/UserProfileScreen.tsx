@@ -271,19 +271,20 @@ export default function UserProfileScreen() {
     <Screen style={CONTAINER}>
       <View style={PROFILE_HEADER}>
         <Header
-          headerTx="demoScreen.howTo"
+          headerTx="Profile"
           leftIcon="back"
           onLeftPress={() => navigation.goBack()}
+          rightIcon="settings"
+          onRightPress={() => navigation.navigate("Settings", { screen: "settings" })}
         />
-        {/* <Text preset="header" text="Profile" style={{}} /> */}
-        <Button
+        {/* <Button
           style={{ backgroundColor: "transparent" }}
           onPress={() =>
             navigation.navigate("Settings", { screen: "settings" })
           }
         >
           <Image source={settingsIcon} />
-        </Button>
+        </Button> */}
       </View>
 
       <View style={PROFILE_DATA}>

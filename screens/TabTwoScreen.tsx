@@ -39,7 +39,7 @@ const CENTER: ViewStyle = {
   alignItems: "center",
   justifyContent: "center",
 };
-const CLAIM_HEADER: ViewStyle = {
+const HEADER: ViewStyle = {
   flexDirection: "row",
   paddingHorizontal: spacing[4],
   alignItems: "center",
@@ -282,7 +282,7 @@ export default function TabTwoScreen() {
 
   return (
     <Screen style={CONTAINER}>
-      <View style={CLAIM_HEADER}>
+      <View style={HEADER}>
         <Button
           style={{ backgroundColor: "transparent" }}
           onPress={() => navigation.navigate("UserProfile")}

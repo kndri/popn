@@ -4,12 +4,18 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { View, } from '../components/Themed';
 import { color, spacing, typography } from "../theme";
 import MessageContactListItem from '../components/message-contact-list-item';
-import { Text, Screen } from '../components'
+import {
+    Text, Screen, Button, AutoImage as Image, Header
+} from '../components'
 import { listUsers } from '../src/graphql/queries';
+import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 
-export default function MessageContactsScreen() {
+const profile_icon = require("../assets/images/profile_icon.png");
 
+
+export default function MessageContactsScreen() {
+    const navigation = useNavigation();
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -30,22 +36,23 @@ export default function MessageContactsScreen() {
 
     return (
         <Screen style={styles.container}>
-            <View style={styles.CLAIM_SEARCH}>
+            <View style={styles.HEADER}>
+                <Header
+                    headerTx="New message"
+                    leftIcon="back"
+                    onLeftPress={() => navigation.goBack()}
+                />
+            </View>
+            <View style={styles.SEARCH}>
                 <TextInput
                     style={{
                         width: "100%",
-                        height: 48,
-                        borderWidth: 1,
-                        paddingLeft: 20,
-                        borderRadius: 32,
-                        borderColor: "#F4F6F9",
-                        backgroundColor: "black",
                     }}
                     //   value={query}
                     autoCorrect={false}
                     //   onChangeText={(text) => setQuery(text)}
-                    placeholder="To:"
-                    placeholderTextColor={"white"}
+                    placeholder="To: "
+                    placeholderTextColor={"black"}
                 />
             </View>
             {users.length === 0 ? (
@@ -72,8 +79,6 @@ export default function MessageContactsScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
         height: '100%',
         backgroundColor: 'white'
     },
@@ -82,18 +87,17 @@ const styles = StyleSheet.create({
         alignItems: "center",
         textAlignVertical: "center",
     },
-    CLAIM_SEARCH: {
+    SEARCH: {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
         marginBottom: 20,
         paddingHorizontal: spacing[4],
-        backgroundColor: "orange",
-        height: 48,
-        width: 335,
-        borderWidth: 1,
-        borderColor: "#F4F6F9",
-        borderRadius: 32,
-
+        height: 25,
+        width: '100%',
     },
+    HEADER: {
+        flexDirection: "row",
+        paddingHorizontal: spacing[4],
+    }
 });
