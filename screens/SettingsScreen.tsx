@@ -54,11 +54,6 @@ const actions = [
     pageSrc: "rating",
     name: "Rating"
   },
-  // {
-  //   id: "9",
-  //   pageSrc: "deleteAccount",
-  //   name: "Delete Account"
-  // },
   {
     id: "9",
     pageSrc: "signOut",
@@ -75,11 +70,6 @@ const CONTAINER: ViewStyle = {
 
 }
 
-const HEADER: TextStyle = {
-  paddingTop: spacing[8],
-  paddingHorizontal: 0,
-}
-
 const HEADING_TITLE: TextStyle = {
   textAlign: 'center',
   marginBottom: 5
@@ -89,6 +79,7 @@ const SETTINGS_NAME: TextStyle = {
   textAlign: "center",
   alignItems: "center",
 }
+
 const FLATLIST: ViewStyle = {
   marginBottom: 25,
   borderWidth: 2,
@@ -112,18 +103,17 @@ const SettingsScreen: FC<SettingsProps> = () => {
   return (
     <Screen style={CONTAINER}>
       <Header
+        headerTx="Settings"
         leftIcon="back"
         onLeftPress={() => navigation.goBack()}
       />
 
       {/* flat list of settings options */}
-      <Text style={HEADING_TITLE} preset="header" text="Settings" />
       <View style={FLATLIST}>
         <FlatList
           scrollEnabled={false}
           numColumns={1}
           showsVerticalScrollIndicator={false}
-          // keyExtractor={(item, index) => index.toString()}
           data={settings}
           renderItem={({ item }) => (
             <View style={{ backgroundColor: "white", paddingHorizontal: 20, borderRadius: 4 }}>

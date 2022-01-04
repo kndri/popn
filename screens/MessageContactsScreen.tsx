@@ -2,10 +2,10 @@ import * as React from 'react';
 import { FlatList, StyleSheet, TextInput } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { View, } from '../components/Themed';
-import { color, spacing, typography } from "../theme";
+import { spacing } from "../theme";
 import MessageContactListItem from '../components/message-contact-list-item';
 import {
-    Text, Screen, Button, AutoImage as Image, Header
+    Text, Screen, Header
 } from '../components'
 import { listUsers } from '../src/graphql/queries';
 import { useNavigation } from "@react-navigation/native";

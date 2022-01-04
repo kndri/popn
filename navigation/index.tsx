@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Feather } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   NavigationContainer,
@@ -13,13 +13,11 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
-
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import TabOneScreen from "../screens/TabOneScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
-import TabThreeScreen from "../screens/TabThreeScreen";
-import TabFourScreen from "../screens/TabFourScreen";
+import HomeScreen from "../screens/HomeScreen";
+import ClaimScreen from "../screens/ClaimScreen";
+import MessageScreen from "../screens/MessageScreen";
 import SplashScreen from "../screens/SplashScreen";
 import AgeScreen from "../screens/AgeScreen";
 import ProfilePicScreen from "../screens/ProfilePicScreen";
@@ -41,9 +39,7 @@ import {
   RootTabScreenProps,
   SettingsStackParamList,
 } from "../types";
-import LinkingConfiguration from "./LinkingConfiguration";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
-import { checkLoggedUser } from "../aws-functions/aws-functions";
 import { useAuth } from "../contexts/auth";
 import ShoeDetailsScreen from "../screens/ShoeDetailsScreen";
 import ReferenceScreen from "../screens/ReferenceScreen";
@@ -204,10 +200,7 @@ function RootNavigator() {
           <Stack.Screen
             name="MessageRoom"
             component={MessageRoomScreen}
-            options={({ route }) => ({
-              // title: route?.params?.name,
-              headerShown: false
-            })}
+            options={{ headerShown: false }}
           />
         </>
       ) : (
@@ -232,42 +225,34 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: "black",
         headerShown: false,
       }}
     >
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
+        name="Home"
+        component={HomeScreen}
+        options={({ navigation }: RootTabScreenProps<"Home">) => ({
           title: "Home",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="Claim"
+        component={ClaimScreen}
         options={{
           title: "Claim",
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="TabThree"
-        component={TabThreeScreen}
+        name="Message"
+        component={MessageScreen}
         options={{
           title: "Messages",
-          tabBarIcon: ({ color }) => <TabBarIcon name="wechat" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="TabFour"
-        component={TabFourScreen}
-        options={{
-          title: "Notifications",
-          tabBarIcon: ({ color }) => <TabBarIcon name="bell" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="message-square" color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -278,8 +263,8 @@ function BottomTabNavigator() {
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
+  name: React.ComponentProps<typeof Feather>["name"];
   color: string;
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <Feather size={20} style={{ marginBottom: -3 }} {...props} />;
 }

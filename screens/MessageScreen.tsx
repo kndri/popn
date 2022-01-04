@@ -11,7 +11,9 @@ import {
     Screen,
     Text,
     AutoImage as Image,
-    Button, NewMessageButton
+    Button,
+    NewMessageButton,
+    Header
 } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -21,60 +23,18 @@ import {
 } from 'aws-amplify';
 import { getUser } from '../src/graphql/queries';
 
-const profile_icon = require("../assets/images/profile_icon.png");
 
 // Styles
 const CONTAINER: ViewStyle = {
     backgroundColor: color.transparent,
     flex: 1,
 };
-const CENTER: ViewStyle = {
-    alignItems: "center",
-    justifyContent: "center",
 
-};
-const HEADER: ViewStyle = {
-    flexDirection: "row",
-    paddingHorizontal: spacing[4],
-    alignItems: "center",
-};
-const CLAIM_SEARCH: ViewStyle = {
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20,
-    paddingHorizontal: spacing[4],
-};
-const COLLECTION_CONTAINER: ViewStyle = {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "center",
-};
 const TEXTCENTER: TextStyle = {
     textAlign: "center",
     alignItems: "center",
     textAlignVertical: "center",
 };
-const INPUT: TextStyle = {
-    fontFamily: typography.primaryBold,
-};
-const INPUTSTYLE_CONTAINER: ViewStyle = {
-    width: "100%",
-    height: 55,
-    marginBottom: 30,
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 10,
-};
-
-const SHADOW: ViewStyle = {
-    shadowColor: "#171717",
-    shadowOffset: { width: 2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-};
-
 
 //flatlist styles
 const CARD: ViewStyle = {
@@ -103,10 +63,7 @@ const CARD_DATA: ViewStyle = {
 
 };
 
-
-
-
-export default function TabThreeScreen() {
+export default function MessageScreen() {
     const navigation = useNavigation();
     const [chatRooms, setChatRooms] = React.useState([]);
     const [excludedUsers, setExcludedUsers] = React.useState<any[]>([]);
@@ -125,20 +82,12 @@ export default function TabThreeScreen() {
                 )
 
                 let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
-                let excludedUsersArr: any[];
 
                 chatRoomsArr.map((room) => {
                     room.chatRoom.chatRoomUsers.items.map((item) => {
-                        // excludedUsersArr => [...excludedUsersArr, item.user.username])
-                        // excludedUsersArr.push(item.user.username);
                         setExcludedUsers(excludedUsers => [...excludedUsers, item.user.username])
-
                     })
                 })
-
-                // excludedUsersArr = [...new Set(excludedUsersArr)];
-                // console.log('excludedUsersArr: ', excludedUsersArr)
-                // excludedUsersArr => [...excludedUsersArr, item.user.username])
                 setChatRooms(userData.data.getUser.chatRoomUser.items)
             } catch (e) {
                 console.log(e);
@@ -188,15 +137,12 @@ export default function TabThreeScreen() {
     return (
         <Screen style={CONTAINER}>
             <View style={{ height: '100%' }}>
-                <View style={HEADER}>
-                    <Button
-                        style={{ backgroundColor: "transparent" }}
-                        onPress={() => navigation.navigate("UserProfile")}
-                    >
-                        <Image source={profile_icon} />
-                    </Button>
-                    <Text preset="header" text="Messages" style={{ left: 80 }} />
-                </View>
+                <Header
+                    style={{ paddingHorizontal: spacing[3] }}
+                    headerTx="Messages"
+                    leftIcon="profile"
+                    onLeftPress={() => navigation.navigate("UserProfile")}
+                />
                 {chatRooms.length === 0 ? (
                     <View style={{ height: '100%', justifyContent: 'center' }}>
                         <Text

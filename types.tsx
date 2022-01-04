@@ -45,10 +45,9 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
 
 export type RootTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
-  TabThree: undefined;
-  TabFour: undefined;
+  Home: undefined;
+  Claim: undefined;
+  Message: undefined;
 };
 
 export type SettingsStackParamList = {
@@ -90,12 +89,6 @@ export type MessageContactUser = {
   avatarImageURL: String;
   status: String;
 }
-
-// export interface ChatRoom {
-//   id: string
-//   users: [User]
-//   lastMessage: ChatMessage
-// }
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
   CompositeScreenProps<

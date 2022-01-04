@@ -2,28 +2,23 @@ import * as React from "react";
 import {
   View,
   ViewStyle,
-  TextStyle,
-  TouchableOpacity,
   TextInput,
   FlatList,
 } from "react-native";
-import { color, spacing, typography } from "../theme";
+import { color, spacing } from "../theme";
 import {
   Button,
   Screen,
   Text,
-  TextField,
   AutoImage as Image,
+  Header
 } from "../components";
-import sneakerData from "../new_sneaker_data.json";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import {
   addUserSneaker,
   getSneakersFromUser,
   getSneakersFromDB,
 } from "../aws-functions/aws-functions";
-import { SneakerList } from "../types";
-
 import { useToast } from "../components/Toast";
 
 const profile_icon = require("../assets/images/profile_icon.png");
@@ -34,15 +29,6 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[3],
   flex: 1,
-};
-const CENTER: ViewStyle = {
-  alignItems: "center",
-  justifyContent: "center",
-};
-const HEADER: ViewStyle = {
-  flexDirection: "row",
-  paddingHorizontal: spacing[4],
-  alignItems: "center",
 };
 const CLAIM_SEARCH: ViewStyle = {
   flexDirection: "row",
@@ -64,30 +50,8 @@ const COLLECTION_CONTAINER: ViewStyle = {
   justifyContent: "center",
   alignItems: "center",
 };
-const TEXTCENTER: TextStyle = {
-  textAlign: "center",
-  alignItems: "center",
-};
-const INPUT: TextStyle = {
-  fontFamily: typography.primaryBold,
-};
-const INPUTSTYLE_CONTAINER: ViewStyle = {
-  width: "100%",
-  height: 55,
-  marginBottom: 30,
-  borderWidth: 1,
-  borderColor: "black",
-  borderRadius: 10,
-};
 
-const SHADOW: ViewStyle = {
-  shadowColor: "#171717",
-  shadowOffset: { width: 2, height: 4 },
-  shadowOpacity: 0.2,
-  shadowRadius: 3,
-};
-
-export default function TabTwoScreen() {
+export default function ClaimScreen() {
   const navigation = useNavigation();
   const toast = useToast();
   const [query, setQuery] = React.useState("");
@@ -282,15 +246,11 @@ export default function TabTwoScreen() {
 
   return (
     <Screen style={CONTAINER}>
-      <View style={HEADER}>
-        <Button
-          style={{ backgroundColor: "transparent" }}
-          onPress={() => navigation.navigate("UserProfile")}
-        >
-          <Image source={profile_icon} />
-        </Button>
-        <Text preset="header" text="Claim" style={{ left: 80 }} />
-      </View>
+      <Header
+        headerTx="Claim"
+        leftIcon="profile"
+        onLeftPress={() => navigation.navigate("UserProfile")}
+      />
 
       <View style={CLAIM_SEARCH}>
         <Image source={search_icon} style={{ marginLeft: 17 }} />

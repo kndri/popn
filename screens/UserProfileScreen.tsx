@@ -246,7 +246,7 @@ export default function UserProfileScreen() {
               style={{ marginTop: 20 }}
               text="Start Collecting"
               preset="primary"
-              onPress={() => navigation.navigate("TabTwo")}
+              onPress={() => navigation.navigate("Claim")}
             />
           </>
         ) : (
