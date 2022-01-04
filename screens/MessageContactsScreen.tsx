@@ -9,6 +9,7 @@ import {
 } from '../components'
 import { listUsers } from '../src/graphql/queries';
 import { useNavigation } from "@react-navigation/native";
+import { useRoute } from '@react-navigation/native';
 import { useEffect, useState } from "react";
 
 const profile_icon = require("../assets/images/profile_icon.png");
@@ -16,6 +17,7 @@ const profile_icon = require("../assets/images/profile_icon.png");
 
 export default function MessageContactsScreen() {
     const navigation = useNavigation();
+    const route = useRoute();
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -26,6 +28,15 @@ export default function MessageContactsScreen() {
                         listUsers
                     )
                 )
+                // @ANT: Filter listUsers array with excludedUsers
+                let setUniqueUsers = usersData.data.listUsers.items;
+                setUniqueUsers.map((user) => {
+                    if (route.params?.excludedUsers.includes(user.username)) {
+                        console.log('DUP: ', user.username);
+                        setUniqueUsers.splice(setUniqueUsers.indexOf(user), 1);  //deleting
+                    }
+                })
+                console.log('setUniqueUsers: ', setUniqueUsers)
                 setUsers(usersData.data.listUsers.items);
             } catch (e) {
                 console.log(e);

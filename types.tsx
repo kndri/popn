@@ -38,7 +38,7 @@ export type RootStackParamList = {
   MessageRoom: any;
   NewPost: undefined;
   PostDetails: undefined | any;
-  MessageContactsScreen: undefined;
+  MessageContactsScreen: any;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -73,13 +73,10 @@ export interface SneakerList {
 }
 
 export interface ChatMessage {
-  _id: string | number
+  id: string | number
   text: string
   createdAt: Date | number
   user: User
-  // image?: string
-  // video?: string
-  // audio?: string
   system?: boolean
   sent?: boolean
   received?: boolean

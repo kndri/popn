@@ -41,9 +41,28 @@ export const getUser = /* GraphQL */ `
           chatRoomID
           createdAt
           updatedAt
+          chatRoom {
+          id
+          chatRoomUsers {
+            items {
+              user {
+                username
+                id
+              }
+            }
+          }
+          messages {
+            items {
+              id
+              text
+              userID
+            }
+          }
+        }
         }
         nextToken
       }
+      
       following
       follower
       createdAt
@@ -513,6 +532,82 @@ export const commentByUser = /* GraphQL */ `
           updatedAt
         }
         createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const listMessages = /* GraphQL */ `
+  query ListMessages(
+    $filter: ModelMessageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        createdAt
+        text
+        userID
+        chatRoomID
+        user {
+          id
+          username
+          avatarImageURL
+          status
+          createdAt
+          updatedAt
+        }
+        chatRoom {
+          id
+          lastMessageID
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const messagesByChatRoom = /* GraphQL */ `
+  query MessagesByChatRoom(
+    $chatRoomID: ID
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelMessageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    messagesByChatRoom(
+      chatRoomID: $chatRoomID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        text
+        userID
+        chatRoomID
+        user {
+          id
+          username
+          avatarImageURL
+          status
+          createdAt
+          updatedAt
+        }
+        chatRoom {
+          id
+          lastMessageID
+          createdAt
+          updatedAt
+        }
         updatedAt
       }
       nextToken

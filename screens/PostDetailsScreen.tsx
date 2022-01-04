@@ -256,7 +256,6 @@ const PostDetailsScreen = (props: any) => {
     <Screen style={CONTAINER}>
       <View style={PROFILE_HEADER}>
         <Header
-          headerTx="demoScreen.howTo"
           leftIcon="back"
           onLeftPress={() => navigation.goBack()}
         />

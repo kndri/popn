@@ -4,12 +4,16 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { useNavigation } from '@react-navigation/native';
 
-export const NewMessageButton = () => {
+export type NewMessageButtonProps = {
+    excludedUsers: any[]
+}
 
+export const NewMessageButton = (props: NewMessageButtonProps) => {
+    const { excludedUsers } = props;
     const navigation = useNavigation();
 
     const onPress = () => {
-        navigation.navigate('MessageContactsScreen');
+        navigation.navigate('MessageContactsScreen', {excludedUsers: excludedUsers});
     }
 
     return (

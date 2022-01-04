@@ -109,6 +109,7 @@ const CARD_DATA: ViewStyle = {
 export default function TabThreeScreen() {
     const navigation = useNavigation();
     const [chatRooms, setChatRooms] = React.useState([]);
+    const [excludedUsers, setExcludedUsers] = React.useState<any[]>([]);
 
     React.useEffect(() => {
         const fetchChatRooms = async () => {
@@ -123,6 +124,21 @@ export default function TabThreeScreen() {
                     )
                 )
 
+                let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
+                let excludedUsersArr: any[];
+
+                chatRoomsArr.map((room) => {
+                    room.chatRoom.chatRoomUsers.items.map((item) => {
+                        // excludedUsersArr => [...excludedUsersArr, item.user.username])
+                        // excludedUsersArr.push(item.user.username);
+                        setExcludedUsers(excludedUsers => [...excludedUsers, item.user.username])
+
+                    })
+                })
+
+                // excludedUsersArr = [...new Set(excludedUsersArr)];
+                // console.log('excludedUsersArr: ', excludedUsersArr)
+                // excludedUsersArr => [...excludedUsersArr, item.user.username])
                 setChatRooms(userData.data.getUser.chatRoomUser.items)
             } catch (e) {
                 console.log(e);
@@ -167,6 +183,8 @@ export default function TabThreeScreen() {
         );
     };
 
+    const uniqueExcludedUsers = [...new Set(excludedUsers)]
+
     return (
         <Screen style={CONTAINER}>
             <View style={{ height: '100%' }}>
@@ -199,9 +217,7 @@ export default function TabThreeScreen() {
                 )
                 }
             </View>
-
-            <NewMessageButton />
-
+            <NewMessageButton excludedUsers={uniqueExcludedUsers} />
         </Screen>
     );
 }

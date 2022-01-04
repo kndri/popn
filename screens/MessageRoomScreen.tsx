@@ -1,117 +1,163 @@
+/* tslint:disable */
 import * as React from "react";
 import {
     View,
     ViewStyle,
-    TextStyle,
-    Platform
 } from "react-native";
-import { color, spacing, typography } from "../theme";
+import { spacing } from "../theme";
+
 import {
-    Screen,
-    Text,
-    AutoImage as Image,
+    API,
+    Auth,
+    graphqlOperation,
+  } from 'aws-amplify';
+
+  import {
+    createMessage,
+    updateChatRoom,
+  } from '../src/graphql/mutations';
+
+import {
     Header,
 } from "../components";
 import { useNavigation } from "@react-navigation/native";
-import { GiftedChat, Bubble, Send, Actions, Composer } from 'react-native-gifted-chat';
-// import * as ImagePicker from 'expo-image-picker';
+import { useRoute } from '@react-navigation/native';
+import { GiftedChat, Bubble, Send, Composer } from 'react-native-gifted-chat';
 import { ChatMessage } from "../types";
-import { FontAwesome } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { messagesByChatRoom } from '../src/graphql/queries';
+import { onCreateMessage } from '../src/graphql/subscriptions';
 
 
 // Styles
 const CONTAINER: ViewStyle = {
     backgroundColor: 'white',
-    // paddingHorizontal: spacing[3],
     flex: 1,
 };
 
-const MESSAGE_VIEW: ViewStyle = {
-    backgroundColor: 'red',
-    // paddingHorizontal: spacing[3],
-    flex: 1,
-};
 const CENTER: ViewStyle = {
     flexDirection: 'row',
     alignItems: "center",
-    // justifyContent: "center",
-
-    // marginTop: 15,
-    // backgroundColor: 'red',
     paddingHorizontal: spacing[3],
     borderBottomWidth: 2,
     borderColor: 'black'
 };
-const TEXTCENTER: TextStyle = {
-    textAlign: "center",
-    alignItems: "center",
-};
 
+export type MessageRoomScreenProps = {
+ id: string,
+ name: string
+}
 
-export default function MessageRoomScreen() {
+export default function MessageRoomScreen(props: MessageRoomScreenProps) {
+    const route = useRoute();
     const navigation = useNavigation();
+    const insets = useSafeAreaInsets()
     const [messages, setMessages] = React.useState<ChatMessage[]>([]);
+    const [myUserId, setMyUserId] = React.useState(null);
+    
+
+    const fetchMessages = async () => {
+        const messagesData = await API.graphql(
+          graphqlOperation(
+            messagesByChatRoom, {
+              chatRoomID: route.params?.id,
+              sortDirection: "DESC",
+            }
+          )
+        )
+    
+        console.log("FETCH MESSAGES")
+        let localMessages = messagesData.data.messagesByChatRoom.items;
+        console.log('localMessages: ', route.params?.id);
+        let giftedChatMessages = localMessages.map((chatMessage) => {
+          let gcm = {
+            _id: chatMessage.id,
+            text: chatMessage.text,
+            createdAt: chatMessage.createdAt,
+            user: {
+              _id: chatMessage.userID
+            }
+          };
+          return gcm;
+        });   
+        setMessages(giftedChatMessages);
+      }
+    
+      React.useEffect(() => {
+        fetchMessages();
+      }, [])
+
+    React.useEffect(() => {
+      const fetchUser = async () => {
+        const user = await Auth.currentAuthenticatedUser();
+        console.log('user: ', user.attributes.sub)
+        setMyUserId(user.attributes.sub);
+      }
+      fetchUser();
+    }, [])
+    
 
 
     React.useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: 'Hello developer',
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-                // image: 'https://static.wikia.nocookie.net/naruto/images/d/d6/Naruto_Part_I.png/revision/latest?cb=20210223094656',
-            },
-            {
-                _id: 2,
-                text: 'This is the second message',
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-                // image: 'https://static.wikia.nocookie.net/naruto/images/d/d6/Naruto_Part_I.png/revision/latest?cb=20210223094656',
-            },
-            {
-                _id: 3,
-                text: 'This is the third message',
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-                // image: 'https://static.wikia.nocookie.net/naruto/images/d/d6/Naruto_Part_I.png/revision/latest?cb=20210223094656',
-            },
-        ])
-    }, [])
+        const subscription = API.graphql(
+          graphqlOperation(onCreateMessage)
+        ).subscribe({
+          next: (data) => {
+            const newMessage = data.value.data.onCreateMessage;
+    
+            if (newMessage.chatRoomID !== route.params?.id) {
+              console.log("Message is in another room!")
+              return;
+            }
+    
+            fetchMessages();
+          }
+        });
+    
+        return () => subscription.unsubscribe();
+      }, [])
 
-    //follow up task, being able to send pictures 
-    // const pickImage = async () => {
-    //     // No permissions request is necessary for launching the image library
-    //     let result = await ImagePicker.launchImageLibraryAsync({
-    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //         allowsEditing: true,
-    //         aspect: [4, 3],
-    //         quality: 1,
-    //     });
+    const updateChatRoomLastMessage = async (messageId: string) => {
+        try {
+          await API.graphql(
+            graphqlOperation(
+              updateChatRoom, {
+                input: {
+                  id: chatRoomID,
+                  lastMessageID: messageId,
+                }
+              }
+            )
+          );
+        } catch (e) {
+          console.log(e);
+        }
+      }
 
-    //     console.log(result);
+    const onSend = React.useCallback(async (messages = []) => {
+      console.log("messages: ", messages);
+      console.log("myUserId: ", myUserId);
 
-    //     if (!result.cancelled) {
-    //         onSend([{ image: result.uri }])
-    //         return result.uri
-    //     }
-    // };
-
-    const onSend = React.useCallback((messages = []) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-    }, [])
+        try {
+            const newMessageData = await API.graphql(
+              graphqlOperation(
+                createMessage, {
+                  input: {
+                    text: messages[0].text,
+                    userID: myUserId,
+                    chatRoomID: route.params?.id
+                  }
+                }
+              )
+            )
+      
+            await updateChatRoomLastMessage(newMessageData.data.createMessage.id)
+          } catch (e) {
+            console.log(e);
+          }
+      
+          setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+        }, [])
 
     const renderBubble = (props: any) => {
         return <Bubble {...props}
@@ -120,34 +166,6 @@ export default function MessageRoomScreen() {
             }}
         />
     }
-
-    //used to render the plus icon in order to send images: follow up 
-    // const renderActions = (props: any) => (
-    //     <Actions
-    //         {...props}
-    //         containerStyle={{
-    //             width: 44,
-    //             height: 44,
-    //             alignItems: 'center',
-    //             justifyContent: 'center',
-    //             marginLeft: 4,
-    //             marginRight: 4,
-    //             marginBottom: 0,
-    //         }}
-    //         icon={() => (
-    //             <FontAwesome name="plus" size={18} color="black" />
-    //         )}
-    //         options={{
-    //             'Choose From Library': () => {
-    //                 pickImage()
-    //             },
-    //             Cancel: () => {
-    //                 console.log('Cancel');
-    //             },
-    //         }}
-    //         optionTintColor="#222B45"
-    //     />
-    // );
 
     const renderComposer = (props: any) => (
         <Composer
@@ -183,14 +201,12 @@ export default function MessageRoomScreen() {
 
     return (
         <View style={CONTAINER}>
-            <View style={CENTER}>
+            <View style={[CENTER, {marginTop:insets.top}]}>
                 <Header
-                    headerTx="demoScreen.howTo"
+                    headerTx={`${route.params?.name}`}
                     leftIcon="back"
                     onLeftPress={() => navigation.goBack()}
-                    style={{ top: 12 }}
                 />
-                <Text preset="header" text="Message Room" style={{ left: 65, top: 12 }} />
             </View>
 
             <GiftedChat
@@ -204,7 +220,7 @@ export default function MessageRoomScreen() {
                 messages={messages}
                 onSend={messages => onSend(messages)}
                 user={{
-                    _id: 1,
+                    id: myUserId,
                 }}
                 parsePatterns={(linkStyle) => [
                     {

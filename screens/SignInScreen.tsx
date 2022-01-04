@@ -41,7 +41,6 @@ export default function SignInScreen() {
   return (
     <Screen style={CONTAINER}>
       <Header
-        headerTx="demoScreen.howTo"
         leftIcon="back"
         onLeftPress={() => navigation.goBack()}
       />

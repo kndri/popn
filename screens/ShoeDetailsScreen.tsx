@@ -169,7 +169,6 @@ const ShoeDetailsScreen = () => {
 
       <Header
         style={BACK_BUTTON}
-        headerTx="demoScreen.howTo"
         leftIcon="back"
         onLeftPress={() => navigation.goBack()}
       />

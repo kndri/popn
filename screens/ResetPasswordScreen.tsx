@@ -42,7 +42,6 @@ export default function ResetPasswordScreen(props: any) {
     // <KeyboardAwareScrollView>
     <Screen style={CONTAINER} preset="scroll">
       <Header
-        headerTx="demoScreen.howTo"
         leftIcon="back"
         onLeftPress={() => navigation.goBack()}
       />

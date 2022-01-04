@@ -8,12 +8,12 @@ import { spacing } from "../../theme"
 
 // static styles
 const ROOT: ViewStyle = {
-  flex: 1,
   flexDirection: "row",
   alignItems: "center",
   paddingTop: spacing[5],
   paddingBottom: spacing[5],
   justifyContent: "space-between",
+  width: '100%'
 }
 
 const LEFT: ViewStyle = { width: 30 }

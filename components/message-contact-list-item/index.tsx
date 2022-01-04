@@ -76,7 +76,7 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
 
             navigation.navigate('MessageRoom', {
                 id: newChatRoom.id,
-                name: "Hardcoded name",
+                name: user.username,
             })
 
         } catch (e) {

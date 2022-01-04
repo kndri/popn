@@ -39,7 +39,6 @@ export default function ForgotPasswordScreen() {
   return (
     <Screen style={CONTAINER}>
       <Header
-        headerTx="demoScreen.howTo"
         leftIcon="back"
         onLeftPress={() => navigation.goBack()}
       />
