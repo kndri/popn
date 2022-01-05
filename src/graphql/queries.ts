@@ -48,6 +48,7 @@ export const getUser = /* GraphQL */ `
               user {
                 username
                 id
+                avatarImageURL
               }
             }
           }

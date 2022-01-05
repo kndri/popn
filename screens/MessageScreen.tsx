@@ -13,8 +13,9 @@ import {
     AutoImage as Image,
     Button,
     NewMessageButton,
-    Header
+    Header,
 } from "../components";
+import MessageChatListItem from '../components/message-chat-list-item';
 import { useNavigation } from "@react-navigation/native";
 import {
     API,
@@ -68,6 +69,9 @@ export default function MessageScreen() {
     const [chatRooms, setChatRooms] = React.useState([]);
     const [excludedUsers, setExcludedUsers] = React.useState<any[]>([]);
 
+
+
+
     React.useEffect(() => {
         const fetchChatRooms = async () => {
             try {
@@ -103,8 +107,9 @@ export default function MessageScreen() {
                 {/* flat list item */}
                 <TouchableOpacity style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: item.id, name: item.sender }); }}>
                     <View style={LEFT_SIDE}>
+                        {console.log('data:', item)}
                         <Image
-                            source={{ uri: `${item.users}` }}
+                            source={{ uri: `${item.chatRoom.chatRoomUsers.items[1].user.avatarImageURL}` }}
                             style={{
                                 resizeMode: "contain",
                                 height: 40,
@@ -115,7 +120,7 @@ export default function MessageScreen() {
                         />
                     </View>
                     <View style={CARD_DATA}>
-                        <Text preset="bold">{item.sender}</Text>
+                        <Text preset="bold">{item.chatRoom.chatRoomUsers.items[1].user.username}</Text>
                         <Text style={{ marginTop: 3 }} preset="secondary">
                             {item.lastMessage}
                         </Text>
@@ -156,7 +161,7 @@ export default function MessageScreen() {
                 ) : (
                     <FlatList
                         data={chatRooms}
-                        renderItem={renderChatRooms}
+                        renderItem={({ item }) => <MessageChatListItem chatRoom={item} />}
                         keyExtractor={item => item.id}
                         scrollEnabled={true}
                     />
