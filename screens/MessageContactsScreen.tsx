@@ -31,13 +31,12 @@ export default function MessageContactsScreen() {
                 // @ANT: Filter listUsers array with excludedUsers
                 let setUniqueUsers = usersData.data.listUsers.items;
                 setUniqueUsers.map((user) => {
-                    if (route.params?.excludedUsers.includes(user.username)) {
-                        console.log('DUP: ', user.username);
+                    if (route.params?.excludedUsers.includes(user.username) || route.params?.currentUser.data.getUser.username === user.username) {
                         setUniqueUsers.splice(setUniqueUsers.indexOf(user), 1);  //deleting
                     }
                 })
-                console.log('setUniqueUsers: ', setUniqueUsers)
-                setUsers(usersData.data.listUsers.items);
+                setUniqueUsers.splice(setUniqueUsers.indexOf(route.params?.currentUser.data.getUser.username), 1) //delete signed in user from unique
+                setUsers(setUniqueUsers);
             } catch (e) {
                 console.log(e);
             }

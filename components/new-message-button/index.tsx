@@ -5,19 +5,21 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 
 export type NewMessageButtonProps = {
-    excludedUsers: any[]
+    excludedUsers: any[];
+    currentUser: any;
 }
 
 export const NewMessageButton = (props: NewMessageButtonProps) => {
-    const { excludedUsers } = props;
+    const { excludedUsers, currentUser } = props;
     const navigation = useNavigation();
 
     const onPress = () => {
-        navigation.navigate('MessageContactsScreen', {excludedUsers: excludedUsers});
+        navigation.navigate('MessageContactsScreen', { excludedUsers: excludedUsers, currentUser: currentUser });
     }
 
     return (
         <View style={styles.container}>
+            {console.log('unique list:', excludedUsers)}
             <TouchableOpacity onPress={onPress}>
                 <MaterialCommunityIcons
                     name="message-reply-text"

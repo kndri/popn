@@ -68,9 +68,7 @@ export default function MessageScreen() {
     const navigation = useNavigation();
     const [chatRooms, setChatRooms] = React.useState([]);
     const [excludedUsers, setExcludedUsers] = React.useState<any[]>([]);
-
-
-
+    const [userData, setUserData] = React.useState({});
 
     React.useEffect(() => {
         const fetchChatRooms = async () => {
@@ -84,12 +82,13 @@ export default function MessageScreen() {
                     }
                     )
                 )
-
+                setUserData(userData);
                 let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
 
                 chatRoomsArr.map((room) => {
                     room.chatRoom.chatRoomUsers.items.map((item) => {
                         setExcludedUsers(excludedUsers => [...excludedUsers, item.user.username])
+
                     })
                 })
                 setChatRooms(userData.data.getUser.chatRoomUser.items)
@@ -101,46 +100,11 @@ export default function MessageScreen() {
     }, []);
 
 
-    const renderChatRooms = ({ item }) => {
-        return (
-            <>
-                {/* flat list item */}
-                <TouchableOpacity style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: item.id, name: item.sender }); }}>
-                    <View style={LEFT_SIDE}>
-                        {console.log('data:', item)}
-                        <Image
-                            source={{ uri: `${item.chatRoom.chatRoomUsers.items[1].user.avatarImageURL}` }}
-                            style={{
-                                resizeMode: "contain",
-                                height: 40,
-                                width: 40,
-                                marginRight: 5,
-                                borderRadius: 360
-                            }}
-                        />
-                    </View>
-                    <View style={CARD_DATA}>
-                        <Text preset="bold">{item.chatRoom.chatRoomUsers.items[1].user.username}</Text>
-                        <Text style={{ marginTop: 3 }} preset="secondary">
-                            {item.lastMessage}
-                        </Text>
-                    </View>
-                    <View>
-                        <Text style={{ marginTop: 3 }} preset="secondary">
-                            {item.createdAt}
-                        </Text>
-                    </View>
-
-                </TouchableOpacity>
-
-            </>
-        );
-    };
-
     const uniqueExcludedUsers = [...new Set(excludedUsers)]
 
     return (
         <Screen style={CONTAINER}>
+
             <View style={{ height: '100%' }}>
                 <Header
                     style={{ paddingHorizontal: spacing[3] }}
@@ -168,7 +132,7 @@ export default function MessageScreen() {
                 )
                 }
             </View>
-            <NewMessageButton excludedUsers={uniqueExcludedUsers} />
+            <NewMessageButton excludedUsers={uniqueExcludedUsers} currentUser={userData} />
         </Screen>
     );
 }
