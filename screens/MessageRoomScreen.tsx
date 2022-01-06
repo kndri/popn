@@ -143,7 +143,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
     }
   }
 
-  const onSend = React.useCallback(async (messages = []) => {
+  const onSend = React.useCallback(async (messages = [], myUserId) => {
     console.log("messages: ", messages);
     console.log("myUserId: ", myUserId);
 
@@ -210,6 +210,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 
   return (
     <View style={CONTAINER}>
+      {console.log('ui:', myUserId)}
       <View style={[CENTER, { marginTop: insets.top }]}>
         <Header
           headerTx={`${route.params?.name}`}
@@ -227,7 +228,8 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
         renderSend={renderSend}
         // renderActions={renderActions}
         messages={messages}
-        onSend={messages => onSend(messages)}
+        // onSend={messages => onSend(messages)}
+        onSend={(messages, myUserId) => onSend(messages, myUserId)}
         user={{
           _id: myUserId,
           name: myName
