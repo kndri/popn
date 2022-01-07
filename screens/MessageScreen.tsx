@@ -121,7 +121,6 @@ export default function MessageScreen() {
                         />
                     </View>
 
-
                 ) : (
                     <FlatList
                         data={chatRooms}

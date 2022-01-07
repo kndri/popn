@@ -36,12 +36,13 @@ export type MessageChatListItemProps = {
 export default function MessageChatListItem(props: MessageChatListItemProps) {
     const { chatRoom } = props;
     const [otherUser, setOtherUser] = React.useState<any>({});
+    const [user, setUser] = React.useState<any>({});
     const navigation = useNavigation();
 
     React.useEffect(() => {
         const getOtherUser = async () => {
             const userInfo = await Auth.currentAuthenticatedUser();
-            // console.log('first user:', chatRoom.chatRoomUser.items[0]);
+            setUser(userInfo);
             if (chatRoom.chatRoom.chatRoomUsers.items[0].user.id === userInfo.attributes.sub) {
                 setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[1].user);
             } else {
@@ -54,12 +55,12 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
 
     return (
         <>
-            < TouchableOpacity style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username }); }
+            < TouchableOpacity style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, currentUser: user }); }
             }>
                 <View style={LEFT_SIDE}>
-                    {/* {console.log('otherUser data:', otherUser)} */}
+                    {/* {console.log('ourUser data:', user)} */}
                     {/* {console.log('first user:', chatRoom.chatRoom.chatRoomUsers.items[0])} */}
-                    {console.log('chatroom data: ', chatRoom.chatRoomID)}
+                    {/* {console.log('chatroom data: ', chatRoom.chatRoomID)} */}
                     <Image
                         source={{ uri: `${otherUser!.avatarImageURL}` }}
                         style={{

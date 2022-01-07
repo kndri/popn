@@ -29,8 +29,6 @@ import { GiftedChat, Bubble, Send, Composer } from 'react-native-gifted-chat';
 import { ChatMessage } from "../types";
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-
-
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: 'white',
@@ -47,7 +45,8 @@ const CENTER: ViewStyle = {
 
 export type MessageRoomScreenProps = {
   id: string,
-  name: string
+  name: string,
+  user: object
 }
 
 export default function MessageRoomScreen(props: MessageRoomScreenProps) {
@@ -56,14 +55,13 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets()
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
-  const [myUserId, setMyUserId] = React.useState(null);
+  const [myUserId, setMyUserId] = React.useState("");
   const [myName, setMyName] = React.useState("");
 
 
   React.useEffect(() => {
     const fetchUser = async () => {
       const user = await Auth.currentAuthenticatedUser();
-      console.log('user: ', user.attributes.sub)
       setMyUserId(user.attributes.sub);
       setMyName(user.attributes.preferred_username)
     }
@@ -85,10 +83,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
       )
     )
 
-    console.log("FETCH MESSAGES")
     let localMessages = messagesData.data.messagesByChatRoom.items;
-    console.log('localMessages: ', route.params?.id);
-    // console.log('localMessages: ', localMessages);
     let giftedChatMessages = localMessages.map((chatMessage) => {
       let gcm = {
         _id: chatMessage.id,
@@ -99,7 +94,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
           name: chatMessage.user.username
         }
       };
-      console.log('gcm: ', gcm)
       return gcm;
     });
 
@@ -132,7 +126,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
         graphqlOperation(
           updateChatRoom, {
           input: {
-            id: chatRoomID,
+            id: route.params?.id,
             lastMessageID: messageId,
           }
         }
@@ -143,9 +137,12 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
     }
   }
 
-  const onSend = React.useCallback(async (messages = [], myUserId) => {
+  const onSend = React.useCallback(async (messages = [], user) => {
     console.log("messages: ", messages);
-    console.log("myUserId: ", myUserId);
+    console.log('user:', user)
+    console.log("username: ", myName);
+    console.log("userID: ", myUserId);
+    console.log('params', route.params?.id)
 
     try {
       const newMessageData = await API.graphql(
@@ -210,7 +207,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 
   return (
     <View style={CONTAINER}>
-      {console.log('ui:', myUserId)}
       <View style={[CENTER, { marginTop: insets.top }]}>
         <Header
           headerTx={`${route.params?.name}`}
@@ -228,8 +224,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
         renderSend={renderSend}
         // renderActions={renderActions}
         messages={messages}
-        // onSend={messages => onSend(messages)}
-        onSend={(messages, myUserId) => onSend(messages, myUserId)}
+        onSend={(messages, user) => onSend(messages, user)}
         user={{
           _id: myUserId,
           name: myName
