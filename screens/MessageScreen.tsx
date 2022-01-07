@@ -23,6 +23,9 @@ import {
     Auth,
 } from 'aws-amplify';
 import { getUser } from '../src/graphql/queries';
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import { RectButton } from "react-native-gesture-handler";
+import Animated from "react-native-reanimated";
 
 
 // Styles
@@ -102,9 +105,75 @@ export default function MessageScreen() {
 
     const uniqueExcludedUsers = [...new Set(excludedUsers)]
 
+    /**
+  * This is a function.
+  * @param {string} text - A string param
+  * @param {string} color - A string param
+  * @param {string} x - A string param
+  * @param {progress} Animated.AnimatedInterpolation - A progress param
+  * @param {object} item - A note or reminder object param
+  * @return {SwipeableActions} - Adds buttons when a swipe action occurs
+  *
+  * @example
+  *
+  *     Button: Delete , Button: Remind
+  */
+    const renderRightAction = (
+        text: string,
+        color: string,
+        x: number,
+        progress: any,
+        item: any
+    ) => {
+        const trans = progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [x, 0],
+        });
+
+        // handles the onPress
+        const pressHandler = () => {
+            if (text == "Delete") {
+                console.log('message deleted')
+            }
+
+        };
+        return (
+            <Animated.View style={{ flex: 1, transform: [{ translateX: 0 }] }}>
+                <RectButton
+                    style={[{ backgroundColor: color }]}
+                    onPress={pressHandler}
+                >
+                    <Text>{text}</Text>
+                </RectButton>
+            </Animated.View>
+        );
+    };
+
+    /**
+       * This is a function.
+       *
+       * @param {progress} Animated.AnimatedInterpolation - A progress param
+       * @param {object} item - A note or reminder object param
+       * @return {JSX.element} - Adds buttons when a swipe action occurs
+       *
+       * @example
+       *
+       *     Button: Delete , Button: Remind
+       */
+    const renderRightActions = (progress: any, item: any) => (
+        <View
+            style={{
+                width: 192,
+                flexDirection: "row",
+            }}
+        >
+            {renderRightAction("Delete", "red", 192, progress, item)}
+
+        </View>
+    );
+
     return (
         <Screen style={CONTAINER}>
-
             <View style={{ height: '100%' }}>
                 <Header
                     style={{ paddingHorizontal: spacing[3] }}
@@ -125,7 +194,17 @@ export default function MessageScreen() {
                 ) : (
                     <FlatList
                         data={chatRooms}
-                        renderItem={({ item }) => <MessageChatListItem chatRoom={item} />}
+                        renderItem={({ item }) =>
+                            <Swipeable
+                                friction={2}
+                                rightThreshold={40}
+                                renderRightActions={(progress) =>
+                                    renderRightActions(progress, item)
+                                }
+                            >
+                                <MessageChatListItem chatRoom={item} />
+                            </Swipeable>
+                        }
                         keyExtractor={item => item.id}
                         scrollEnabled={true}
                     />

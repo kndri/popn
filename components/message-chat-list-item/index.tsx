@@ -1,10 +1,9 @@
 import React from 'react'
-import { TouchableOpacity, ViewStyle, View } from 'react-native'
+import { TouchableOpacity, ViewStyle, View, Pressable } from 'react-native'
 import { Text, AutoImage as Image, } from '../../components';
 import { useNavigation } from "@react-navigation/native";
 import { Auth, } from 'aws-amplify';
 import moment from "moment";
-
 
 const CARD: ViewStyle = {
     width: "100%",
@@ -52,8 +51,12 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
     }, [])
 
 
+
+
+
     return (
         <>
+
             < TouchableOpacity style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username }); }
             }>
                 <View style={LEFT_SIDE}>
@@ -82,8 +85,8 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
                         {moment(chatRoom.createdAt).format("MM/DD/YYYY")}
                     </Text>
                 </View>
-
             </TouchableOpacity >
+
         </>
     )
 }
