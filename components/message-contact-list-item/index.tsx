@@ -8,7 +8,6 @@ import {
 import { MessageContactUser } from "../../types";
 import { AutoImage as Image } from '../';
 import { useNavigation } from '@react-navigation/native';
-
 import {
     API,
     graphqlOperation,
@@ -18,6 +17,7 @@ import {
     createChatRoom,
     createChatRoomUser
 } from '../../src/graphql/mutations';
+
 
 export type MessageContactListItemProps = {
     user: MessageContactUser;
@@ -36,7 +36,7 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
                 graphqlOperation(
                     createChatRoom, {
                     input: {
-                        lastMessageID: "zz753fca-e8c3-473b-8e85-b14196e84e16"
+                        lastMessageID: "zz753fca-e8c3-473b-8e85-b14196e84e17"
                     }
                 }
                 )

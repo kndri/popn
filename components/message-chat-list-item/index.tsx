@@ -60,7 +60,7 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
                 <View style={LEFT_SIDE}>
                     {/* {console.log('ourUser data:', user)} */}
                     {/* {console.log('first user:', chatRoom.chatRoom.chatRoomUsers.items[0])} */}
-                    {/* {console.log('chatroom data: ', chatRoom.chatRoomID)} */}
+                    {console.log('chatroom data: ', chatRoom)}
                     <Image
                         source={{ uri: `${otherUser!.avatarImageURL}` }}
                         style={{

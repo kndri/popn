@@ -1,4 +1,3 @@
-/* tslint:disable */
 import * as React from "react";
 import {
   View,
@@ -98,6 +97,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
     });
 
     setMessages(giftedChatMessages);
+
   }
 
 
@@ -150,7 +150,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
           createMessage, {
           input: {
             text: messages[0].text,
-            userID: myUserId,
+            userID: messages[0].user._id,
             chatRoomID: route.params?.id
           }
         }

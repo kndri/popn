@@ -12,8 +12,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useRoute } from '@react-navigation/native';
 import { useEffect, useState } from "react";
 
-const profile_icon = require("../assets/images/profile_icon.png");
-
 
 export default function MessageContactsScreen() {
     const navigation = useNavigation();
@@ -105,9 +103,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: spacing[4],
         height: 25,
         width: '100%',
+        backgroundColor: 'transparent'
     },
     HEADER: {
         flexDirection: "row",
         paddingHorizontal: spacing[4],
+        backgroundColor: 'transparent'
     }
 });

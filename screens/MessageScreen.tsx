@@ -84,11 +84,12 @@ export default function MessageScreen() {
                 )
                 setUserData(userData);
                 let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
-
+                // console.log('chats array:', chatRoomsArr)
                 chatRoomsArr.map((room) => {
                     room.chatRoom.chatRoomUsers.items.map((item) => {
-                        setExcludedUsers(excludedUsers => [...excludedUsers, item.user.username])
-
+                        if (item.user.username) {
+                            setExcludedUsers(excludedUsers => [...excludedUsers, item.user.username])
+                        }
                     })
                 })
                 setChatRooms(userData.data.getUser.chatRoomUser.items)
@@ -97,6 +98,7 @@ export default function MessageScreen() {
             }
         }
         fetchChatRooms();
+        console.log('chatRooms:', chatRooms)
     }, []);
 
 
