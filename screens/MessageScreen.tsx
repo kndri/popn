@@ -6,7 +6,7 @@ import {
     FlatList,
     TouchableOpacity,
 } from "react-native";
-import { color, spacing, typography } from "../theme";
+import { color, spacing } from "../theme";
 import {
     Screen,
     Text,
