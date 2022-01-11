@@ -36,7 +36,7 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
                 graphqlOperation(
                     createChatRoom, {
                     input: {
-                        lastMessageID: "zz753fca-e8c3-473b-8e85-b14196e84e17"
+                        lastMessageID: Math.round(Math.random() * 1000000)
                     }
                 }
                 )
@@ -74,7 +74,7 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
                 )
             )
 
-            navigation.navigate('MessageRoom', {
+            navigation.navigate('NewMessageRoom', {
                 id: newChatRoom.id,
                 name: user.username,
             })

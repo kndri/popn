@@ -58,9 +58,6 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
             < TouchableOpacity style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, currentUser: user }); }
             }>
                 <View style={LEFT_SIDE}>
-                    {/* {console.log('ourUser data:', user)} */}
-                    {/* {console.log('first user:', chatRoom.chatRoom.chatRoomUsers.items[0])} */}
-                    {console.log('chatroom data: ', chatRoom)}
                     <Image
                         source={{ uri: `${otherUser!.avatarImageURL}` }}
                         style={{

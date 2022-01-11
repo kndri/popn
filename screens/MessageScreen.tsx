@@ -16,7 +16,7 @@ import {
     Header,
 } from "../components";
 import MessageChatListItem from '../components/message-chat-list-item';
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import {
     API,
     graphqlOperation,
@@ -69,6 +69,7 @@ export default function MessageScreen() {
     const [chatRooms, setChatRooms] = React.useState([]);
     const [excludedUsers, setExcludedUsers] = React.useState<any[]>([]);
     const [userData, setUserData] = React.useState({});
+    const isFocused = useIsFocused();
 
     React.useEffect(() => {
         const fetchChatRooms = async () => {
@@ -84,7 +85,6 @@ export default function MessageScreen() {
                 )
                 setUserData(userData);
                 let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
-                // console.log('chats array:', chatRoomsArr)
                 chatRoomsArr.map((room) => {
                     room.chatRoom.chatRoomUsers.items.map((item) => {
                         if (item.user.username) {
@@ -98,8 +98,7 @@ export default function MessageScreen() {
             }
         }
         fetchChatRooms();
-        console.log('chatRooms:', chatRooms)
-    }, []);
+    }, [isFocused]);
 
 
     const uniqueExcludedUsers = [...new Set(excludedUsers)]

@@ -36,9 +36,11 @@ export type RootStackParamList = {
   Verify: undefined;
   UserProfile: undefined;
   MessageRoom: any;
+  NewMessageRoom: any;
   NewPost: undefined;
   PostDetails: undefined | any;
   MessageContactsScreen: any;
+  Message: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
