@@ -97,7 +97,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
     });
 
     setMessages(giftedChatMessages);
-
   }
 
 
@@ -153,7 +152,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
       )
 
       await updateChatRoomLastMessage(newMessageData.data.createMessage.id)
-      setMessages(prevState => GiftedChat.append(prevState, messages))
+      console.log('MESSAGE SENT');
     } catch (e) {
       console.log(e);
     }

@@ -59,6 +59,9 @@ export const getUser = /* GraphQL */ `
               userID
             }
           }
+          lastMessage {
+            text
+          }
         }
         }
         nextToken

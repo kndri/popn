@@ -1,10 +1,10 @@
 import React from 'react'
 import { TouchableOpacity, ViewStyle, View } from 'react-native'
-import { Text, AutoImage as Image, } from '../../components';
+import { Text } from "../text/text";
+import { AutoImage as Image } from '../auto-image/auto-image';
 import { useNavigation } from "@react-navigation/native";
 import { Auth, } from 'aws-amplify';
 import moment from "moment";
-
 
 const CARD: ViewStyle = {
     width: "100%",
@@ -71,13 +71,15 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
                 </View>
                 <View style={CARD_DATA}>
                     <Text preset="bold">{otherUser.username}</Text>
-                    <Text style={{ marginTop: 3 }} preset="secondary">
-                        {chatRoom.lastMessage}
-                    </Text>
+                    {chatRoom.chatRoom.lastMessage.text != null && (
+                        <Text style={{ marginTop: 3 }} preset="secondary">                        
+                            {chatRoom.chatRoom.lastMessage.text}
+                        </Text>
+                    )}
                 </View>
                 <View>
                     <Text style={{ marginTop: 3 }} preset="secondary">
-                        {moment(chatRoom.createdAt).format("MM/DD/YYYY")}
+                        {moment(chatRoom.updatedAt).format("MM/DD/YYYY")}
                     </Text>
                 </View>
 

@@ -37,33 +37,6 @@ const TEXTCENTER: TextStyle = {
     textAlignVertical: "center",
 };
 
-//flatlist styles
-const CARD: ViewStyle = {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    padding: 10,
-    justifyContent: 'flex-end',
-    marginBottom: 5,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#7A7A7A',
-
-};
-
-const LEFT_SIDE: ViewStyle = {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingRight: 10,
-};
-
-const CARD_DATA: ViewStyle = {
-    display: "flex",
-    flexDirection: "column",
-    flex: 1,
-
-};
-
 export default function MessageScreen() {
     const navigation = useNavigation();
     const [chatRooms, setChatRooms] = React.useState([]);
@@ -85,6 +58,7 @@ export default function MessageScreen() {
                 )
                 setUserData(userData);
                 let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
+                console.log('chatRooms: ', chatRoomsArr);
                 chatRoomsArr.map((room) => {
                     room.chatRoom.chatRoomUsers.items.map((item) => {
                         if (item.user.username) {
