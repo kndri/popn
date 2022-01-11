@@ -58,7 +58,7 @@ export default function MessageScreen() {
                 )
                 setUserData(userData);
                 let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
-                console.log('chatRooms: ', chatRoomsArr);
+                // console.log('chatRooms: ', chatRoomsArr);
                 chatRoomsArr.map((room) => {
                     room.chatRoom.chatRoomUsers.items.map((item) => {
                         if (item.user.username) {

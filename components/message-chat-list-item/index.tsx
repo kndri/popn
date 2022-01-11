@@ -70,9 +70,10 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
                     />
                 </View>
                 <View style={CARD_DATA}>
+                    {console.log('CR:', chatRoom)}
                     <Text preset="bold">{otherUser.username}</Text>
                     {chatRoom.chatRoom.lastMessage.text != null && (
-                        <Text style={{ marginTop: 3 }} preset="secondary">                        
+                        <Text style={{ marginTop: 3 }} preset="secondary">
                             {chatRoom.chatRoom.lastMessage.text}
                         </Text>
                     )}

@@ -3,7 +3,8 @@ import {
     View,
     Text,
     TouchableWithoutFeedback,
-    StyleSheet
+    StyleSheet,
+    TouchableOpacity
 } from "react-native";
 import { MessageContactUser } from "../../types";
 import { AutoImage as Image } from '../';
@@ -29,6 +30,7 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
     const navigation = useNavigation();
 
     const onClick = async () => {
+        console.log('contact was pressed');
         try {
 
             //  1. Create a new Chat Room
@@ -85,7 +87,7 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
     }
 
     return (
-        <TouchableWithoutFeedback onPress={onClick}>
+        <TouchableOpacity onPress={onClick}>
             <View style={styles.container}>
                 <View style={styles.lefContainer}>
                     <Image source={{ uri: `${user.avatarImageURL}` }} style={styles.avatar} />
@@ -95,7 +97,7 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
                     </View>
                 </View>
             </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
     )
 };
 
@@ -106,6 +108,7 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: 'space-between',
         padding: 10,
+
     },
     lefContainer: {
         flexDirection: 'row',

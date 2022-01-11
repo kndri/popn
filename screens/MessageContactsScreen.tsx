@@ -7,17 +7,20 @@ import MessageContactListItem from '../components/message-contact-list-item';
 import {
     Text, Screen, Header
 } from '../components'
-import { listUsers } from '../src/graphql/queries';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { useRoute } from '@react-navigation/native';
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { listUsers } from '../src/graphql/queries';
 
 export default function MessageContactsScreen() {
     const navigation = useNavigation();
     const route = useRoute();
+    const [query, setQuery] = React.useState("");
+    const [searchedContacts, setSearchedContacts] = React.useState<any>([]);
     const [users, setUsers] = useState<any>([]);
+    const isFocused = useIsFocused();
 
-    useEffect(() => {
+    React.useEffect(() => {
         const fetchUsers = async () => {
             let setUniqueUsers;
             try {
@@ -38,9 +41,37 @@ export default function MessageContactsScreen() {
                 }
             })
             setUsers(tempArr);
+            setSearchedContacts(tempArr)
         }
         fetchUsers();
-    }, [])
+
+    }, [isFocused])
+
+
+    // useEffect to filter out the searched contact
+    React.useEffect(() => {
+        if (query.length === 0) {
+            setSearchedContacts(users);
+        } else {
+            const searchedObject: any = [];
+            users
+                .filter(
+                    (contactObject) =>
+                        contactObject.username
+                            .toLowerCase()
+                            .replace(/\s+/g, "")
+                            .includes(query.toLowerCase().replace(/\s+/g, ""))
+
+                )
+                .map((filteredContact) => {
+                    searchedObject.push(filteredContact);
+                });
+
+            setSearchedContacts(searchedObject);
+        }
+    }, [query])
+
+    React.useEffect(() => { }, [users]);
 
     return (
         <Screen style={styles.container}>
@@ -56,9 +87,9 @@ export default function MessageContactsScreen() {
                     style={{
                         width: "100%",
                     }}
-                    //   value={query}
+                    value={query}
                     autoCorrect={false}
-                    //   onChangeText={(text) => setQuery(text)}
+                    onChangeText={(text) => setQuery(text)}
                     placeholder="To: "
                     placeholderTextColor={"black"}
                 />
@@ -74,9 +105,9 @@ export default function MessageContactsScreen() {
             ) : (
                 <FlatList
                     style={{ width: '100%' }}
-                    data={users}
+                    data={searchedContacts}
                     renderItem={({ item }) => <MessageContactListItem user={item} />}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => String(item.id)}
                 />
             )
             }
