@@ -25,7 +25,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from '@react-navigation/native';
 import { GiftedChat, Bubble, Send, Composer } from 'react-native-gifted-chat';
-import { ChatMessage } from "../types";
+import { IMessage } from "../types";
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 // Styles
@@ -53,7 +53,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
   const route = useRoute();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets()
-  const [messages, setMessages] = React.useState<ChatMessage[]>([]);
+  const [messages, setMessages] = React.useState<IMessage[]>([]);
   const [myUserId, setMyUserId] = React.useState("");
   const [myName, setMyName] = React.useState("");
 
@@ -89,7 +89,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
         text: chatMessage.text,
         createdAt: chatMessage.createdAt,
         user: {
-          _id: chatMessage.userID,
+          _id: chatMessage.userID, 
           name: chatMessage.user.username
         }
       };
@@ -137,12 +137,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
     }
   }
 
-  const onSend = React.useCallback(async (messages = [], user) => {
-    console.log("messages: ", messages);
-    console.log('user:', user)
-    console.log("username: ", myName);
-    console.log("userID: ", myUserId);
-    console.log('params', route.params?.id)
+  const onSend = React.useCallback(async (messages = []) => {
 
     try {
       const newMessageData = await API.graphql(
@@ -158,11 +153,10 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
       )
 
       await updateChatRoomLastMessage(newMessageData.data.createMessage.id)
+      setMessages(prevState => GiftedChat.append(prevState, messages))
     } catch (e) {
       console.log(e);
     }
-
-    setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
   }, [])
 
   const renderBubble = (props: any) => {
@@ -222,9 +216,8 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
         renderBubble={renderBubble}
         renderComposer={renderComposer}
         renderSend={renderSend}
-        // renderActions={renderActions}
         messages={messages}
-        onSend={(messages, user) => onSend(messages, user)}
+        onSend={messages => onSend(messages)}
         user={{
           _id: myUserId,
           name: myName

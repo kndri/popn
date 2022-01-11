@@ -12,32 +12,32 @@ import { useNavigation } from "@react-navigation/native";
 import { useRoute } from '@react-navigation/native';
 import { useEffect, useState } from "react";
 
-
 export default function MessageContactsScreen() {
     const navigation = useNavigation();
     const route = useRoute();
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<any>([]);
 
     useEffect(() => {
         const fetchUsers = async () => {
+            let setUniqueUsers;
             try {
                 const usersData = await API.graphql(
                     graphqlOperation(
                         listUsers
                     )
                 )
-                // @ANT: Filter listUsers array with excludedUsers
-                let setUniqueUsers = usersData.data.listUsers.items;
-                setUniqueUsers.map((user) => {
-                    if (route.params?.excludedUsers.includes(user.username) || route.params?.currentUser.data.getUser.username === user.username) {
-                        setUniqueUsers.splice(setUniqueUsers.indexOf(user), 1);  //deleting
-                    }
-                })
-                setUniqueUsers.splice(setUniqueUsers.indexOf(route.params?.currentUser.data.getUser.username), 1) //delete signed in user from unique
-                setUsers(setUniqueUsers);
+                setUniqueUsers = usersData.data.listUsers.items;
+
             } catch (e) {
                 console.log(e);
             }
+            let tempArr = [...setUniqueUsers];
+            setUniqueUsers.map((user) => {
+                if (route.params?.excludedUsers.includes(user.username) || route.params?.currentUser.data.getUser.username == user.username) {
+                    tempArr.splice(tempArr.indexOf(user), 1);  //deleting
+                }
+            })
+            setUsers(tempArr);
         }
         fetchUsers();
     }, [])

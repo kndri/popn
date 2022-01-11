@@ -71,8 +71,8 @@ export interface SneakerList {
   sneakers: Array<Sneaker>;
 }
 
-export interface ChatMessage {
-  id: string | number
+export interface IMessage {
+  _id: string | number
   text: string
   createdAt: Date | number
   user: User
