@@ -45,6 +45,7 @@ const TEXTCENTER: TextStyle = {
     textAlignVertical: "center",
 };
 
+const rowTranslateAnimatedValues = {};
 
 export default function MessageScreen() {
     const navigation = useNavigation();
@@ -84,72 +85,7 @@ export default function MessageScreen() {
 
     const uniqueExcludedUsers = [...new Set(excludedUsers)]
 
-    /**
-  * This is a function.
-  * @param {string} text - A string param
-  * @param {string} color - A string param
-  * @param {string} x - A string param
-  * @param {progress} Animated.AnimatedInterpolation - A progress param
-  * @param {object} item - A note or reminder object param
-  * @return {SwipeableActions} - Adds buttons when a swipe action occurs
-  *
-  * @example
-  *
-  *     Button: Delete , Button: Remind
-  */
-    const renderRightAction = (
-        text: string,
-        color: string,
-        x: number,
-        progress: any,
-        item: any
-    ) => {
-        const trans = progress.interpolate({
-            inputRange: [0, 1],
-            outputRange: [x, 0],
-        });
 
-        // handles the onPress
-        const pressHandler = () => {
-            if (text == "Delete") {
-                console.log('message deleted')
-            }
-
-        };
-        return (
-            <Animated.View style={{ flex: 1, transform: [{ translateX: 0 }] }}>
-                <RectButton
-                    style={[{ backgroundColor: color }]}
-                    onPress={pressHandler}
-                >
-                    <Text>{text}</Text>
-                </RectButton>
-            </Animated.View>
-        );
-    };
-
-    /**
-       * This is a function.
-       *
-       * @param {progress} Animated.AnimatedInterpolation - A progress param
-       * @param {object} item - A note or reminder object param
-       * @return {JSX.element} - Adds buttons when a swipe action occurs
-       *
-       * @example
-       *
-       *     Button: Delete , Button: Remind
-       */
-    const renderRightActions = (progress: any, item: any) => (
-        <View
-            style={{
-                width: 192,
-                flexDirection: "row",
-            }}
-        >
-            {renderRightAction("Delete", "red", 192, progress, item)}
-
-        </View>
-    );
 
     //TODO:
     const removeUserFromChatRoom = async () => {
@@ -157,62 +93,14 @@ export default function MessageScreen() {
             // 1. Remove 'user' from the chat room
             // Update chat room to remove authenicated user from chat room
 
-            
+
         } catch (error) {
-            
+
         }
     }
 
-    const closeRow = (rowMap, rowKey) => {
-        if (rowMap[rowKey]) {
-            rowMap[rowKey].closeRow();
-        }
-    };
 
-    const deleteRow = (rowMap, rowKey) => {
-        closeRow(rowMap, rowKey);
-        const newData = [...listData];
-        const prevIndex = listData.findIndex(item => item.key === rowKey);
-        newData.splice(prevIndex, 1);
-        setListData(newData);
-    };
-
-    const onRowDidOpen = rowKey => {
-        console.log('This row opened', rowKey);
-    };
-
-    const renderItem = data => (
-        <TouchableHighlight
-            onPress={() => console.log('You touched me')}
-            style={styles.rowFront}
-            underlayColor={'#AAA'}
-        >
-            <View>
-                <Text>I am {data.item.text} in a SwipeListView</Text>
-            </View>
-        </TouchableHighlight>
-    );
-
-    const renderHiddenItem = (data, rowMap) => (
-        <View style={styles.rowBack}>
-            <Text>Left</Text>
-            <TouchableOpacity
-                style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                onPress={() => closeRow(rowMap, data.item.key)}
-            >
-                <Text style={styles.backTextWhite}>Close</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={[styles.backRightBtn, styles.backRightBtnRight]}
-                onPress={() => deleteRow(rowMap, data.item.key)}
-            >
-                <Text style={styles.backTextWhite}>Delete</Text>
-            </TouchableOpacity>
-        </View>
-    );
-
-    const rowTranslateAnimatedValues = {};
-
+    // const rowTranslateAnimatedValues = {};
 
     const onSwipeValueChange = swipeData => {
         const { key, value } = swipeData;
@@ -224,15 +112,32 @@ export default function MessageScreen() {
             Animated.timing(rowTranslateAnimatedValues[key], {
                 toValue: 0,
                 duration: 200,
+                useNativeDriver: false,
             }).start(() => {
                 const newData = [...listData];
                 const prevIndex = listData.findIndex(item => item.key === key);
-                newData.splice(prevIndex, 1);
-                setListData(newData);
-                this.animationIsRunning = false;
+                // newData.splice(prevIndex, 1);
+                // setListData(newData);
+                console.log("this was deleted")
+                // this.animationIsRunning = false;
             });
         }
     };
+
+
+
+
+    const renderHiddenItem = () => (
+        <View style={styles.rowBack}>
+            <View style={[styles.backRightBtn, styles.backRightBtnRight]}>
+                <Text style={styles.backTextWhite}>Delete</Text>
+            </View>
+        </View>
+    );
+
+
+
+
 
     return (
         <Screen style={CONTAINER}>
@@ -255,28 +160,16 @@ export default function MessageScreen() {
 
                 ) : (
                     <SwipeListView
-                    data={chatRooms}
-                    renderItem={({ item }) => <MessageChatListItem chatRoom={item} />}
-                    renderHiddenItem={renderHiddenItem}
-                    rightOpenValue={-150}
-                    onRowDidOpen={onRowDidOpen}
-                />
-                    // <FlatList
-                    //     data={chatRooms}
-                    //     renderItem={({ item }) =>
-                    //         <Swipeable
-                    //             friction={2}
-                    //             rightThreshold={40}
-                    //             renderRightActions={(progress) =>
-                    //                 renderRightActions(progress, item)
-                    //             }
-                    //         >
-                    //             <MessageChatListItem chatRoom={item} />
-                    //         </Swipeable>
-                    //     }
-                    //     keyExtractor={item => item.id}
-                    //     scrollEnabled={true}
-                    // />
+                        disableRightSwipe
+                        data={chatRooms}
+                        renderItem={({ item }) => <MessageChatListItem chatRoom={item} />}
+                        renderHiddenItem={renderHiddenItem}
+                        rightOpenValue={-Dimensions.get('window').width}
+                        // onSwipeValueChange={onSwipeValueChange}
+                        useNativeDriver={false}
+
+                    />
+
                 )
                 }
             </View>
@@ -299,11 +192,11 @@ const styles = StyleSheet.create({
         borderBottomColor: 'black',
         borderBottomWidth: 1,
         justifyContent: 'center',
-        height: 80,
+        height: 50,
     },
     rowBack: {
         alignItems: 'center',
-        backgroundColor: '#DDD',
+        backgroundColor: 'red',
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -316,10 +209,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         width: 75,
-    },
-    backRightBtnLeft: {
-        backgroundColor: 'blue',
-        right: 75,
     },
     backRightBtnRight: {
         backgroundColor: 'red',
