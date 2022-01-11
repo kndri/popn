@@ -1,6 +1,7 @@
-import React from 'react'
-import { TouchableOpacity, ViewStyle, View, Pressable } from 'react-native'
-import { Text, AutoImage as Image, } from '../../components';
+import * as React from "react";
+import { TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, ViewStyle, View } from 'react-native'
+import { Text } from "../text/text";
+import { AutoImage as Image } from "../auto-image/auto-image";
 import { useNavigation } from "@react-navigation/native";
 import { Auth, } from 'aws-amplify';
 import moment from "moment";
@@ -9,11 +10,12 @@ const CARD: ViewStyle = {
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    padding: 10,
+    padding: 16,
     justifyContent: 'flex-end',
-    marginBottom: 5,
     borderBottomWidth: 0.5,
     borderBottomColor: '#7A7A7A',
+    backgroundColor:'white',
+    height: 80
 
 };
 const LEFT_SIDE: ViewStyle = {
@@ -40,7 +42,6 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
     React.useEffect(() => {
         const getOtherUser = async () => {
             const userInfo = await Auth.currentAuthenticatedUser();
-            // console.log('first user:', chatRoom.chatRoomUser.items[0]);
             if (chatRoom.chatRoom.chatRoomUsers.items[0].user.id === userInfo.attributes.sub) {
                 setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[1].user);
             } else {
@@ -50,19 +51,11 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
         getOtherUser();
     }, [])
 
-
-
-
-
     return (
-        <>
-
-            < TouchableOpacity style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username }); }
+            <TouchableHighlight style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username }); }
             }>
-                <View style={LEFT_SIDE}>
-                    {/* {console.log('otherUser data:', otherUser)} */}
-                    {/* {console.log('first user:', chatRoom.chatRoom.chatRoomUsers.items[0])} */}
-                    {console.log('chatroom data: ', chatRoom.chatRoomID)}
+                <>
+                <View style={LEFT_SIDE}>    
                     <Image
                         source={{ uri: `${otherUser!.avatarImageURL}` }}
                         style={{
@@ -85,8 +78,7 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
                         {moment(chatRoom.createdAt).format("MM/DD/YYYY")}
                     </Text>
                 </View>
-            </TouchableOpacity >
-
-        </>
+                </>
+            </TouchableHighlight>
     )
 }

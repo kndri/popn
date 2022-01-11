@@ -5,8 +5,14 @@ import {
     TextStyle,
     FlatList,
     TouchableOpacity,
+    TouchableHighlight,
+    StyleSheet,
+    Dimensions,
+    Animated
 } from "react-native";
-import { color, spacing, typography } from "../theme";
+import { color, spacing } from "../theme";
+import { SwipeListView } from 'react-native-swipe-list-view';
+
 import {
     Screen,
     Text,
@@ -25,7 +31,6 @@ import {
 import { getUser } from '../src/graphql/queries';
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { RectButton } from "react-native-gesture-handler";
-import Animated from "react-native-reanimated";
 
 
 // Styles
@@ -40,36 +45,10 @@ const TEXTCENTER: TextStyle = {
     textAlignVertical: "center",
 };
 
-//flatlist styles
-const CARD: ViewStyle = {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    padding: 10,
-    justifyContent: 'flex-end',
-    marginBottom: 5,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#7A7A7A',
-
-};
-
-const LEFT_SIDE: ViewStyle = {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingRight: 10,
-};
-
-const CARD_DATA: ViewStyle = {
-    display: "flex",
-    flexDirection: "column",
-    flex: 1,
-
-};
 
 export default function MessageScreen() {
     const navigation = useNavigation();
-    const [chatRooms, setChatRooms] = React.useState([]);
+    const [chatRooms, setChatRooms] = React.useState<any>([]);
     const [excludedUsers, setExcludedUsers] = React.useState<any[]>([]);
     const [userData, setUserData] = React.useState({});
 
@@ -172,6 +151,89 @@ export default function MessageScreen() {
         </View>
     );
 
+    //TODO:
+    const removeUserFromChatRoom = async () => {
+        try {
+            // 1. Remove 'user' from the chat room
+            // Update chat room to remove authenicated user from chat room
+
+            
+        } catch (error) {
+            
+        }
+    }
+
+    const closeRow = (rowMap, rowKey) => {
+        if (rowMap[rowKey]) {
+            rowMap[rowKey].closeRow();
+        }
+    };
+
+    const deleteRow = (rowMap, rowKey) => {
+        closeRow(rowMap, rowKey);
+        const newData = [...listData];
+        const prevIndex = listData.findIndex(item => item.key === rowKey);
+        newData.splice(prevIndex, 1);
+        setListData(newData);
+    };
+
+    const onRowDidOpen = rowKey => {
+        console.log('This row opened', rowKey);
+    };
+
+    const renderItem = data => (
+        <TouchableHighlight
+            onPress={() => console.log('You touched me')}
+            style={styles.rowFront}
+            underlayColor={'#AAA'}
+        >
+            <View>
+                <Text>I am {data.item.text} in a SwipeListView</Text>
+            </View>
+        </TouchableHighlight>
+    );
+
+    const renderHiddenItem = (data, rowMap) => (
+        <View style={styles.rowBack}>
+            <Text>Left</Text>
+            <TouchableOpacity
+                style={[styles.backRightBtn, styles.backRightBtnLeft]}
+                onPress={() => closeRow(rowMap, data.item.key)}
+            >
+                <Text style={styles.backTextWhite}>Close</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={[styles.backRightBtn, styles.backRightBtnRight]}
+                onPress={() => deleteRow(rowMap, data.item.key)}
+            >
+                <Text style={styles.backTextWhite}>Delete</Text>
+            </TouchableOpacity>
+        </View>
+    );
+
+    const rowTranslateAnimatedValues = {};
+
+
+    const onSwipeValueChange = swipeData => {
+        const { key, value } = swipeData;
+        if (
+            value < -Dimensions.get('window').width &&
+            !this.animationIsRunning
+        ) {
+            this.animationIsRunning = true;
+            Animated.timing(rowTranslateAnimatedValues[key], {
+                toValue: 0,
+                duration: 200,
+            }).start(() => {
+                const newData = [...listData];
+                const prevIndex = listData.findIndex(item => item.key === key);
+                newData.splice(prevIndex, 1);
+                setListData(newData);
+                this.animationIsRunning = false;
+            });
+        }
+    };
+
     return (
         <Screen style={CONTAINER}>
             <View style={{ height: '100%' }}>
@@ -192,22 +254,29 @@ export default function MessageScreen() {
 
 
                 ) : (
-                    <FlatList
-                        data={chatRooms}
-                        renderItem={({ item }) =>
-                            <Swipeable
-                                friction={2}
-                                rightThreshold={40}
-                                renderRightActions={(progress) =>
-                                    renderRightActions(progress, item)
-                                }
-                            >
-                                <MessageChatListItem chatRoom={item} />
-                            </Swipeable>
-                        }
-                        keyExtractor={item => item.id}
-                        scrollEnabled={true}
-                    />
+                    <SwipeListView
+                    data={chatRooms}
+                    renderItem={({ item }) => <MessageChatListItem chatRoom={item} />}
+                    renderHiddenItem={renderHiddenItem}
+                    rightOpenValue={-150}
+                    onRowDidOpen={onRowDidOpen}
+                />
+                    // <FlatList
+                    //     data={chatRooms}
+                    //     renderItem={({ item }) =>
+                    //         <Swipeable
+                    //             friction={2}
+                    //             rightThreshold={40}
+                    //             renderRightActions={(progress) =>
+                    //                 renderRightActions(progress, item)
+                    //             }
+                    //         >
+                    //             <MessageChatListItem chatRoom={item} />
+                    //         </Swipeable>
+                    //     }
+                    //     keyExtractor={item => item.id}
+                    //     scrollEnabled={true}
+                    // />
                 )
                 }
             </View>
@@ -215,3 +284,45 @@ export default function MessageScreen() {
         </Screen>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'white',
+        flex: 1,
+    },
+    backTextWhite: {
+        color: '#FFF',
+    },
+    rowFront: {
+        alignItems: 'center',
+        backgroundColor: '#CCC',
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        justifyContent: 'center',
+        height: 80,
+    },
+    rowBack: {
+        alignItems: 'center',
+        backgroundColor: '#DDD',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 15,
+    },
+    backRightBtn: {
+        alignItems: 'center',
+        bottom: 0,
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        width: 75,
+    },
+    backRightBtnLeft: {
+        backgroundColor: 'blue',
+        right: 75,
+    },
+    backRightBtnRight: {
+        backgroundColor: 'red',
+        right: 0,
+    },
+});

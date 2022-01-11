@@ -85,10 +85,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
       )
     )
 
-    console.log("FETCH MESSAGES")
     let localMessages = messagesData.data.messagesByChatRoom.items;
-    console.log('localMessages: ', route.params?.id);
-    // console.log('localMessages: ', localMessages);
     let giftedChatMessages = localMessages.map((chatMessage) => {
       let gcm = {
         _id: chatMessage.id,

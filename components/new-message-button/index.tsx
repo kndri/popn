@@ -19,7 +19,6 @@ export const NewMessageButton = (props: NewMessageButtonProps) => {
 
     return (
         <View style={styles.container}>
-            {console.log('unique list:', excludedUsers)}
             <TouchableOpacity onPress={onPress}>
                 <MaterialCommunityIcons
                     name="message-reply-text"
