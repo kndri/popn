@@ -57,12 +57,15 @@ export const getUser = /* GraphQL */ `
               id
               text
               userID
+              updatedAt
             }
           }
           lastMessage {
             text
+            updatedAt
           }
         }
+        updatedAt
         }
         nextToken
       }

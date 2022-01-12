@@ -4,14 +4,11 @@ import {
     ViewStyle,
     TextStyle,
     FlatList,
-    TouchableOpacity,
 } from "react-native";
 import { color, spacing } from "../theme";
 import {
     Screen,
     Text,
-    AutoImage as Image,
-    Button,
     NewMessageButton,
     Header,
 } from "../components";
@@ -58,7 +55,6 @@ export default function MessageScreen() {
                 )
                 setUserData(userData);
                 let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
-                // console.log('chatRooms: ', chatRoomsArr);
                 chatRoomsArr.map((room) => {
                     room.chatRoom.chatRoomUsers.items.map((item) => {
                         if (item.user.username) {
@@ -66,7 +62,13 @@ export default function MessageScreen() {
                         }
                     })
                 })
-                setChatRooms(userData.data.getUser.chatRoomUser.items)
+
+                chatRoomsArr.sort((a, b) => {
+                        console.log("a: ", a.chatRoom.lastMessage.updatedAt)
+                        return b.chatRoom.lastMessage.updatedAt.localeCompare(a.chatRoom.lastMessage.updatedAt)
+                  });
+
+                setChatRooms(chatRoomsArr)
             } catch (e) {
                 console.log(e);
             }
@@ -74,12 +76,10 @@ export default function MessageScreen() {
         fetchChatRooms();
     }, [isFocused]);
 
-
     const uniqueExcludedUsers = [...new Set(excludedUsers)]
 
     return (
         <Screen style={CONTAINER}>
-
             <View style={{ height: '100%' }}>
                 <Header
                     style={{ paddingHorizontal: spacing[3] }}
