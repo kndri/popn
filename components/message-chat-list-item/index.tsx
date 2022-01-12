@@ -40,6 +40,7 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
     const navigation = useNavigation();
 
     React.useEffect(() => {
+        console.log('chatRoom: ', chatRoom)
         const getOtherUser = async () => {
             const userInfo = await Auth.currentAuthenticatedUser();
             if (chatRoom.chatRoom.chatRoomUsers.items[0].user.id === userInfo.attributes.sub) {

@@ -3,9 +3,6 @@ import {
     View,
     ViewStyle,
     TextStyle,
-    FlatList,
-    TouchableOpacity,
-    TouchableHighlight,
     StyleSheet,
     Dimensions,
     Animated
@@ -16,8 +13,6 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import {
     Screen,
     Text,
-    AutoImage as Image,
-    Button,
     NewMessageButton,
     Header,
 } from "../components";
@@ -29,9 +24,6 @@ import {
     Auth,
 } from 'aws-amplify';
 import { getUser } from '../src/graphql/queries';
-import Swipeable from "react-native-gesture-handler/Swipeable";
-import { RectButton } from "react-native-gesture-handler";
-
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -44,8 +36,6 @@ const TEXTCENTER: TextStyle = {
     alignItems: "center",
     textAlignVertical: "center",
 };
-
-const rowTranslateAnimatedValues = {};
 
 export default function MessageScreen() {
     const navigation = useNavigation();
@@ -85,41 +75,68 @@ export default function MessageScreen() {
 
     const uniqueExcludedUsers = [...new Set(excludedUsers)]
 
+    const rowTranslateAnimatedValues: any = {};
+Array(chatRooms.length)
+    .fill('')
+    .forEach((_, i) => {
+        rowTranslateAnimatedValues[`${i}`] = new Animated.Value(1);
+    });
 
 
-    //TODO:
-    const removeUserFromChatRoom = async () => {
+    const removeUserFromChatRoom = async (chatRoomID: any) => {
         try {
-            // 1. Remove 'user' from the chat room
-            // Update chat room to remove authenicated user from chat room
+            // 1. Get Chat Room Data
+            const chatRoomData = await API.graphql(
+                graphqlOperation(
+                  getChatRoom, {
+                      id: chatRoomID
+                  }
+                )
+              )
 
+              let chatRoomUsers = chatRoomData.data.getChatRoom.chatRoomUsers.items;
 
+              let userArr:any[] = [];
+              chatRoomUsers.map((item) => (
+                userArr.push(item.id)
+              ))
+
+            // 2. Remove 'user' from the chat room
+            userArr.map(async (id) => {
+                if (userInfo.attributes.sub == id) {
+                    await API.graphql(
+                        graphqlOperation(
+                          deleteChatRoomUser, {
+                              input: {
+                                id: id
+                              }
+                          }
+                        )
+                      )
+                }
+
+              })  
         } catch (error) {
-
+            console.log(error);
         }
     }
 
-
-    // const rowTranslateAnimatedValues = {};
-
+    const animationIsRunning = React.useRef(false)
     const onSwipeValueChange = swipeData => {
         const { key, value } = swipeData;
         if (
             value < -Dimensions.get('window').width &&
-            !this.animationIsRunning
+            !animationIsRunning.current 
         ) {
-            this.animationIsRunning = true;
+            animationIsRunning.current = true
             Animated.timing(rowTranslateAnimatedValues[key], {
                 toValue: 0,
                 duration: 200,
                 useNativeDriver: false,
             }).start(() => {
-                const newData = [...listData];
-                const prevIndex = listData.findIndex(item => item.key === key);
-                // newData.splice(prevIndex, 1);
-                // setListData(newData);
-                console.log("this was deleted")
-                // this.animationIsRunning = false;
+                console.log("swiped")
+                // removeUserFromChatRoom(key);
+                animationIsRunning.current = false;
             });
         }
     };
@@ -165,9 +182,9 @@ export default function MessageScreen() {
                         renderItem={({ item }) => <MessageChatListItem chatRoom={item} />}
                         renderHiddenItem={renderHiddenItem}
                         rightOpenValue={-Dimensions.get('window').width}
-                        // onSwipeValueChange={onSwipeValueChange}
+                        onSwipeValueChange={onSwipeValueChange}
                         useNativeDriver={false}
-
+                        keyExtractor={(item) => item.id}
                     />
 
                 )

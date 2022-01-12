@@ -63,7 +63,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
   React.useEffect(() => {
     const fetchUser = async () => {
       const user = await Auth.currentAuthenticatedUser();
-      console.log('user: ', user.attributes.sub)
       setMyUserId(user.attributes.sub);
       setMyName(user.attributes.preferred_username)
     }
@@ -96,7 +95,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
           name: chatMessage.user.username
         }
       };
-      console.log('gcm: ', gcm)
       return gcm;
     });
 
@@ -207,7 +205,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 
   return (
     <View style={CONTAINER}>
-      {console.log('ui:', myUserId)}
       <View style={[CENTER, { marginTop: insets.top }]}>
         <Header
           headerTx={`${route.params?.name}`}
