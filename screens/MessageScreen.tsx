@@ -4,8 +4,6 @@ import {
     ViewStyle,
     TextStyle,
     StyleSheet,
-    Dimensions,
-    Animated,
     TouchableOpacity
 } from "react-native";
 import { color, spacing } from "../theme";
@@ -18,7 +16,7 @@ import {
     Header,
 } from "../components";
 import MessageChatListItem from '../components/message-chat-list-item';
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import {
     API,
     graphqlOperation,
@@ -43,6 +41,7 @@ export default function MessageScreen() {
     const [chatRooms, setChatRooms] = React.useState<any>([]);
     const [excludedUsers, setExcludedUsers] = React.useState<any[]>([]);
     const [userData, setUserData] = React.useState({});
+    const isFocused = useIsFocused();
 
     React.useEffect(() => {
         const fetchChatRooms = async () => {
@@ -58,20 +57,27 @@ export default function MessageScreen() {
                 )
                 setUserData(userData);
                 let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
-
-                chatRoomsArr.map((room) => {
-                    room.chatRoom.chatRoomUsers.items.map((item) => {
-                        setExcludedUsers(excludedUsers => [...excludedUsers, item.user.username])
-
+                if (chatRoomsArr) {
+                    chatRoomsArr.map((room) => {
+                        room.chatRoom.chatRoomUsers.items.map((item) => {
+                            if (item.user.username) {
+                                setExcludedUsers(excludedUsers => [...excludedUsers, item.user.username])
+                            }
+                        })
                     })
-                })
-                setChatRooms(userData.data.getUser.chatRoomUser.items)
+
+                    chatRoomsArr.sort((a, b) => {
+                        return b.chatRoom.lastMessage.updatedAt.localeCompare(a.chatRoom.lastMessage.updatedAt)
+                    });
+
+                    setChatRooms(chatRoomsArr)
+                }
             } catch (e) {
                 console.log(e);
             }
         }
         fetchChatRooms();
-    }, []);
+    }, [isFocused]);
 
     const uniqueExcludedUsers = [...new Set(excludedUsers)]
     // swipe all the way UI
@@ -226,7 +232,7 @@ export default function MessageScreen() {
                         onSwipeValueChange={onSwipeValueChange}
                         useNativeDriver={false}
                         keyExtractor={(item) => item.id}
-
+                        scrollEnabled={true}
                         rightOpenValue={-75}
                         previewRowKey={'0'}
                         previewOpenValue={-20}

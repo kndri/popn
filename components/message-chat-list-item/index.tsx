@@ -1,7 +1,7 @@
-import * as React from "react";
-import { TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, ViewStyle, View } from 'react-native'
+import React from 'react'
+import { TouchableOpacity, ViewStyle, View } from 'react-native'
 import { Text } from "../text/text";
-import { AutoImage as Image } from "../auto-image/auto-image";
+import { AutoImage as Image } from '../auto-image/auto-image';
 import { useNavigation } from "@react-navigation/native";
 import { Auth, } from 'aws-amplify';
 import moment from "moment";
@@ -37,12 +37,14 @@ export type MessageChatListItemProps = {
 export default function MessageChatListItem(props: MessageChatListItemProps) {
     const { chatRoom } = props;
     const [otherUser, setOtherUser] = React.useState<any>({});
+    const [user, setUser] = React.useState<any>({});
     const navigation = useNavigation();
 
     React.useEffect(() => {
         // console.log('chatRoom: ', chatRoom)
         const getOtherUser = async () => {
             const userInfo = await Auth.currentAuthenticatedUser();
+            setUser(userInfo);
             if (chatRoom.chatRoom.chatRoomUsers.items[0].user.id === userInfo.attributes.sub) {
                 setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[1].user);
             } else {
@@ -53,9 +55,9 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
     }, [])
 
     return (
-        <TouchableHighlight style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username }); }
-        }>
-            <>
+        <>
+            < TouchableOpacity style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, currentUser: user }); }
+            }>
                 <View style={LEFT_SIDE}>
                     <Image
                         source={{ uri: `${otherUser!.avatarImageURL}` }}
@@ -70,16 +72,19 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
                 </View>
                 <View style={CARD_DATA}>
                     <Text preset="bold">{otherUser.username}</Text>
-                    <Text style={{ marginTop: 3 }} preset="secondary">
-                        {chatRoom.lastMessage}
-                    </Text>
+                    {chatRoom.chatRoom.lastMessage.text != null && (
+                        <Text style={{ marginTop: 3 }} preset="secondary">
+                            {chatRoom.chatRoom.lastMessage.text}
+                        </Text>
+                    )}
                 </View>
                 <View>
                     <Text style={{ marginTop: 3 }} preset="secondary">
-                        {moment(chatRoom.createdAt).format("MM/DD/YYYY")}
+                        {moment(chatRoom.updatedAt).format("MM/DD/YYYY")}
                     </Text>
                 </View>
-            </>
-        </TouchableHighlight>
+            </TouchableOpacity>
+        </>
+
     )
 }
