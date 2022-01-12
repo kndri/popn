@@ -24,6 +24,7 @@ import { SneakerList } from "../types";
 import { API, Auth, graphqlOperation } from "aws-amplify";
 import { createUser, deleteSneaker } from "../src/graphql/mutations";
 import { getUser } from "../src/graphql/queries";
+import NewPostButton from "../components/new-post-button";
 
 //required images
 const messageIcon = require("../assets/images/message-button.png");
@@ -303,14 +304,6 @@ export default function UserProfileScreen() {
             navigation.navigate("Settings", { screen: "settings" })
           }
         />
-        {/* <Button
-          style={{ backgroundColor: "transparent" }}
-          onPress={() =>
-            navigation.navigate("Settings", { screen: "settings" })
-          }
-        >
-          <Image source={settingsIcon} />
-        </Button> */}
       </View>
 
       <View style={PROFILE_DATA}>
@@ -344,7 +337,7 @@ export default function UserProfileScreen() {
           style={{ width: 262, height: 48, borderRadius: 4, marginLeft: 10 }}
           text="Edit Profile"
           preset="primary"
-          // onPress={() => navigation.navigate("")}
+        // onPress={() => navigation.navigate("")}
         />
       </View>
 
@@ -355,18 +348,18 @@ export default function UserProfileScreen() {
             style={[
               selection === 1
                 ? {
-                    borderRadius: 34,
-                    width: 101,
-                    margin: 2,
-                  }
+                  borderRadius: 34,
+                  width: 101,
+                  margin: 2,
+                }
                 : {
-                    backgroundColor: "white",
-                    borderRadius: 34,
-                    width: 101,
-                    borderColor: "#E8EDF2",
-                    borderWidth: 1,
-                    margin: 2,
-                  },
+                  backgroundColor: "white",
+                  borderRadius: 34,
+                  width: 101,
+                  borderColor: "#E8EDF2",
+                  borderWidth: 1,
+                  margin: 2,
+                },
             ]}
           >
             <Text
@@ -383,18 +376,18 @@ export default function UserProfileScreen() {
             style={[
               selection === 2
                 ? {
-                    borderRadius: 34,
-                    width: 101,
-                    margin: 2,
-                  }
+                  borderRadius: 34,
+                  width: 101,
+                  margin: 2,
+                }
                 : {
-                    backgroundColor: "white",
-                    borderRadius: 34,
-                    width: 101,
-                    borderColor: "#E8EDF2",
-                    borderWidth: 1,
-                    margin: 2,
-                  },
+                  backgroundColor: "white",
+                  borderRadius: 34,
+                  width: 101,
+                  borderColor: "#E8EDF2",
+                  borderWidth: 1,
+                  margin: 2,
+                },
             ]}
           >
             <Text
@@ -412,10 +405,11 @@ export default function UserProfileScreen() {
           {selection === 1
             ? renderCollection()
             : selection === 2
-            ? renderPosts()
-            : null}
+              ? renderPosts()
+              : null}
         </View>
       </View>
+      <NewPostButton />
     </Screen>
   );
 }
