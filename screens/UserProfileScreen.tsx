@@ -26,6 +26,7 @@ import { SneakerList } from "../types";
 import { API, Auth, graphqlOperation } from "aws-amplify";
 import { createUser, deleteSneaker } from "../src/graphql/mutations";
 import { getUser } from "../src/graphql/queries";
+import NewPostButton from "../components/new-post-button";
 
 //required images
 const messageIcon = require("../assets/images/message-button.png");
@@ -326,14 +327,6 @@ export default function UserProfileScreen(props?: any) {
             navigation.navigate("Settings", { screen: "settings" })
           }
         />
-        {/* <Button
-          style={{ backgroundColor: "transparent" }}
-          onPress={() =>
-            navigation.navigate("Settings", { screen: "settings" })
-          }
-        >
-          <Image source={settingsIcon} />
-        </Button> */}
       </View>
       {user ? (
         <View style={PROFILE_DATA}>
@@ -475,6 +468,7 @@ export default function UserProfileScreen(props?: any) {
             : null}
         </View>
       </View>
+      <NewPostButton />
     </Screen>
   );
 }

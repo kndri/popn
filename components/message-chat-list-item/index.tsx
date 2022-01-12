@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, ViewStyle, View } from 'react-native'
+import { TouchableOpacity, ViewStyle, View, Pressable } from 'react-native'
 import { Text } from "../text/text";
 import { AutoImage as Image } from '../auto-image/auto-image';
 import { useNavigation } from "@react-navigation/native";
@@ -10,11 +10,12 @@ const CARD: ViewStyle = {
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    padding: 10,
+    padding: 16,
     justifyContent: 'flex-end',
-    marginBottom: 5,
     borderBottomWidth: 0.5,
     borderBottomColor: '#7A7A7A',
+    backgroundColor: 'white',
+    height: 80
 
 };
 const LEFT_SIDE: ViewStyle = {
@@ -40,6 +41,7 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
     const navigation = useNavigation();
 
     React.useEffect(() => {
+        // console.log('chatRoom: ', chatRoom)
         const getOtherUser = async () => {
             const userInfo = await Auth.currentAuthenticatedUser();
             setUser(userInfo);
@@ -52,10 +54,9 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
         getOtherUser();
     }, [])
 
-
     return (
         <>
-            < TouchableOpacity style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, currentUser: user }); }
+            < Pressable style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, currentUser: user }); }
             }>
                 <View style={LEFT_SIDE}>
                     <Image
@@ -82,8 +83,8 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
                         {moment(chatRoom.updatedAt).format("MM/DD/YYYY")}
                     </Text>
                 </View>
-
-            </TouchableOpacity >
+            </Pressable>
         </>
+
     )
 }
