@@ -8,6 +8,7 @@ import {
   deletePost,
   deleteComment,
   deleteLike,
+  deleteSneaker,
 } from "../src/graphql/mutations";
 import {
   listSneakerStores,
@@ -37,6 +38,23 @@ export const addUserSneaker = async (sneakerObject: Object) => {
       verified: false,
     };
     await API.graphql(graphqlOperation(createSneaker, { input: newSneaker }));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+//deletes shoe from user
+export const deleteUserSneaker = async (id: string) => {
+  try {
+    // const currentUser = checkLoggedUser();
+    const currentUser = await Auth.currentAuthenticatedUser({
+      bypassCache: true,
+    });
+
+    const newSneaker = {
+      id: id,
+    };
+    await API.graphql(graphqlOperation(deleteSneaker, { input: newSneaker }));
   } catch (e) {
     console.log(e);
   }

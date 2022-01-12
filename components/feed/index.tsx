@@ -8,59 +8,6 @@ import { getPostFromDB } from "../../aws-functions/aws-functions";
 
 const default_user = require("../../assets/images/defaultUser.png");
 
-const users_posts = [
-  {
-    id: 1,
-    username: "@dannyy",
-    image_url: default_user,
-    post_description:
-      "Please note that some processing of your personal data may not require your consent.",
-    likes: "2.5k",
-    comments: "3.5k",
-    seen: "10k",
-  },
-  {
-    id: 2,
-    username: "@haslhoff",
-    image_url: default_user,
-    post_description:
-      "Please note that some processing of your personal data may not require your consent.",
-    likes: "2.5k",
-    comments: "3.5k",
-    seen: "10k",
-  },
-  {
-    id: 3,
-    username: "@antman",
-    image_url: default_user,
-    post_description:
-      "Please note that some processing of your personal data may not require your consent.",
-    likes: "2.5k",
-    comments: "3.5k",
-    seen: "10k",
-  },
-  {
-    id: 4,
-    username: "@ndri",
-    image_url: default_user,
-    post_description:
-      "Please note that some processing of your personal data may not require your consent.",
-    likes: "2.5k",
-    comments: "3.5k",
-    seen: "10k",
-  },
-  {
-    id: 5,
-    username: "@Mr.chang",
-    image_url: default_user,
-    post_description:
-      "Please note that some processing of your personal data may not require your consent.",
-    likes: "2.5k",
-    comments: "3.5k",
-    seen: "10k",
-  },
-];
-
 const Feed = ({ post, user }) => {
   const [posts, setPosts] = useState<any>(post);
   const [loading, setLoading] = useState(false);
