@@ -18,7 +18,44 @@ import {
   commentByUser,
   listComments,
   getPost,
+  getUser,
 } from "../src/graphql/queries";
+
+export const getUserFromDb = async (userID: string) => {
+  let user: any;
+
+  const postData = await API.graphql(
+    graphqlOperation(getUser, {
+      id: userID,
+    })
+  );
+
+  user = postData.data.getUser;
+
+  return user;
+};
+//stores shoes
+export const getCurrentUser = async (sneakerObject: Object) => {
+  try {
+    // const currentUser = checkLoggedUser();
+    const currentUser = await Auth.currentAuthenticatedUser({
+      bypassCache: true,
+    });
+
+    const newSneaker = {
+      id: sneakerObject.id,
+      brand: sneakerObject.brand,
+      primaryName: sneakerObject.primary_name,
+      secondaryName: sneakerObject.secondary_name,
+      image: sneakerObject.image_url,
+      userID: currentUser.attributes.sub,
+      verified: false,
+    };
+    await API.graphql(graphqlOperation(createSneaker, { input: newSneaker }));
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 //stores shoes
 export const addUserSneaker = async (sneakerObject: Object) => {
@@ -232,7 +269,7 @@ export const checkLoggedUser = async (): Promise<any> => {
     console.log(error);
   });
 
-  return data.attributes;
+  return data;
 };
 
 export const forgotPassword = (username: string) => {

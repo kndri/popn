@@ -18,6 +18,8 @@ import {
   getCommentFromUser,
   getPostFromUser,
   deleteUserSneaker,
+  obtainUser,
+  getUserFromDb,
 } from "../aws-functions/aws-functions";
 import { SneakerList } from "../types";
 // NOTE: This should be refactored
@@ -104,10 +106,14 @@ const DATA_CONTAINER: ViewStyle = {
   height: "100%",
 };
 
-export default function UserProfileScreen() {
+export default function UserProfileScreen(props?: any) {
+  const userID = props.route.params;
+
   const navigation = useNavigation();
   const [collection, setCollection] = React.useState<any>([]);
   const [username, setUsername] = React.useState("");
+  const [profileImage, setprofileImage] = React.useState("");
+
   const [user, setUser] = React.useState<any>();
 
   const isFocused = useIsFocused();
@@ -115,7 +121,18 @@ export default function UserProfileScreen() {
 
   const getSneakers = async () => {
     const sneakerlist = await getSneakersFromUser();
+    const user = await checkLoggedUser();
+
+    setUsername(user.attributes.preferred_username);
+    setprofileImage(user.attributes["custom:profile_image"]);
     setCollection(sneakerlist);
+  };
+
+  const getUserData = async () => {
+    const user = await getUserFromDb(userID);
+
+    setUser(user);
+    setCollection(user.sneakers.items);
   };
 
   const saveUserToDB = async (user: any) => {
@@ -124,10 +141,8 @@ export default function UserProfileScreen() {
 
   React.useEffect(() => {
     const getUser = async () => {
-      console.log("ran getUser");
       // Get current authenticated user
       const user = await checkLoggedUser();
-      console.log("user: ", user);
 
       if (user) {
         // Check if user already exists in database
@@ -149,22 +164,28 @@ export default function UserProfileScreen() {
           console.log("User already exists");
         }
       }
-
-      // setUser(user);
     };
     getUser();
   }, []);
 
-  React.useEffect(() => {
-    const rerender = navigation.addListener("focus", () => {
-      if (isFocused) {
-        getSneakers();
-      }
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   const rerender = navigation.addListener("focus", () => {
+  //     if (isFocused) {
+  //       getSneakers();
+  //     }
+  //   });
+  // }, []);
 
   React.useEffect(() => {
-    getSneakers();
+    const check = async () => {
+      var currentUser = await checkLoggedUser();
+      if (userID === undefined || userID === currentUser.attributes?.sub) {
+        getSneakers();
+      } else {
+        getUserData();
+      }
+    };
+    check();
   }, []);
 
   // Alerts when long pressed on shoe items
@@ -222,27 +243,29 @@ export default function UserProfileScreen() {
           />
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Button
-            preset="none"
-            style={{
-              justifyContent: "center",
-              width: "70%",
-              height: 20,
-              paddingVertical: 2,
-              borderRadius: 10,
-              marginBottom: 15,
-            }}
-            onPress={() => {
-              navigation.navigate("ShoeDetails");
-            }}
-          >
-            <Text
-              preset="bold"
-              style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
+          {user ? null : (
+            <Button
+              preset="none"
+              style={{
+                justifyContent: "center",
+                width: "70%",
+                height: 20,
+                paddingVertical: 2,
+                borderRadius: 10,
+                marginBottom: 15,
+              }}
+              onPress={() => {
+                navigation.navigate("ShoeDetails");
+              }}
             >
-              View
-            </Text>
-          </Button>
+              <Text
+                preset="bold"
+                style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
+              >
+                View
+              </Text>
+            </Button>
+          )}
         </View>
       </View>
     </TouchableOpacity>
@@ -259,7 +282,7 @@ export default function UserProfileScreen() {
   const renderCollection = () => {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
-        {collection.length === 0 ? (
+        {collection.length == 0 ? (
           <>
             <Text
               style={TEXTCENTER}
@@ -312,26 +335,47 @@ export default function UserProfileScreen() {
           <Image source={settingsIcon} />
         </Button> */}
       </View>
+      {user ? (
+        <View style={PROFILE_DATA}>
+          <Image style={PROFILE_IMAGE} source={{ uri: user.avatarImageURL }} />
 
-      <View style={PROFILE_DATA}>
-        <Image style={PROFILE_IMAGE} source={userImage} />
+          <View style={{}}>
+            <Text preset="header" text={`${user.username}`} />
+            <Text preset="secondary" text={`${user.username}`} />
+            {/* <Text preset="secondary" text={username} /> */}
 
-        <View style={{}}>
-          <Text preset="header" text="Albert Flores" />
-          <Text preset="secondary" text={"@AlbertFlores"} />
-          {/* <Text preset="secondary" text={username} /> */}
+            <View style={{ flexDirection: "row" }}>
+              <Text preset="bold" text="Don Score: " />
+              <Text preset="bold" text="890" />
+            </View>
 
-          <View style={{ flexDirection: "row" }}>
-            <Text preset="bold" text="Don Score: " />
-            <Text preset="bold" text="890" />
-          </View>
-
-          <View style={{ flexDirection: "row" }}>
-            <Text preset="bold" text="Collection Value: " />
-            <Text preset="bold" text="$250,000" />
+            <View style={{ flexDirection: "row" }}>
+              <Text preset="bold" text="Collection Value: " />
+              <Text preset="bold" text="$250,000" />
+            </View>
           </View>
         </View>
-      </View>
+      ) : (
+        <View style={PROFILE_DATA}>
+          <Image style={PROFILE_IMAGE} source={{ uri: profileImage }} />
+
+          <View style={{}}>
+            <Text preset="header" text={`${username}`} />
+            <Text preset="secondary" text={`${username}`} />
+            {/* <Text preset="secondary" text={username} /> */}
+
+            <View style={{ flexDirection: "row" }}>
+              <Text preset="bold" text="Don Score: " />
+              <Text preset="bold" text="890" />
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <Text preset="bold" text="Collection Value: " />
+              <Text preset="bold" text="$250,000" />
+            </View>
+          </View>
+        </View>
+      )}
 
       <View style={{ flexDirection: "row", paddingHorizontal: spacing[5] }}>
         <Button
@@ -340,12 +384,27 @@ export default function UserProfileScreen() {
         >
           <Image source={messageIcon} />
         </Button>
-        <Button
+        {user ? (
+          <Button
+            style={{ width: 262, height: 48, borderRadius: 4, marginLeft: 10 }}
+            text="Follow"
+            preset="primary"
+            // onPress={() => navigation.navigate("")}
+          />
+        ) : (
+          <Button
+            style={{ width: 262, height: 48, borderRadius: 4, marginLeft: 10 }}
+            text="Edit Profile"
+            preset="primary"
+            // onPress={() => navigation.navigate("")}
+          />
+        )}
+        {/* <Button
           style={{ width: 262, height: 48, borderRadius: 4, marginLeft: 10 }}
           text="Edit Profile"
           preset="primary"
           // onPress={() => navigation.navigate("")}
-        />
+        /> */}
       </View>
 
       <View style={COLLECTION_CONTAINER}>

@@ -35,34 +35,35 @@ const signIn = (email: string, _password: string): Promise<AuthData> => {
   });
 };
 const uploadImage = async (username: string, imageUrl: string) => {
-    console.log('uploadImage RUNNNINNNG');
-    console.log('imageUrl: ', imageUrl);
-    // const image = await fetch(imageUrl);
-    // console.log('image: ', image);
-    // const imageBlob = await image.blob();
-    // console.log('imageBlob: ', imageBlob);
-    // const key = `${username}_profileImage`;
-    // console.log('key: ', key);
+  console.log("uploadImage RUNNNINNNG");
+  console.log("imageUrl: ", imageUrl);
+  // const image = await fetch(imageUrl);
+  // console.log('image: ', image);
+  // const imageBlob = await image.blob();
+  // console.log('imageBlob: ', imageBlob);
+  // const key = `${username}_profileImage`;
+  // console.log('key: ', key);
 
-    // const imageResponse = await Storage.put(key, imageBlob, {
-    //   level: "public"
-    // });
-    // console.log('imageResponse: ', imageResponse);
-    // const uploadedImageUrl = `https://popnd82dea5bd54c4b12aa305515ccc9e5e8132355-dev.s3.amazonaws.com/${key}`;
-    // console.log('uploadedImageUrl: ', uploadedImageUrl);
+  // const imageResponse = await Storage.put(key, imageBlob, {
+  //   level: "public"
+  // });
+  // console.log('imageResponse: ', imageResponse);
+  // const uploadedImageUrl = `https://popnd82dea5bd54c4b12aa305515ccc9e5e8132355-dev.s3.amazonaws.com/${key}`;
+  // console.log('uploadedImageUrl: ', uploadedImageUrl);
 
-    // return uploadedImageUrl;
+  // return uploadedImageUrl;
 
   const response = await fetch(imageUrl);
   const blob = await response.blob();
-      console.log('blob: ', blob);
+  console.log("blob: ", blob);
 
   const fileName = `${username}ProfileImage.jpeg`;
   await Storage.put(fileName, blob, {
-    contentType: 'image/jpeg',
-    level: 'private'
-  }).then(data => console.log('uploadImageData: ', data))
-    .catch(err => console.log('uploadImageErr: ', err))
+    contentType: "image/jpeg",
+    level: "private",
+  })
+    .then((data) => console.log("uploadImageData: ", data))
+    .catch((err) => console.log("uploadImageErr: ", err));
 };
 
 const signUp = async (
@@ -72,7 +73,6 @@ const signUp = async (
   _username: string,
   image_url: string
 ): Promise<AuthData> => {
-
   // variable to check if there is an error
   let errorMessage: any;
 
@@ -100,8 +100,8 @@ const signUp = async (
         avatarImageURL: image_url,
         email: email,
         following: 0,
-        follower: 0
-      } 
+        follower: 0,
+      };
       API.graphql(graphqlOperation(createUser, { input: user }));
     })
     .catch((error) => {
@@ -122,15 +122,19 @@ const signUp = async (
 
 const usernameAvailable = async (username: string) => {
   // adapted from @herri16's solution: https://github.com/aws-amplify/amplify-js/issues/1067#issuecomment-436492775
+
   try {
-    const res = await Auth.confirmSignUp(username, "000000", {
-      // If set to False, the API will throw an AliasExistsException error if the phone number/email used already exists as an alias with a different user
-      forceAliasCreation: false,
-    });
+    // const resp = await Auth.confirmSignUp(username, "000000", {
+    //   // If set to False, the API will throw an AliasExistsException error if the phone number/email used already exists as an alias with a different user
+    //   forceAliasCreation: false,
+    // });
+
+    const resp = await Auth.signIn(username, "0000000");
 
     // this should always throw an error of some kind, but if for some reason this succeeds then the user probably exists.
-    return false;
+    return true;
   } catch (err: any) {
+    console.log("response", err);
     switch (err.code) {
       case "UserNotFoundException":
         return true;

@@ -77,7 +77,7 @@ const Post = ({ post, user, fetchPosts }) => {
     post.comments.items.length
   );
 
-    // const [commentCount, setCommentCount] = React.useState(0);
+  // const [commentCount, setCommentCount] = React.useState(0);
 
   React.useEffect(() => {
     const searchedLike = post.likes.items.find(
@@ -153,17 +153,21 @@ const Post = ({ post, user, fetchPosts }) => {
   return (
     <TouchableOpacity onPress={() => handlePress()}>
       <View style={POST_CONTAINER}>
-        <Image
-          // have to check for image the default image in user data contains
-          source={{ uri: post.user.avatarImageURL }}
-          style={{
-            resizeMode: "contain",
-            height: 40,
-            width: 40,
-            marginRight: 5,
-            // flex: 1,
-          }}
-        />
+        <TouchableOpacity
+          onPress={() => navigation.navigate("UserProfile", post.user.id)}
+        >
+          <Image
+            // have to check for image the default image in user data contains
+            source={{ uri: post.user.avatarImageURL }}
+            style={{
+              resizeMode: "contain",
+              height: 40,
+              width: 40,
+              marginRight: 5,
+              // flex: 1,
+            }}
+          />
+        </TouchableOpacity>
         <View style={RIGHT_SIDE_POST}>
           <Text
             preset="header"

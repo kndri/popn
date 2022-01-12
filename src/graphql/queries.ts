@@ -62,12 +62,12 @@ export const getUser = /* GraphQL */ `
               nextToken
             }
             messages {
-            items {
-              id
-              text
-              userID
+              items {
+                id
+                text
+                userID
+              }
             }
-          }
             lastMessage {
               id
               text
@@ -107,7 +107,7 @@ export const listUsers = /* GraphQL */ `
             updatedAt
           }
           nextToken
-      }
+        }
         following
         follower
         status
@@ -145,7 +145,7 @@ export const getChatRoomUser = /* GraphQL */ `
             updatedAt
           }
           nextToken
-      }
+        }
         following
         follower
         status
@@ -330,7 +330,7 @@ export const getMessage = /* GraphQL */ `
             updatedAt
           }
           nextToken
-       }
+        }
         following
         follower
         status
@@ -530,6 +530,18 @@ export const getPost = /* GraphQL */ `
           postID
           createdAt
           updatedAt
+          user {
+            id
+            age
+            username
+            email
+            avatarImageURL
+            following
+            follower
+            status
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -563,13 +575,13 @@ export const listPosts = /* GraphQL */ `
         }
         likes {
           items {
-          id
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
+            id
+            userID
+            postID
+            createdAt
+            updatedAt
+          }
+          nextToken
         }
         comments {
           items {
@@ -581,7 +593,7 @@ export const listPosts = /* GraphQL */ `
             updatedAt
           }
           nextToken
-       }
+        }
         createdAt
         updatedAt
       }
@@ -614,7 +626,7 @@ export const getComment = /* GraphQL */ `
             updatedAt
           }
           nextToken
-      }
+        }
         following
         follower
         status

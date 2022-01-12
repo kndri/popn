@@ -117,8 +117,12 @@ const PostDetailsScreen = (props: any) => {
     const result = await getCurrentPost(post.id);
     setComments(result.comments.items);
     setCommentCnt(result.comments.items.length);
-    // console.log("commensts", comments);
+
+    //also set the likes count
+    setLikesCount(result.likes.items.length);
+    console.log("commensts", result);
   };
+
   const getUser = async () => {
     const user = await checkLoggedUser();
     setUsername(user.sub);
@@ -179,6 +183,7 @@ const PostDetailsScreen = (props: any) => {
   );
 
   const renderPosts = (post) => {
+    // console.log(post);
     return (
       <View style={COMMENT_CONTAINER}>
         <Image
@@ -255,10 +260,7 @@ const PostDetailsScreen = (props: any) => {
   return (
     <Screen style={CONTAINER}>
       <View style={PROFILE_HEADER}>
-        <Header
-          leftIcon="back"
-          onLeftPress={() => navigation.goBack()}
-        />
+        <Header leftIcon="back" onLeftPress={() => navigation.goBack()} />
       </View>
       <View style={POST_CONTAINER}>
         <View style={RIGHT_SIDE_POST}>
