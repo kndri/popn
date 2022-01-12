@@ -21,8 +21,11 @@ import {
     API,
     graphqlOperation,
     Auth,
+    navItem,
 } from 'aws-amplify';
-import { getUser } from '../src/graphql/queries';
+import { getUser, getChatRoom } from '../src/graphql/queries';
+import { deleteChatRoomUser } from '../src/graphql/mutations';
+import { ConsoleLogger } from "@aws-amplify/core";
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -42,52 +45,46 @@ export default function MessageScreen() {
     const [excludedUsers, setExcludedUsers] = React.useState<any[]>([]);
     const [userData, setUserData] = React.useState({});
     const isFocused = useIsFocused();
+    const [userInfo, setUserInfo] = React.useState<any>([]);
 
     React.useEffect(() => {
-        const fetchChatRooms = async () => {
-            try {
-                const userInfo = await Auth.currentAuthenticatedUser();
-
-                const userData = await API.graphql(
-                    graphqlOperation(
-                        getUser, {
-                        id: userInfo.attributes.sub,
-                    }
-                    )
-                )
-                setUserData(userData);
-                let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
-                if (chatRoomsArr) {
-                    chatRoomsArr.map((room) => {
-                        room.chatRoom.chatRoomUsers.items.map((item) => {
-                            if (item.user.username) {
-                                setExcludedUsers(excludedUsers => [...excludedUsers, item.user.username])
-                            }
-                        })
-                    })
-
-                    chatRoomsArr.sort((a, b) => {
-                        return b.chatRoom.lastMessage.updatedAt.localeCompare(a.chatRoom.lastMessage.updatedAt)
-                    });
-
-                    setChatRooms(chatRoomsArr)
-                }
-            } catch (e) {
-                console.log(e);
-            }
-        }
         fetchChatRooms();
     }, [isFocused]);
 
-    const uniqueExcludedUsers = [...new Set(excludedUsers)]
-    // swipe all the way UI
-    // const rowTranslateAnimatedValues: any = {};
+    const fetchChatRooms = async () => {
+        try {
+            const userInfo = await Auth.currentAuthenticatedUser();
+            setUserInfo(userInfo)
+            const userData = await API.graphql(
+                graphqlOperation(
+                    getUser, {
+                    id: userInfo.attributes.sub,
+                }
+                )
+            )
+            setUserData(userData);
+            let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
+            if (chatRoomsArr) {
+                chatRoomsArr.map((room) => {
+                    room.chatRoom.chatRoomUsers.items.map((item) => {
+                        if (item.user.username) {
+                            setExcludedUsers(excludedUsers => [...excludedUsers, item.user.username])
+                        }
+                    })
+                })
 
-    // Array(chatRooms.length)
-    //     .fill('')
-    //     .forEach((_, i) => {
-    //         rowTranslateAnimatedValues[`${i}`] = new Animated.Value(1);
-    //     });
+                chatRoomsArr.sort((a, b) => {
+                    return b.chatRoom.lastMessage.updatedAt.localeCompare(a.chatRoom.lastMessage.updatedAt)
+                });
+
+                setChatRooms(chatRoomsArr)
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const uniqueExcludedUsers = [...new Set(excludedUsers)]
 
     Array(chatRooms.length)
         .fill('')
@@ -102,9 +99,7 @@ export default function MessageScreen() {
     const deleteRow = (rowMap, rowKey) => {
         try {
             closeRow(rowMap, rowKey);
-            console.log('this message has been closed')
-            console.log('deleted chatroom:', rowKey)
-            // removeUserFromChatRoom(rowKey);
+            removeUserFromChatRoom(rowKey);
         }
         catch (error) {
             console.log(error);
@@ -120,10 +115,9 @@ export default function MessageScreen() {
 
     const renderHiddenItem = (data, rowMap) => (
         <View style={styles.rowBack}>
-            {console.log("data:", data.item.chatRoom.id)}
             <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnRight]}
-                onPress={() => deleteRow(rowMap, data.item.chatRoom.id)}
+                onPress={() => deleteRow(rowMap, data.item.chatRoomID)}
             >
                 <Text style={styles.backTextWhite}>Delete</Text>
             </TouchableOpacity>
@@ -142,66 +136,28 @@ export default function MessageScreen() {
             )
 
             let chatRoomUsers = chatRoomData.data.getChatRoom.chatRoomUsers.items;
-
-            let userArr: any[] = [];
-            chatRoomUsers.map((item) => (
-                userArr.push(item.id)
-            ))
+            let userID;
+            chatRoomUsers.map((item) => {
+                if (userInfo.attributes.sub == item.userID) {
+                    userID = item.id
+                }
+            })
 
             // 2. Remove 'user' from the chat room
-            userArr.map(async (id) => {
-                if (userInfo.attributes.sub == id) {
-                    await API.graphql(
-                        graphqlOperation(
-                            deleteChatRoomUser, {
-                            input: {
-                                id: id
-                            }
-                        }
-                        )
-                    )
+            await API.graphql(
+                graphqlOperation(
+                    deleteChatRoomUser, {
+                    input: {
+                        id: userID
+                    }
                 }
-
-            })
+                )
+            )
+            fetchChatRooms();
         } catch (error) {
             console.log(error);
         }
     }
-
-    // swipe all the way UI
-    // const animationIsRunning = React.useRef(false)
-    // const onSwipeValueChange = swipeData => {
-    //     const { key, value } = swipeData;
-    //     if (
-    //         value < -Dimensions.get('window').width &&
-    //         !animationIsRunning.current
-    //     ) {
-    //         animationIsRunning.current = true
-    //         Animated.timing(rowTranslateAnimatedValues[key], {
-    //             toValue: 0,
-    //             duration: 200,
-    //             useNativeDriver: false,
-    //         }).start(() => {
-    //             console.log("swiped")
-    //             // removeUserFromChatRoom(key);
-    //             animationIsRunning.current = false;
-    //         });
-    //     }
-    // };
-
-
-
-    // swipe all the way UI
-    // const renderHiddenItem = () => (
-    //     <View style={styles.rowBack}>
-    //         <View style={[styles.backRightBtn, styles.backRightBtnRight]}>
-    //             <Text style={styles.backTextWhite}>Delete</Text>
-    //         </View>
-    //     </View>
-    // );
-
-
-
 
 
     return (
@@ -221,7 +177,6 @@ export default function MessageScreen() {
                             text="No Messages Found."
                         />
                     </View>
-
 
                 ) : (
                     <SwipeListView

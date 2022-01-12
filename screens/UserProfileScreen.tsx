@@ -7,6 +7,7 @@ import {
   Image,
   Alert,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { color, spacing, typography } from "../theme";
 import { Button, Screen, Text, Header } from "../components";
@@ -16,11 +17,12 @@ import {
   checkLoggedUser,
   getCommentFromUser,
   getPostFromUser,
+  deleteUserSneaker,
 } from "../aws-functions/aws-functions";
 import { SneakerList } from "../types";
 // NOTE: This should be refactored
 import { API, Auth, graphqlOperation } from "aws-amplify";
-import { createUser } from "../src/graphql/mutations";
+import { createUser, deleteSneaker } from "../src/graphql/mutations";
 import { getUser } from "../src/graphql/queries";
 
 //required images
@@ -122,10 +124,10 @@ export default function UserProfileScreen() {
 
   React.useEffect(() => {
     const getUser = async () => {
-      console.log('ran getUser')
+      console.log("ran getUser");
       // Get current authenticated user
       const user = await checkLoggedUser();
-      console.log("user: ", user)
+      console.log("user: ", user);
 
       if (user) {
         // Check if user already exists in database
@@ -149,7 +151,7 @@ export default function UserProfileScreen() {
       }
 
       // setUser(user);
-    }
+    };
     getUser();
   }, []);
 
@@ -165,63 +167,85 @@ export default function UserProfileScreen() {
     getSneakers();
   }, []);
 
+  // Alerts when long pressed on shoe items
+  const createDeleteAlert = (shoeID) =>
+    Alert.alert(
+      "Delete Shoe",
+      "Are you sure you want to delete this Shoe? If this is a verified shoe you will need to reverify the shoe through check check",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            deleteUserSneaker(shoeID).then(() => getSneakers());
+          },
+        },
+      ]
+    );
+
   const renderSneaker = ({ item }) => (
-    <View
-      style={{
-        justifyContent: "space-evenly",
-        height: 150,
-        width: 150,
-        borderWidth: 1,
-        borderColor: "#EBEBEB",
-        borderRadius: 10,
-        marginBottom: 40,
-        marginHorizontal: 10,
-      }}
-    >
+    <TouchableOpacity onLongPress={() => createDeleteAlert(item.id)}>
       <View
         style={{
-          justifyContent: "flex-start",
-          alignItems: "flex-start",
-          marginLeft: 10,
-          marginTop: 10,
+          justifyContent: "space-evenly",
+          height: 150,
+          width: 150,
+          borderWidth: 1,
+          borderColor: "#EBEBEB",
+          borderRadius: 10,
+          marginBottom: 40,
+          marginHorizontal: 10,
         }}
       >
-        <Text
-          text={`${item.primaryName}`}
-          style={{ fontSize: 12, color: "#979797" }}
-        />
-        <Text text={`${item.secondaryName}`} style={{ fontSize: 10 }} />
-      </View>
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Image
-          source={{ uri: item.image }}
-          style={{ height: 81, width: 100, resizeMode: "contain" }}
-        />
-      </View>
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Button
-          preset="none"
+        <View
           style={{
-            justifyContent: "center",
-            width: "70%",
-            height: 20,
-            paddingVertical: 2,
-            borderRadius: 10,
-            marginBottom: 15,
-          }}
-          onPress={() => {
-            navigation.navigate("ShoeDetails");
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+            marginLeft: 10,
+            marginTop: 10,
           }}
         >
           <Text
-            preset="bold"
-            style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
+            text={`${item.primaryName}`}
+            style={{ fontSize: 12, color: "#979797" }}
+          />
+          <Text text={`${item.secondaryName}`} style={{ fontSize: 10 }} />
+        </View>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Image
+            source={{ uri: item.image }}
+            style={{ height: 81, width: 100, resizeMode: "contain" }}
+          />
+        </View>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Button
+            preset="none"
+            style={{
+              justifyContent: "center",
+              width: "70%",
+              height: 20,
+              paddingVertical: 2,
+              borderRadius: 10,
+              marginBottom: 15,
+            }}
+            onPress={() => {
+              navigation.navigate("ShoeDetails");
+            }}
           >
-            View
-          </Text>
-        </Button>
+            <Text
+              preset="bold"
+              style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
+            >
+              View
+            </Text>
+          </Button>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   const renderPosts = () => {
@@ -275,7 +299,9 @@ export default function UserProfileScreen() {
           leftIcon="back"
           onLeftPress={() => navigation.goBack()}
           rightIcon="settings"
-          onRightPress={() => navigation.navigate("Settings", { screen: "settings" })}
+          onRightPress={() =>
+            navigation.navigate("Settings", { screen: "settings" })
+          }
         />
         {/* <Button
           style={{ backgroundColor: "transparent" }}

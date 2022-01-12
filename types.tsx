@@ -36,9 +36,11 @@ export type RootStackParamList = {
   Verify: undefined;
   UserProfile: undefined;
   MessageRoom: any;
+  NewMessageRoom: any;
   NewPost: undefined;
   PostDetails: undefined | any;
   MessageContactsScreen: any;
+  Message: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -71,8 +73,8 @@ export interface SneakerList {
   sneakers: Array<Sneaker>;
 }
 
-export interface ChatMessage {
-  id: string | number
+export interface IMessage {
+  _id: string | number
   text: string
   createdAt: Date | number
   user: User

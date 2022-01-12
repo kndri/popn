@@ -3,12 +3,12 @@ import {
     View,
     Text,
     TouchableWithoutFeedback,
-    StyleSheet
+    StyleSheet,
+    TouchableOpacity
 } from "react-native";
 import { MessageContactUser } from "../../types";
 import { AutoImage as Image } from '../';
 import { useNavigation } from '@react-navigation/native';
-
 import {
     API,
     graphqlOperation,
@@ -18,6 +18,7 @@ import {
     createChatRoom,
     createChatRoomUser
 } from '../../src/graphql/mutations';
+
 
 export type MessageContactListItemProps = {
     user: MessageContactUser;
@@ -36,7 +37,7 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
                 graphqlOperation(
                     createChatRoom, {
                     input: {
-                        lastMessageID: "zz753fca-e8c3-473b-8e85-b14196e84e16"
+                        lastMessageID: Math.round(Math.random() * 1000000)
                     }
                 }
                 )
@@ -74,7 +75,7 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
                 )
             )
 
-            navigation.navigate('MessageRoom', {
+            navigation.navigate('NewMessageRoom', {
                 id: newChatRoom.id,
                 name: user.username,
             })
@@ -85,7 +86,7 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
     }
 
     return (
-        <TouchableWithoutFeedback onPress={onClick}>
+        <TouchableOpacity onPress={onClick}>
             <View style={styles.container}>
                 <View style={styles.lefContainer}>
                     <Image source={{ uri: `${user.avatarImageURL}` }} style={styles.avatar} />
@@ -95,7 +96,7 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
                     </View>
                 </View>
             </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
     )
 };
 
@@ -106,6 +107,7 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: 'space-between',
         padding: 10,
+
     },
     lefContainer: {
         flexDirection: 'row',

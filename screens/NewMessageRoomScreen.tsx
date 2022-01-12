@@ -16,7 +16,8 @@ import {
   updateChatRoom,
 } from '../src/graphql/mutations';
 
-import { messagesByChatRoom } from '../src/graphql/queries';
+import { messagesByChatRoom, getChatRoom } from '../src/graphql/queries';
+import { deleteChatRoomUser, deleteChatRoom } from '../src/graphql/mutations';
 import { onCreateMessage } from '../src/graphql/subscriptions';
 
 import {
@@ -42,13 +43,13 @@ const CENTER: ViewStyle = {
   borderColor: 'black'
 };
 
-export type MessageRoomScreenProps = {
+export type NewMessageRoomScreenProps = {
   id: string,
   name: string,
   user: object
 }
 
-export default function MessageRoomScreen(props: MessageRoomScreenProps) {
+export default function NewMessageRoomScreen(props: NewMessageRoomScreenProps) {
 
   const route = useRoute();
   const navigation = useNavigation();
@@ -97,6 +98,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
     });
 
     setMessages(giftedChatMessages);
+
   }
 
 
@@ -152,7 +154,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
       )
 
       await updateChatRoomLastMessage(newMessageData.data.createMessage.id)
-      console.log('MESSAGE SENT');
+      setMessages(prevState => GiftedChat.append(prevState, messages))
     } catch (e) {
       console.log(e);
     }
@@ -197,6 +199,62 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
     </Send>
   );
 
+  const onNaivgateBack = async () => {
+  
+    try {
+      // check if messages is empty
+      if (messages.length == 0) {
+        // 1. Get ChatRoom data 
+        const chatRoomData = await API.graphql(
+          graphqlOperation(
+            getChatRoom, {
+                id: route.params!.id
+            }
+          )
+        )
+  
+        let chatRoomUsers = chatRoomData.data.getChatRoom.chatRoomUsers.items;
+
+        let userArr:any[] = [];
+        chatRoomUsers.map((item) => (
+          userArr.push(item.id)
+        ))
+
+        // 2. Remove chatRoomUsers from chat room
+        userArr.map(async (id) => {
+          await API.graphql(
+            graphqlOperation(
+              deleteChatRoomUser, {
+                  input: {
+                    id: id
+                  }
+              }
+            )
+          )
+        })  
+  
+        // 3. Delete the chatRoom
+        await API.graphql(
+          graphqlOperation(
+            deleteChatRoom, {
+                input: {
+                  id: route.params!.id
+                }
+            }
+          )
+        )
+  
+        // 4. Navigate back to the Messages Screen
+        navigation.navigate('Message');
+
+      } else {
+        navigation.navigate('Message');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+  }
 
   return (
     <View style={CONTAINER}>
@@ -204,7 +262,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
         <Header
           headerTx={`${route.params?.name}`}
           leftIcon="back"
-          onLeftPress={() => navigation.goBack()}
+          onLeftPress={onNaivgateBack}
         />
       </View>
 

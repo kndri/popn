@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, ViewStyle, View } from 'react-native'
+import { TouchableOpacity, ViewStyle, View, Pressable } from 'react-native'
 import { Text } from "../text/text";
 import { AutoImage as Image } from '../auto-image/auto-image';
 import { useNavigation } from "@react-navigation/native";
@@ -56,7 +56,7 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
 
     return (
         <>
-            < TouchableOpacity style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, currentUser: user }); }
+            < Pressable style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, currentUser: user }); }
             }>
                 <View style={LEFT_SIDE}>
                     <Image
@@ -83,7 +83,7 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
                         {moment(chatRoom.updatedAt).format("MM/DD/YYYY")}
                     </Text>
                 </View>
-            </TouchableOpacity>
+            </Pressable>
         </>
 
     )

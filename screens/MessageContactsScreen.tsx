@@ -7,42 +7,71 @@ import MessageContactListItem from '../components/message-contact-list-item';
 import {
     Text, Screen, Header
 } from '../components'
-import { listUsers } from '../src/graphql/queries';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { useRoute } from '@react-navigation/native';
-import { useEffect, useState } from "react";
-
-const profile_icon = require("../assets/images/profile_icon.png");
-
+import { useState } from "react";
+import { listUsers } from '../src/graphql/queries';
 
 export default function MessageContactsScreen() {
     const navigation = useNavigation();
     const route = useRoute();
-    const [users, setUsers] = useState([]);
+    const [query, setQuery] = React.useState("");
+    const [searchedContacts, setSearchedContacts] = React.useState<any>([]);
+    const [users, setUsers] = useState<any>([]);
+    const isFocused = useIsFocused();
 
-    useEffect(() => {
+    React.useEffect(() => {
         const fetchUsers = async () => {
+            let setUniqueUsers;
             try {
                 const usersData = await API.graphql(
                     graphqlOperation(
                         listUsers
                     )
                 )
-                // @ANT: Filter listUsers array with excludedUsers
-                let setUniqueUsers = usersData.data.listUsers.items;
-                setUniqueUsers.map((user) => {
-                    if (route.params?.excludedUsers.includes(user.username) || route.params?.currentUser.data.getUser.username === user.username) {
-                        setUniqueUsers.splice(setUniqueUsers.indexOf(user), 1);  //deleting
-                    }
-                })
-                setUniqueUsers.splice(setUniqueUsers.indexOf(route.params?.currentUser.data.getUser.username), 1) //delete signed in user from unique
-                setUsers(setUniqueUsers);
+                setUniqueUsers = usersData.data.listUsers.items;
+
             } catch (e) {
                 console.log(e);
             }
+            let tempArr = [...setUniqueUsers];
+            setUniqueUsers.map((user) => {
+                if (route.params?.excludedUsers.includes(user.username) || route.params?.currentUser.data.getUser.username == user.username) {
+                    tempArr.splice(tempArr.indexOf(user), 1);  //deleting
+                }
+            })
+            setUsers(tempArr);
+            setSearchedContacts(tempArr)
         }
         fetchUsers();
-    }, [])
+
+    }, [isFocused])
+
+
+    // useEffect to filter out the searched contact
+    React.useEffect(() => {
+        if (query.length === 0) {
+            setSearchedContacts(users);
+        } else {
+            const searchedObject: any = [];
+            users
+                .filter(
+                    (contactObject) =>
+                        contactObject.username
+                            .toLowerCase()
+                            .replace(/\s+/g, "")
+                            .includes(query.toLowerCase().replace(/\s+/g, ""))
+
+                )
+                .map((filteredContact) => {
+                    searchedObject.push(filteredContact);
+                });
+
+            setSearchedContacts(searchedObject);
+        }
+    }, [query])
+
+    React.useEffect(() => { }, [users]);
 
     return (
         <Screen style={styles.container}>
@@ -58,9 +87,9 @@ export default function MessageContactsScreen() {
                     style={{
                         width: "100%",
                     }}
-                    //   value={query}
+                    value={query}
                     autoCorrect={false}
-                    //   onChangeText={(text) => setQuery(text)}
+                    onChangeText={(text) => setQuery(text)}
                     placeholder="To: "
                     placeholderTextColor={"black"}
                 />
@@ -76,9 +105,9 @@ export default function MessageContactsScreen() {
             ) : (
                 <FlatList
                     style={{ width: '100%' }}
-                    data={users}
+                    data={searchedContacts}
                     renderItem={({ item }) => <MessageContactListItem user={item} />}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => String(item.id)}
                 />
             )
             }
@@ -105,9 +134,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: spacing[4],
         height: 25,
         width: '100%',
+        backgroundColor: 'transparent'
     },
     HEADER: {
         flexDirection: "row",
         paddingHorizontal: spacing[4],
+        backgroundColor: 'transparent'
     }
 });

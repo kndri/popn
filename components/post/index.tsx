@@ -71,9 +71,13 @@ const Post = ({ post, user, fetchPosts }) => {
   const [myLike, setMyLike] = React.useState<any>();
   const [username, setUsername] = React.useState<any>();
   const [likesCount, setLikesCount] = React.useState(post.likes.items.length);
+  // const [likesCount, setLikesCount] = React.useState(0);
+
   const [commentCount, setCommentCount] = React.useState(
     post.comments.items.length
   );
+
+    // const [commentCount, setCommentCount] = React.useState(0);
 
   React.useEffect(() => {
     const searchedLike = post.likes.items.find(

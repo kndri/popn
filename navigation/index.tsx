@@ -32,6 +32,7 @@ import UserProfileScreen from "../screens/UserProfileScreen";
 import ChangeEmailScreen from "../screens/ChangeEmailScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import MessageRoomScreen from "../screens/MessageRoomScreen";
+import NewMessageRoomScreen from "../screens/NewMessageRoomScreen";
 
 import {
   RootStackParamList,
@@ -200,6 +201,11 @@ function RootNavigator() {
           <Stack.Screen
             name="MessageRoom"
             component={MessageRoomScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="NewMessageRoom"
+            component={NewMessageRoomScreen}
             options={{ headerShown: false }}
           />
         </>

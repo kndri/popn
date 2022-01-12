@@ -13,8 +13,11 @@ import {
   Header
 } from "../components";
 import {
-  getPostFromDB,
-} from "../aws-functions/aws-functions";
+  API,
+  graphqlOperation,
+} from 'aws-amplify';
+
+import { listPosts } from "../src/graphql/queries";
 
 import { RootTabScreenProps } from "../types";
 
@@ -113,9 +116,9 @@ export default function Home({
   const [post, setPost] = React.useState<any>([]);
 
   const fetchPosts = async () => {
-    const postData = await getPostFromDB().catch((error) =>
-      console.error(error)
-    );
+    const postData = await API.graphql(
+      graphqlOperation(listPosts)
+    )
     setPost(postData);
   };
 
