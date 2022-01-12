@@ -246,8 +246,7 @@ export default function NewMessageRoomScreen(props: NewMessageRoomScreenProps) {
   
         // 4. Navigate back to the Messages Screen
         navigation.navigate('Message');
-  
-        // 1. Get chat room data
+
       } else {
         navigation.navigate('Message');
       }
