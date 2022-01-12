@@ -30,7 +30,6 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
     const navigation = useNavigation();
 
     const onClick = async () => {
-        console.log('contact was pressed');
         try {
 
             //  1. Create a new Chat Room

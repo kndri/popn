@@ -39,6 +39,17 @@ export const createUser = /* GraphQL */ `
       }
       following
       follower
+      status
+      chatRoomUser {
+        items {
+          id
+          userID
+          chatRoomID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -81,6 +92,17 @@ export const updateUser = /* GraphQL */ `
       }
       following
       follower
+      status
+      chatRoomUser {
+        items {
+          id
+          userID
+          chatRoomID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -123,648 +145,17 @@ export const deleteUser = /* GraphQL */ `
       }
       following
       follower
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createSneaker = /* GraphQL */ `
-  mutation CreateSneaker(
-    $input: CreateSneakerInput!
-    $condition: ModelSneakerConditionInput
-  ) {
-    createSneaker(input: $input, condition: $condition) {
-      id
-      brand
-      primaryName
-      secondaryName
-      image
-      userID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following
-        follower
-        createdAt
-        updatedAt
-      }
-      createdAt
-      verified
-      updatedAt
-    }
-  }
-`;
-export const updateSneaker = /* GraphQL */ `
-  mutation UpdateSneaker(
-    $input: UpdateSneakerInput!
-    $condition: ModelSneakerConditionInput
-  ) {
-    updateSneaker(input: $input, condition: $condition) {
-      id
-      brand
-      primaryName
-      secondaryName
-      image
-      userID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following
-        follower
-        createdAt
-        updatedAt
-      }
-      createdAt
-      verified
-      updatedAt
-    }
-  }
-`;
-export const deleteSneaker = /* GraphQL */ `
-  mutation DeleteSneaker(
-    $input: DeleteSneakerInput!
-    $condition: ModelSneakerConditionInput
-  ) {
-    deleteSneaker(input: $input, condition: $condition) {
-      id
-      brand
-      primaryName
-      secondaryName
-      image
-      userID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following
-        follower
-        createdAt
-        updatedAt
-      }
-      createdAt
-      verified
-      updatedAt
-    }
-  }
-`;
-export const createPost = /* GraphQL */ `
-  mutation CreatePost(
-    $input: CreatePostInput!
-    $condition: ModelPostConditionInput
-  ) {
-    createPost(input: $input, condition: $condition) {
-      id
-      userID
-      description
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following
-        follower
-        createdAt
-        updatedAt
-      }
-      likes {
+      status
+      chatRoomUser {
         items {
           id
           userID
-          postID
+          chatRoomID
           createdAt
           updatedAt
         }
         nextToken
       }
-      comments {
-        items {
-          id
-          text
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updatePost = /* GraphQL */ `
-  mutation UpdatePost(
-    $input: UpdatePostInput!
-    $condition: ModelPostConditionInput
-  ) {
-    updatePost(input: $input, condition: $condition) {
-      id
-      userID
-      description
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following
-        follower
-        createdAt
-        updatedAt
-      }
-      likes {
-        items {
-          id
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      comments {
-        items {
-          id
-          text
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deletePost = /* GraphQL */ `
-  mutation DeletePost(
-    $input: DeletePostInput!
-    $condition: ModelPostConditionInput
-  ) {
-    deletePost(input: $input, condition: $condition) {
-      id
-      userID
-      description
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following
-        follower
-        createdAt
-        updatedAt
-      }
-      likes {
-        items {
-          id
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      comments {
-        items {
-          id
-          text
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createComment = /* GraphQL */ `
-  mutation CreateComment(
-    $input: CreateCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    createComment(input: $input, condition: $condition) {
-      id
-      text
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following
-        follower
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          following
-          follower
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateComment = /* GraphQL */ `
-  mutation UpdateComment(
-    $input: UpdateCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    updateComment(input: $input, condition: $condition) {
-      id
-      text
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following
-        follower
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          following
-          follower
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteComment = /* GraphQL */ `
-  mutation DeleteComment(
-    $input: DeleteCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    deleteComment(input: $input, condition: $condition) {
-      id
-      text
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following
-        follower
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          following
-          follower
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createLike = /* GraphQL */ `
-  mutation CreateLike(
-    $input: CreateLikeInput!
-    $condition: ModelLikeConditionInput
-  ) {
-    createLike(input: $input, condition: $condition) {
-      id
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following
-        follower
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          following
-          follower
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateLike = /* GraphQL */ `
-  mutation UpdateLike(
-    $input: UpdateLikeInput!
-    $condition: ModelLikeConditionInput
-  ) {
-    updateLike(input: $input, condition: $condition) {
-      id
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following
-        follower
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          following
-          follower
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteLike = /* GraphQL */ `
-  mutation DeleteLike(
-    $input: DeleteLikeInput!
-    $condition: ModelLikeConditionInput
-  ) {
-    deleteLike(input: $input, condition: $condition) {
-      id
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following
-        follower
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          following
-          follower
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createSneakerStore = /* GraphQL */ `
-  mutation CreateSneakerStore(
-    $input: CreateSneakerStoreInput!
-    $condition: ModelSneakerStoreConditionInput
-  ) {
-    createSneakerStore(input: $input, condition: $condition) {
-      id
-      brand
-      primary_name
-      secondary_name
-      image_url
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateSneakerStore = /* GraphQL */ `
-  mutation UpdateSneakerStore(
-    $input: UpdateSneakerStoreInput!
-    $condition: ModelSneakerStoreConditionInput
-  ) {
-    updateSneakerStore(input: $input, condition: $condition) {
-      id
-      brand
-      primary_name
-      secondary_name
-      image_url
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteSneakerStore = /* GraphQL */ `
-  mutation DeleteSneakerStore(
-    $input: DeleteSneakerStoreInput!
-    $condition: ModelSneakerStoreConditionInput
-  ) {
-    deleteSneakerStore(input: $input, condition: $condition) {
-      id
-      brand
-      primary_name
-      secondary_name
-      image_url
       createdAt
       updatedAt
     }
@@ -781,8 +172,18 @@ export const createChatRoomUser = /* GraphQL */ `
       chatRoomID
       user {
         id
+        age
         username
+        email
         avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
         status
         chatRoomUser {
           nextToken
@@ -826,8 +227,18 @@ export const updateChatRoomUser = /* GraphQL */ `
       chatRoomID
       user {
         id
+        age
         username
+        email
         avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
         status
         chatRoomUser {
           nextToken
@@ -871,8 +282,18 @@ export const deleteChatRoomUser = /* GraphQL */ `
       chatRoomID
       user {
         id
+        age
         username
+        email
         avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
         status
         chatRoomUser {
           nextToken
@@ -942,8 +363,12 @@ export const createChatRoom = /* GraphQL */ `
         chatRoomID
         user {
           id
+          age
           username
+          email
           avatarImageURL
+          following
+          follower
           status
           createdAt
           updatedAt
@@ -998,8 +423,12 @@ export const updateChatRoom = /* GraphQL */ `
         chatRoomID
         user {
           id
+          age
           username
+          email
           avatarImageURL
+          following
+          follower
           status
           createdAt
           updatedAt
@@ -1054,8 +483,12 @@ export const deleteChatRoom = /* GraphQL */ `
         chatRoomID
         user {
           id
+          age
           username
+          email
           avatarImageURL
+          following
+          follower
           status
           createdAt
           updatedAt
@@ -1086,8 +519,18 @@ export const createMessage = /* GraphQL */ `
       chatRoomID
       user {
         id
+        age
         username
+        email
         avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
         status
         chatRoomUser {
           nextToken
@@ -1132,8 +575,18 @@ export const updateMessage = /* GraphQL */ `
       chatRoomID
       user {
         id
+        age
         username
+        email
         avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
         status
         chatRoomUser {
           nextToken
@@ -1178,8 +631,18 @@ export const deleteMessage = /* GraphQL */ `
       chatRoomID
       user {
         id
+        age
         username
+        email
         avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
         status
         chatRoomUser {
           nextToken
@@ -1207,6 +670,702 @@ export const deleteMessage = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      updatedAt
+    }
+  }
+`;
+export const createSneaker = /* GraphQL */ `
+  mutation CreateSneaker(
+    $input: CreateSneakerInput!
+    $condition: ModelSneakerConditionInput
+  ) {
+    createSneaker(input: $input, condition: $condition) {
+      id
+      brand
+      primaryName
+      secondaryName
+      image
+      userID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      verified
+      updatedAt
+    }
+  }
+`;
+export const updateSneaker = /* GraphQL */ `
+  mutation UpdateSneaker(
+    $input: UpdateSneakerInput!
+    $condition: ModelSneakerConditionInput
+  ) {
+    updateSneaker(input: $input, condition: $condition) {
+      id
+      brand
+      primaryName
+      secondaryName
+      image
+      userID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      verified
+      updatedAt
+    }
+  }
+`;
+export const deleteSneaker = /* GraphQL */ `
+  mutation DeleteSneaker(
+    $input: DeleteSneakerInput!
+    $condition: ModelSneakerConditionInput
+  ) {
+    deleteSneaker(input: $input, condition: $condition) {
+      id
+      brand
+      primaryName
+      secondaryName
+      image
+      userID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      verified
+      updatedAt
+    }
+  }
+`;
+export const createPost = /* GraphQL */ `
+  mutation CreatePost(
+    $input: CreatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    createPost(input: $input, condition: $condition) {
+      id
+      userID
+      description
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          text
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePost = /* GraphQL */ `
+  mutation UpdatePost(
+    $input: UpdatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    updatePost(input: $input, condition: $condition) {
+      id
+      userID
+      description
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          text
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePost = /* GraphQL */ `
+  mutation DeletePost(
+    $input: DeletePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    deletePost(input: $input, condition: $condition) {
+      id
+      userID
+      description
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
+          text
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createComment = /* GraphQL */ `
+  mutation CreateComment(
+    $input: CreateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    createComment(input: $input, condition: $condition) {
+      id
+      text
+      userID
+      postID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      post {
+        id
+        userID
+        description
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          status
+          createdAt
+          updatedAt
+        }
+        likes {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateComment = /* GraphQL */ `
+  mutation UpdateComment(
+    $input: UpdateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    updateComment(input: $input, condition: $condition) {
+      id
+      text
+      userID
+      postID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      post {
+        id
+        userID
+        description
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          status
+          createdAt
+          updatedAt
+        }
+        likes {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteComment = /* GraphQL */ `
+  mutation DeleteComment(
+    $input: DeleteCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    deleteComment(input: $input, condition: $condition) {
+      id
+      text
+      userID
+      postID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      post {
+        id
+        userID
+        description
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          status
+          createdAt
+          updatedAt
+        }
+        likes {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createLike = /* GraphQL */ `
+  mutation CreateLike(
+    $input: CreateLikeInput!
+    $condition: ModelLikeConditionInput
+  ) {
+    createLike(input: $input, condition: $condition) {
+      id
+      userID
+      postID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      post {
+        id
+        userID
+        description
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          status
+          createdAt
+          updatedAt
+        }
+        likes {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateLike = /* GraphQL */ `
+  mutation UpdateLike(
+    $input: UpdateLikeInput!
+    $condition: ModelLikeConditionInput
+  ) {
+    updateLike(input: $input, condition: $condition) {
+      id
+      userID
+      postID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      post {
+        id
+        userID
+        description
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          status
+          createdAt
+          updatedAt
+        }
+        likes {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteLike = /* GraphQL */ `
+  mutation DeleteLike(
+    $input: DeleteLikeInput!
+    $condition: ModelLikeConditionInput
+  ) {
+    deleteLike(input: $input, condition: $condition) {
+      id
+      userID
+      postID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      post {
+        id
+        userID
+        description
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          status
+          createdAt
+          updatedAt
+        }
+        likes {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createSneakerStore = /* GraphQL */ `
+  mutation CreateSneakerStore(
+    $input: CreateSneakerStoreInput!
+    $condition: ModelSneakerStoreConditionInput
+  ) {
+    createSneakerStore(input: $input, condition: $condition) {
+      id
+      brand
+      primary_name
+      secondary_name
+      image_url
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateSneakerStore = /* GraphQL */ `
+  mutation UpdateSneakerStore(
+    $input: UpdateSneakerStoreInput!
+    $condition: ModelSneakerStoreConditionInput
+  ) {
+    updateSneakerStore(input: $input, condition: $condition) {
+      id
+      brand
+      primary_name
+      secondary_name
+      image_url
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteSneakerStore = /* GraphQL */ `
+  mutation DeleteSneakerStore(
+    $input: DeleteSneakerStoreInput!
+    $condition: ModelSneakerStoreConditionInput
+  ) {
+    deleteSneakerStore(input: $input, condition: $condition) {
+      id
+      brand
+      primary_name
+      secondary_name
+      image_url
+      createdAt
       updatedAt
     }
   }

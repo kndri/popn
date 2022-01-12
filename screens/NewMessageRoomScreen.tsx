@@ -16,7 +16,8 @@ import {
   updateChatRoom,
 } from '../src/graphql/mutations';
 
-import { messagesByChatRoom } from '../src/graphql/queries';
+import { messagesByChatRoom, getChatRoom } from '../src/graphql/queries';
+import { deleteChatRoomUser, deleteChatRoom } from '../src/graphql/mutations';
 import { onCreateMessage } from '../src/graphql/subscriptions';
 
 import {
@@ -198,6 +199,63 @@ export default function NewMessageRoomScreen(props: NewMessageRoomScreenProps) {
     </Send>
   );
 
+  const onNaivgateBack = async () => {
+  
+    try {
+      // check if messages is empty
+      if (messages.length == 0) {
+        // 1. Get ChatRoom data 
+        const chatRoomData = await API.graphql(
+          graphqlOperation(
+            getChatRoom, {
+                id: route.params!.id
+            }
+          )
+        )
+  
+        let chatRoomUsers = chatRoomData.data.getChatRoom.chatRoomUsers.items;
+
+        let userArr:any[] = [];
+        chatRoomUsers.map((item) => (
+          userArr.push(item.id)
+        ))
+
+        // 2. Remove chatRoomUsers from chat room
+        userArr.map(async (id) => {
+          await API.graphql(
+            graphqlOperation(
+              deleteChatRoomUser, {
+                  input: {
+                    id: id
+                  }
+              }
+            )
+          )
+        })  
+  
+        // 3. Delete the chatRoom
+        await API.graphql(
+          graphqlOperation(
+            deleteChatRoom, {
+                input: {
+                  id: route.params!.id
+                }
+            }
+          )
+        )
+  
+        // 4. Navigate back to the Messages Screen
+        navigation.navigate('Message');
+  
+        // 1. Get chat room data
+      } else {
+        navigation.navigate('Message');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+  }
 
   return (
     <View style={CONTAINER}>
@@ -205,7 +263,7 @@ export default function NewMessageRoomScreen(props: NewMessageRoomScreenProps) {
         <Header
           headerTx={`${route.params?.name}`}
           leftIcon="back"
-          onLeftPress={() => navigation.navigate('Message')}
+          onLeftPress={onNaivgateBack}
         />
       </View>
 
