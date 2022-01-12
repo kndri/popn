@@ -5,7 +5,8 @@ import {
     TextStyle,
     StyleSheet,
     Dimensions,
-    Animated
+    Animated,
+    TouchableOpacity
 } from "react-native";
 import { color, spacing } from "../theme";
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -72,85 +73,126 @@ export default function MessageScreen() {
         fetchChatRooms();
     }, []);
 
-
     const uniqueExcludedUsers = [...new Set(excludedUsers)]
+    // swipe all the way UI
+    // const rowTranslateAnimatedValues: any = {};
 
-    const rowTranslateAnimatedValues: any = {};
-Array(chatRooms.length)
-    .fill('')
-    .forEach((_, i) => {
-        rowTranslateAnimatedValues[`${i}`] = new Animated.Value(1);
-    });
+    // Array(chatRooms.length)
+    //     .fill('')
+    //     .forEach((_, i) => {
+    //         rowTranslateAnimatedValues[`${i}`] = new Animated.Value(1);
+    //     });
 
+    Array(chatRooms.length)
+        .fill('')
+        .map((_, i) => ({ key: `${i}` }))
+
+    const closeRow = (rowMap, rowKey) => {
+        if (rowMap[rowKey]) {
+            rowMap[rowKey].closeRow();
+        }
+    };
+
+    const deleteRow = (rowMap, rowKey) => {
+        try {
+            closeRow(rowMap, rowKey);
+            console.log('this message has been closed')
+            console.log('deleted chatroom:', rowKey)
+            // removeUserFromChatRoom(rowKey);
+        }
+        catch (error) {
+            console.log(error);
+        }
+
+    };
+
+
+    const onSwipeValueChange = swipeData => {
+        const { key, value } = swipeData;
+
+    };
+
+    const renderHiddenItem = (data, rowMap) => (
+        <View style={styles.rowBack}>
+            {console.log("data:", data.item.chatRoom.id)}
+            <TouchableOpacity
+                style={[styles.backRightBtn, styles.backRightBtnRight]}
+                onPress={() => deleteRow(rowMap, data.item.chatRoom.id)}
+            >
+                <Text style={styles.backTextWhite}>Delete</Text>
+            </TouchableOpacity>
+        </View>
+    );
 
     const removeUserFromChatRoom = async (chatRoomID: any) => {
         try {
             // 1. Get Chat Room Data
             const chatRoomData = await API.graphql(
                 graphqlOperation(
-                  getChatRoom, {
-                      id: chatRoomID
-                  }
+                    getChatRoom, {
+                    id: chatRoomID
+                }
                 )
-              )
+            )
 
-              let chatRoomUsers = chatRoomData.data.getChatRoom.chatRoomUsers.items;
+            let chatRoomUsers = chatRoomData.data.getChatRoom.chatRoomUsers.items;
 
-              let userArr:any[] = [];
-              chatRoomUsers.map((item) => (
+            let userArr: any[] = [];
+            chatRoomUsers.map((item) => (
                 userArr.push(item.id)
-              ))
+            ))
 
             // 2. Remove 'user' from the chat room
             userArr.map(async (id) => {
                 if (userInfo.attributes.sub == id) {
                     await API.graphql(
                         graphqlOperation(
-                          deleteChatRoomUser, {
-                              input: {
+                            deleteChatRoomUser, {
+                            input: {
                                 id: id
-                              }
-                          }
+                            }
+                        }
                         )
-                      )
+                    )
                 }
 
-              })  
+            })
         } catch (error) {
             console.log(error);
         }
     }
 
-    const animationIsRunning = React.useRef(false)
-    const onSwipeValueChange = swipeData => {
-        const { key, value } = swipeData;
-        if (
-            value < -Dimensions.get('window').width &&
-            !animationIsRunning.current 
-        ) {
-            animationIsRunning.current = true
-            Animated.timing(rowTranslateAnimatedValues[key], {
-                toValue: 0,
-                duration: 200,
-                useNativeDriver: false,
-            }).start(() => {
-                console.log("swiped")
-                // removeUserFromChatRoom(key);
-                animationIsRunning.current = false;
-            });
-        }
-    };
+    // swipe all the way UI
+    // const animationIsRunning = React.useRef(false)
+    // const onSwipeValueChange = swipeData => {
+    //     const { key, value } = swipeData;
+    //     if (
+    //         value < -Dimensions.get('window').width &&
+    //         !animationIsRunning.current
+    //     ) {
+    //         animationIsRunning.current = true
+    //         Animated.timing(rowTranslateAnimatedValues[key], {
+    //             toValue: 0,
+    //             duration: 200,
+    //             useNativeDriver: false,
+    //         }).start(() => {
+    //             console.log("swiped")
+    //             // removeUserFromChatRoom(key);
+    //             animationIsRunning.current = false;
+    //         });
+    //     }
+    // };
 
 
 
-
-    const renderHiddenItem = () => (
-        <View style={styles.rowBack}>
-            <View style={[styles.backRightBtn, styles.backRightBtnRight]}>
-                <Text style={styles.backTextWhite}>Delete</Text>
-            </View>
-        </View>
-    );
+    // swipe all the way UI
+    // const renderHiddenItem = () => (
+    //     <View style={styles.rowBack}>
+    //         <View style={[styles.backRightBtn, styles.backRightBtnRight]}>
+    //             <Text style={styles.backTextWhite}>Delete</Text>
+    //         </View>
+    //     </View>
+    // );
 
 
 
@@ -181,10 +223,14 @@ Array(chatRooms.length)
                         data={chatRooms}
                         renderItem={({ item }) => <MessageChatListItem chatRoom={item} />}
                         renderHiddenItem={renderHiddenItem}
-                        rightOpenValue={-Dimensions.get('window').width}
                         onSwipeValueChange={onSwipeValueChange}
                         useNativeDriver={false}
                         keyExtractor={(item) => item.id}
+
+                        rightOpenValue={-75}
+                        previewRowKey={'0'}
+                        previewOpenValue={-20}
+                        previewOpenDelay={3000}
                     />
 
                 )

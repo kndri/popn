@@ -14,7 +14,7 @@ const CARD: ViewStyle = {
     justifyContent: 'flex-end',
     borderBottomWidth: 0.5,
     borderBottomColor: '#7A7A7A',
-    backgroundColor:'white',
+    backgroundColor: 'white',
     height: 80
 
 };
@@ -40,7 +40,7 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
     const navigation = useNavigation();
 
     React.useEffect(() => {
-        console.log('chatRoom: ', chatRoom)
+        // console.log('chatRoom: ', chatRoom)
         const getOtherUser = async () => {
             const userInfo = await Auth.currentAuthenticatedUser();
             if (chatRoom.chatRoom.chatRoomUsers.items[0].user.id === userInfo.attributes.sub) {
@@ -53,10 +53,10 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
     }, [])
 
     return (
-            <TouchableHighlight style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username }); }
-            }>
-                <>
-                <View style={LEFT_SIDE}>    
+        <TouchableHighlight style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username }); }
+        }>
+            <>
+                <View style={LEFT_SIDE}>
                     <Image
                         source={{ uri: `${otherUser!.avatarImageURL}` }}
                         style={{
@@ -79,7 +79,7 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
                         {moment(chatRoom.createdAt).format("MM/DD/YYYY")}
                     </Text>
                 </View>
-                </>
-            </TouchableHighlight>
+            </>
+        </TouchableHighlight>
     )
 }
