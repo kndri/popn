@@ -125,7 +125,7 @@ export default function UserNameScreen() {
                 if (!available) {
                   toast.show(`An account exists with this username already.`, {color: 'red'});
                 } else {
-                  navigation.navigate('Email');
+                  // navigation.navigate('Email');
                 }
               }}
             />
