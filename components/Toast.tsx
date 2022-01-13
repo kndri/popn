@@ -16,6 +16,7 @@ const options = {
   message: null,
   type: "success",
   time: 2000,
+  color: "#00A542"
 };
 
 // using jotai as test
@@ -38,7 +39,7 @@ export default function ToastContainer() {
       paddingTop: 10,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "red",
+      backgroundColor: toast.color,
       borderBottomLeftRadius: 10,
       borderBottomRightRadius: 10,
       transform: [{ translateY: show.value }],
@@ -72,16 +73,16 @@ export default function ToastContainer() {
   );
 }
 
-// export const useToast = () => useAtom(state);
 
 export const useToast = () => {
   const [, setToast] = useAtom(state);
   return {
-    show: (msg: any, opts?: { type: any; time: any }) =>
+    show: (msg: any, opts?: { type?: any; time?: any, color?: string }) =>
       setToast({
         message: msg,
         type: opts?.type || options.type,
         time: opts?.time || options.time,
+        color: opts?.color || options.color
       }),
   };
 };

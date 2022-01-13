@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/no-identical-functions */
 import { API, Auth, graphqlOperation, Storage } from "aws-amplify";
+import { listUsers } from "../src/graphql/queries";
 import { createUser } from "../src/graphql/mutations";
 
 export type AuthData = {
@@ -120,7 +121,7 @@ const signUp = async (
   });
 };
 
-const usernameAvailable = async (username: string) => {
+const emailAvailable = async (email: string) => {
   // adapted from @herri16's solution: https://github.com/aws-amplify/amplify-js/issues/1067#issuecomment-436492775
 
   try {
@@ -129,7 +130,7 @@ const usernameAvailable = async (username: string) => {
     //   forceAliasCreation: false,
     // });
 
-    const resp = await Auth.signIn(username, "0000000");
+    const resp = await Auth.signIn(email, "0000000");
 
     // this should always throw an error of some kind, but if for some reason this succeeds then the user probably exists.
     return true;
@@ -141,7 +142,7 @@ const usernameAvailable = async (username: string) => {
       case "NotAuthorizedException":
         return false;
       case "AliasExistsException":
-        // Email alias already exists0
+        // Email already exists
         return false;
       case "CodeMismatchException":
         return false;
@@ -153,8 +154,37 @@ const usernameAvailable = async (username: string) => {
   }
 };
 
+const usernameAvailable = async (username: string) => {
+  // 1. Get all the users
+  let usernames:any[] = [];
+  let isUsernameAvailable = true;
+  try {
+    const users = await API.graphql(
+      graphqlOperation(
+        listUsers
+      )
+    )
+    usernames = users.data.listUsers.items
+
+    // 2. Check if chosen username is available or not
+    usernames.map((takenUsername) => {
+      if (username == takenUsername.username) {
+        console.log("TAKEN");
+        isUsernameAvailable = false;
+      }
+    })
+
+    // 3. Return isUsernameTaken
+    return isUsernameAvailable;
+
+  } catch (error) {
+    console.log('usernameAvailable Error: ', error);
+  }
+}
+
 export const authService = {
   signIn,
   signUp,
-  usernameAvailable,
+  emailAvailable,
+  usernameAvailable
 };

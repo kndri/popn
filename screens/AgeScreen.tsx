@@ -117,7 +117,7 @@ export default function AgeScreen() {
 							preset="cta"
 							onPress={() => {
 								if (!values.age) {
-									toast.show(`You must enter your age to continue.`);
+									toast.show(`You must enter your age to continue.`, {color: 'red'});
 								} else {
 									navigation.navigate('ProfilePicture');
 								}

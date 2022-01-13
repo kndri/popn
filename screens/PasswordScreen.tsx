@@ -123,7 +123,7 @@ export default function PasswordScreen() {
               preset="cta"
               onPress={() => {
                 if (values.email === "" || values.password === "") {
-                  toast.show(`You must provide an email and password`);
+                  toast.show(`You must provide an email and password`, {color: 'red'});
                 } else {
                   signUp(
                     values.email,

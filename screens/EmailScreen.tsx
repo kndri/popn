@@ -115,14 +115,14 @@ export default function EmailScreen() {
                 text="Continue"
                 preset="cta"
                 onPress={async () => {
-                  const available = await authService.usernameAvailable(values.email);
+                  const available = await authService.emailAvailable(values.email);
                   if (!available) {
-                    toast.show(`An account exists with this email already.`);
+                    toast.show(`An account exists with this email already.`, {color: 'red'});
                   } else {
                     navigation.navigate('Age');
                   }
                 }}
-              />
+              /> 
           </View>
         </Screen>
       )}

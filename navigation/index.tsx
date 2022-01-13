@@ -13,7 +13,6 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
-import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import HomeScreen from "../screens/HomeScreen";
 import ClaimScreen from "../screens/ClaimScreen";
@@ -55,7 +54,7 @@ export default function Navigation({
 }) {
   return (
     <NavigationContainer
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+      // theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
       {/* <OnboardingNavigator /> */}
       <RootNavigator />
@@ -149,8 +148,6 @@ const SettingsNavigator = () => (
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  // const [loggedIn, setLoggedIn] = React.useState(false);
-  // const user = checkLoggedUser();
 
   const { session } = useAuth();
 
@@ -227,7 +224,6 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
 
   return (
     <BottomTab.Navigator

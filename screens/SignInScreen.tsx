@@ -32,7 +32,7 @@ export default function SignInScreen() {
   const onLoginPressed = () => {
     //Generate User Token Server-Side
     if (email === "" || password === "") {
-      toast.show("You must provide an email and password");
+      toast.show("You must provide an email and password", {color: 'red'});
     } else {
       signIn(email, password);
     }

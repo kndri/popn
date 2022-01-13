@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FlatList, StyleSheet, TextInput } from 'react-native';
+import { FlatList, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { View, } from '../components/Themed';
 import { spacing } from "../theme";
@@ -94,17 +94,13 @@ export default function MessageContactsScreen() {
                     placeholderTextColor={"black"}
                 />
             </View>
-            {users.length === 0 ? (
-                <View style={{ height: '100%', justifyContent: 'center' }}>
-                    <Text
-                        style={styles.TEXTCENTER}
-                        preset="bold"
-                        text="No Contacts Found."
-                    />
+            {searchedContacts.length === 0 ? (
+                <View style={{ height: '100%', backgroundColor: 'transparent', }}>
+                    <ActivityIndicator size="large" color="black" />
                 </View>
             ) : (
                 <FlatList
-                    style={{ width: '100%' }}
+                    style={{ width: '100%', backgroundColor: 'transparent', height: '100%' }}
                     data={searchedContacts}
                     renderItem={({ item }) => <MessageContactListItem user={item} />}
                     keyExtractor={(item) => String(item.id)}
