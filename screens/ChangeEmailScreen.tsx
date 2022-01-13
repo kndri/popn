@@ -9,6 +9,16 @@ import {
 } from "../components"
 import { color, spacing, typography } from "../theme"
 import { useNavigation } from '@react-navigation/native';
+import { getUser } from '../src/graphql/queries';
+import { updateUser } from '../src/graphql/mutations';
+import {
+    API,
+    graphqlOperation,
+    Auth,
+} from 'aws-amplify';
+import { authService } from "../services/auth-service";
+import { useToast } from "../components/Toast";
+import { useAuth, } from "../contexts/auth";
 
 
 const FULL: ViewStyle = { flex: 1 }
@@ -45,9 +55,65 @@ const INPUT: TextStyle = {
 
 interface ChangeEmailProps { }
 const ChangeEmailScreen: FC<ChangeEmailProps> = () => {
+    const toast = useToast();
     const navigation = useNavigation();
-    const [email, setEmail] = useState("");
+    const [userData, setUserData] = React.useState({});
+    const [newEmail, setNewEmail] = useState("");
+    // const [emailVerified, setEmailVerified] = useState(true);
     const goBack = () => navigation.goBack()
+
+
+    React.useEffect(() => {
+        fetchCurrentUser();
+
+    }, []);
+
+    //1.get current user 
+    //TODO: refactor to use from aws-function
+    const fetchCurrentUser = async () => {
+        try {
+            const userInfo = await Auth.currentAuthenticatedUser();
+
+            const userData = await API.graphql(
+                graphqlOperation(
+                    getUser, {
+                    id: userInfo.attributes.sub,
+                }
+                )
+            )
+            setUserData(userData);
+            console.log('userData: ', userInfo.attributes)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    //2. perform mutation and show toast  
+    const updateEmail = async (userID: any) => {
+        try {
+            await API.graphql(
+                graphqlOperation(
+                    updateUser, {
+                    input: {
+                        id: userID,
+                        email: newEmail
+                    }
+                }
+                )
+            )
+            const user = await Auth.currentAuthenticatedUser();
+            await Auth.updateUserAttributes(user, {
+                'email': newEmail,
+            });
+            await Auth.updateUserAttributes(user, {
+                'email_verified': true
+            });
+        } catch (error) {
+            console.log(error)
+        }
+        toast.show(`Your email has been updated.`);
+    }
+
 
     return (
         <View testID="ChangeEmailScreen" style={FULL}>
@@ -64,8 +130,8 @@ const ChangeEmailScreen: FC<ChangeEmailProps> = () => {
                         inputStyle={INPUT}
                         placeholder="Enter New Email Address"
                         keyboardType="default"
-                        value={email}
-                        onChangeText={setEmail}
+                        value={newEmail}
+                        onChangeText={setNewEmail}
                         autoCapitalize='none'
                         autoCorrect={false}
                     />
@@ -73,9 +139,16 @@ const ChangeEmailScreen: FC<ChangeEmailProps> = () => {
 
                     <View style={{ flexDirection: 'column', alignContent: 'center', justifyContent: 'center', marginTop: 150 }}>
                         <Button
-                            // style={!isValid ? DISABLED : null}
                             text="Confirm Changes"
                             preset="primary"
+                            onPress={async () => {
+                                const available = await authService.emailAvailable(newEmail);
+                                if (!available) {
+                                    toast.show(`An account exists with this email already.`, { color: 'red' });
+                                } else {
+                                    updateEmail(userData.data.getUser.id)
+                                }
+                            }}
                         />
                     </View>
                 </View>
