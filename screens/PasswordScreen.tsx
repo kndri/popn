@@ -125,8 +125,6 @@ export default function PasswordScreen() {
                 if (values.email === "" || values.password === "") {
                   toast.show(`You must provide an email and password`, {color: 'red'});
                 } else {
-                  console.log("values", values);
-
                   signUp(
                     values.email,
                     values.password,

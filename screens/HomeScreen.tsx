@@ -1,28 +1,23 @@
 import * as React from "react";
-import {
-  View,
-  ViewStyle,
-  FlatList,
-} from "react-native";
+import { View, ViewStyle, FlatList } from "react-native";
 import { color, spacing } from "../theme";
 import {
   Button,
   Screen,
   Text,
   AutoImage as Image,
-  Header
+  Header,
 } from "../components";
-import {
-  API,
-  graphqlOperation,
-} from 'aws-amplify';
+import { API, graphqlOperation } from "aws-amplify";
 
-import { listPosts } from "../src/graphql/queries";
+import { getUser, listPosts } from "../src/graphql/queries";
 
 import { RootTabScreenProps } from "../types";
 
 import Feed from "../components/feed";
 import NewPostButton from "../components/new-post-button";
+import { checkLoggedUser } from "../aws-functions/aws-functions";
+import { createUser } from "../src/graphql/mutations";
 
 const default_user = require("../assets/images/UserImage.png");
 const options = require("../assets/images/More.png");
@@ -108,22 +103,51 @@ const users_data = [
   },
 ];
 
-export default function Home({
-  navigation,
-}: RootTabScreenProps<"Home">) {
+export default function Home({ navigation }: RootTabScreenProps<"Home">) {
   const [selection, setSelection] = React.useState(1);
   const [user, setUser] = React.useState<string>("");
   const [post, setPost] = React.useState<any>([]);
 
   const fetchPosts = async () => {
-    const postData = await API.graphql(
-      graphqlOperation(listPosts)
-    )
+    const postData = await API.graphql(graphqlOperation(listPosts));
     setPost(postData);
   };
 
   React.useEffect(() => {
     fetchPosts();
+  }, []);
+
+  const saveUserToDB = async (user: any) => {
+    await API.graphql(graphqlOperation(createUser, { input: user }));
+  };
+
+  React.useEffect(() => {
+    const getUserDb = async () => {
+      // Get current authenticated user
+      const user = await checkLoggedUser();
+
+      if (user) {
+        // Check if user already exists in database
+        const userData = await API.graphql(
+          graphqlOperation(getUser, { id: user.attributes.sub })
+        );
+        if (!userData.data.getUser) {
+          const userObj = {
+            id: user.attributes.sub,
+            age: user["custom:age"],
+            username: user.preferred_username,
+            email: user.email,
+            avatarImageURL: user["custom:profile_image"],
+            following: 0,
+            follower: 0,
+          };
+          await saveUserToDB(userObj);
+        } else {
+          console.log("User already exists");
+        }
+      }
+    };
+    getUserDb();
   }, []);
 
   const renderUsers = ({ item }) => {
@@ -165,11 +189,7 @@ export default function Home({
   };
 
   const renderTrending = () => {
-    return (
-      <View style={COLLECTION_CONTAINER}>
-        {<Feed post={post} user={user} />}
-      </View>
-    );
+    return <View style={COLLECTION_CONTAINER}>{<Feed post={post} />}</View>;
   };
 
   const renderRanking = () => {
@@ -267,8 +287,8 @@ export default function Home({
         {selection === 1
           ? renderTrending()
           : selection === 2
-            ? renderFollowing()
-            : renderRanking()}
+          ? renderFollowing()
+          : renderRanking()}
       </View>
       <NewPostButton />
     </Screen>

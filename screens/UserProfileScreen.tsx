@@ -18,7 +18,6 @@ import {
   getCommentFromUser,
   getPostFromUser,
   deleteUserSneaker,
-  obtainUser,
   getUserFromDb,
 } from "../aws-functions/aws-functions";
 import { SneakerList } from "../types";
@@ -114,11 +113,11 @@ export default function UserProfileScreen(props?: any) {
   const [collection, setCollection] = React.useState<any>([]);
   const [username, setUsername] = React.useState("");
   const [profileImage, setprofileImage] = React.useState("");
-
   const [user, setUser] = React.useState<any>();
+  const [selection, setSelection] = React.useState(1);
+  const [isMainUser, setIsMainUser] = React.useState(true);
 
   const isFocused = useIsFocused();
-  const [selection, setSelection] = React.useState(1);
 
   const getSneakers = async () => {
     const sneakerlist = await getSneakersFromUser();
@@ -133,41 +132,9 @@ export default function UserProfileScreen(props?: any) {
     const user = await getUserFromDb(userID);
 
     setUser(user);
+
     setCollection(user.sneakers.items);
   };
-
-  const saveUserToDB = async (user: any) => {
-    await API.graphql(graphqlOperation(createUser, { input: user }));
-  };
-
-  React.useEffect(() => {
-    const getUser = async () => {
-      // Get current authenticated user
-      const user = await checkLoggedUser();
-
-      if (user) {
-        // Check if user already exists in database
-        const userData = await API.graphql(
-          graphqlOperation(getUser, { id: user.sub })
-        );
-        if (!userData.data.getUser) {
-          const userObj = {
-            id: user.sub,
-            age: user["custom:age"],
-            username: user.preferred_username,
-            email: user.email,
-            avatarImageURL: user["custom:profile_image"],
-            following: 0,
-            follower: 0,
-          };
-          await saveUserToDB(userObj);
-        } else {
-          console.log("User already exists");
-        }
-      }
-    };
-    getUser();
-  }, []);
 
   // React.useEffect(() => {
   //   const rerender = navigation.addListener("focus", () => {
@@ -177,15 +144,19 @@ export default function UserProfileScreen(props?: any) {
   //   });
   // }, []);
 
+  const check = async () => {
+    var currentUser = await checkLoggedUser();
+    if (userID === undefined || userID === currentUser.attributes?.sub) {
+      getSneakers();
+      setIsMainUser(true);
+    } else {
+      getUserData();
+      setIsMainUser(false);
+    }
+  };
+
   React.useEffect(() => {
-    const check = async () => {
-      var currentUser = await checkLoggedUser();
-      if (userID === undefined || userID === currentUser.attributes?.sub) {
-        getSneakers();
-      } else {
-        getUserData();
-      }
-    };
+    // checks whether it is a different user
     check();
   }, []);
 
@@ -210,7 +181,13 @@ export default function UserProfileScreen(props?: any) {
     );
 
   const renderSneaker = ({ item }) => (
-    <TouchableOpacity onLongPress={() => createDeleteAlert(item.id)}>
+    <TouchableOpacity
+      onLongPress={() => {
+        if (isMainUser) {
+          createDeleteAlert(item.id);
+        }
+      }}
+    >
       <View
         style={{
           justifyContent: "space-evenly",
@@ -244,29 +221,27 @@ export default function UserProfileScreen(props?: any) {
           />
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          {user ? null : (
-            <Button
-              preset="none"
-              style={{
-                justifyContent: "center",
-                width: "70%",
-                height: 20,
-                paddingVertical: 2,
-                borderRadius: 10,
-                marginBottom: 15,
-              }}
-              onPress={() => {
-                navigation.navigate("ShoeDetails");
-              }}
+          <Button
+            preset="none"
+            style={{
+              justifyContent: "center",
+              width: "70%",
+              height: 20,
+              paddingVertical: 2,
+              borderRadius: 10,
+              marginBottom: 15,
+            }}
+            onPress={() => {
+              navigation.navigate("ShoeDetails");
+            }}
+          >
+            <Text
+              preset="bold"
+              style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
             >
-              <Text
-                preset="bold"
-                style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
-              >
-                View
-              </Text>
-            </Button>
-          )}
+              View
+            </Text>
+          </Button>
         </View>
       </View>
     </TouchableOpacity>
@@ -280,23 +255,37 @@ export default function UserProfileScreen(props?: any) {
     );
   };
 
+  const renderEmptyCollection = () => {
+    if (isMainUser === false) {
+      return (
+        <>
+          <Text style={TEXTCENTER} preset="bold" text="Collection is empty." />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Text
+            style={TEXTCENTER}
+            preset="bold"
+            text="Your collection is empty."
+          />
+          <Button
+            style={{ marginTop: 20 }}
+            text="Start Collecting"
+            preset="primary"
+            onPress={() => navigation.navigate("Claim")}
+          />
+        </>
+      );
+    }
+  };
+
   const renderCollection = () => {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
         {collection.length == 0 ? (
-          <>
-            <Text
-              style={TEXTCENTER}
-              preset="bold"
-              text="Your collection is empty."
-            />
-            <Button
-              style={{ marginTop: 20 }}
-              text="Start Collecting"
-              preset="primary"
-              onPress={() => navigation.navigate("Claim")}
-            />
-          </>
+          renderEmptyCollection()
         ) : (
           <View style={DATA_CONTAINER}>
             <FlatList
@@ -318,15 +307,23 @@ export default function UserProfileScreen(props?: any) {
   return (
     <Screen style={CONTAINER}>
       <View style={PROFILE_HEADER}>
-        <Header
-          headerTx="Profile"
-          leftIcon="back"
-          onLeftPress={() => navigation.goBack()}
-          rightIcon="settings"
-          onRightPress={() =>
-            navigation.navigate("Settings", { screen: "settings" })
-          }
-        />
+        {isMainUser ? (
+          <Header
+            headerTx="Profile"
+            leftIcon="back"
+            onLeftPress={() => navigation.goBack()}
+            rightIcon="settings"
+            onRightPress={() =>
+              navigation.navigate("Settings", { screen: "settings" })
+            }
+          />
+        ) : (
+          <Header
+            headerTx="Profile"
+            leftIcon="back"
+            onLeftPress={() => navigation.goBack()}
+          />
+        )}
       </View>
       {user ? (
         <View style={PROFILE_DATA}>

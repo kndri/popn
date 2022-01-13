@@ -71,18 +71,21 @@ const IMAGE: ImageStyle = {
   height: 80,
 };
 
-export default function NewTweetScreen(props: any) {
-  const { comment } = props.route.params;
+export default function NewPostScreen(props: any) {
+  const { comment, fetchPosts } = props.route.params;
   const [post, setPost] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const toast = useToast();
 
   const navigation = useNavigation();
 
+  const check = async () => {
+    const user = await checkLoggedUser();
+    setImageUrl(user.attributes["custom:profile_image"]);
+  };
+
   useEffect(() => {
-    checkLoggedUser().then((response) => {
-      setImageUrl(response["custom:profile_image"]);
-    });
+    check();
   }, []);
 
   const onPostTweet = async () => {
@@ -90,6 +93,7 @@ export default function NewTweetScreen(props: any) {
       description: post,
     }).then(() => {
       toast.show(`Post has been created.`);
+      fetchPosts();
       navigation.goBack();
     });
   };
