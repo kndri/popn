@@ -144,7 +144,7 @@ const ChangeEmailScreen: FC<ChangeEmailProps> = () => {
                             onPress={async () => {
                                 const available = await authService.emailAvailable(newEmail);
                                 if (!available) {
-                                    toast.show(`An account exists with this email already.`, { color: 'red' });
+                                    toast.show(`This email is being used by another account.`, { color: 'red' });
                                 } else {
                                     updateEmail(userData.data.getUser.id)
                                 }
