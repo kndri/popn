@@ -17,6 +17,8 @@ import {
 import {
   addLike,
   checkLoggedUser,
+  getCurrentPost,
+  getPostFromDB,
   likeDeletion,
   postDeletion,
 } from "../../aws-functions/aws-functions";
@@ -65,36 +67,36 @@ const MODAL_CONTAINER: ViewStyle = {
   backgroundColor: "red",
 };
 
-const Post = ({ post, user, fetchPosts }) => {
+const Post = ({ post, fetchPosts }) => {
   const navigation = useNavigation();
   const [toolTipVisible, setToolTipVisible] = React.useState(false);
   const [myLike, setMyLike] = React.useState<any>();
   const [username, setUsername] = React.useState<any>();
   const [likesCount, setLikesCount] = React.useState(post.likes.items.length);
-  // const [likesCount, setLikesCount] = React.useState(0);
-
   const [commentCount, setCommentCount] = React.useState(
     post.comments.items.length
   );
 
-  // const [commentCount, setCommentCount] = React.useState(0);
-
-  React.useEffect(() => {
-    const searchedLike = post.likes.items.find(
-      (like: any) => like.userID === user
-    );
-
-    setMyLike(searchedLike);
-  }, []);
-
   const getUser = async () => {
     const user = await checkLoggedUser();
-    setUsername(user.sub);
+    setUsername(user.attributes.sub);
+
+    const postDetails = await getCurrentPost(post.id);
+
+    setCommentCount(postDetails.comments.items.length);
+    setLikesCount(postDetails.likes.items.length);
+
+    const searchedLike = post.likes.items.find(
+      (like: any) => like.userID === user.attributes.sub
+    );
+    setMyLike(searchedLike);
   };
 
   React.useEffect(() => {
     getUser();
-  }, []);
+    setCommentCount(post.comments.items.length);
+    setLikesCount(post.likes.items.length);
+  }, [post.likes.items.length, post.comments.items.length]);
 
   const handlePress = () => {
     navigation.navigate("PostDetails", {
@@ -105,9 +107,9 @@ const Post = ({ post, user, fetchPosts }) => {
     });
   };
   const onLike = async () => {
-    if (!user) {
-      return;
-    }
+    // if (!user) {
+    //   return;
+    // }
 
     if (!myLike) {
       const result = await addLike(post.id);
@@ -138,12 +140,22 @@ const Post = ({ post, user, fetchPosts }) => {
 
   const toolContent = () => (
     <View>
-      {username === post.userID ? (
-        <TouchableOpacity onPress={createDeleteAlert}>
+      {username == post.userID ? (
+        <TouchableOpacity
+          onPress={() => {
+            createDeleteAlert();
+            setToolTipVisible(false);
+          }}
+        >
           <Text>Delete Post</Text>
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("UserProfile", post.userID);
+            setToolTipVisible(false);
+          }}
+        >
           <Text>Profile Page</Text>
         </TouchableOpacity>
       )}
@@ -154,7 +166,7 @@ const Post = ({ post, user, fetchPosts }) => {
     <TouchableOpacity onPress={() => handlePress()}>
       <View style={POST_CONTAINER}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("UserProfile", post.user.id)}
+          onPress={() => navigation.navigate("UserProfile", post.userID)}
         >
           <Image
             // have to check for image the default image in user data contains
@@ -194,7 +206,12 @@ const Post = ({ post, user, fetchPosts }) => {
             </Button>
             <Button
               style={INTERACTIONS_BUTTONS}
-              onPress={() => navigation.navigate("NewPost", { comment: post })}
+              onPress={() =>
+                navigation.navigate("NewPost", {
+                  comment: post,
+                  fetchPosts: fetchPosts(),
+                })
+              }
             >
               <Image source={comment} />
 
@@ -232,7 +249,7 @@ const Post = ({ post, user, fetchPosts }) => {
           arrowStyle={{ bottom: 60 }}
           showChildInTooltip={false}
           backgroundColor="transparent"
-          closeOnChildInteraction={false}
+          closeOnChildInteraction={true}
           onClose={() => setToolTipVisible(false)}
         >
           <TouchableOpacity onPress={() => setToolTipVisible(true)}>

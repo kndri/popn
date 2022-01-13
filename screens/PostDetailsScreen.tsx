@@ -112,6 +112,7 @@ const PostDetailsScreen = (props: any) => {
   const [commentCnt, setCommentCnt] = React.useState();
   const [toolTipVisible, setToolTipVisible] = React.useState(false);
   const [username, setUsername] = React.useState<any>();
+  const [currentComment, setCurrentComment] = React.useState<any>();
 
   const fetchPost = async () => {
     const result = await getCurrentPost(post.id);
@@ -120,12 +121,11 @@ const PostDetailsScreen = (props: any) => {
 
     //also set the likes count
     setLikesCount(result.likes.items.length);
-    console.log("commensts", result);
   };
 
   const getUser = async () => {
     const user = await checkLoggedUser();
-    setUsername(user.sub);
+    setUsername(user.attributes.sub);
   };
 
   React.useEffect(() => {
@@ -168,22 +168,58 @@ const PostDetailsScreen = (props: any) => {
       },
     ]);
 
-  const toolContent = (commentID) => (
-    <View>
-      {username === post.userID ? (
-        <TouchableOpacity onPress={() => createDeleteAlert(commentID)}>
+  // const toolContent = (commentID) => (
+  //   <View>
+  //     {/* {console.log("username", username)} */}
+  //     {console.log("commentID", commentID)}
+  //     {username == commentID ? (
+  //       <TouchableOpacity
+  //         onPress={() => {
+  //           createDeleteAlert(commentID);
+  //           setToolTipVisible(false);
+  //         }}
+  //       >
+  //         <Text>Delete Post</Text>
+  //       </TouchableOpacity>
+  //     ) : (
+  //       <TouchableOpacity
+  //         onPress={() => {
+  //           navigation.navigate("UserProfile", post.userID);
+  //           setToolTipVisible(false);
+  //         }}
+  //       >
+  //         <Text>Profile Page</Text>
+  //       </TouchableOpacity>
+  //     )}
+  //   </View>
+  // );
+
+  const toolContent = () => {
+    if (username === currentComment) {
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            createDeleteAlert(currentComment);
+            setToolTipVisible(false);
+          }}
+        >
           <Text>Delete Post</Text>
         </TouchableOpacity>
-      ) : (
-        <TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("UserProfile", post.userID);
+            setToolTipVisible(false);
+          }}
+        >
           <Text>Profile Page</Text>
         </TouchableOpacity>
-      )}
-    </View>
-  );
-
+      );
+    }
+  };
   const renderPosts = (post) => {
-    // console.log(post);
     return (
       <View style={COMMENT_CONTAINER}>
         <Image
@@ -233,12 +269,12 @@ const PostDetailsScreen = (props: any) => {
         </View>
         <Tooltip
           isVisible={toolTipVisible}
-          content={toolContent(post.id)}
+          content={toolContent()}
           arrowSize={{ width: 0, height: 0 }}
           placement="bottom"
           contentStyle={{
             left: 110,
-            bottom: 70,
+            bottom: 150,
             maxWidth: 200,
           }}
           arrowStyle={{ bottom: 60 }}
@@ -247,15 +283,18 @@ const PostDetailsScreen = (props: any) => {
           closeOnChildInteraction={false}
           onClose={() => setToolTipVisible(false)}
         >
-          <TouchableOpacity onPress={() => setToolTipVisible(true)}>
+          <TouchableOpacity
+            onPress={() => {
+              setToolTipVisible(true);
+              setCurrentComment(post.userID);
+            }}
+          >
             <Image source={more} />
           </TouchableOpacity>
         </Tooltip>
       </View>
     );
   };
-
-  // GET COMMENTS FOR THIS CURRENT POST
 
   return (
     <Screen style={CONTAINER}>

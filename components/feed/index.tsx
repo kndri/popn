@@ -8,7 +8,7 @@ import { getPostFromDB } from "../../aws-functions/aws-functions";
 
 const default_user = require("../../assets/images/defaultUser.png");
 
-const Feed = ({ post, user }) => {
+const Feed = ({ post }) => {
   const [posts, setPosts] = useState<any>(post);
   const [loading, setLoading] = useState(false);
 
@@ -40,12 +40,10 @@ const Feed = ({ post, user }) => {
     <View style={{ width: "100%" }}>
       <FlatList
         data={posts}
-        renderItem={({ item }) => (
-          <Post post={item} user={user} fetchPosts={fetchPosts} />
-        )}
+        renderItem={({ item }) => <Post post={item} fetchPosts={fetchPosts} />}
         keyExtractor={(item) => String(item.id)}
         refreshing={loading}
-        onRefresh={fetchPosts}
+        onRefresh={() => fetchPosts()}
         style={{ height: "100%" }}
         // ListHeaderComponent={UserFleetsList}
       />
