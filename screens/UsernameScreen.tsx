@@ -123,7 +123,7 @@ export default function UserNameScreen() {
               onPress={async () => {
                 const available = await authService.usernameAvailable(values.username);
                 if (!available) {
-                  toast.show(`An account exists with this username already.`);
+                  toast.show(`An account exists with this username already.`, {color: 'red'});
                 } else {
                   navigation.navigate('Email');
                 }

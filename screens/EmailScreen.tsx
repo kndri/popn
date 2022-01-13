@@ -117,7 +117,7 @@ export default function EmailScreen() {
                 onPress={async () => {
                   const available = await authService.usernameAvailable(values.email);
                   if (!available) {
-                    toast.show(`An account exists with this email already.`);
+                    toast.show(`An account exists with this email already.`, {color: 'red'});
                   } else {
                     navigation.navigate('Age');
                   }

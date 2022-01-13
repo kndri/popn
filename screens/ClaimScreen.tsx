@@ -224,11 +224,9 @@ export default function ClaimScreen() {
               }}
               onPress={() => {
                 addUserSneaker(item).then(() => {
-                  // Add toast here
                   toast.show(`Sneaker has been added to your showcase.`);
                   getSneakers();
                 });
-                // then grey out the sneaker card
               }}
             >
               <Text

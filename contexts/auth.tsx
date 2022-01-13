@@ -66,7 +66,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // if there is an error alert the screen of the message
 
     if (_authData.error) {
-      toast.show(`${_authData.error}`);
+      toast.show(`${_authData.error}`, {color: 'red'});
     } else {
       // const token = client.createUserToken(email);
 
@@ -104,7 +104,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // if there is an error alert the screen of the message
 
     if (_authData.error) {
-      toast.show(`${_authData.error}`);
+      toast.show(`${_authData.error}`), {color: 'red'};
     } else {
       // const token = client.createUserToken(email);
       // Set the data in the context, so the App can be notified

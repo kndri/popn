@@ -11,15 +11,11 @@ import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
 import { useNavigation } from "@react-navigation/native";
 
 import {
-  Button,
-  Screen,
   Text,
-  TextField,
   AutoImage as Image,
 } from "../components";
 
 import { AntDesign } from "@expo/vector-icons";
-import Colors from "../constants/Colors";
 import { TextStyle } from "react-native";
 import { ImageStyle } from "react-native";
 import { spacing } from "../theme";
@@ -29,9 +25,7 @@ import {
   checkLoggedUser,
 } from "../aws-functions/aws-functions";
 import { useToast } from "../components/Toast";
-import { set } from "react-native-reanimated";
 
-const default_user = require("../assets/images/UserImage.png");
 
 const CONTAINER: ViewStyle = {
   flex: 1,
