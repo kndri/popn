@@ -1,17 +1,12 @@
 import * as React from "react";
-import {
-  View,
-  ViewStyle,
-  TextInput,
-  FlatList,
-} from "react-native";
+import { View, ViewStyle, TextInput, FlatList } from "react-native";
 import { color, spacing } from "../theme";
 import {
   Button,
   Screen,
   Text,
   AutoImage as Image,
-  Header
+  Header,
 } from "../components";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import {
@@ -98,7 +93,9 @@ export default function ClaimScreen() {
   };
 
   const checkClaimed = (item: any) => {
-    const found = collection.some((sneaker) => sneaker.id == item.id);
+    const found = collection.some(
+      (sneaker) => sneaker.secondaryName == item.secondary_name
+    );
 
     if (found) {
       return true;
@@ -223,10 +220,12 @@ export default function ClaimScreen() {
                 marginBottom: 15,
               }}
               onPress={() => {
-                addUserSneaker(item).then(() => {
-                  toast.show(`Sneaker has been added to your showcase.`);
-                  getSneakers();
-                });
+                addUserSneaker(item)
+                  .then(() => {
+                    toast.show(`Sneaker has been added to your showcase.`);
+                    getSneakers();
+                  })
+                  .catch((error) => console.log(error));
               }}
             >
               <Text
