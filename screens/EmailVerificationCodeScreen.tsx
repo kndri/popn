@@ -9,9 +9,7 @@ import {
 } from "../components"
 import { spacing, typography } from "../theme"
 import { useNavigation } from '@react-navigation/native';
-import {
-    Auth,
-} from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import { useToast } from "../components/Toast";
 
 

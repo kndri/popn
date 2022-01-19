@@ -59,6 +59,7 @@ export const getCurrentUser = async (sneakerObject: Object) => {
 
 //stores shoes
 export const addUserSneaker = async (sneakerObject: Object) => {
+  console.log("sneaker", sneakerObject);
   try {
     // const currentUser = checkLoggedUser();
     const currentUser = await Auth.currentAuthenticatedUser({
@@ -66,7 +67,6 @@ export const addUserSneaker = async (sneakerObject: Object) => {
     });
 
     const newSneaker = {
-      id: sneakerObject.id,
       brand: sneakerObject.brand,
       primaryName: sneakerObject.primary_name,
       secondaryName: sneakerObject.secondary_name,

@@ -47,6 +47,7 @@ import ReferenceScreen from "../screens/ReferenceScreen";
 import NewPostScreen from "../screens/NewPostScreen";
 import PostDetailsScreen from "../screens/PostDetailsScreen";
 import MessageContactsScreen from "../screens/MessageContactsScreen";
+import UserSearchScreen from "../screens/SeachUser";
 
 export default function Navigation({
   colorScheme,
@@ -148,7 +149,6 @@ const SettingsNavigator = () => (
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-
   const { session } = useAuth();
 
   return (
@@ -205,6 +205,11 @@ function RootNavigator() {
             component={NewMessageRoomScreen}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="UserSearch"
+            component={UserSearchScreen}
+            options={{ headerShown: false }}
+          />
         </>
       ) : (
         <Stack.Screen
@@ -224,7 +229,6 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
@@ -254,7 +258,9 @@ function BottomTabNavigator() {
         component={MessageScreen}
         options={{
           title: "Messages",
-          tabBarIcon: ({ color }) => <TabBarIcon name="message-square" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="message-square" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>
