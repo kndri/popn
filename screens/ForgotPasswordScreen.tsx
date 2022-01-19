@@ -9,7 +9,7 @@ import {
   TextField,
   AutoImage as Image,
 } from "../components";
-
+import { Auth } from 'aws-amplify';
 import { useNavigation } from "@react-navigation/native";
 import { forgotPassword } from "../aws-functions/aws-functions";
 
@@ -32,6 +32,7 @@ const CENTER: ViewStyle = {
   flex: 1,
 };
 
+
 export default function ForgotPasswordScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState("");
@@ -47,7 +48,7 @@ export default function ForgotPasswordScreen() {
         <Text
           style={{ marginBottom: 15 }}
           preset="header"
-          text="Forget your password?"
+          text="Forgot your password?"
         />
         <Text preset="secondary" text="Enter your email to reset password" />
       </View>
@@ -64,7 +65,7 @@ export default function ForgotPasswordScreen() {
             padding: 16,
             borderWidth: 2,
             borderRadius: 10,
-            borderColor: "#F4F5F6",
+            borderColor: "black",
             marginTop: 6,
           }}
         />

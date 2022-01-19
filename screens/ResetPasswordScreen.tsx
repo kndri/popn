@@ -34,7 +34,7 @@ const CENTER: ViewStyle = {
 export default function ResetPasswordScreen(props: any) {
   const username = props.route.params;
   const navigation = useNavigation();
-  // const [code, setCode] = React.useState("");
+  const [code, setCode] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmedPassword, setConfirmedPassword] = React.useState("");
 
@@ -56,24 +56,25 @@ export default function ResetPasswordScreen(props: any) {
       </View>
 
       <View style={CENTER}>
-        {/* <TextField
-            onChangeText={(value) => setCode(value)}
-            value={code}
-            label="Verification Code"
-            placeholder="4015"
-            inputStyle={{
-              padding: 16,
-              borderWidth: 2,
-              borderRadius: 10,
-              borderColor: "black",
-              marginTop: 6
-            }}
-          /> */}
+        <TextField
+          onChangeText={(value) => setCode(value)}
+          value={code}
+          label="Verification Code"
+          placeholder="Enter Your Verification Code"
+          inputStyle={{
+            padding: 16,
+            borderWidth: 2,
+            borderRadius: 10,
+            borderColor: "black",
+            marginTop: 6
+          }}
+        />
 
         <TextField
           onChangeText={(value) => setPassword(value)}
           value={password}
           label="New Password"
+          placeholder="Enter Your New Password"
           secureTextEntry
           autoCapitalize="none"
           autoCorrect={false}
@@ -90,6 +91,7 @@ export default function ResetPasswordScreen(props: any) {
           onChangeText={(value) => setConfirmedPassword(value)}
           value={confirmedPassword}
           label="Confirm Password"
+          placeholder="Confirm Your Password"
           secureTextEntry
           autoCapitalize="none"
           autoCorrect={false}

@@ -29,6 +29,7 @@ import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
 import ChangeEmailScreen from "../screens/ChangeEmailScreen";
+import EmailVerificationCodeScreen from "../screens/EmailVerificationCodeScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import MessageRoomScreen from "../screens/MessageRoomScreen";
 import NewMessageRoomScreen from "../screens/NewMessageRoomScreen";
@@ -54,7 +55,7 @@ export default function Navigation({
 }) {
   return (
     <NavigationContainer
-      // theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+    // theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
       {/* <OnboardingNavigator /> */}
       <RootNavigator />
@@ -134,10 +135,9 @@ const SettingsNavigator = () => (
   >
     <settingStack.Screen name="settings" component={SettingsScreen} />
     <settingStack.Screen name="changeEmail" component={ChangeEmailScreen} />
-    <settingStack.Screen
-      name="changePassword"
-      component={ChangePasswordScreen}
-    />
+    <settingStack.Screen name="verifyEmail" component={EmailVerificationCodeScreen} />
+    <settingStack.Screen name="changePassword" component={ChangePasswordScreen} />
+
   </settingStack.Navigator>
 );
 

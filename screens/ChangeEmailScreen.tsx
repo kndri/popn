@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react"
-import { View, ViewStyle, TextStyle, Image, Platform, TouchableOpacity } from "react-native"
+import { View, ViewStyle, TextStyle } from "react-native"
 import {
     Screen,
     Text,
@@ -7,7 +7,7 @@ import {
     Header,
     Button
 } from "../components"
-import { color, spacing, typography } from "../theme"
+import { spacing, typography } from "../theme"
 import { useNavigation } from '@react-navigation/native';
 import { getUser } from '../src/graphql/queries';
 import { updateUser } from '../src/graphql/mutations';
@@ -18,7 +18,6 @@ import {
 } from 'aws-amplify';
 import { authService } from "../services/auth-service";
 import { useToast } from "../components/Toast";
-import { useAuth, } from "../contexts/auth";
 
 
 const FULL: ViewStyle = { flex: 1 }
@@ -37,29 +36,25 @@ const HEADER_TITLE: TextStyle = {
 
 const INPUTSTYLE_CONTAINER: ViewStyle = {
     height: 20,
-    // width: '100%',
+    width: '100%',
     marginTop: 100,
     marginBottom: 90,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // backgroundColor: 'red'
-
+    alignItems: 'center',
 }
 
 const INPUT: TextStyle = {
     fontFamily: typography.primaryBold,
     borderBottomWidth: 2,
     borderColor: "black",
-
 }
 
-interface ChangeEmailProps { }
-const ChangeEmailScreen: FC<ChangeEmailProps> = () => {
+
+export default function ChangeEmailScreen() {
     const toast = useToast();
     const navigation = useNavigation();
     const [userData, setUserData] = React.useState({});
     const [newEmail, setNewEmail] = useState("");
-    // const [emailVerified, setEmailVerified] = useState(true);
+    // const [code, setCode] = useState("");
     const goBack = () => navigation.goBack()
 
 
@@ -73,7 +68,6 @@ const ChangeEmailScreen: FC<ChangeEmailProps> = () => {
     const fetchCurrentUser = async () => {
         try {
             const userInfo = await Auth.currentAuthenticatedUser();
-
             const userData = await API.graphql(
                 graphqlOperation(
                     getUser, {
@@ -82,7 +76,6 @@ const ChangeEmailScreen: FC<ChangeEmailProps> = () => {
                 )
             )
             setUserData(userData);
-            console.log('userData: ', userInfo.attributes)
         } catch (e) {
             console.log(e);
         }
@@ -105,19 +98,31 @@ const ChangeEmailScreen: FC<ChangeEmailProps> = () => {
             await Auth.updateUserAttributes(user, {
                 'email': newEmail,
             });
-            await Auth.updateUserAttributes(user, {
-                'email_verified': true
-            });
+            await Auth.confirmSignUp(newEmail, '420690');
         } catch (error) {
             console.log(error)
         }
-        toast.show(`Your email has been updated.`);
+        navigation.navigate("verifyEmail");
+    }
+
+
+    const validateEmailFormat = async () => {
+        if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(newEmail)) {
+            const available = await authService.emailAvailable(newEmail);
+            if (!available) {
+                toast.show(`This email is being used by another account.`, { color: 'red' });
+            } else {
+                updateEmail(userData.data.getUser.id)
+            }
+        } else {
+            toast.show(`You have entered an invalid email address!`, { color: 'red' });
+        }
     }
 
 
     return (
         <View testID="ChangeEmailScreen" style={FULL}>
-            <Screen style={CONTAINER} >
+            <Screen style={CONTAINER}>
                 <Header
                     leftIcon="back"
                     onLeftPress={goBack}
@@ -141,25 +146,12 @@ const ChangeEmailScreen: FC<ChangeEmailProps> = () => {
                         <Button
                             text="Confirm Changes"
                             preset="primary"
-                            onPress={async () => {
-                                const available = await authService.emailAvailable(newEmail);
-                                if (!available) {
-                                    toast.show(`This email is being used by another account.`, { color: 'red' });
-                                } else {
-                                    updateEmail(userData.data.getUser.id)
-                                }
-                            }}
+                            onPress={() => { validateEmailFormat() }}
                         />
                     </View>
                 </View>
-
-
-
             </Screen>
         </View>
-
     )
 }
-
-export default ChangeEmailScreen;
 
