@@ -41,6 +41,7 @@ export type RootStackParamList = {
   PostDetails: undefined | any;
   MessageContactsScreen: any;
   Message: undefined;
+  UserSearch: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
