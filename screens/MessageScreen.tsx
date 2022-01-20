@@ -64,9 +64,10 @@ export default function MessageScreen() {
             )
             setUserData(userData);
             let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
-            if (chatRoomsArr) {
+            if (chatRoomsArr.length > 0) {
                 chatRoomsArr.map((room) => {
                     room.chatRoom.chatRoomUsers.items.map((item) => {
+                        console.log('item: ', item)
                         if (item.user.username) {
                             setExcludedUsers(excludedUsers => [...excludedUsers, item.user.username])
                         }
@@ -77,6 +78,9 @@ export default function MessageScreen() {
                     return b.chatRoom.lastMessage.updatedAt.localeCompare(a.chatRoom.lastMessage.updatedAt)
                 });
 
+                setChatRooms(chatRoomsArr)
+            } else {
+                setExcludedUsers([]);
                 setChatRooms(chatRoomsArr)
             }
         } catch (e) {
@@ -153,12 +157,12 @@ export default function MessageScreen() {
                 }
                 )
             )
-            fetchChatRooms();
+
         } catch (error) {
             console.log(error);
         }
+        fetchChatRooms();
     }
-
 
     return (
         <Screen style={CONTAINER}>

@@ -4,13 +4,12 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { View, } from '../components/Themed';
 import { spacing } from "../theme";
 import MessageContactListItem from '../components/message-contact-list-item';
-import {
-    Text, Screen, Header
-} from '../components'
+import { Screen, Header } from '../components'
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { useRoute } from '@react-navigation/native';
 import { useState } from "react";
 import { listUsers } from '../src/graphql/queries';
+
 
 export default function MessageContactsScreen() {
     const navigation = useNavigation();
@@ -20,32 +19,34 @@ export default function MessageContactsScreen() {
     const [users, setUsers] = useState<any>([]);
     const isFocused = useIsFocused();
 
+
     React.useEffect(() => {
-        const fetchUsers = async () => {
-            let setUniqueUsers;
-            try {
-                const usersData = await API.graphql(
-                    graphqlOperation(
-                        listUsers
-                    )
-                )
-                setUniqueUsers = usersData.data.listUsers.items;
-
-            } catch (e) {
-                console.log(e);
-            }
-            let tempArr = [...setUniqueUsers];
-            setUniqueUsers.map((user) => {
-                if (route.params?.excludedUsers.includes(user.username) || route.params?.currentUser.data.getUser.username == user.username) {
-                    tempArr.splice(tempArr.indexOf(user), 1);  //deleting
-                }
-            })
-            setUsers(tempArr);
-            setSearchedContacts(tempArr)
-        }
         fetchUsers();
-
     }, [isFocused])
+
+    const fetchUsers = async () => {
+        let setUniqueUsers;
+        try {
+            const usersData = await API.graphql(
+                graphqlOperation(
+                    listUsers
+                )
+            )
+            setUniqueUsers = usersData.data.listUsers.items;
+
+        } catch (e) {
+            console.log(e);
+        }
+
+        let tempArr = [...setUniqueUsers];
+        setUniqueUsers.map((user) => {
+            if (route.params?.excludedUsers.includes(user.username) || route.params?.currentUser.data.getUser.username == user.username) {
+                tempArr.splice(tempArr.indexOf(user), 1);  //deleting
+            }
+        })
+        setUsers(tempArr);
+        setSearchedContacts(tempArr)
+    }
 
 
     // useEffect to filter out the searched contact
@@ -72,6 +73,7 @@ export default function MessageContactsScreen() {
     }, [query])
 
     React.useEffect(() => { }, [users]);
+
 
     return (
         <Screen style={styles.container}>

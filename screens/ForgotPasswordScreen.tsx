@@ -78,13 +78,15 @@ export default function ForgotPasswordScreen() {
           top: 32,
         }}
       >
-        {/* <Button style={{ width: 160 }} text="Continue" preset="primary" onPress={() => forgotPassword(email)} /> */}
-        <Button
-          style={{ width: 160 }}
+        <Button style={{ width: 160 }}
           text="Continue"
-          preset="cta"
-          onPress={() => navigation.navigate("ResetPassword")}
+          preset="primary"
+          onPress={() => {
+            forgotPassword(email)
+            navigation.navigate('ResetPassword', email)
+          }}
         />
+
       </View>
     </Screen>
   );
