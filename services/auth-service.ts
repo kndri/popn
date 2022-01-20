@@ -156,7 +156,7 @@ const emailAvailable = async (email: string) => {
 
 const usernameAvailable = async (username: string) => {
   // 1. Get all the users
-  let usernames:any[] = [];
+  let usernames: any[] = [];
   let isUsernameAvailable = true;
   try {
     const users = await API.graphql(

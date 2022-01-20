@@ -90,7 +90,7 @@ export default function NewMessageRoomScreen(props: NewMessageRoomScreenProps) {
         text: chatMessage.text,
         createdAt: chatMessage.createdAt,
         user: {
-          _id: chatMessage.userID, 
+          _id: chatMessage.userID,
           name: chatMessage.user.username
         }
       };
@@ -200,7 +200,7 @@ export default function NewMessageRoomScreen(props: NewMessageRoomScreenProps) {
   );
 
   const onNaivgateBack = async () => {
-  
+
     try {
       // check if messages is empty
       if (messages.length == 0) {
@@ -208,14 +208,14 @@ export default function NewMessageRoomScreen(props: NewMessageRoomScreenProps) {
         const chatRoomData = await API.graphql(
           graphqlOperation(
             getChatRoom, {
-                id: route.params!.id
-            }
+            id: route.params!.id
+          }
           )
         )
-  
+
         let chatRoomUsers = chatRoomData.data.getChatRoom.chatRoomUsers.items;
 
-        let userArr:any[] = [];
+        let userArr: any[] = [];
         chatRoomUsers.map((item) => (
           userArr.push(item.id)
         ))
@@ -225,25 +225,25 @@ export default function NewMessageRoomScreen(props: NewMessageRoomScreenProps) {
           await API.graphql(
             graphqlOperation(
               deleteChatRoomUser, {
-                  input: {
-                    id: id
-                  }
+              input: {
+                id: id
               }
+            }
             )
           )
-        })  
-  
+        })
+
         // 3. Delete the chatRoom
         await API.graphql(
           graphqlOperation(
             deleteChatRoom, {
-                input: {
-                  id: route.params!.id
-                }
+            input: {
+              id: route.params!.id
             }
+          }
           )
         )
-  
+
         // 4. Navigate back to the Messages Screen
         navigation.navigate('Message');
 
