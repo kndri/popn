@@ -12,7 +12,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useNavigation } from "@react-navigation/native";
 import { confirmNewPassword } from "../aws-functions/aws-functions";
-
+import { useToast } from "../components/Toast";
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
@@ -37,6 +37,7 @@ export default function ResetPasswordScreen(props: any) {
   const [code, setCode] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmedPassword, setConfirmedPassword] = React.useState("");
+  const toast = useToast();
 
   return (
     // <KeyboardAwareScrollView>
@@ -48,11 +49,11 @@ export default function ResetPasswordScreen(props: any) {
 
       <View style={HEADER}>
         <Text
-          style={{ marginBottom: 15 }}
+          style={{ marginBottom: 15, textAlign: 'center' }}
           preset="header"
-          text="Reset your password?"
+          text="Check your email inbox for a verifcation code."
         />
-        <Text text="Enter your new password" />
+        <Text preset="secondary" text="Enter and confirm your new password" />
       </View>
 
       <View style={CENTER}>
@@ -116,7 +117,20 @@ export default function ResetPasswordScreen(props: any) {
           style={{ width: 160 }}
           text="Continue"
           preset="primary"
-          onPress={() => confirmNewPassword(username, code, password)}
+          onPress={() => {
+            if (password === '' || confirmedPassword === '' || code === '') {
+              toast.show("'Don't leave anything blank'", { color: 'red' })
+            }
+            else if (password != confirmedPassword) {
+              toast.show("'Your passwords don't match'", { color: 'red' })
+            }
+            else {
+              confirmNewPassword(username, code, password)
+              toast.show('Your password has been reset')
+              navigation.navigate('SignIn')
+            }
+
+          }}
         />
       </View>
     </Screen>

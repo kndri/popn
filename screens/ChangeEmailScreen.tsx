@@ -34,6 +34,7 @@ const HEADER_TITLE: TextStyle = {
   marginBottom: 90,
 };
 
+
 const INPUTSTYLE_CONTAINER: ViewStyle = {
   height: 20,
   width: '100%',
@@ -47,14 +48,17 @@ const INPUT: TextStyle = {
   borderBottomWidth: 2,
   borderColor: "black",
 }
-
+// const HEADER: ViewStyle = {
+//   alignItems: "center",
+//   justifyContent: "center",
+//   marginBottom: 70
+// };
 
 export default function ChangeEmailScreen() {
   const toast = useToast();
   const navigation = useNavigation();
   const [userData, setUserData] = React.useState({});
   const [newEmail, setNewEmail] = useState("");
-  // const [code, setCode] = useState("");
   const goBack = () => navigation.goBack()
 
 
@@ -128,7 +132,9 @@ export default function ChangeEmailScreen() {
           onLeftPress={goBack}
         />
         <View style={{ flexDirection: 'column', backgroundColor: 'white', }}>
+
           <Text style={HEADER_TITLE} preset="header" text="Change Email Address" />
+          <Text style={{ textAlign: 'center', bottom: 40 }} preset="secondary" text="We'll send you a verification code." />
 
           <TextField
             style={INPUTSTYLE_CONTAINER}
@@ -136,7 +142,7 @@ export default function ChangeEmailScreen() {
             placeholder="Enter New Email Address"
             keyboardType="default"
             value={newEmail}
-            onChangeText={setNewEmail}
+            onChangeText={(value) => setNewEmail(value)}
             autoCapitalize='none'
             autoCorrect={false}
           />

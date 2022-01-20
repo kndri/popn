@@ -1,5 +1,6 @@
+import { Alert } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
-import { API, graphqlOperation, Auth } from "aws-amplify";
+import { API, graphqlOperation, Auth, } from "aws-amplify";
 import {
   createSneaker,
   createPost,
@@ -276,9 +277,12 @@ export const forgotPassword = (username: string) => {
   // Send confirmation code to user's email
 
   // then navigate back
-  Auth.forgotPassword(username)
-    .then((data) => useNavigation().navigate("ResetPassword", username))
-    .catch((err) => console.log(err));
+  if (username === '') {
+    Alert.alert('You must provide an email address')
+  }
+  else {
+    Auth.forgotPassword(username)
+  }
 };
 
 export const confirmNewPassword = (
@@ -288,8 +292,6 @@ export const confirmNewPassword = (
 ) => {
   // Collect confirmation code and new password, then
   Auth.forgotPasswordSubmit(username, code, new_password)
-    .then((data) => useNavigation().navigate("SignIn"))
-    .catch((err) => console.log(err));
 };
 
 export type SneakerData = {
