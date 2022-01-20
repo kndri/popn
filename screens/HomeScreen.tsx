@@ -8,7 +8,7 @@ import {
   AutoImage as Image,
   Header,
 } from "../components";
-import { API, graphqlOperation } from "aws-amplify";
+import { API, Auth, graphqlOperation, Storage } from "aws-amplify";
 
 import { getUser, listPosts } from "../src/graphql/queries";
 
@@ -115,39 +115,6 @@ export default function Home({ navigation }: RootTabScreenProps<"Home">) {
 
   React.useEffect(() => {
     fetchPosts();
-  }, []);
-
-  const saveUserToDB = async (user: any) => {
-    await API.graphql(graphqlOperation(createUser, { input: user }));
-  };
-
-  React.useEffect(() => {
-    const getUserDb = async () => {
-      // Get current authenticated user
-      const user = await checkLoggedUser();
-
-      if (user) {
-        // Check if user already exists in database
-        const userData = await API.graphql(
-          graphqlOperation(getUser, { id: user.attributes.sub })
-        );
-        if (!userData.data.getUser) {
-          const userObj = {
-            id: user.attributes.sub,
-            age: user["custom:age"],
-            username: user.preferred_username,
-            email: user.email,
-            avatarImageURL: user["custom:profile_image"],
-            following: 0,
-            follower: 0,
-          };
-          await saveUserToDB(userObj);
-        } else {
-          console.log("User already exists");
-        }
-      }
-    };
-    getUserDb();
   }, []);
 
   const renderUsers = ({ item }) => {

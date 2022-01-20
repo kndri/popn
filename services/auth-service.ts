@@ -36,35 +36,16 @@ const signIn = (email: string, _password: string): Promise<AuthData> => {
   });
 };
 const uploadImage = async (username: string, imageUrl: string) => {
-  console.log("uploadImage RUNNNINNNG");
   console.log("imageUrl: ", imageUrl);
-  // const image = await fetch(imageUrl);
-  // console.log('image: ', image);
-  // const imageBlob = await image.blob();
-  // console.log('imageBlob: ', imageBlob);
-  // const key = `${username}_profileImage`;
-  // console.log('key: ', key);
-
-  // const imageResponse = await Storage.put(key, imageBlob, {
-  //   level: "public"
-  // });
-  // console.log('imageResponse: ', imageResponse);
-  // const uploadedImageUrl = `https://popnd82dea5bd54c4b12aa305515ccc9e5e8132355-dev.s3.amazonaws.com/${key}`;
-  // console.log('uploadedImageUrl: ', uploadedImageUrl);
-
-  // return uploadedImageUrl;
 
   const response = await fetch(imageUrl);
   const blob = await response.blob();
-  console.log("blob: ", blob);
 
   const fileName = `${username}ProfileImage.jpeg`;
-  await Storage.put(fileName, blob, {
+  const data = await Storage.put(fileName, blob, {
     contentType: "image/jpeg",
-    level: "private",
-  })
-    .then((data) => console.log("uploadImageData: ", data))
-    .catch((err) => console.log("uploadImageErr: ", err));
+  });
+  return data;
 };
 
 const signUp = async (
@@ -79,9 +60,14 @@ const signUp = async (
 
   // variable to store user id
   let userId: any;
+  let new_image: any;
 
   if (image_url.includes("defaultUser") === false) {
-    image_url = await uploadImage(_username, image_url);
+    new_image = await uploadImage(_username, image_url);
+
+    const image = await Storage.get(new_image.key);
+    image_url = image;
+    console.log(image_url);
   }
 
   await Auth.signUp({
@@ -89,11 +75,11 @@ const signUp = async (
     password: _password,
     attributes: {
       "custom:age": age,
-      "custom:profile_image": image_url,
+      "custom:blob": image_url,
       preferred_username: _username,
     },
   })
-    .then((response) => {
+    .then(async (response) => {
       const user = {
         id: response.userSub,
         age: age,
@@ -156,15 +142,11 @@ const emailAvailable = async (email: string) => {
 
 const usernameAvailable = async (username: string) => {
   // 1. Get all the users
-  let usernames:any[] = [];
+  let usernames: any[] = [];
   let isUsernameAvailable = true;
   try {
-    const users = await API.graphql(
-      graphqlOperation(
-        listUsers
-      )
-    )
-    usernames = users.data.listUsers.items
+    const users = await API.graphql(graphqlOperation(listUsers));
+    usernames = users.data.listUsers.items;
 
     // 2. Check if chosen username is available or not
     usernames.map((takenUsername) => {
@@ -172,19 +154,18 @@ const usernameAvailable = async (username: string) => {
         console.log("TAKEN");
         isUsernameAvailable = false;
       }
-    })
+    });
 
     // 3. Return isUsernameTaken
     return isUsernameAvailable;
-
   } catch (error) {
-    console.log('usernameAvailable Error: ', error);
+    console.log("usernameAvailable Error: ", error);
   }
-}
+};
 
 export const authService = {
   signIn,
   signUp,
   emailAvailable,
-  usernameAvailable
+  usernameAvailable,
 };

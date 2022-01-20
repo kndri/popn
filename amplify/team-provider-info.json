@@ -14,7 +14,8 @@
     },
     "categories": {
       "auth": {
-        "popn09": {}
+        "popn09": {},
+        "true": {}
       },
       "function": {
         "S3Triggerf2de1f7e": {

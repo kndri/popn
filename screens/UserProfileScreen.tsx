@@ -124,7 +124,7 @@ export default function UserProfileScreen(props?: any) {
     const user = await checkLoggedUser();
 
     setUsername(user.attributes.preferred_username);
-    setprofileImage(user.attributes["custom:profile_image"]);
+    setprofileImage(user.attributes["custom:blob"]);
     setCollection(sneakerlist);
   };
 
