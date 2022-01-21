@@ -118,28 +118,32 @@ export default function PasswordScreen() {
               justifyContent: "flex-end",
             }}
           >
-            <Button
-              disabled={!isValid}
-              style={!isValid ? DISABLED : null}
-              text="Continue"
-              preset="cta"
-              onPress={() => {
-                if (values.email === "" || values.password === "") {
-                  toast.show(`You must provide an email and password`, {
-                    color: "red",
-                  });
-                } else {
-                  signUp(
-                    values.email,
-                    values.password,
-                    values.age,
-                    values.username,
-                    values.image
-                  );
-                  setIsLoading(true);
-                }
-              }}
-            />
+            {isLoading ? (
+              <ActivityIndicator size="large" color="black" />
+            ) : (
+              <Button
+                disabled={!isValid}
+                style={!isValid ? DISABLED : null}
+                text="Continue"
+                preset="cta"
+                onPress={() => {
+                  if (values.email === "" || values.password === "") {
+                    toast.show(`You must provide an email and password`, {
+                      color: "red",
+                    });
+                  } else {
+                    signUp(
+                      values.email,
+                      values.password,
+                      values.age,
+                      values.username,
+                      values.image
+                    );
+                    setIsLoading(true);
+                  }
+                }}
+              />
+            )}
           </View>
         </Screen>
       )}
