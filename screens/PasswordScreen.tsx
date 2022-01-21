@@ -1,13 +1,21 @@
 import * as React from "react";
-import { View, ViewStyle, TextStyle, ActivityIndicator } from "react-native";
+import { View, ViewStyle, TextStyle, TouchableOpacity } from "react-native";
 import { color, spacing, typography } from "../theme";
-import { Button, Screen, Text, TextField } from "../components";
+import {
+  Button,
+  Screen,
+  Text,
+  TextField,
+  AutoImage as Image,
+} from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useFormState, useFormDispatch } from "../contexts/form-context";
 import { useAuth } from "../contexts/auth";
 import { useToast } from "../components/Toast";
+
+const eye = require("../assets/images/reveal.png");
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -62,7 +70,8 @@ export default function PasswordScreen() {
   const dispatch = useFormDispatch();
   const { values: formValues, errors: formErrors } = useFormState("user");
   const { signUp } = useAuth();
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [reveal, setReveal] = React.useState<boolean>(true);
+  const [texts, setText] = React.useState<string>("");
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("blur", () => {
@@ -96,12 +105,39 @@ export default function PasswordScreen() {
           </View>
 
           <View style={CENTER}>
-            <TextField
-              inputStyle={INPUT}
-              placeholder="Password"
-              secureTextEntry
-              onChangeText={handleChange("password")}
-            />
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <TextField
+                inputStyle={INPUT}
+                placeholder="Password"
+                secureTextEntry={reveal}
+                onChangeText={handleChange("password")}
+              />
+              <TouchableOpacity
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "auto",
+                }}
+                onPress={() => setReveal((prev) => !prev)}
+              >
+                <Image
+                  source={eye}
+                  style={[
+                    {
+                      marginLeft: 10,
+                      justifyContent: "center",
+                      marginTop: 15,
+                    },
+                    reveal == false ? { opacity: 0.3 } : null,
+                  ]}
+                />
+              </TouchableOpacity>
+            </View>
 
             {(errors.password || touched.password) && (
               <Text style={{ fontSize: 10, color: "red" }}>
@@ -135,7 +171,6 @@ export default function PasswordScreen() {
                     values.username,
                     values.image
                   );
-                  setIsLoading(true);
                 }
               }}
             />
