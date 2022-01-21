@@ -6,6 +6,7 @@ import {
 	Screen,
 	Text,
 	TextField,
+	Header
 } from "../components"
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from "formik";
@@ -19,18 +20,12 @@ const CONTAINER: ViewStyle = {
 	paddingHorizontal: spacing[5],
 	flex: 1,
 	justifyContent: 'space-between',
-	marginTop: 50,
 	paddingBottom: 90
 }
 
 const CENTER: ViewStyle = {
 	alignItems: 'center',
 	justifyContent: 'center',
-}
-
-const HEADER: TextStyle = {
-	textAlign: 'center',
-	marginBottom: 10
 }
 
 const TEXTCENTER: TextStyle = {
@@ -86,13 +81,19 @@ export default function AgeScreen() {
 			validationSchema={ageValidationSchema}
 			initialValues={formValues}
 			initialErrors={formErrors}
+			// isInitialValid={false}
 			enableReinitialize
+			validateOnMount={true}
 		>
 			{({ values, handleChange, errors, isValid, touched }) => (
 				<Screen style={CONTAINER}>
 					<View style={CENTER}>
-						<Text style={HEADER} preset="header" text="How old are you?" />
-						<Text preset="secondary" text="You must be 13 years old or older" />
+						<Header
+							leftIcon="back"
+							onLeftPress={() => navigation.goBack()}
+						/>
+						<Text style={TEXTCENTER} preset="header" text="How old are you?" />
+
 					</View>
 
 					<View style={CENTER}>
@@ -117,7 +118,7 @@ export default function AgeScreen() {
 							preset="cta"
 							onPress={() => {
 								if (!values.age) {
-									toast.show(`You must enter your age to continue.`, {color: 'red'});
+									toast.show(`You must enter your age to continue.`, { color: 'red' });
 								} else {
 									navigation.navigate('ProfilePicture');
 								}

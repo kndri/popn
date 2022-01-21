@@ -1,5 +1,11 @@
 import * as React from "react";
-import { View, ViewStyle, TextStyle, TouchableOpacity } from "react-native";
+import {
+  View,
+  ViewStyle,
+  TextStyle,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { color, spacing, typography } from "../theme";
 import {
   Button,
@@ -20,16 +26,14 @@ const eye = require("../assets/images/reveal.png");
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
-  paddingHorizontal: spacing[7],
+  paddingHorizontal: spacing[5],
   flex: 1,
   justifyContent: "space-between",
-  marginTop: 50,
   paddingBottom: 90,
 };
 
-const HEADER: TextStyle = {
-  textAlign: "center",
-  marginBottom: 10,
+const HEADER: ViewStyle = {
+  bottom: 50,
 };
 
 const CENTER: ViewStyle = {
@@ -71,7 +75,7 @@ export default function PasswordScreen() {
   const { values: formValues, errors: formErrors } = useFormState("user");
   const { signUp } = useAuth();
   const [reveal, setReveal] = React.useState<boolean>(true);
-  const [texts, setText] = React.useState<string>("");
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("blur", () => {
@@ -96,12 +100,15 @@ export default function PasswordScreen() {
       validationSchema={passwordValidationSchema}
       initialValues={formValues}
       initialErrors={formErrors}
+      // isInitialValid={false}
       enableReinitialize
+      validateOnMount={true}
     >
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
           <View style={CENTER}>
-            <Text style={HEADER} preset="header" text="Create a password" />
+            <Header leftIcon="back" onLeftPress={() => navigation.goBack()} />
+            <Text style={TEXTCENTER} preset="header" text="Create a password" />
           </View>
 
           <View style={CENTER}>
@@ -153,27 +160,32 @@ export default function PasswordScreen() {
               justifyContent: "flex-end",
             }}
           >
-            <Button
-              disabled={!isValid}
-              style={!isValid ? DISABLED : null}
-              text="Continue"
-              preset="cta"
-              onPress={() => {
-                if (values.email === "" || values.password === "") {
-                  toast.show(`You must provide an email and password`, {
-                    color: "red",
-                  });
-                } else {
-                  signUp(
-                    values.email,
-                    values.password,
-                    values.age,
-                    values.username,
-                    values.image
-                  );
-                }
-              }}
-            />
+            {isLoading ? (
+              <ActivityIndicator size="large" color="black" />
+            ) : (
+              <Button
+                disabled={!isValid}
+                style={!isValid ? DISABLED : null}
+                text="Continue"
+                preset="cta"
+                onPress={() => {
+                  if (values.email === "" || values.password === "") {
+                    toast.show(`You must provide an email and password`, {
+                      color: "red",
+                    });
+                  } else {
+                    signUp(
+                      values.email,
+                      values.password,
+                      values.age,
+                      values.username,
+                      values.image
+                    );
+                    setIsLoading(true);
+                  }
+                }}
+              />
+            )}
           </View>
         </Screen>
       )}

@@ -39,20 +39,20 @@ const about = [
 ];
 
 const actions = [
-  {
-    id: "6",
-    pageSrc: "emailSupport",
-    name: "Email support",
-  },
-  {
-    id: "7",
-    pageSrc: "reportABug",
-    name: "Report a bug"
-  },
+  // {
+  //   id: "6",
+  //   pageSrc: "emailSupport",
+  //   name: "Email support",
+  // },
+  // {
+  //   id: "7",
+  //   pageSrc: "reportABug",
+  //   name: "Report a bug"
+  // },
   {
     id: "8",
     pageSrc: "rating",
-    name: "Rating"
+    name: "Rate POPN"
   },
   {
     id: "9",
@@ -67,7 +67,6 @@ const CONTAINER: ViewStyle = {
   flex: 1,
   backgroundColor: "white",
   paddingHorizontal: spacing[6],
-
 }
 
 const HEADING_TITLE: TextStyle = {
@@ -91,6 +90,14 @@ const ARROW_ICON: ImageStyle = {
   width: 20,
   height: 20,
 }
+const CENTER: ViewStyle = {
+  alignItems: 'center',
+  justifyContent: 'center',
+}
+const TEXTCENTER: TextStyle = {
+  textAlign: 'center',
+  alignItems: 'center'
+}
 
 interface SettingsProps { }
 const SettingsScreen: FC<SettingsProps> = () => {
@@ -102,12 +109,14 @@ const SettingsScreen: FC<SettingsProps> = () => {
 
   return (
     <Screen style={CONTAINER}>
-      <Header
-        headerTx="Settings"
-        leftIcon="back"
-        onLeftPress={() => navigation.goBack()}
-      />
+      <View style={CENTER}>
+        <Header
+          leftIcon="back"
+          onLeftPress={() => navigation.goBack()}
+        />
+      </View>
 
+      <Text style={HEADING_TITLE} preset="header" text="Settings" />
       {/* flat list of settings options */}
       <View style={FLATLIST}>
         <FlatList

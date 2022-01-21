@@ -5,7 +5,8 @@ import {
   Button,
   Screen,
   Text,
-  TextField
+  TextField,
+  Header
 } from "../components"
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from "formik";
@@ -17,16 +18,11 @@ import { useToast } from "../components/Toast";
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
-  paddingHorizontal: spacing[7],
+  paddingHorizontal: spacing[5],
   flex: 1,
   justifyContent: 'space-between',
-  marginTop: 50,
-  paddingBottom: 90
-}
 
-const HEADER: ViewStyle = {
-  alignItems: 'center',
-  justifyContent: 'center',
+  paddingBottom: 90
 }
 
 const CENTER: ViewStyle = {
@@ -47,11 +43,19 @@ const DISABLED: ViewStyle = {
   backgroundColor: 'rgba(52, 52, 52, 0.25)',
 };
 
+const PROFILE_HEADER: ViewStyle = {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  paddingBottom: 17,
+  paddingHorizontal: spacing[5],
+};
+
 //username validation schema
 const usernameValidationSchema = yup.object().shape({
   username: yup
     .string()
-    .required("Must create username")
+    .required("Create a username to continue")
     .min(4, "username must have at least 4 characters"),
 });
 
@@ -88,14 +92,26 @@ export default function UserNameScreen() {
       validationSchema={usernameValidationSchema}
       initialValues={formValues}
       initialErrors={formErrors}
+      // isInitialValid={false} //kj
       enableReinitialize
+      validateOnMount={true}
+
     >
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
+
           <View style={CENTER}>
-            <Text style={TEXTCENTER} preset="header" text="Choose a username" />
-            <Text preset="secondary" text="This will be your POPN handle" />
+            <Header
+              leftIcon="back"
+              onLeftPress={() => {
+                navigation.goBack()
+
+              }}
+            />
+            <Text style={TEXTCENTER} preset="header" text="Create your Username" />
           </View>
+
+
 
           <View style={CENTER}>
             <TextField
@@ -137,4 +153,8 @@ export default function UserNameScreen() {
   );
 }
 
+
+function onGoBack(arg0: { values: import("formik").FormikValues; "": any; }) {
+  throw new Error('Function not implemented.');
+}
 

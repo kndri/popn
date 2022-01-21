@@ -82,11 +82,10 @@ export default function ForgotPasswordScreen() {
           text="Continue"
           preset="primary"
           onPress={() => {
-            forgotPassword(email)
+            // forgotPassword(email)
             navigation.navigate('ResetPassword', email)
           }}
         />
-
       </View>
     </Screen>
   );
