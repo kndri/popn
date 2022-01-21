@@ -118,12 +118,12 @@ export default function ProfilePicScreen() {
     >
       {({ values, handleChange }) => (
         <Screen style={CONTAINER}>
-          <View style={HEADER}>
+          <View style={CENTER}>
             <Header
-              headerTx="Add a Profile Picture"
               leftIcon="back"
               onLeftPress={() => navigation.goBack()}
             />
+            <Text style={TEXTCENTER} preset="header" text="Add a profile picture" />
           </View>
           <View style={CENTER}>
             {values.image && values.image.length > 0 ? (

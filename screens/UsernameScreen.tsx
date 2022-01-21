@@ -21,12 +21,8 @@ const CONTAINER: ViewStyle = {
   paddingHorizontal: spacing[5],
   flex: 1,
   justifyContent: 'space-between',
-  marginTop: 50,
-  paddingBottom: 90
-}
 
-const HEADER: ViewStyle = {
-  bottom: 50
+  paddingBottom: 90
 }
 
 const CENTER: ViewStyle = {
@@ -59,7 +55,7 @@ const PROFILE_HEADER: ViewStyle = {
 const usernameValidationSchema = yup.object().shape({
   username: yup
     .string()
-    .required("Must create username")
+    .required("Create a username to continue")
     .min(4, "username must have at least 4 characters"),
 });
 
@@ -96,18 +92,25 @@ export default function UserNameScreen() {
       validationSchema={usernameValidationSchema}
       initialValues={formValues}
       initialErrors={formErrors}
-      isInitialValid={false}
+      // isInitialValid={false} //kj
       enableReinitialize
+      validateOnMount={true}
+
     >
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
-          <View style={HEADER}>
+
+          <View style={CENTER}>
             <Header
-              headerTx="Create a username"
               leftIcon="back"
-              onLeftPress={() => navigation.goBack()}
+              onLeftPress={() => {
+                navigation.goBack()
+
+              }}
             />
+            <Text style={TEXTCENTER} preset="header" text="Create your Username" />
           </View>
+
 
 
           <View style={CENTER}>
@@ -150,4 +153,8 @@ export default function UserNameScreen() {
   );
 }
 
+
+function onGoBack(arg0: { values: import("formik").FormikValues; "": any; }) {
+  throw new Error('Function not implemented.');
+}
 

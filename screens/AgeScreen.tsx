@@ -20,18 +20,12 @@ const CONTAINER: ViewStyle = {
 	paddingHorizontal: spacing[5],
 	flex: 1,
 	justifyContent: 'space-between',
-	marginTop: 50,
 	paddingBottom: 90
 }
 
 const CENTER: ViewStyle = {
 	alignItems: 'center',
 	justifyContent: 'center',
-}
-
-
-const HEADER: ViewStyle = {
-	bottom: 50
 }
 
 const TEXTCENTER: TextStyle = {
@@ -87,17 +81,18 @@ export default function AgeScreen() {
 			validationSchema={ageValidationSchema}
 			initialValues={formValues}
 			initialErrors={formErrors}
-			isInitialValid={false}
+			// isInitialValid={false}
 			enableReinitialize
+			validateOnMount={true}
 		>
 			{({ values, handleChange, errors, isValid, touched }) => (
 				<Screen style={CONTAINER}>
-					<View style={HEADER}>
+					<View style={CENTER}>
 						<Header
-							headerTx="How old are you?"
 							leftIcon="back"
 							onLeftPress={() => navigation.goBack()}
 						/>
+						<Text style={TEXTCENTER} preset="header" text="How old are you?" />
 
 					</View>
 
