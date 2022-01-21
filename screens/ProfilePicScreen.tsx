@@ -11,6 +11,7 @@ import {
   Screen,
   Text,
   AutoImage as Image,
+  Header
 } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
@@ -32,12 +33,12 @@ const CONTAINER: ViewStyle = {
 const CENTER: ViewStyle = {
   alignItems: "center",
   justifyContent: "center",
+  bottom: 40
 };
 
-const HEADER: TextStyle = {
-  textAlign: "center",
-  marginBottom: 50,
-};
+const HEADER: ViewStyle = {
+  bottom: 50
+}
 
 const TEXTCENTER: TextStyle = {
   textAlign: "center",
@@ -117,15 +118,21 @@ export default function ProfilePicScreen() {
     >
       {({ values, handleChange }) => (
         <Screen style={CONTAINER}>
+          <View style={HEADER}>
+            <Header
+              headerTx="Add a Profile Picture"
+              leftIcon="back"
+              onLeftPress={() => navigation.goBack()}
+            />
+          </View>
           <View style={CENTER}>
-            <Text style={HEADER} preset="header" text="Add a profile picture" />
             {values.image && values.image.length > 0 ? (
               <Image
                 source={{ uri: values.image }}
                 style={{ width: 150, height: 150, borderRadius: 100 }}
               />
             ) : (
-              <Image source={defaultImg} style={{ width: 150, height: 150}} />
+              <Image source={defaultImg} style={{ width: 150, height: 150 }} />
             )}
             <Button
               text="Choose from Library"

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { View, ViewStyle, TextStyle, TouchableOpacity, Alert } from "react-native";
 import { color, spacing, typography } from "../theme";
-import { Button, Screen, Text, TextField } from "../components";
+import { Button, Screen, Text, TextField, Header } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as yup from 'yup'
@@ -12,16 +12,16 @@ import { useToast } from "../components/Toast";
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
-  paddingHorizontal: spacing[7],
+  paddingHorizontal: spacing[5],
   flex: 1,
   justifyContent: "space-between",
   marginTop: 50,
   paddingBottom: 90,
 };
 
-const HEADER: TextStyle = {
-  textAlign: 'center',
-  marginBottom: 10
+
+const HEADER: ViewStyle = {
+  bottom: 50
 }
 
 const CENTER: ViewStyle = {
@@ -88,8 +88,12 @@ export default function EmailScreen() {
     >
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
-          <View style={CENTER}>
-            <Text style={HEADER} preset="header" text="Enter your email" />
+          <View style={HEADER}>
+            <Header
+              headerTx="Enter your email"
+              leftIcon="back"
+              onLeftPress={() => navigation.goBack()}
+            />
           </View>
 
           <View style={CENTER}>
@@ -109,20 +113,20 @@ export default function EmailScreen() {
           </View>
 
           <View style={{ flexDirection: 'row', alignContent: 'flex-end', justifyContent: 'flex-end' }}>
-              <Button
-                disabled={!isValid}
-                style={!isValid ? DISABLED : null}
-                text="Continue"
-                preset="cta"
-                onPress={async () => {
-                  const available = await authService.emailAvailable(values.email);
-                  if (!available) {
-                    toast.show(`An account exists with this email already.`, {color: 'red'});
-                  } else {
-                    navigation.navigate('Age');
-                  }
-                }}
-              /> 
+            <Button
+              disabled={!isValid}
+              style={!isValid ? DISABLED : null}
+              text="Continue"
+              preset="cta"
+              onPress={async () => {
+                const available = await authService.emailAvailable(values.email);
+                if (!available) {
+                  toast.show(`An account exists with this email already.`, { color: 'red' });
+                } else {
+                  navigation.navigate('Age');
+                }
+              }}
+            />
           </View>
         </Screen>
       )}

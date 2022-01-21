@@ -1,7 +1,7 @@
 import * as React from "react";
 import { View, ViewStyle, TextStyle } from "react-native";
 import { color, spacing, typography } from "../theme";
-import { Button, Screen, Text, TextField } from "../components";
+import { Button, Screen, Text, TextField, Header } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -12,17 +12,16 @@ import { useToast } from "../components/Toast";
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
-  paddingHorizontal: spacing[7],
+  paddingHorizontal: spacing[5],
   flex: 1,
   justifyContent: "space-between",
   marginTop: 50,
   paddingBottom: 90,
 };
 
-const HEADER: TextStyle = {
-  textAlign: "center",
-  marginBottom: 10,
-};
+const HEADER: ViewStyle = {
+  bottom: 50
+}
 
 const CENTER: ViewStyle = {
   alignItems: "center",
@@ -90,9 +89,14 @@ export default function PasswordScreen() {
     >
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
-          <View style={CENTER}>
-            <Text style={HEADER} preset="header" text="Create a password" />
+          <View style={HEADER}>
+            <Header
+              headerTx="Create a password"
+              leftIcon="back"
+              onLeftPress={() => navigation.goBack()}
+            />
           </View>
+
 
           <View style={CENTER}>
             <TextField
@@ -123,7 +127,7 @@ export default function PasswordScreen() {
               preset="cta"
               onPress={() => {
                 if (values.email === "" || values.password === "") {
-                  toast.show(`You must provide an email and password`, {color: 'red'});
+                  toast.show(`You must provide an email and password`, { color: 'red' });
                 } else {
                   signUp(
                     values.email,

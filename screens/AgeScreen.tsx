@@ -6,6 +6,7 @@ import {
 	Screen,
 	Text,
 	TextField,
+	Header
 } from "../components"
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from "formik";
@@ -28,9 +29,9 @@ const CENTER: ViewStyle = {
 	justifyContent: 'center',
 }
 
-const HEADER: TextStyle = {
-	textAlign: 'center',
-	marginBottom: 10
+
+const HEADER: ViewStyle = {
+	bottom: 50
 }
 
 const TEXTCENTER: TextStyle = {
@@ -90,9 +91,13 @@ export default function AgeScreen() {
 		>
 			{({ values, handleChange, errors, isValid, touched }) => (
 				<Screen style={CONTAINER}>
-					<View style={CENTER}>
-						<Text style={HEADER} preset="header" text="How old are you?" />
-						<Text preset="secondary" text="You must be 13 years old or older" />
+					<View style={HEADER}>
+						<Header
+							headerTx="How old are you?"
+							leftIcon="back"
+							onLeftPress={() => navigation.goBack()}
+						/>
+
 					</View>
 
 					<View style={CENTER}>
@@ -117,7 +122,7 @@ export default function AgeScreen() {
 							preset="cta"
 							onPress={() => {
 								if (!values.age) {
-									toast.show(`You must enter your age to continue.`, {color: 'red'});
+									toast.show(`You must enter your age to continue.`, { color: 'red' });
 								} else {
 									navigation.navigate('ProfilePicture');
 								}

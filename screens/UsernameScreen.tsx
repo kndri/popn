@@ -5,7 +5,8 @@ import {
   Button,
   Screen,
   Text,
-  TextField
+  TextField,
+  Header
 } from "../components"
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from "formik";
@@ -17,7 +18,7 @@ import { useToast } from "../components/Toast";
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
-  paddingHorizontal: spacing[7],
+  paddingHorizontal: spacing[5],
   flex: 1,
   justifyContent: 'space-between',
   marginTop: 50,
@@ -25,8 +26,7 @@ const CONTAINER: ViewStyle = {
 }
 
 const HEADER: ViewStyle = {
-  alignItems: 'center',
-  justifyContent: 'center',
+  bottom: 50
 }
 
 const CENTER: ViewStyle = {
@@ -45,6 +45,14 @@ const INPUT: TextStyle = {
 
 const DISABLED: ViewStyle = {
   backgroundColor: 'rgba(52, 52, 52, 0.25)',
+};
+
+const PROFILE_HEADER: ViewStyle = {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  paddingBottom: 17,
+  paddingHorizontal: spacing[5],
 };
 
 //username validation schema
@@ -92,10 +100,14 @@ export default function UserNameScreen() {
     >
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
-          <View style={CENTER}>
-            <Text style={TEXTCENTER} preset="header" text="Choose a username" />
-            <Text preset="secondary" text="This will be your POPN handle" />
+          <View style={HEADER}>
+            <Header
+              headerTx="Create a username"
+              leftIcon="back"
+              onLeftPress={() => navigation.goBack()}
+            />
           </View>
+
 
           <View style={CENTER}>
             <TextField
