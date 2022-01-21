@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, ViewStyle, TextStyle } from "react-native";
+import { View, ViewStyle, TextStyle, ActivityIndicator } from "react-native";
 import { color, spacing, typography } from "../theme";
 import { Button, Screen, Text, TextField } from "../components";
 import { useNavigation } from "@react-navigation/native";
@@ -62,6 +62,7 @@ export default function PasswordScreen() {
   const dispatch = useFormDispatch();
   const { values: formValues, errors: formErrors } = useFormState("user");
   const { signUp } = useAuth();
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("blur", () => {
@@ -123,7 +124,9 @@ export default function PasswordScreen() {
               preset="cta"
               onPress={() => {
                 if (values.email === "" || values.password === "") {
-                  toast.show(`You must provide an email and password`, {color: 'red'});
+                  toast.show(`You must provide an email and password`, {
+                    color: "red",
+                  });
                 } else {
                   signUp(
                     values.email,
@@ -132,6 +135,7 @@ export default function PasswordScreen() {
                     values.username,
                     values.image
                   );
+                  setIsLoading(true);
                 }
               }}
             />

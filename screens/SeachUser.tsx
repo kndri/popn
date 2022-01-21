@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
-import { API, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation, Storage } from "aws-amplify";
 import { View } from "../components/Themed";
 import { spacing } from "../theme";
 import MessageContactListItem from "../components/message-contact-list-item";
@@ -30,46 +30,32 @@ export default function UserSearchScreen() {
       try {
         const usersData = await API.graphql(graphqlOperation(listUsers));
         setUniqueUsers = usersData.data.listUsers.items;
+        setUsers(setUniqueUsers);
       } catch (e) {
         console.log(e);
       }
-      let tempArr = [...setUniqueUsers];
-      setUniqueUsers.map((user) => {
-        if (
-          route.params?.excludedUsers.includes(user.username) ||
-          route.params?.currentUser.data.getUser.username == user.username
-        ) {
-          tempArr.splice(tempArr.indexOf(user), 1); //deleting
-        }
-      });
-      setUsers(tempArr);
-      setSearchedContacts(tempArr);
     };
     fetchUsers();
-  }, [isFocused]);
+  }, []);
 
   // useEffect to filter out the searched contact
   React.useEffect(() => {
-    if (query.length === 0) {
-      setSearchedContacts(users);
-    } else {
-      const searchedObject: any = [];
-      users
-        .filter((contactObject) =>
-          contactObject.username
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .includes(query.toLowerCase().replace(/\s+/g, ""))
-        )
-        .map((filteredContact) => {
-          searchedObject.push(filteredContact);
-        });
+    const searchedObject: any = [];
+    users
+      .filter((contactObject) =>
+        contactObject.username
+          .toLowerCase()
+          .replace(/\s+/g, "")
+          .includes(query.toLowerCase().replace(/\s+/g, ""))
+      )
+      .map((filteredContact) => {
+        searchedObject.push(filteredContact);
+      });
 
-      setSearchedContacts(searchedObject);
-    }
+    setSearchedContacts(searchedObject);
   }, [query]);
 
-  React.useEffect(() => {}, [users]);
+  // React.useEffect(() => {}, [users]);
 
   const onClick = (id) => {
     navigation.navigate("UserProfile", id);
@@ -120,11 +106,8 @@ export default function UserSearchScreen() {
         />
       </View>
       {query.length === 0 || searchedContacts.length === 0 ? (
-        // <View style={{ height: "100%", backgroundColor: "transparent" }}>
-        //   <ActivityIndicator size="large" color="black" />
-        // </View>
-        <View style={{ alignItems: "center" }}>
-          {searchedContacts.length === 0 ? (
+        <View style={{ alignItems: "center", backgroundColor: "transparent" }}>
+          {searchedContacts.length === 0 && query.length > 0 ? (
             <Text>Results Not Found</Text>
           ) : (
             <Text>Search Something</Text>
@@ -177,12 +160,15 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-between",
     padding: 10,
+    backgroundColor: "transparent",
   },
   lefContainer: {
     flexDirection: "row",
+    backgroundColor: "transparent",
   },
   midContainer: {
     justifyContent: "space-around",
+    backgroundColor: "transparent",
   },
   avatar: {
     width: 30,
@@ -196,6 +182,5 @@ const styles = StyleSheet.create({
   },
   status: {
     fontSize: 16,
-    color: "grey",
   },
 });
