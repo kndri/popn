@@ -13,6 +13,7 @@ import {
   Text,
   TextField,
   AutoImage as Image,
+  Header,
 } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
