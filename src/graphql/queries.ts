@@ -95,25 +95,9 @@ export const listUsers = /* GraphQL */ `
         username
         email
         avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          items {
-            id
-            userID
-            description
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
         following
         follower
         status
-        chatRoomUser {
-          nextToken
-        }
         createdAt
         updatedAt
       }

@@ -64,8 +64,10 @@ const signUp = async (
 
   if (image_url.includes("defaultUser") === false) {
     new_image = await uploadImage(_username, image_url);
-
-    const image = await Storage.get(new_image.key);
+    console.log("new_image", new_image.key);
+    const image = await Storage.get(new_image.key, {
+      level: "public",
+    });
     image_url = image;
     console.log(image_url);
   }

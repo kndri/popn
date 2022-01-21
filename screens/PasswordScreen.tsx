@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, ViewStyle, TextStyle } from "react-native";
+import { View, ViewStyle, TextStyle, ActivityIndicator } from "react-native";
 import { color, spacing, typography } from "../theme";
 import { Button, Screen, Text, TextField, Header } from "../components";
 import { useNavigation } from "@react-navigation/native";
@@ -61,6 +61,7 @@ export default function PasswordScreen() {
   const dispatch = useFormDispatch();
   const { values: formValues, errors: formErrors } = useFormState("user");
   const { signUp } = useAuth();
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("blur", () => {
@@ -85,6 +86,7 @@ export default function PasswordScreen() {
       validationSchema={passwordValidationSchema}
       initialValues={formValues}
       initialErrors={formErrors}
+      isInitialValid={false}
       enableReinitialize
     >
       {({ values, handleChange, errors, isValid, touched }) => (
@@ -120,25 +122,32 @@ export default function PasswordScreen() {
               justifyContent: "flex-end",
             }}
           >
-            <Button
-              disabled={!isValid}
-              style={!isValid ? DISABLED : null}
-              text="Continue"
-              preset="cta"
-              onPress={() => {
-                if (values.email === "" || values.password === "") {
-                  toast.show(`You must provide an email and password`, { color: 'red' });
-                } else {
-                  signUp(
-                    values.email,
-                    values.password,
-                    values.age,
-                    values.username,
-                    values.image
-                  );
-                }
-              }}
-            />
+            {isLoading ? (
+              <ActivityIndicator size="large" color="black" />
+            ) : (
+              <Button
+                disabled={!isValid}
+                style={!isValid ? DISABLED : null}
+                text="Continue"
+                preset="cta"
+                onPress={() => {
+                  if (values.email === "" || values.password === "") {
+                    toast.show(`You must provide an email and password`, {
+                      color: "red",
+                    });
+                  } else {
+                    signUp(
+                      values.email,
+                      values.password,
+                      values.age,
+                      values.username,
+                      values.image
+                    );
+                    setIsLoading(true);
+                  }
+                }}
+              />
+            )}
           </View>
         </Screen>
       )}
