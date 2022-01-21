@@ -87,6 +87,7 @@ export default function PasswordScreen() {
       validationSchema={passwordValidationSchema}
       initialValues={formValues}
       initialErrors={formErrors}
+      isInitialValid={false}
       enableReinitialize
     >
       {({ values, handleChange, errors, isValid, touched }) => (
