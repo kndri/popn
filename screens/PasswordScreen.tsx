@@ -50,6 +50,7 @@ const TEXTCENTER: TextStyle = {
 
 const INPUT: TextStyle = {
   fontFamily: typography.primaryBold,
+  textAlign: "center",
 };
 
 const DISABLED: ViewStyle = {
@@ -117,10 +118,13 @@ export default function PasswordScreen() {
               style={{
                 display: "flex",
                 flexDirection: "row",
+                width: "100%",
+                justifyContent: "center",
               }}
             >
               <TextField
                 inputStyle={INPUT}
+                style={{ width: "70%" }}
                 placeholder="Password"
                 secureTextEntry={reveal}
                 onChangeText={handleChange("password")}
@@ -141,7 +145,7 @@ export default function PasswordScreen() {
                       justifyContent: "center",
                       marginTop: 15,
                     },
-                    reveal == false ? { opacity: 0.3 } : null,
+                    reveal == true ? { opacity: 0.3 } : null,
                   ]}
                 />
               </TouchableOpacity>

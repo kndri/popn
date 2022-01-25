@@ -1,5 +1,11 @@
 import * as React from "react";
-import { View, ViewStyle, TextStyle, Alert } from "react-native";
+import {
+  View,
+  ViewStyle,
+  TextStyle,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import { color, spacing } from "../theme";
 import {
   Button,
@@ -13,6 +19,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useNavigation } from "@react-navigation/native";
 import { confirmNewPassword } from "../aws-functions/aws-functions";
 import { useToast } from "../components/Toast";
+const eye = require("../assets/images/reveal.png");
+
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
@@ -36,25 +44,25 @@ export default function ResetPasswordScreen(props: any) {
   const [code, setCode] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmedPassword, setConfirmedPassword] = React.useState("");
+  const [reveal, setReveal] = React.useState<boolean>(true);
+  const [reveal2, setReveal2] = React.useState<boolean>(true);
+
   const toast = useToast();
 
   return (
     <KeyboardAwareScrollView
       style={{
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: "white",
       }}
       scrollEnabled={false}
     >
       <Screen style={CONTAINER} preset="scroll">
-        <Header
-          leftIcon="back"
-          onLeftPress={() => navigation.goBack()}
-        />
+        <Header leftIcon="back" onLeftPress={() => navigation.goBack()} />
 
         <View style={HEADER}>
           <Text
-            style={{ marginBottom: 15, textAlign: 'center' }}
+            style={{ marginBottom: 15, textAlign: "center" }}
             preset="header"
             text="Check your email inbox for a verifcation code."
           />
@@ -72,43 +80,100 @@ export default function ResetPasswordScreen(props: any) {
               borderWidth: 2,
               borderRadius: 10,
               borderColor: "black",
-              marginTop: 6
-            }}
-          />
-
-          <TextField
-            onChangeText={(value) => setPassword(value)}
-            value={password}
-            label="New Password"
-            placeholder="Enter Your New Password"
-            secureTextEntry
-            autoCapitalize="none"
-            autoCorrect={false}
-            inputStyle={{
-              padding: 16,
-              borderWidth: 2,
-              borderRadius: 4,
-              borderColor: "black",
               marginTop: 6,
             }}
           />
-
-          <TextField
-            onChangeText={(value) => setConfirmedPassword(value)}
-            value={confirmedPassword}
-            label="Confirm Password"
-            placeholder="Confirm Your Password"
-            secureTextEntry
-            autoCapitalize="none"
-            autoCorrect={false}
-            inputStyle={{
-              padding: 16,
-              borderWidth: 2,
-              borderRadius: 4,
-              borderColor: "black",
-              marginTop: 6,
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              width: "100%",
             }}
-          />
+          >
+            <TextField
+              onChangeText={(value) => setPassword(value)}
+              value={password}
+              label="New Password"
+              placeholder="Enter Your New Password"
+              secureTextEntry={reveal}
+              autoCapitalize="none"
+              autoCorrect={false}
+              inputStyle={{
+                padding: 16,
+                borderWidth: 2,
+                borderRadius: 4,
+                borderColor: "black",
+                marginTop: 6,
+              }}
+              style={{ width: "100%" }}
+            />
+            <TouchableOpacity
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "auto",
+              }}
+              onPress={() => setReveal((prev) => !prev)}
+            >
+              <Image
+                source={eye}
+                style={[
+                  {
+                    marginLeft: 10,
+                    justifyContent: "center",
+                    marginTop: 15,
+                  },
+                  reveal == true ? { opacity: 0.3 } : null,
+                ]}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              width: "100%",
+            }}
+          >
+            <TextField
+              onChangeText={(value) => setConfirmedPassword(value)}
+              value={confirmedPassword}
+              label="Confirm Password"
+              placeholder="Confirm Your Password"
+              secureTextEntry={reveal2}
+              autoCapitalize="none"
+              autoCorrect={false}
+              inputStyle={{
+                padding: 16,
+                borderWidth: 2,
+                borderRadius: 4,
+                borderColor: "black",
+                marginTop: 6,
+              }}
+              style={{ width: "100%" }}
+            />
+            <TouchableOpacity
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "auto",
+              }}
+              onPress={() => setReveal2((prev) => !prev)}
+            >
+              <Image
+                source={eye}
+                style={[
+                  {
+                    marginLeft: 10,
+                    justifyContent: "center",
+                    marginTop: 15,
+                  },
+                  reveal2 == true ? { opacity: 0.3 } : null,
+                ]}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <View
           style={{
@@ -123,18 +188,15 @@ export default function ResetPasswordScreen(props: any) {
             text="Continue"
             preset="primary"
             onPress={() => {
-              if (password === '' || confirmedPassword === '' || code === '') {
-                toast.show("'Don't leave anything blank'", { color: 'red' })
+              if (password === "" || confirmedPassword === "" || code === "") {
+                toast.show("'Don't leave anything blank'", { color: "red" });
+              } else if (password != confirmedPassword) {
+                toast.show("'Your passwords don't match'", { color: "red" });
+              } else {
+                confirmNewPassword(username, code, password);
+                toast.show("Your password has been reset");
+                navigation.navigate("SignIn");
               }
-              else if (password != confirmedPassword) {
-                toast.show("'Your passwords don't match'", { color: 'red' })
-              }
-              else {
-                confirmNewPassword(username, code, password)
-                toast.show('Your password has been reset')
-                navigation.navigate('SignIn')
-              }
-
             }}
           />
         </View>
