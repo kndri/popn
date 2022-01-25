@@ -305,6 +305,7 @@ export default function UserProfileScreen(props?: any) {
   };
 
   return (
+
     <Screen style={CONTAINER}>
       <View style={PROFILE_HEADER}>
         {isMainUser ? (
@@ -327,7 +328,7 @@ export default function UserProfileScreen(props?: any) {
       </View>
       {user ? (
         <View style={PROFILE_DATA}>
-          <Image style={PROFILE_IMAGE} source={{ uri: user.avatarImageURL }} />
+          <Image style={PROFILE_IMAGE} source={{ uri: `${user.avatarImageURL}` }} />
 
           <View style={{}}>
             <Text preset="header" text={`${user.username}`} />
@@ -379,14 +380,14 @@ export default function UserProfileScreen(props?: any) {
             style={{ width: 262, height: 48, borderRadius: 4, marginLeft: 10 }}
             text="Follow"
             preset="primary"
-            // onPress={() => navigation.navigate("")}
+          // onPress={() => navigation.navigate("")}
           />
         ) : (
           <Button
             style={{ width: 262, height: 48, borderRadius: 4, marginLeft: 10 }}
             text="Edit Profile"
             preset="primary"
-            // onPress={() => navigation.navigate("")}
+          // onPress={() => navigation.navigate("")}
           />
         )}
         {/* <Button
@@ -404,18 +405,18 @@ export default function UserProfileScreen(props?: any) {
             style={[
               selection === 1
                 ? {
-                    borderRadius: 34,
-                    width: 101,
-                    margin: 2,
-                  }
+                  borderRadius: 34,
+                  width: 101,
+                  margin: 2,
+                }
                 : {
-                    backgroundColor: "white",
-                    borderRadius: 34,
-                    width: 101,
-                    borderColor: "#E8EDF2",
-                    borderWidth: 1,
-                    margin: 2,
-                  },
+                  backgroundColor: "white",
+                  borderRadius: 34,
+                  width: 101,
+                  borderColor: "#E8EDF2",
+                  borderWidth: 1,
+                  margin: 2,
+                },
             ]}
           >
             <Text
@@ -432,18 +433,18 @@ export default function UserProfileScreen(props?: any) {
             style={[
               selection === 2
                 ? {
-                    borderRadius: 34,
-                    width: 101,
-                    margin: 2,
-                  }
+                  borderRadius: 34,
+                  width: 101,
+                  margin: 2,
+                }
                 : {
-                    backgroundColor: "white",
-                    borderRadius: 34,
-                    width: 101,
-                    borderColor: "#E8EDF2",
-                    borderWidth: 1,
-                    margin: 2,
-                  },
+                  backgroundColor: "white",
+                  borderRadius: 34,
+                  width: 101,
+                  borderColor: "#E8EDF2",
+                  borderWidth: 1,
+                  margin: 2,
+                },
             ]}
           >
             <Text
@@ -461,8 +462,8 @@ export default function UserProfileScreen(props?: any) {
           {selection === 1
             ? renderCollection()
             : selection === 2
-            ? renderPosts()
-            : null}
+              ? renderPosts()
+              : null}
         </View>
       </View>
       <NewPostButton />

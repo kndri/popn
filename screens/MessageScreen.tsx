@@ -67,7 +67,6 @@ export default function MessageScreen() {
             if (chatRoomsArr.length > 0) {
                 chatRoomsArr.map((room) => {
                     room.chatRoom.chatRoomUsers.items.map((item) => {
-                        console.log('item: ', item)
                         if (item.user.username) {
                             setExcludedUsers(excludedUsers => [...excludedUsers, item.user.username])
                         }
