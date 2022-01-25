@@ -26,6 +26,19 @@ export type MessageContactListItemProps = {
 
 const MessageContactListItem = (props: MessageContactListItemProps) => {
     const { user } = props;
+    const [userAvatarImageURL, setUserAvatarImageURL] = React.useState(user.avatarImageURL);
+
+    React.useEffect(() => {
+        loadUserImages();
+    }, [])
+
+    const loadUserImages = async () => {
+        if (user.avatarImageURL === "https://popn-app.s3.amazonaws.com/default_images/defaultUser.png") {
+            setUserAvatarImageURL("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
+        } else {
+            setUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
+        }
+    }
 
     const navigation = useNavigation();
 
@@ -87,9 +100,10 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
 
     return (
         <TouchableOpacity onPress={onClick}>
+        {console.log("userAvatarImageURL: ", userAvatarImageURL)}
             <View style={styles.container}>
                 <View style={styles.lefContainer}>
-                    <Image source={{ uri: `${user.avatarImageURL}` }} style={styles.avatar} />
+                    <Image source={{ uri: `${userAvatarImageURL}` }} style={styles.avatar} />
 
                     <View style={styles.midContainer}>
                         <Text style={styles.username}>{user.username}</Text>

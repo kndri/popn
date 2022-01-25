@@ -39,34 +39,48 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
     const [otherUser, setOtherUser] = React.useState<any>({});
     const [user, setUser] = React.useState<any>({});
     const navigation = useNavigation();
+    const [otherProfilePic, setOtherProfilePic] = React.useState("");
 
     React.useEffect(() => {
-        // console.log('chatRoom: ', chatRoom)
-        const getOtherUser = async () => {
-            const userInfo = await Auth.currentAuthenticatedUser();
-            setUser(userInfo);
-            if (chatRoom.chatRoom.chatRoomUsers.items[0].user.id === userInfo.attributes.sub) {
-                setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[1].user);
-            } else {
-                setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[0].user);
-            }
-        }
         getOtherUser();
     }, [])
 
+    const getOtherUser = async () => {
+        const userInfo = await Auth.currentAuthenticatedUser();
+        setUser(userInfo);
+        if (chatRoom.chatRoom.chatRoomUsers.items[0].user.id === userInfo.attributes.sub) {
+            setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[1].user);
+            if (chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL === "https://popn-app.s3.amazonaws.com/default_images/defaultUser.png") {
+                setOtherProfilePic("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
+            } else {
+                setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
+            }
+        } else {
+            setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[0].user);
+            if (chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL === "https://popn-app.s3.amazonaws.com/default_images/defaultUser.png") {
+                setOtherProfilePic("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
+            } else {
+                setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
+            }
+        }
+    }
+
     return (
         <>
+
             < Pressable style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, currentUser: user }); }
             }>
                 <View style={LEFT_SIDE}>
                     <Image
-                        source={{ uri: `${otherUser!.avatarImageURL}` }}
+                        source={{ uri: otherProfilePic }}
+                        // source={{ uri: splittedProfilePicture }}
                         style={{
                             resizeMode: "contain",
                             height: 40,
                             width: 40,
                             marginRight: 5,
-                            borderRadius: 360
+                            borderRadius: 360,
+
                         }}
                     />
                 </View>
