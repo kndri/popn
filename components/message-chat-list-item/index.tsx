@@ -42,7 +42,6 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
     const [otherProfilePic, setOtherProfilePic] = React.useState("");
 
     React.useEffect(() => {
-        // console.log('chatRoom: ', chatRoom)
         getOtherUser();
     }, [])
 
@@ -52,7 +51,6 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
         if (chatRoom.chatRoom.chatRoomUsers.items[0].user.id === userInfo.attributes.sub) {
             setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[1].user);
             if (chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL === "https://popn-app.s3.amazonaws.com/default_images/defaultUser.png") {
-                console.log('other USER:', chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL)
                 setOtherProfilePic("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
             } else {
                 setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
@@ -60,7 +58,6 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
         } else {
             setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[0].user);
             if (chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL === "https://popn-app.s3.amazonaws.com/default_images/defaultUser.png") {
-                console.log('other USER:', chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL)
                 setOtherProfilePic("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
             } else {
                 setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
