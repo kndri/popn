@@ -199,7 +199,6 @@ const ShoeDetailsScreen = (props: any) => {
       </>,
     ];
   };
-  console.log(claim);
 
   React.useEffect(() => {
     const rerender = navigation.addListener("focus", () => {
