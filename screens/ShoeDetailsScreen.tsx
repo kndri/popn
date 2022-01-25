@@ -7,9 +7,13 @@ import {
   AutoImage as Image,
   Button,
 } from "../components";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import GestureRecognizer from "react-native-swipe-gestures";
 import { color, spacing } from "../theme";
+import {
+  checkLoggedUser,
+  getCurrentSneaker,
+} from "../aws-functions/aws-functions";
 
 const example = require("../assets/images/verify_example.png");
 
@@ -40,6 +44,7 @@ const IMAGE_CONTAINER: ViewStyle = {
 
 const SHOE_STYLE: ImageStyle = {
   resizeMode: "contain",
+  height: 400,
   width: "100%",
 };
 
@@ -82,9 +87,131 @@ const MODAL_PROCESS: ViewStyle = {
   paddingHorizontal: spacing[4],
 };
 
-const ShoeDetailsScreen = () => {
+const ShoeDetailsScreen = (props: any) => {
+  const { shoeID } = props.route.params;
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [sneaker, setSneaker] = React.useState<any>({});
+  const [claim, setClaim] = React.useState<any>({});
+  const [isMain, setIsMain] = React.useState<boolean>();
+
+  const getShoe = async () => {
+    const shoe = await getCurrentSneaker(shoeID);
+    const user = await checkLoggedUser();
+    if (shoe.userID === user.attributes.sub) {
+      setIsMain(true);
+    } else {
+      setIsMain(false);
+    }
+
+    if (shoe.claim.items.length > 0) {
+      setClaim(shoe.claim.items[0]);
+    }
+    setSneaker(shoe);
+  };
+
+  const checking = async () => {
+    const user = await checkLoggedUser();
+
+    if (sneaker.userID === user.attributes.sub) {
+      if (claim) {
+        return [
+          <>
+            <View style={SHOE_DATA}>
+              <Text
+                preset="bold"
+                text="SNEAKER DETAILS"
+                style={{ fontSize: 20 }}
+              />
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingTop: 20,
+                }}
+              >
+                <Text text="Retail Price" />
+                <Text text="$225" />
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingTop: 10,
+                }}
+              >
+                <Text text="Release Date" />
+                <Text text="12/11/2021" />
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingTop: 10,
+                }}
+              >
+                <Text text="Status" />
+                <Text text={claim.claimMessage} />
+              </View>
+            </View>
+          </>,
+        ];
+      }
+    }
+
+    return [
+      <>
+        <View style={SHOE_DATA}>
+          <Text preset="bold" text="SNEAKER DETAILS" style={{ fontSize: 20 }} />
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              paddingTop: 20,
+            }}
+          >
+            <Text text="Retail Price" />
+            <Text text="$225" />
+          </View>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              paddingTop: 10,
+            }}
+          >
+            <Text text="Release Date" />
+            <Text text="12/11/2021" />
+          </View>
+        </View>
+
+        <Button
+          text="Contact User"
+          preset="primary"
+          // onPress={() => setModalVisible(true)}
+        />
+      </>,
+    ];
+  };
+  console.log(claim);
+
+  React.useEffect(() => {
+    const rerender = navigation.addListener("focus", () => {
+      if (isFocused) {
+        getShoe();
+      }
+    });
+  }, [isFocused]);
+
+  React.useEffect(() => {
+    getShoe();
+  }, []);
 
   return (
     <Screen style={CONTAINER}>
@@ -160,7 +287,7 @@ const ShoeDetailsScreen = () => {
               text="Get Sneaker Verified"
               onPress={() => {
                 setModalVisible(false);
-                navigation.navigate("Verify");
+                navigation.navigate("Verify", { shoeID: shoeID });
               }}
             />
           </View>
@@ -175,19 +302,24 @@ const ShoeDetailsScreen = () => {
       <View style={SHOE_HEADING}>
         <Text
           preset="secondary"
-          text="Jordan 11 Retro"
+          text={sneaker.primaryName}
           style={{ fontSize: 20 }}
         />
-        <Text preset="header" text="Cool Grey" style={{ fontSize: 30 }} />
+        <Text
+          preset="header"
+          text={sneaker.secondaryName}
+          style={{ fontSize: 30 }}
+        />
       </View>
       <View style={IMAGE_CONTAINER}>
         <Image
           style={SHOE_STYLE}
           source={{
-            uri: "https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png",
+            uri: sneaker.image,
           }}
         />
       </View>
+
       <View style={SHOE_DATA}>
         <Text preset="bold" text="SNEAKER DETAILS" style={{ fontSize: 20 }} />
         <View
@@ -212,13 +344,64 @@ const ShoeDetailsScreen = () => {
           <Text text="Release Date" />
           <Text text="12/11/2021" />
         </View>
-      </View>
 
-      <Button
-        text="Verify Sneaker"
-        preset="primary"
-        onPress={() => setModalVisible(true)}
-      />
+        {isMain ? (
+          <>
+            {claim.id ? (
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingTop: 10,
+                }}
+              >
+                <Text text="Status" />
+                <Text text={claim.claimMessage} />
+              </View>
+            ) : (
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingTop: 10,
+                }}
+              >
+                <Text text="Status" />
+                <Text text="Sneaker Not Verified" />
+              </View>
+            )}
+          </>
+        ) : null}
+      </View>
+      {isMain ? (
+        <>
+          {claim.id ? (
+            <>
+              {claim.status === "pending" ? (
+                <Button text="Pending" preset="primary" />
+              ) : claim.status === "verified" ? (
+                <Button text="Verified" preset="primary" />
+              ) : (
+                <Button text="Denied" preset="primary" />
+              )}
+            </>
+          ) : (
+            <Button
+              text="Verify Sneaker"
+              preset="primary"
+              onPress={() => setModalVisible(true)}
+            />
+          )}
+        </>
+      ) : (
+        <Button
+          text="Contact User"
+          preset="primary"
+          // onPress={() => setModalVisible(true)}
+        />
+      )}
     </Screen>
   );
 };

@@ -19,7 +19,6 @@ export const onCreateUser = /* GraphQL */ `
           image
           userID
           createdAt
-          verified
           updatedAt
         }
         nextToken
@@ -29,6 +28,19 @@ export const onCreateUser = /* GraphQL */ `
           id
           userID
           description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      claims {
+        items {
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
           createdAt
           updatedAt
         }
@@ -69,7 +81,6 @@ export const onUpdateUser = /* GraphQL */ `
           image
           userID
           createdAt
-          verified
           updatedAt
         }
         nextToken
@@ -79,6 +90,19 @@ export const onUpdateUser = /* GraphQL */ `
           id
           userID
           description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      claims {
+        items {
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
           createdAt
           updatedAt
         }
@@ -119,7 +143,6 @@ export const onDeleteUser = /* GraphQL */ `
           image
           userID
           createdAt
-          verified
           updatedAt
         }
         nextToken
@@ -129,6 +152,19 @@ export const onDeleteUser = /* GraphQL */ `
           id
           userID
           description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      claims {
+        items {
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
           createdAt
           updatedAt
         }
@@ -168,6 +204,9 @@ export const onCreateChatRoomUser = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -222,6 +261,9 @@ export const onUpdateChatRoomUser = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -272,6 +314,9 @@ export const onDeleteChatRoomUser = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -499,6 +544,9 @@ export const onCreateMessage = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -552,6 +600,9 @@ export const onUpdateMessage = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -603,6 +654,9 @@ export const onDeleteMessage = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -659,6 +713,9 @@ export const onCreateSneaker = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -668,8 +725,20 @@ export const onCreateSneaker = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      claim {
+        items {
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
-      verified
       updatedAt
     }
   }
@@ -695,6 +764,9 @@ export const onUpdateSneaker = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -704,8 +776,20 @@ export const onUpdateSneaker = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      claim {
+        items {
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
-      verified
       updatedAt
     }
   }
@@ -731,6 +815,9 @@ export const onDeleteSneaker = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -740,8 +827,209 @@ export const onDeleteSneaker = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      claim {
+        items {
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
-      verified
+      updatedAt
+    }
+  }
+`;
+export const onCreateClaim = /* GraphQL */ `
+  subscription OnCreateClaim {
+    onCreateClaim {
+      id
+      userID
+      sneakerID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        claims {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      sneaker {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          status
+          createdAt
+          updatedAt
+        }
+        claim {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      status
+      refNumber
+      claimMessage
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateClaim = /* GraphQL */ `
+  subscription OnUpdateClaim {
+    onUpdateClaim {
+      id
+      userID
+      sneakerID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        claims {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      sneaker {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          status
+          createdAt
+          updatedAt
+        }
+        claim {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      status
+      refNumber
+      claimMessage
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteClaim = /* GraphQL */ `
+  subscription OnDeleteClaim {
+    onDeleteClaim {
+      id
+      userID
+      sneakerID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        claims {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      sneaker {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          status
+          createdAt
+          updatedAt
+        }
+        claim {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      status
+      refNumber
+      claimMessage
+      createdAt
       updatedAt
     }
   }
@@ -762,6 +1050,9 @@ export const onCreatePost = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -817,6 +1108,9 @@ export const onUpdatePost = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -868,6 +1162,9 @@ export const onDeletePost = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -922,6 +1219,9 @@ export const onCreateComment = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -982,6 +1282,9 @@ export const onUpdateComment = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -1038,6 +1341,9 @@ export const onDeleteComment = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -1097,6 +1403,9 @@ export const onCreateLike = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -1154,6 +1463,9 @@ export const onUpdateLike = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -1209,6 +1521,9 @@ export const onDeleteLike = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following

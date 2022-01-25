@@ -87,6 +87,7 @@ export type User = {
   avatarImageURL: string,
   sneakers?: ModelSneakerConnection | null,
   posts?: ModelPostConnection | null,
+  claims?: ModelClaimConnection | null,
   following?: number | null,
   follower?: number | null,
   status?: string | null,
@@ -97,7 +98,7 @@ export type User = {
 
 export type ModelSneakerConnection = {
   __typename: "ModelSneakerConnection",
-  items?:  Array<Sneaker | null > | null,
+  items:  Array<Sneaker | null >,
   nextToken?: string | null,
 };
 
@@ -110,14 +111,41 @@ export type Sneaker = {
   image: string,
   userID: string,
   user?: User | null,
+  claim?: ModelClaimConnection | null,
   createdAt?: string | null,
-  verified?: boolean | null,
   updatedAt: string,
 };
 
+export type ModelClaimConnection = {
+  __typename: "ModelClaimConnection",
+  items:  Array<Claim | null >,
+  nextToken?: string | null,
+};
+
+export type Claim = {
+  __typename: "Claim",
+  id: string,
+  userID: string,
+  sneakerID: string,
+  user: User,
+  sneaker: Sneaker,
+  status: ClaimStatus,
+  refNumber: string,
+  claimMessage?: string | null,
+  createdAt?: string | null,
+  updatedAt: string,
+};
+
+export enum ClaimStatus {
+  verified = "verified",
+  pending = "pending",
+  denied = "denied",
+}
+
+
 export type ModelPostConnection = {
   __typename: "ModelPostConnection",
-  items?:  Array<Post | null > | null,
+  items:  Array<Post | null >,
   nextToken?: string | null,
 };
 
@@ -135,7 +163,7 @@ export type Post = {
 
 export type ModelLikeConnection = {
   __typename: "ModelLikeConnection",
-  items?:  Array<Like | null > | null,
+  items:  Array<Like | null >,
   nextToken?: string | null,
 };
 
@@ -152,7 +180,7 @@ export type Like = {
 
 export type ModelCommentConnection = {
   __typename: "ModelCommentConnection",
-  items?:  Array<Comment | null > | null,
+  items:  Array<Comment | null >,
   nextToken?: string | null,
 };
 
@@ -162,15 +190,15 @@ export type Comment = {
   text: string,
   userID: string,
   postID: string,
-  user: User,
-  post: Post,
+  user?: User | null,
+  post?: Post | null,
   createdAt?: string | null,
   updatedAt: string,
 };
 
 export type ModelChatRoomUserConnection = {
   __typename: "ModelChatRoomUserConnection",
-  items?:  Array<ChatRoomUser | null > | null,
+  items:  Array<ChatRoomUser | null >,
   nextToken?: string | null,
 };
 
@@ -198,7 +226,7 @@ export type ChatRoom = {
 
 export type ModelMessageConnection = {
   __typename: "ModelMessageConnection",
-  items?:  Array<Message | null > | null,
+  items:  Array<Message | null >,
   nextToken?: string | null,
 };
 
@@ -229,28 +257,18 @@ export type DeleteUserInput = {
   id: string,
 };
 
-export type CreateSneakerInput = {
+export type CreateChatRoomUserInput = {
   id?: string | null,
-  brand: string,
-  primaryName: string,
-  secondaryName: string,
-  image: string,
   userID: string,
-  createdAt?: string | null,
-  verified?: boolean | null,
+  chatRoomID: string,
 };
 
-export type ModelSneakerConditionInput = {
-  brand?: ModelStringInput | null,
-  primaryName?: ModelStringInput | null,
-  secondaryName?: ModelStringInput | null,
-  image?: ModelStringInput | null,
+export type ModelChatRoomUserConditionInput = {
   userID?: ModelIDInput | null,
-  createdAt?: ModelStringInput | null,
-  verified?: ModelBooleanInput | null,
-  and?: Array< ModelSneakerConditionInput | null > | null,
-  or?: Array< ModelSneakerConditionInput | null > | null,
-  not?: ModelSneakerConditionInput | null,
+  chatRoomID?: ModelIDInput | null,
+  and?: Array< ModelChatRoomUserConditionInput | null > | null,
+  or?: Array< ModelChatRoomUserConditionInput | null > | null,
+  not?: ModelChatRoomUserConditionInput | null,
 };
 
 export type ModelIDInput = {
@@ -269,11 +287,87 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
+export type UpdateChatRoomUserInput = {
+  id: string,
+  userID?: string | null,
+  chatRoomID?: string | null,
+};
+
+export type DeleteChatRoomUserInput = {
+  id: string,
+};
+
+export type CreateChatRoomInput = {
+  id?: string | null,
+  lastMessageID: string,
+};
+
+export type ModelChatRoomConditionInput = {
+  lastMessageID?: ModelIDInput | null,
+  and?: Array< ModelChatRoomConditionInput | null > | null,
+  or?: Array< ModelChatRoomConditionInput | null > | null,
+  not?: ModelChatRoomConditionInput | null,
+};
+
+export type UpdateChatRoomInput = {
+  id: string,
+  lastMessageID?: string | null,
+};
+
+export type DeleteChatRoomInput = {
+  id: string,
+};
+
+export type CreateMessageInput = {
+  id?: string | null,
+  createdAt?: string | null,
+  text: string,
+  userID: string,
+  chatRoomID: string,
+};
+
+export type ModelMessageConditionInput = {
+  createdAt?: ModelStringInput | null,
+  text?: ModelStringInput | null,
+  userID?: ModelIDInput | null,
+  chatRoomID?: ModelIDInput | null,
+  and?: Array< ModelMessageConditionInput | null > | null,
+  or?: Array< ModelMessageConditionInput | null > | null,
+  not?: ModelMessageConditionInput | null,
+};
+
+export type UpdateMessageInput = {
+  id: string,
+  createdAt?: string | null,
+  text?: string | null,
+  userID?: string | null,
+  chatRoomID?: string | null,
+};
+
+export type DeleteMessageInput = {
+  id: string,
+};
+
+export type CreateSneakerInput = {
+  id?: string | null,
+  brand: string,
+  primaryName: string,
+  secondaryName: string,
+  image: string,
+  userID: string,
+  createdAt?: string | null,
+};
+
+export type ModelSneakerConditionInput = {
+  brand?: ModelStringInput | null,
+  primaryName?: ModelStringInput | null,
+  secondaryName?: ModelStringInput | null,
+  image?: ModelStringInput | null,
+  userID?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelSneakerConditionInput | null > | null,
+  or?: Array< ModelSneakerConditionInput | null > | null,
+  not?: ModelSneakerConditionInput | null,
 };
 
 export type UpdateSneakerInput = {
@@ -284,10 +378,50 @@ export type UpdateSneakerInput = {
   image?: string | null,
   userID?: string | null,
   createdAt?: string | null,
-  verified?: boolean | null,
 };
 
 export type DeleteSneakerInput = {
+  id: string,
+};
+
+export type CreateClaimInput = {
+  id?: string | null,
+  userID: string,
+  sneakerID: string,
+  status: ClaimStatus,
+  refNumber: string,
+  claimMessage?: string | null,
+  createdAt?: string | null,
+};
+
+export type ModelClaimConditionInput = {
+  userID?: ModelIDInput | null,
+  sneakerID?: ModelIDInput | null,
+  status?: ModelClaimStatusInput | null,
+  refNumber?: ModelStringInput | null,
+  claimMessage?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelClaimConditionInput | null > | null,
+  or?: Array< ModelClaimConditionInput | null > | null,
+  not?: ModelClaimConditionInput | null,
+};
+
+export type ModelClaimStatusInput = {
+  eq?: ClaimStatus | null,
+  ne?: ClaimStatus | null,
+};
+
+export type UpdateClaimInput = {
+  id: string,
+  userID?: string | null,
+  sneakerID?: string | null,
+  status?: ClaimStatus | null,
+  refNumber?: string | null,
+  claimMessage?: string | null,
+  createdAt?: string | null,
+};
+
+export type DeleteClaimInput = {
   id: string,
 };
 
@@ -429,8 +563,42 @@ export type ModelUserFilterInput = {
 
 export type ModelUserConnection = {
   __typename: "ModelUserConnection",
-  items?:  Array<User | null > | null,
+  items:  Array<User | null >,
   nextToken?: string | null,
+};
+
+export type ModelChatRoomUserFilterInput = {
+  id?: ModelIDInput | null,
+  userID?: ModelIDInput | null,
+  chatRoomID?: ModelIDInput | null,
+  and?: Array< ModelChatRoomUserFilterInput | null > | null,
+  or?: Array< ModelChatRoomUserFilterInput | null > | null,
+  not?: ModelChatRoomUserFilterInput | null,
+};
+
+export type ModelChatRoomFilterInput = {
+  id?: ModelIDInput | null,
+  lastMessageID?: ModelIDInput | null,
+  and?: Array< ModelChatRoomFilterInput | null > | null,
+  or?: Array< ModelChatRoomFilterInput | null > | null,
+  not?: ModelChatRoomFilterInput | null,
+};
+
+export type ModelChatRoomConnection = {
+  __typename: "ModelChatRoomConnection",
+  items:  Array<ChatRoom | null >,
+  nextToken?: string | null,
+};
+
+export type ModelMessageFilterInput = {
+  id?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  text?: ModelStringInput | null,
+  userID?: ModelIDInput | null,
+  chatRoomID?: ModelIDInput | null,
+  and?: Array< ModelMessageFilterInput | null > | null,
+  or?: Array< ModelMessageFilterInput | null > | null,
+  not?: ModelMessageFilterInput | null,
 };
 
 export type ModelSneakerFilterInput = {
@@ -441,10 +609,22 @@ export type ModelSneakerFilterInput = {
   image?: ModelStringInput | null,
   userID?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
-  verified?: ModelBooleanInput | null,
   and?: Array< ModelSneakerFilterInput | null > | null,
   or?: Array< ModelSneakerFilterInput | null > | null,
   not?: ModelSneakerFilterInput | null,
+};
+
+export type ModelClaimFilterInput = {
+  id?: ModelIDInput | null,
+  userID?: ModelIDInput | null,
+  sneakerID?: ModelIDInput | null,
+  status?: ModelClaimStatusInput | null,
+  refNumber?: ModelStringInput | null,
+  claimMessage?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelClaimFilterInput | null > | null,
+  or?: Array< ModelClaimFilterInput | null > | null,
+  not?: ModelClaimFilterInput | null,
 };
 
 export type ModelPostFilterInput = {
@@ -468,6 +648,15 @@ export type ModelCommentFilterInput = {
   not?: ModelCommentFilterInput | null,
 };
 
+export type ModelLikeFilterInput = {
+  id?: ModelIDInput | null,
+  userID?: ModelIDInput | null,
+  postID?: ModelIDInput | null,
+  and?: Array< ModelLikeFilterInput | null > | null,
+  or?: Array< ModelLikeFilterInput | null > | null,
+  not?: ModelLikeFilterInput | null,
+};
+
 export type ModelSneakerStoreFilterInput = {
   id?: ModelIDInput | null,
   brand?: ModelStringInput | null,
@@ -481,7 +670,7 @@ export type ModelSneakerStoreFilterInput = {
 
 export type ModelSneakerStoreConnection = {
   __typename: "ModelSneakerStoreConnection",
-  items?:  Array<SneakerStore | null > | null,
+  items:  Array<SneakerStore | null >,
   nextToken?: string | null,
 };
 
@@ -500,6 +689,16 @@ export enum ModelSortDirection {
   DESC = "DESC",
 }
 
+
+export type ModelIDKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
 
 export type ModelCommentByUserCompositeKeyConditionInput = {
   eq?: ModelCommentByUserCompositeKeyInput | null,
@@ -531,7 +730,7 @@ export type CreateUserMutation = {
     avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Sneaker",
         id: string,
         brand: string,
@@ -540,25 +739,52 @@ export type CreateUserMutation = {
         image: string,
         userID: string,
         createdAt?: string | null,
-        verified?: boolean | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         userID: string,
         description?: string | null,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    claims?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
       nextToken?: string | null,
     } | null,
     following?: number | null,
     follower?: number | null,
+    status?: string | null,
+    chatRoomUser?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -579,7 +805,7 @@ export type UpdateUserMutation = {
     avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Sneaker",
         id: string,
         brand: string,
@@ -588,25 +814,52 @@ export type UpdateUserMutation = {
         image: string,
         userID: string,
         createdAt?: string | null,
-        verified?: boolean | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         userID: string,
         description?: string | null,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    claims?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
       nextToken?: string | null,
     } | null,
     following?: number | null,
     follower?: number | null,
+    status?: string | null,
+    chatRoomUser?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -627,7 +880,7 @@ export type DeleteUserMutation = {
     avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Sneaker",
         id: string,
         brand: string,
@@ -636,26 +889,677 @@ export type DeleteUserMutation = {
         image: string,
         userID: string,
         createdAt?: string | null,
-        verified?: boolean | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         userID: string,
         description?: string | null,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    claims?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
       nextToken?: string | null,
     } | null,
     following?: number | null,
     follower?: number | null,
+    status?: string | null,
+    chatRoomUser?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateChatRoomUserMutationVariables = {
+  input: CreateChatRoomUserInput,
+  condition?: ModelChatRoomUserConditionInput | null,
+};
+
+export type CreateChatRoomUserMutation = {
+  createChatRoomUser?:  {
+    __typename: "ChatRoomUser",
+    id: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateChatRoomUserMutationVariables = {
+  input: UpdateChatRoomUserInput,
+  condition?: ModelChatRoomUserConditionInput | null,
+};
+
+export type UpdateChatRoomUserMutation = {
+  updateChatRoomUser?:  {
+    __typename: "ChatRoomUser",
+    id: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteChatRoomUserMutationVariables = {
+  input: DeleteChatRoomUserInput,
+  condition?: ModelChatRoomUserConditionInput | null,
+};
+
+export type DeleteChatRoomUserMutation = {
+  deleteChatRoomUser?:  {
+    __typename: "ChatRoomUser",
+    id: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateChatRoomMutationVariables = {
+  input: CreateChatRoomInput,
+  condition?: ModelChatRoomConditionInput | null,
+};
+
+export type CreateChatRoomMutation = {
+  createChatRoom?:  {
+    __typename: "ChatRoom",
+    id: string,
+    chatRoomUsers?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    lastMessageID: string,
+    lastMessage?:  {
+      __typename: "Message",
+      id: string,
+      createdAt?: string | null,
+      text: string,
+      userID: string,
+      chatRoomID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      chatRoom?:  {
+        __typename: "ChatRoom",
+        id: string,
+        lastMessageID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateChatRoomMutationVariables = {
+  input: UpdateChatRoomInput,
+  condition?: ModelChatRoomConditionInput | null,
+};
+
+export type UpdateChatRoomMutation = {
+  updateChatRoom?:  {
+    __typename: "ChatRoom",
+    id: string,
+    chatRoomUsers?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    lastMessageID: string,
+    lastMessage?:  {
+      __typename: "Message",
+      id: string,
+      createdAt?: string | null,
+      text: string,
+      userID: string,
+      chatRoomID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      chatRoom?:  {
+        __typename: "ChatRoom",
+        id: string,
+        lastMessageID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteChatRoomMutationVariables = {
+  input: DeleteChatRoomInput,
+  condition?: ModelChatRoomConditionInput | null,
+};
+
+export type DeleteChatRoomMutation = {
+  deleteChatRoom?:  {
+    __typename: "ChatRoom",
+    id: string,
+    chatRoomUsers?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    lastMessageID: string,
+    lastMessage?:  {
+      __typename: "Message",
+      id: string,
+      createdAt?: string | null,
+      text: string,
+      userID: string,
+      chatRoomID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      chatRoom?:  {
+        __typename: "ChatRoom",
+        id: string,
+        lastMessageID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateMessageMutationVariables = {
+  input: CreateMessageInput,
+  condition?: ModelMessageConditionInput | null,
+};
+
+export type CreateMessageMutation = {
+  createMessage?:  {
+    __typename: "Message",
+    id: string,
+    createdAt?: string | null,
+    text: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateMessageMutationVariables = {
+  input: UpdateMessageInput,
+  condition?: ModelMessageConditionInput | null,
+};
+
+export type UpdateMessageMutation = {
+  updateMessage?:  {
+    __typename: "Message",
+    id: string,
+    createdAt?: string | null,
+    text: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteMessageMutationVariables = {
+  input: DeleteMessageInput,
+  condition?: ModelMessageConditionInput | null,
+};
+
+export type DeleteMessageMutation = {
+  deleteMessage?:  {
+    __typename: "Message",
+    id: string,
+    createdAt?: string | null,
+    text: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     updatedAt: string,
   } | null,
 };
@@ -689,13 +1593,36 @@ export type CreateSneakerMutation = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
+    claim?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt?: string | null,
-    verified?: boolean | null,
     updatedAt: string,
   } | null,
 };
@@ -729,13 +1656,36 @@ export type UpdateSneakerMutation = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
+    claim?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt?: string | null,
-    verified?: boolean | null,
     updatedAt: string,
   } | null,
 };
@@ -769,13 +1719,264 @@ export type DeleteSneakerMutation = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
+    claim?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt?: string | null,
-    verified?: boolean | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateClaimMutationVariables = {
+  input: CreateClaimInput,
+  condition?: ModelClaimConditionInput | null,
+};
+
+export type CreateClaimMutation = {
+  createClaim?:  {
+    __typename: "Claim",
+    id: string,
+    userID: string,
+    sneakerID: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    sneaker:  {
+      __typename: "Sneaker",
+      id: string,
+      brand: string,
+      primaryName: string,
+      secondaryName: string,
+      image: string,
+      userID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      claim?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    },
+    status: ClaimStatus,
+    refNumber: string,
+    claimMessage?: string | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateClaimMutationVariables = {
+  input: UpdateClaimInput,
+  condition?: ModelClaimConditionInput | null,
+};
+
+export type UpdateClaimMutation = {
+  updateClaim?:  {
+    __typename: "Claim",
+    id: string,
+    userID: string,
+    sneakerID: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    sneaker:  {
+      __typename: "Sneaker",
+      id: string,
+      brand: string,
+      primaryName: string,
+      secondaryName: string,
+      image: string,
+      userID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      claim?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    },
+    status: ClaimStatus,
+    refNumber: string,
+    claimMessage?: string | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteClaimMutationVariables = {
+  input: DeleteClaimInput,
+  condition?: ModelClaimConditionInput | null,
+};
+
+export type DeleteClaimMutation = {
+  deleteClaim?:  {
+    __typename: "Claim",
+    id: string,
+    userID: string,
+    sneakerID: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    sneaker:  {
+      __typename: "Sneaker",
+      id: string,
+      brand: string,
+      primaryName: string,
+      secondaryName: string,
+      image: string,
+      userID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      claim?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    },
+    status: ClaimStatus,
+    refNumber: string,
+    claimMessage?: string | null,
+    createdAt?: string | null,
     updatedAt: string,
   } | null,
 };
@@ -806,26 +2007,35 @@ export type CreatePostMutation = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
     likes?:  {
       __typename: "ModelLikeConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Like",
         id: string,
         userID: string,
         postID: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         text: string,
@@ -833,7 +2043,7 @@ export type CreatePostMutation = {
         postID: string,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     createdAt?: string | null,
@@ -867,26 +2077,35 @@ export type UpdatePostMutation = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
     likes?:  {
       __typename: "ModelLikeConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Like",
         id: string,
         userID: string,
         postID: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         text: string,
@@ -894,7 +2113,7 @@ export type UpdatePostMutation = {
         postID: string,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     createdAt?: string | null,
@@ -928,26 +2147,35 @@ export type DeletePostMutation = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
     likes?:  {
       __typename: "ModelLikeConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Like",
         id: string,
         userID: string,
         postID: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         text: string,
@@ -955,7 +2183,7 @@ export type DeletePostMutation = {
         postID: string,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     createdAt?: string | null,
@@ -975,7 +2203,7 @@ export type CreateCommentMutation = {
     text: string,
     userID: string,
     postID: string,
-    user:  {
+    user?:  {
       __typename: "User",
       id: string,
       age: string,
@@ -990,12 +2218,21 @@ export type CreateCommentMutation = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
-    },
-    post:  {
+    } | null,
+    post?:  {
       __typename: "Post",
       id: string,
       userID: string,
@@ -1009,6 +2246,7 @@ export type CreateCommentMutation = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -1022,7 +2260,7 @@ export type CreateCommentMutation = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    },
+    } | null,
     createdAt?: string | null,
     updatedAt: string,
   } | null,
@@ -1040,7 +2278,7 @@ export type UpdateCommentMutation = {
     text: string,
     userID: string,
     postID: string,
-    user:  {
+    user?:  {
       __typename: "User",
       id: string,
       age: string,
@@ -1055,12 +2293,21 @@ export type UpdateCommentMutation = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
-    },
-    post:  {
+    } | null,
+    post?:  {
       __typename: "Post",
       id: string,
       userID: string,
@@ -1074,6 +2321,7 @@ export type UpdateCommentMutation = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -1087,7 +2335,7 @@ export type UpdateCommentMutation = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    },
+    } | null,
     createdAt?: string | null,
     updatedAt: string,
   } | null,
@@ -1105,7 +2353,7 @@ export type DeleteCommentMutation = {
     text: string,
     userID: string,
     postID: string,
-    user:  {
+    user?:  {
       __typename: "User",
       id: string,
       age: string,
@@ -1120,12 +2368,21 @@ export type DeleteCommentMutation = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
-    },
-    post:  {
+    } | null,
+    post?:  {
       __typename: "Post",
       id: string,
       userID: string,
@@ -1139,6 +2396,7 @@ export type DeleteCommentMutation = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -1152,7 +2410,7 @@ export type DeleteCommentMutation = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    },
+    } | null,
     createdAt?: string | null,
     updatedAt: string,
   } | null,
@@ -1184,8 +2442,17 @@ export type CreateLikeMutation = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1203,6 +2470,7 @@ export type CreateLikeMutation = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -1248,8 +2516,17 @@ export type UpdateLikeMutation = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1267,6 +2544,7 @@ export type UpdateLikeMutation = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -1312,8 +2590,17 @@ export type DeleteLikeMutation = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1331,6 +2618,7 @@ export type DeleteLikeMutation = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -1418,7 +2706,7 @@ export type GetUserQuery = {
     avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Sneaker",
         id: string,
         brand: string,
@@ -1427,25 +2715,52 @@ export type GetUserQuery = {
         image: string,
         userID: string,
         createdAt?: string | null,
-        verified?: boolean | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         userID: string,
         description?: string | null,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    claims?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
       nextToken?: string | null,
     } | null,
     following?: number | null,
     follower?: number | null,
+    status?: string | null,
+    chatRoomUser?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1460,7 +2775,7 @@ export type ListUsersQueryVariables = {
 export type ListUsersQuery = {
   listUsers?:  {
     __typename: "ModelUserConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "User",
       id: string,
       age: string,
@@ -1475,11 +2790,345 @@ export type ListUsersQuery = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
-    } | null > | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetChatRoomUserQueryVariables = {
+  id: string,
+};
+
+export type GetChatRoomUserQuery = {
+  getChatRoomUser?:  {
+    __typename: "ChatRoomUser",
+    id: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListChatRoomUsersQueryVariables = {
+  filter?: ModelChatRoomUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListChatRoomUsersQuery = {
+  listChatRoomUsers?:  {
+    __typename: "ModelChatRoomUserConnection",
+    items:  Array< {
+      __typename: "ChatRoomUser",
+      id: string,
+      userID: string,
+      chatRoomID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      chatRoom?:  {
+        __typename: "ChatRoom",
+        id: string,
+        lastMessageID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetChatRoomQueryVariables = {
+  id: string,
+};
+
+export type GetChatRoomQuery = {
+  getChatRoom?:  {
+    __typename: "ChatRoom",
+    id: string,
+    chatRoomUsers?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    lastMessageID: string,
+    lastMessage?:  {
+      __typename: "Message",
+      id: string,
+      createdAt?: string | null,
+      text: string,
+      userID: string,
+      chatRoomID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      chatRoom?:  {
+        __typename: "ChatRoom",
+        id: string,
+        lastMessageID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListChatRoomsQueryVariables = {
+  filter?: ModelChatRoomFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListChatRoomsQuery = {
+  listChatRooms?:  {
+    __typename: "ModelChatRoomConnection",
+    items:  Array< {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetMessageQueryVariables = {
+  id: string,
+};
+
+export type GetMessageQuery = {
+  getMessage?:  {
+    __typename: "Message",
+    id: string,
+    createdAt?: string | null,
+    text: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListMessagesQueryVariables = {
+  filter?: ModelMessageFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListMessagesQuery = {
+  listMessages?:  {
+    __typename: "ModelMessageConnection",
+    items:  Array< {
+      __typename: "Message",
+      id: string,
+      createdAt?: string | null,
+      text: string,
+      userID: string,
+      chatRoomID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      chatRoom?:  {
+        __typename: "ChatRoom",
+        id: string,
+        lastMessageID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      updatedAt: string,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -1512,13 +3161,36 @@ export type GetSneakerQuery = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
+    claim?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt?: string | null,
-    verified?: boolean | null,
     updatedAt: string,
   } | null,
 };
@@ -1532,7 +3204,7 @@ export type ListSneakersQueryVariables = {
 export type ListSneakersQuery = {
   listSneakers?:  {
     __typename: "ModelSneakerConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Sneaker",
       id: string,
       brand: string,
@@ -1549,13 +3221,140 @@ export type ListSneakersQuery = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
+      claim?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt?: string | null,
-      verified?: boolean | null,
       updatedAt: string,
-    } | null > | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetClaimQueryVariables = {
+  id: string,
+};
+
+export type GetClaimQuery = {
+  getClaim?:  {
+    __typename: "Claim",
+    id: string,
+    userID: string,
+    sneakerID: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    sneaker:  {
+      __typename: "Sneaker",
+      id: string,
+      brand: string,
+      primaryName: string,
+      secondaryName: string,
+      image: string,
+      userID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      claim?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    },
+    status: ClaimStatus,
+    refNumber: string,
+    claimMessage?: string | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListClaimsQueryVariables = {
+  filter?: ModelClaimFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListClaimsQuery = {
+  listClaims?:  {
+    __typename: "ModelClaimConnection",
+    items:  Array< {
+      __typename: "Claim",
+      id: string,
+      userID: string,
+      sneakerID: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      },
+      sneaker:  {
+        __typename: "Sneaker",
+        id: string,
+        brand: string,
+        primaryName: string,
+        secondaryName: string,
+        image: string,
+        userID: string,
+        createdAt?: string | null,
+        updatedAt: string,
+      },
+      status: ClaimStatus,
+      refNumber: string,
+      claimMessage?: string | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -1585,26 +3384,35 @@ export type GetPostQuery = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
     likes?:  {
       __typename: "ModelLikeConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Like",
         id: string,
         userID: string,
         postID: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         text: string,
@@ -1612,7 +3420,7 @@ export type GetPostQuery = {
         postID: string,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     createdAt?: string | null,
@@ -1629,7 +3437,7 @@ export type ListPostsQueryVariables = {
 export type ListPostsQuery = {
   listPosts?:  {
     __typename: "ModelPostConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Post",
       id: string,
       userID: string,
@@ -1643,35 +3451,21 @@ export type ListPostsQuery = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
       likes?:  {
         __typename: "ModelLikeConnection",
-        items?:  Array< {
-          __typename: "Like",
-          id: string,
-          createdAt: string,
-          postID: string,
-          updatedAt: string,
-          userID: string,
-        } | null > | null,
+        nextToken?: string | null,
       } | null,
       comments?:  {
         __typename: "ModelCommentConnection",
-        items?:  Array< {
-          __typename: "Comment",
-          id: string,
-          createdAt?: string | null,
-          postID: string,
-          text: string,
-          updatedAt: string,
-          userID: string,
-        } | null > | null,
+        nextToken?: string | null,
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -1685,6 +3479,122 @@ export type GetCommentQuery = {
     __typename: "Comment",
     id: string,
     text: string,
+    userID: string,
+    postID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    post?:  {
+      __typename: "Post",
+      id: string,
+      userID: string,
+      description?: string | null,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      likes?:  {
+        __typename: "ModelLikeConnection",
+        nextToken?: string | null,
+      } | null,
+      comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    } | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListCommentsQueryVariables = {
+  filter?: ModelCommentFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListCommentsQuery = {
+  listComments?:  {
+    __typename: "ModelCommentConnection",
+    items:  Array< {
+      __typename: "Comment",
+      id: string,
+      text: string,
+      userID: string,
+      postID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      post?:  {
+        __typename: "Post",
+        id: string,
+        userID: string,
+        description?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetLikeQueryVariables = {
+  id: string,
+};
+
+export type GetLikeQuery = {
+  getLike?:  {
+    __typename: "Like",
+    id: string,
     userID: string,
     postID: string,
     user:  {
@@ -1702,8 +3612,17 @@ export type GetCommentQuery = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1721,6 +3640,7 @@ export type GetCommentQuery = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -1735,24 +3655,23 @@ export type GetCommentQuery = {
       createdAt?: string | null,
       updatedAt: string,
     },
-    createdAt?: string | null,
+    createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type ListCommentsQueryVariables = {
-  filter?: ModelCommentFilterInput | null,
+export type ListLikesQueryVariables = {
+  filter?: ModelLikeFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListCommentsQuery = {
-  listComments?:  {
-    __typename: "ModelCommentConnection",
-    items?:  Array< {
-      __typename: "Comment",
+export type ListLikesQuery = {
+  listLikes?:  {
+    __typename: "ModelLikeConnection",
+    items:  Array< {
+      __typename: "Like",
       id: string,
-      text: string,
       userID: string,
       postID: string,
       user:  {
@@ -1764,6 +3683,7 @@ export type ListCommentsQuery = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       },
@@ -1775,9 +3695,9 @@ export type ListCommentsQuery = {
         createdAt?: string | null,
         updatedAt: string,
       },
-      createdAt?: string | null,
+      createdAt: string,
       updatedAt: string,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -1808,14 +3728,61 @@ export type ListSneakerStoresQueryVariables = {
 export type ListSneakerStoresQuery = {
   listSneakerStores?:  {
     __typename: "ModelSneakerStoreConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "SneakerStore",
       id: string,
       brand: string,
       primary_name: string,
       secondary_name: string,
       image_url: string,
-    } | null > | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type MessagesByChatRoomQueryVariables = {
+  chatRoomID?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelMessageFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type MessagesByChatRoomQuery = {
+  messagesByChatRoom?:  {
+    __typename: "ModelMessageConnection",
+    items:  Array< {
+      __typename: "Message",
+      id: string,
+      createdAt?: string | null,
+      text: string,
+      userID: string,
+      chatRoomID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      chatRoom?:  {
+        __typename: "ChatRoom",
+        id: string,
+        lastMessageID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      updatedAt: string,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -1832,7 +3799,7 @@ export type SneakerByUserQueryVariables = {
 export type SneakerByUserQuery = {
   sneakerByUser?:  {
     __typename: "ModelSneakerConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Sneaker",
       id: string,
       brand: string,
@@ -1849,13 +3816,68 @@ export type SneakerByUserQuery = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
+      claim?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt?: string | null,
-      verified?: boolean | null,
       updatedAt: string,
-    } | null > | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ClaimsByUserQueryVariables = {
+  userID?: string | null,
+  sneakerID?: ModelIDKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelClaimFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ClaimsByUserQuery = {
+  claimsByUser?:  {
+    __typename: "ModelClaimConnection",
+    items:  Array< {
+      __typename: "Claim",
+      id: string,
+      userID: string,
+      sneakerID: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      },
+      sneaker:  {
+        __typename: "Sneaker",
+        id: string,
+        brand: string,
+        primaryName: string,
+        secondaryName: string,
+        image: string,
+        userID: string,
+        createdAt?: string | null,
+        updatedAt: string,
+      },
+      status: ClaimStatus,
+      refNumber: string,
+      claimMessage?: string | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -1872,7 +3894,7 @@ export type PostByUserQueryVariables = {
 export type PostByUserQuery = {
   postByUser?:  {
     __typename: "ModelPostConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Post",
       id: string,
       userID: string,
@@ -1886,6 +3908,7 @@ export type PostByUserQuery = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -1899,7 +3922,7 @@ export type PostByUserQuery = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -1916,13 +3939,13 @@ export type CommentByUserQueryVariables = {
 export type CommentByUserQuery = {
   commentByUser?:  {
     __typename: "ModelCommentConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Comment",
       id: string,
       text: string,
       userID: string,
       postID: string,
-      user:  {
+      user?:  {
         __typename: "User",
         id: string,
         age: string,
@@ -1931,20 +3954,21 @@ export type CommentByUserQuery = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
-      },
-      post:  {
+      } | null,
+      post?:  {
         __typename: "Post",
         id: string,
         userID: string,
         description?: string | null,
         createdAt?: string | null,
         updatedAt: string,
-      },
+      } | null,
       createdAt?: string | null,
       updatedAt: string,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -1959,7 +3983,7 @@ export type OnCreateUserSubscription = {
     avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Sneaker",
         id: string,
         brand: string,
@@ -1968,25 +3992,52 @@ export type OnCreateUserSubscription = {
         image: string,
         userID: string,
         createdAt?: string | null,
-        verified?: boolean | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         userID: string,
         description?: string | null,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    claims?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
       nextToken?: string | null,
     } | null,
     following?: number | null,
     follower?: number | null,
+    status?: string | null,
+    chatRoomUser?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2002,7 +4053,7 @@ export type OnUpdateUserSubscription = {
     avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Sneaker",
         id: string,
         brand: string,
@@ -2011,25 +4062,52 @@ export type OnUpdateUserSubscription = {
         image: string,
         userID: string,
         createdAt?: string | null,
-        verified?: boolean | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         userID: string,
         description?: string | null,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    claims?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
       nextToken?: string | null,
     } | null,
     following?: number | null,
     follower?: number | null,
+    status?: string | null,
+    chatRoomUser?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2045,7 +4123,7 @@ export type OnDeleteUserSubscription = {
     avatarImageURL: string,
     sneakers?:  {
       __typename: "ModelSneakerConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Sneaker",
         id: string,
         brand: string,
@@ -2054,26 +4132,632 @@ export type OnDeleteUserSubscription = {
         image: string,
         userID: string,
         createdAt?: string | null,
-        verified?: boolean | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         userID: string,
         description?: string | null,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    claims?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
       nextToken?: string | null,
     } | null,
     following?: number | null,
     follower?: number | null,
+    status?: string | null,
+    chatRoomUser?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateChatRoomUserSubscription = {
+  onCreateChatRoomUser?:  {
+    __typename: "ChatRoomUser",
+    id: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateChatRoomUserSubscription = {
+  onUpdateChatRoomUser?:  {
+    __typename: "ChatRoomUser",
+    id: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteChatRoomUserSubscription = {
+  onDeleteChatRoomUser?:  {
+    __typename: "ChatRoomUser",
+    id: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateChatRoomSubscription = {
+  onCreateChatRoom?:  {
+    __typename: "ChatRoom",
+    id: string,
+    chatRoomUsers?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    lastMessageID: string,
+    lastMessage?:  {
+      __typename: "Message",
+      id: string,
+      createdAt?: string | null,
+      text: string,
+      userID: string,
+      chatRoomID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      chatRoom?:  {
+        __typename: "ChatRoom",
+        id: string,
+        lastMessageID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateChatRoomSubscription = {
+  onUpdateChatRoom?:  {
+    __typename: "ChatRoom",
+    id: string,
+    chatRoomUsers?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    lastMessageID: string,
+    lastMessage?:  {
+      __typename: "Message",
+      id: string,
+      createdAt?: string | null,
+      text: string,
+      userID: string,
+      chatRoomID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      chatRoom?:  {
+        __typename: "ChatRoom",
+        id: string,
+        lastMessageID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteChatRoomSubscription = {
+  onDeleteChatRoom?:  {
+    __typename: "ChatRoom",
+    id: string,
+    chatRoomUsers?:  {
+      __typename: "ModelChatRoomUserConnection",
+      items:  Array< {
+        __typename: "ChatRoomUser",
+        id: string,
+        userID: string,
+        chatRoomID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    lastMessageID: string,
+    lastMessage?:  {
+      __typename: "Message",
+      id: string,
+      createdAt?: string | null,
+      text: string,
+      userID: string,
+      chatRoomID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      chatRoom?:  {
+        __typename: "ChatRoom",
+        id: string,
+        lastMessageID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateMessageSubscription = {
+  onCreateMessage?:  {
+    __typename: "Message",
+    id: string,
+    createdAt?: string | null,
+    text: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateMessageSubscription = {
+  onUpdateMessage?:  {
+    __typename: "Message",
+    id: string,
+    createdAt?: string | null,
+    text: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteMessageSubscription = {
+  onDeleteMessage?:  {
+    __typename: "Message",
+    id: string,
+    createdAt?: string | null,
+    text: string,
+    userID: string,
+    chatRoomID: string,
+    user?:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    chatRoom?:  {
+      __typename: "ChatRoom",
+      id: string,
+      chatRoomUsers?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      lastMessageID: string,
+      lastMessage?:  {
+        __typename: "Message",
+        id: string,
+        createdAt?: string | null,
+        text: string,
+        userID: string,
+        chatRoomID: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     updatedAt: string,
   } | null,
 };
@@ -2102,13 +4786,36 @@ export type OnCreateSneakerSubscription = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
+    claim?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt?: string | null,
-    verified?: boolean | null,
     updatedAt: string,
   } | null,
 };
@@ -2137,13 +4844,36 @@ export type OnUpdateSneakerSubscription = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
+    claim?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt?: string | null,
-    verified?: boolean | null,
     updatedAt: string,
   } | null,
 };
@@ -2172,13 +4902,249 @@ export type OnDeleteSneakerSubscription = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
+    claim?:  {
+      __typename: "ModelClaimConnection",
+      items:  Array< {
+        __typename: "Claim",
+        id: string,
+        userID: string,
+        sneakerID: string,
+        status: ClaimStatus,
+        refNumber: string,
+        claimMessage?: string | null,
+        createdAt?: string | null,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt?: string | null,
-    verified?: boolean | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateClaimSubscription = {
+  onCreateClaim?:  {
+    __typename: "Claim",
+    id: string,
+    userID: string,
+    sneakerID: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    sneaker:  {
+      __typename: "Sneaker",
+      id: string,
+      brand: string,
+      primaryName: string,
+      secondaryName: string,
+      image: string,
+      userID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      claim?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    },
+    status: ClaimStatus,
+    refNumber: string,
+    claimMessage?: string | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateClaimSubscription = {
+  onUpdateClaim?:  {
+    __typename: "Claim",
+    id: string,
+    userID: string,
+    sneakerID: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    sneaker:  {
+      __typename: "Sneaker",
+      id: string,
+      brand: string,
+      primaryName: string,
+      secondaryName: string,
+      image: string,
+      userID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      claim?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    },
+    status: ClaimStatus,
+    refNumber: string,
+    claimMessage?: string | null,
+    createdAt?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteClaimSubscription = {
+  onDeleteClaim?:  {
+    __typename: "Claim",
+    id: string,
+    userID: string,
+    sneakerID: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      age: string,
+      username: string,
+      email: string,
+      avatarImageURL: string,
+      sneakers?:  {
+        __typename: "ModelSneakerConnection",
+        nextToken?: string | null,
+      } | null,
+      posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      following?: number | null,
+      follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    sneaker:  {
+      __typename: "Sneaker",
+      id: string,
+      brand: string,
+      primaryName: string,
+      secondaryName: string,
+      image: string,
+      userID: string,
+      user?:  {
+        __typename: "User",
+        id: string,
+        age: string,
+        username: string,
+        email: string,
+        avatarImageURL: string,
+        following?: number | null,
+        follower?: number | null,
+        status?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      claim?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt?: string | null,
+      updatedAt: string,
+    },
+    status: ClaimStatus,
+    refNumber: string,
+    claimMessage?: string | null,
+    createdAt?: string | null,
     updatedAt: string,
   } | null,
 };
@@ -2204,26 +5170,35 @@ export type OnCreatePostSubscription = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
     likes?:  {
       __typename: "ModelLikeConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Like",
         id: string,
         userID: string,
         postID: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         text: string,
@@ -2231,7 +5206,7 @@ export type OnCreatePostSubscription = {
         postID: string,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     createdAt?: string | null,
@@ -2260,26 +5235,35 @@ export type OnUpdatePostSubscription = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
     likes?:  {
       __typename: "ModelLikeConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Like",
         id: string,
         userID: string,
         postID: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         text: string,
@@ -2287,7 +5271,7 @@ export type OnUpdatePostSubscription = {
         postID: string,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     createdAt?: string | null,
@@ -2316,26 +5300,35 @@ export type OnDeletePostSubscription = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
     likes?:  {
       __typename: "ModelLikeConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Like",
         id: string,
         userID: string,
         postID: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         text: string,
@@ -2343,7 +5336,7 @@ export type OnDeletePostSubscription = {
         postID: string,
         createdAt?: string | null,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     createdAt?: string | null,
@@ -2358,7 +5351,7 @@ export type OnCreateCommentSubscription = {
     text: string,
     userID: string,
     postID: string,
-    user:  {
+    user?:  {
       __typename: "User",
       id: string,
       age: string,
@@ -2373,12 +5366,21 @@ export type OnCreateCommentSubscription = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
-    },
-    post:  {
+    } | null,
+    post?:  {
       __typename: "Post",
       id: string,
       userID: string,
@@ -2392,6 +5394,7 @@ export type OnCreateCommentSubscription = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -2405,7 +5408,7 @@ export type OnCreateCommentSubscription = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    },
+    } | null,
     createdAt?: string | null,
     updatedAt: string,
   } | null,
@@ -2418,7 +5421,7 @@ export type OnUpdateCommentSubscription = {
     text: string,
     userID: string,
     postID: string,
-    user:  {
+    user?:  {
       __typename: "User",
       id: string,
       age: string,
@@ -2433,12 +5436,21 @@ export type OnUpdateCommentSubscription = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
-    },
-    post:  {
+    } | null,
+    post?:  {
       __typename: "Post",
       id: string,
       userID: string,
@@ -2452,6 +5464,7 @@ export type OnUpdateCommentSubscription = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -2465,7 +5478,7 @@ export type OnUpdateCommentSubscription = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    },
+    } | null,
     createdAt?: string | null,
     updatedAt: string,
   } | null,
@@ -2478,7 +5491,7 @@ export type OnDeleteCommentSubscription = {
     text: string,
     userID: string,
     postID: string,
-    user:  {
+    user?:  {
       __typename: "User",
       id: string,
       age: string,
@@ -2493,12 +5506,21 @@ export type OnDeleteCommentSubscription = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
-    },
-    post:  {
+    } | null,
+    post?:  {
       __typename: "Post",
       id: string,
       userID: string,
@@ -2512,6 +5534,7 @@ export type OnDeleteCommentSubscription = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -2525,7 +5548,7 @@ export type OnDeleteCommentSubscription = {
       } | null,
       createdAt?: string | null,
       updatedAt: string,
-    },
+    } | null,
     createdAt?: string | null,
     updatedAt: string,
   } | null,
@@ -2552,8 +5575,17 @@ export type OnCreateLikeSubscription = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -2571,6 +5603,7 @@ export type OnCreateLikeSubscription = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -2611,8 +5644,17 @@ export type OnUpdateLikeSubscription = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -2630,6 +5672,7 @@ export type OnUpdateLikeSubscription = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -2670,8 +5713,17 @@ export type OnDeleteLikeSubscription = {
         __typename: "ModelPostConnection",
         nextToken?: string | null,
       } | null,
+      claims?:  {
+        __typename: "ModelClaimConnection",
+        nextToken?: string | null,
+      } | null,
       following?: number | null,
       follower?: number | null,
+      status?: string | null,
+      chatRoomUser?:  {
+        __typename: "ModelChatRoomUserConnection",
+        nextToken?: string | null,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -2689,6 +5741,7 @@ export type OnDeleteLikeSubscription = {
         avatarImageURL: string,
         following?: number | null,
         follower?: number | null,
+        status?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null,

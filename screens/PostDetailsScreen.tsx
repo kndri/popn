@@ -310,25 +310,33 @@ const PostDetailsScreen = (props: any) => {
               alignItems: "center",
             }}
           >
-            <Image
-              source={{ uri: post.user.avatarImageURL }}
-              style={{
-                resizeMode: "contain",
-                height: 60,
-                width: 60,
-                marginRight: 5,
-                // flex: 1,
-              }}
-            />
-            <Text
-              preset="header"
-              style={{
-                fontSize: 18,
-                margin: 5,
-              }}
+            <TouchableOpacity
+              onPress={() => navigation.navigate("UserProfile", post.userID)}
             >
-              {post.user.username}
-            </Text>
+              <Image
+                source={{ uri: post.user.avatarImageURL }}
+                style={{
+                  resizeMode: "contain",
+                  height: 60,
+                  width: 60,
+                  marginRight: 5,
+                  // flex: 1,
+                }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("UserProfile", post.userID)}
+            >
+              <Text
+                preset="header"
+                style={{
+                  fontSize: 18,
+                  margin: 5,
+                }}
+              >
+                {post.user.username}
+              </Text>
+            </TouchableOpacity>
           </View>
 
           <Text

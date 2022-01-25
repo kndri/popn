@@ -1,6 +1,6 @@
-import { Alert } from 'react-native'
+import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { API, graphqlOperation, Auth, } from "aws-amplify";
+import { API, graphqlOperation, Auth } from "aws-amplify";
 import {
   createSneaker,
   createPost,
@@ -10,6 +10,7 @@ import {
   deleteComment,
   deleteLike,
   deleteSneaker,
+  createClaim,
 } from "../src/graphql/mutations";
 import {
   listSneakerStores,
@@ -20,6 +21,7 @@ import {
   listComments,
   getPost,
   getUser,
+  getSneaker,
 } from "../src/graphql/queries";
 
 export const getUserFromDb = async (userID: string) => {
@@ -34,28 +36,6 @@ export const getUserFromDb = async (userID: string) => {
   user = postData.data.getUser;
 
   return user;
-};
-//stores shoes
-export const getCurrentUser = async (sneakerObject: Object) => {
-  try {
-    // const currentUser = checkLoggedUser();
-    const currentUser = await Auth.currentAuthenticatedUser({
-      bypassCache: true,
-    });
-
-    const newSneaker = {
-      id: sneakerObject.id,
-      brand: sneakerObject.brand,
-      primaryName: sneakerObject.primary_name,
-      secondaryName: sneakerObject.secondary_name,
-      image: sneakerObject.image_url,
-      userID: currentUser.attributes.sub,
-      verified: false,
-    };
-    await API.graphql(graphqlOperation(createSneaker, { input: newSneaker }));
-  } catch (e) {
-    console.log(e);
-  }
 };
 
 //stores shoes
@@ -73,7 +53,6 @@ export const addUserSneaker = async (sneakerObject: Object) => {
       secondaryName: sneakerObject.secondary_name,
       image: sneakerObject.image_url,
       userID: currentUser.attributes.sub,
-      verified: false,
     };
     await API.graphql(graphqlOperation(createSneaker, { input: newSneaker }));
   } catch (e) {
@@ -277,11 +256,10 @@ export const forgotPassword = (username: string) => {
   // Send confirmation code to user's email
 
   // then navigate back
-  if (username === '') {
-    Alert.alert('You must provide an email address')
-  }
-  else {
-    Auth.forgotPassword(username)
+  if (username === "") {
+    Alert.alert("You must provide an email address");
+  } else {
+    Auth.forgotPassword(username);
   }
 };
 
@@ -291,7 +269,7 @@ export const confirmNewPassword = (
   new_password: string
 ) => {
   // Collect confirmation code and new password, then
-  Auth.forgotPasswordSubmit(username, code, new_password)
+  Auth.forgotPasswordSubmit(username, code, new_password);
 };
 
 export type SneakerData = {
@@ -334,4 +312,38 @@ export const getSneakersFromUser = async (): Promise<SneakerData> => {
   sneakerList = sneakersData.data.sneakerByUser.items;
 
   return sneakerList;
+};
+
+export const getCurrentSneaker = async (shoeID: any) => {
+  let shoe: any;
+
+  const shoeData = await API.graphql(
+    graphqlOperation(getSneaker, {
+      id: shoeID,
+    })
+  );
+
+  shoe = shoeData.data.getSneaker;
+
+  return shoe;
+};
+
+export const addClaim = async (sneakerID: any, refNumber: any) => {
+  try {
+    // const currentUser = checkLoggedUser();
+    const currentUser = await Auth.currentAuthenticatedUser({
+      bypassCache: true,
+    });
+
+    const newClaim = {
+      userID: currentUser.attributes.sub,
+      sneakerID: sneakerID,
+      status: "pending",
+      refNumber: refNumber,
+      claimMessage: "Sneaker is processing",
+    };
+    await API.graphql(graphqlOperation(createClaim, { input: newClaim }));
+  } catch (e) {
+    console.log(e);
+  }
 };

@@ -3,6 +3,7 @@ import { View, ViewStyle, TextStyle } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Button, Screen, Text, TextField } from "../components";
 import { color, spacing, typography } from "../theme";
+import { addClaim } from "../aws-functions/aws-functions";
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -34,7 +35,8 @@ const INPUT: TextStyle = {
   fontFamily: typography.primaryBold,
 };
 
-const ReferenceScreen = () => {
+const ReferenceScreen = (props: any) => {
+  const { shoeID } = props.route.params;
   const navigation = useNavigation();
   const [refNumber, setRefNumber] = React.useState("");
 
@@ -52,7 +54,6 @@ const ReferenceScreen = () => {
         <TextField
           inputStyle={INPUT}
           placeholder="#reference"
-          secureTextEntry
           onChangeText={(value) => setRefNumber(value)}
         />
       </View>
@@ -61,9 +62,13 @@ const ReferenceScreen = () => {
         <Button
           //   disabled={!isValid}
           style={{ width: "100%" }}
-          text="Claim"
+          text="Submit Claim"
           preset="primary"
-          onPress={() => navigation.navigate("ShoeDetails")}
+          onPress={() => {
+            addClaim(shoeID, refNumber).then(() =>
+              navigation.navigate("ShoeDetails", { shoeID: shoeID })
+            );
+          }}
         />
       </View>
     </Screen>

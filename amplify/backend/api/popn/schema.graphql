@@ -6,15 +6,16 @@ type User @model {
   avatarImageURL: String!
   sneakers: [Sneaker] @connection(keyName: "byUser", fields: ["id"])
   posts: [Post] @connection(keyName: "byUser", fields: ["id"])
+  claims: [Claim] @connection(keyName: "byUser", fields: ["id"])
   following: Int
   follower: Int
   status: String
   chatRoomUser: [ChatRoomUser] @connection(keyName: "byUser", fields: ["id"])
 }
 type ChatRoomUser
-@model
-@key(name: "byUser", fields: ["userID", "chatRoomID"])
-@key(name: "byChatRoom", fields: ["chatRoomID", "userID"]) {
+  @model
+  @key(name: "byUser", fields: ["userID", "chatRoomID"])
+  @key(name: "byChatRoom", fields: ["chatRoomID", "userID"]) {
   id: ID!
   userID: ID!
   chatRoomID: ID!
@@ -23,17 +24,19 @@ type ChatRoomUser
 }
 type ChatRoom @model {
   id: ID!
-  chatRoomUsers: [ChatRoomUser] @connection(keyName: "byChatRoom", fields: ["id"])
-  messages: [Message]  @connection(keyName: "byChatRoom", fields: ["id"])
+  chatRoomUsers: [ChatRoomUser]
+    @connection(keyName: "byChatRoom", fields: ["id"])
+  messages: [Message] @connection(keyName: "byChatRoom", fields: ["id"])
   lastMessageID: ID!
   lastMessage: Message @connection(fields: ["lastMessageID"])
 }
 type Message
-@model
-@key(
-  name: "byChatRoom",
-  fields: ["chatRoomID", "createdAt"],
-  queryField: "messagesByChatRoom") {
+  @model
+  @key(
+    name: "byChatRoom"
+    fields: ["chatRoomID", "createdAt"]
+    queryField: "messagesByChatRoom"
+  ) {
   id: ID!
   createdAt: String
   text: String!
@@ -56,9 +59,35 @@ type Sneaker
   image: String!
   userID: ID!
   user: User @connection(fields: ["userID"])
+  claim: [Claim] @connection(keyName: "bySneaker", fields: ["id"])
   createdAt: String
-  verified: Boolean
 }
+
+type Claim
+  @model
+  @key(
+    name: "byUser"
+    fields: ["userID", "sneakerID"]
+    queryField: "claimsByUser"
+  )
+  @key(name: "bySneaker", fields: ["sneakerID", "userID"]) {
+  id: ID!
+  userID: ID!
+  sneakerID: ID!
+  user: User! @connection(fields: ["userID"])
+  sneaker: Sneaker! @connection(fields: ["sneakerID"])
+  status: ClaimStatus!
+  refNumber: String!
+  claimMessage: String
+  createdAt: String
+}
+
+enum ClaimStatus {
+  verified
+  pending
+  denied
+}
+
 type Post
   @model
   @key(
@@ -91,7 +120,7 @@ type Comment
   createdAt: String
 }
 type Like
-  @model(queries: null)
+  @model
   @key(name: "byUser", fields: ["userID", "postID"])
   @key(name: "byPost", fields: ["postID", "userID"]) {
   id: ID!

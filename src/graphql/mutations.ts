@@ -22,7 +22,6 @@ export const createUser = /* GraphQL */ `
           image
           userID
           createdAt
-          verified
           updatedAt
         }
         nextToken
@@ -32,6 +31,19 @@ export const createUser = /* GraphQL */ `
           id
           userID
           description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      claims {
+        items {
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
           createdAt
           updatedAt
         }
@@ -75,7 +87,6 @@ export const updateUser = /* GraphQL */ `
           image
           userID
           createdAt
-          verified
           updatedAt
         }
         nextToken
@@ -85,6 +96,19 @@ export const updateUser = /* GraphQL */ `
           id
           userID
           description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      claims {
+        items {
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
           createdAt
           updatedAt
         }
@@ -128,7 +152,6 @@ export const deleteUser = /* GraphQL */ `
           image
           userID
           createdAt
-          verified
           updatedAt
         }
         nextToken
@@ -138,6 +161,19 @@ export const deleteUser = /* GraphQL */ `
           id
           userID
           description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      claims {
+        items {
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
           createdAt
           updatedAt
         }
@@ -180,6 +216,9 @@ export const createChatRoomUser = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -237,6 +276,9 @@ export const updateChatRoomUser = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -290,6 +332,9 @@ export const deleteChatRoomUser = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -529,6 +574,9 @@ export const createMessage = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -585,6 +633,9 @@ export const updateMessage = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -639,6 +690,9 @@ export const deleteMessage = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -698,6 +752,9 @@ export const createSneaker = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -707,8 +764,20 @@ export const createSneaker = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      claim {
+        items {
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
-      verified
       updatedAt
     }
   }
@@ -737,6 +806,9 @@ export const updateSneaker = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -746,8 +818,20 @@ export const updateSneaker = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      claim {
+        items {
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
-      verified
       updatedAt
     }
   }
@@ -776,6 +860,9 @@ export const deleteSneaker = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -785,8 +872,218 @@ export const deleteSneaker = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      claim {
+        items {
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
-      verified
+      updatedAt
+    }
+  }
+`;
+export const createClaim = /* GraphQL */ `
+  mutation CreateClaim(
+    $input: CreateClaimInput!
+    $condition: ModelClaimConditionInput
+  ) {
+    createClaim(input: $input, condition: $condition) {
+      id
+      userID
+      sneakerID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        claims {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      sneaker {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          status
+          createdAt
+          updatedAt
+        }
+        claim {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      status
+      refNumber
+      claimMessage
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateClaim = /* GraphQL */ `
+  mutation UpdateClaim(
+    $input: UpdateClaimInput!
+    $condition: ModelClaimConditionInput
+  ) {
+    updateClaim(input: $input, condition: $condition) {
+      id
+      userID
+      sneakerID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        claims {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      sneaker {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          status
+          createdAt
+          updatedAt
+        }
+        claim {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      status
+      refNumber
+      claimMessage
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteClaim = /* GraphQL */ `
+  mutation DeleteClaim(
+    $input: DeleteClaimInput!
+    $condition: ModelClaimConditionInput
+  ) {
+    deleteClaim(input: $input, condition: $condition) {
+      id
+      userID
+      sneakerID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        claims {
+          nextToken
+        }
+        following
+        follower
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      sneaker {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          following
+          follower
+          status
+          createdAt
+          updatedAt
+        }
+        claim {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      status
+      refNumber
+      claimMessage
+      createdAt
       updatedAt
     }
   }
@@ -810,6 +1107,9 @@ export const createPost = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -868,6 +1168,9 @@ export const updatePost = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -922,6 +1225,9 @@ export const deletePost = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -979,6 +1285,9 @@ export const createComment = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -1042,6 +1351,9 @@ export const updateComment = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -1101,6 +1413,9 @@ export const deleteComment = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following
@@ -1163,6 +1478,9 @@ export const createLike = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -1223,6 +1541,9 @@ export const updateLike = /* GraphQL */ `
         posts {
           nextToken
         }
+        claims {
+          nextToken
+        }
         following
         follower
         status
@@ -1281,6 +1602,9 @@ export const deleteLike = /* GraphQL */ `
           nextToken
         }
         posts {
+          nextToken
+        }
+        claims {
           nextToken
         }
         following

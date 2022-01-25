@@ -117,8 +117,6 @@ export default function UserProfileScreen(props?: any) {
   const [selection, setSelection] = React.useState(1);
   const [isMainUser, setIsMainUser] = React.useState(true);
 
-  const isFocused = useIsFocused();
-
   const getSneakers = async () => {
     const sneakerlist = await getSneakersFromUser();
     const user = await checkLoggedUser();
@@ -186,6 +184,9 @@ export default function UserProfileScreen(props?: any) {
         if (isMainUser) {
           createDeleteAlert(item.id);
         }
+      }}
+      onPress={() => {
+        navigation.navigate("ShoeDetails", { shoeID: item.id });
       }}
     >
       <View
