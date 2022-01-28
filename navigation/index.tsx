@@ -47,7 +47,7 @@ import ReferenceScreen from "../screens/ReferenceScreen";
 import NewPostScreen from "../screens/NewPostScreen";
 import PostDetailsScreen from "../screens/PostDetailsScreen";
 import MessageContactsScreen from "../screens/MessageContactsScreen";
-import UserSearchScreen from "../screens/SeachUser";
+import UserSearchScreen from "../screens/SearchUserScreen";
 
 export default function Navigation({
   colorScheme,

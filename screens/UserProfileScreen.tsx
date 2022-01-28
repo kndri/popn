@@ -233,7 +233,7 @@ export default function UserProfileScreen(props?: any) {
               marginBottom: 15,
             }}
             onPress={() => {
-              navigation.navigate("ShoeDetails");
+              navigation.navigate("ShoeDetails", { shoeID: item.id });
             }}
           >
             <Text

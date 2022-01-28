@@ -185,6 +185,7 @@ export default function Home({ navigation }: RootTabScreenProps<"Home">) {
         headerTx="Home"
         leftIcon="profile"
         onLeftPress={() => navigation.navigate("UserProfile")}
+
         rightIcon="plus"
         onRightPress={() => navigation.navigate("UserSearch")}
       />
@@ -256,8 +257,8 @@ export default function Home({ navigation }: RootTabScreenProps<"Home">) {
         {selection === 1
           ? renderTrending()
           : selection === 2
-          ? renderFollowing()
-          : renderRanking()}
+            ? renderFollowing()
+            : renderRanking()}
       </View>
       <NewPostButton />
     </Screen>

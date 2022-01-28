@@ -7,7 +7,7 @@ import {
   AutoImage as Image,
   Button,
 } from "../components";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import GestureRecognizer from "react-native-swipe-gestures";
 import { color, spacing } from "../theme";
 import {
@@ -87,8 +87,9 @@ const MODAL_PROCESS: ViewStyle = {
   paddingHorizontal: spacing[4],
 };
 
-const ShoeDetailsScreen = (props: any) => {
-  const { shoeID } = props.route.params;
+const ShoeDetailsScreen = () => {
+  const route = useRoute();
+  const { shoeID }: any = route.params;
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -194,7 +195,7 @@ const ShoeDetailsScreen = (props: any) => {
         <Button
           text="Contact User"
           preset="primary"
-          // onPress={() => setModalVisible(true)}
+        // onPress={() => setModalVisible(true)}
         />
       </>,
     ];
@@ -398,7 +399,7 @@ const ShoeDetailsScreen = (props: any) => {
         <Button
           text="Contact User"
           preset="primary"
-          // onPress={() => setModalVisible(true)}
+        // onPress={() => setModalVisible(true)}
         />
       )}
     </Screen>
