@@ -43,6 +43,36 @@ export const getUser = /* GraphQL */ `
           chatRoomID
           createdAt
           updatedAt
+          chatRoom {
+            chatRoomUsers {
+              items {
+                id
+                userID
+                user {
+                  id
+                  username
+                  avatarImageURL
+                  age
+                }
+                chatRoomID
+                createdAt
+                updatedAt
+              }
+              nextToken
+            }
+            messages {
+              items {
+                id
+                text
+                userID
+              }
+            }
+            lastMessage {
+              id
+              text
+              updatedAt
+            }
+          }
         }
         nextToken
       }
@@ -99,6 +129,13 @@ export const getChatRoomUser = /* GraphQL */ `
           nextToken
         }
         posts {
+          items {
+            id
+            userID
+            description
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         following
@@ -277,6 +314,14 @@ export const getMessage = /* GraphQL */ `
           nextToken
         }
         posts {
+          items {
+            id
+            userID
+            description
+            createdAt
+            updatedAt
+          }
+        claims {
           nextToken
         }
         following
@@ -479,6 +524,18 @@ export const getPost = /* GraphQL */ `
           postID
           createdAt
           updatedAt
+          user {
+            id
+            age
+            username
+            email
+            avatarImageURL
+            following
+            follower
+            status
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -555,6 +612,13 @@ export const getComment = /* GraphQL */ `
           nextToken
         }
         posts {
+          items {
+            id
+            userID
+            description
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         following
@@ -736,6 +800,8 @@ export const getSneakerStore = /* GraphQL */ `
       primary_name
       secondary_name
       image_url
+      createdAt
+      updatedAt
     }
   }
 `;

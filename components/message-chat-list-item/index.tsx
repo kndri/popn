@@ -73,7 +73,6 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
                 <View style={LEFT_SIDE}>
                     <Image
                         source={{ uri: otherProfilePic }}
-                        // source={{ uri: splittedProfilePicture }}
                         style={{
                             resizeMode: "contain",
                             height: 40,
