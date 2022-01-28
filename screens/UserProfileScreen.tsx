@@ -29,8 +29,7 @@ import NewPostButton from "../components/new-post-button";
 
 //required images
 const messageIcon = require("../assets/images/message-button.png");
-const settingsIcon = require("../assets/images/SettingsIcon.png");
-const userImage = require("../assets/images/UserImage.png");
+const verified = require("../assets/images/Verified.png");
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -214,6 +213,16 @@ export default function UserProfileScreen(props?: any) {
             style={{ fontSize: 12, color: "#979797" }}
           />
           <Text text={`${item.secondaryName}`} style={{ fontSize: 10 }} />
+          {item.claim.items.length > 0 ? (
+            <>
+              {item.claim?.items[0].status === "verified" ? (
+                <Image
+                  source={verified}
+                  style={{ marginTop: 5, height: 20, width: 20 }}
+                />
+              ) : null}
+            </>
+          ) : null}
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Image
@@ -233,7 +242,7 @@ export default function UserProfileScreen(props?: any) {
               marginBottom: 15,
             }}
             onPress={() => {
-              navigation.navigate("ShoeDetails");
+              navigation.navigate("ShoeDetails", { shoeID: item.id });
             }}
           >
             <Text
@@ -306,7 +315,6 @@ export default function UserProfileScreen(props?: any) {
   };
 
   return (
-
     <Screen style={CONTAINER}>
       <View style={PROFILE_HEADER}>
         {isMainUser ? (
@@ -329,7 +337,7 @@ export default function UserProfileScreen(props?: any) {
       </View>
       {user ? (
         <View style={PROFILE_DATA}>
-          <Image style={PROFILE_IMAGE} source={{ uri: `${user.avatarImageURL}` }} />
+          <Image style={PROFILE_IMAGE} source={{ uri: user.avatarImageURL }} />
 
           <View style={{}}>
             <Text preset="header" text={`${user.username}`} />
@@ -378,17 +386,17 @@ export default function UserProfileScreen(props?: any) {
         </Button>
         {user ? (
           <Button
-            style={{ width: 262, height: 48, borderRadius: 4, marginLeft: 10 }}
+            style={{ width: 262, height: 50, borderRadius: 4, marginLeft: 10 }}
             text="Follow"
             preset="primary"
-          // onPress={() => navigation.navigate("")}
+            // onPress={() => navigation.navigate("")}
           />
         ) : (
           <Button
-            style={{ width: 262, height: 48, borderRadius: 4, marginLeft: 10 }}
+            style={{ width: 262, height: 50, borderRadius: 4, marginLeft: 10 }}
             text="Edit Profile"
             preset="primary"
-          // onPress={() => navigation.navigate("")}
+            // onPress={() => navigation.navigate("")}
           />
         )}
         {/* <Button
@@ -406,18 +414,18 @@ export default function UserProfileScreen(props?: any) {
             style={[
               selection === 1
                 ? {
-                  borderRadius: 34,
-                  width: 101,
-                  margin: 2,
-                }
+                    borderRadius: 34,
+                    width: 101,
+                    margin: 2,
+                  }
                 : {
-                  backgroundColor: "white",
-                  borderRadius: 34,
-                  width: 101,
-                  borderColor: "#E8EDF2",
-                  borderWidth: 1,
-                  margin: 2,
-                },
+                    backgroundColor: "white",
+                    borderRadius: 34,
+                    width: 101,
+                    borderColor: "#E8EDF2",
+                    borderWidth: 1,
+                    margin: 2,
+                  },
             ]}
           >
             <Text
@@ -434,18 +442,18 @@ export default function UserProfileScreen(props?: any) {
             style={[
               selection === 2
                 ? {
-                  borderRadius: 34,
-                  width: 101,
-                  margin: 2,
-                }
+                    borderRadius: 34,
+                    width: 101,
+                    margin: 2,
+                  }
                 : {
-                  backgroundColor: "white",
-                  borderRadius: 34,
-                  width: 101,
-                  borderColor: "#E8EDF2",
-                  borderWidth: 1,
-                  margin: 2,
-                },
+                    backgroundColor: "white",
+                    borderRadius: 34,
+                    width: 101,
+                    borderColor: "#E8EDF2",
+                    borderWidth: 1,
+                    margin: 2,
+                  },
             ]}
           >
             <Text
@@ -463,8 +471,8 @@ export default function UserProfileScreen(props?: any) {
           {selection === 1
             ? renderCollection()
             : selection === 2
-              ? renderPosts()
-              : null}
+            ? renderPosts()
+            : null}
         </View>
       </View>
       <NewPostButton />

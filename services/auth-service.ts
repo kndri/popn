@@ -146,6 +146,7 @@ const usernameAvailable = async (username: string) => {
   // 1. Get all the users
   let usernames: any[] = [];
   let isUsernameAvailable = true;
+
   try {
     const users = await API.graphql(graphqlOperation(listUsers));
     usernames = users.data.listUsers.items;
@@ -162,6 +163,9 @@ const usernameAvailable = async (username: string) => {
     return isUsernameAvailable;
   } catch (error) {
     console.log("usernameAvailable Error: ", error);
+    if (error == "Error: No current user") {
+      return isUsernameAvailable;
+    }
   }
 };
 
