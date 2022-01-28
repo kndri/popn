@@ -65,7 +65,7 @@ const passwordValidationSchema = yup.object().shape({
     .matches(/\w*[A-Z]\w*/, "Password must have a capital letter")
     .matches(/\d/, "Password must have a number")
     .min(6, ({ min }) => `Password must be at least ${min} characters`)
-    .required("Password is required"),
+    .required(""),
 });
 
 export default function PasswordScreen() {
@@ -102,9 +102,7 @@ export default function PasswordScreen() {
       validationSchema={passwordValidationSchema}
       initialValues={formValues}
       initialErrors={formErrors}
-      // isInitialValid={false}
       enableReinitialize
-      validateOnMount={true}
     >
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>

@@ -1,10 +1,16 @@
 import * as React from "react";
-import { View, ViewStyle, TextStyle, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  ViewStyle,
+  TextStyle,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { color, spacing, typography } from "../theme";
 import { Button, Screen, Text, TextField, Header } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
-import * as yup from 'yup'
+import * as yup from "yup";
 import { useFormState, useFormDispatch } from "../contexts/form-context";
 import { authService } from "../services/auth-service";
 import { useToast } from "../components/Toast";
@@ -34,7 +40,7 @@ const INPUT: TextStyle = {
 };
 
 const DISABLED: ViewStyle = {
-  backgroundColor: 'rgba(52, 52, 52, 0.25)',
+  backgroundColor: "rgba(52, 52, 52, 0.25)",
 };
 
 //email validation schema
@@ -42,8 +48,8 @@ const emailValidationSchema = yup.object().shape({
   email: yup
     .string()
     .email("Please enter valid email")
-    .required('Email Address is Required'),
-})
+    .required("Email Address is Required"),
+});
 
 export default function EmailScreen() {
   const navigation = useNavigation();
@@ -54,7 +60,6 @@ export default function EmailScreen() {
   const { values: formValues, errors: formErrors } = useFormState("user");
 
   React.useEffect(() => {
-
     const unsubscribe = navigation.addListener("blur", async () => {
       if (form.current) {
         const { values, errors } = form.current;
@@ -78,20 +83,16 @@ export default function EmailScreen() {
       validationSchema={emailValidationSchema}
       initialValues={formValues}
       initialErrors={formErrors}
-      // isInitialValid={false}
       enableReinitialize
-      validateOnMount={true}
+      // validateOnMount={true}
     >
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
-
-
           <View style={CENTER}>
             <Header
               leftIcon="back"
               onLeftPress={() => {
-                navigation.goBack()
-
+                navigation.goBack();
               }}
             />
             <Text style={TEXTCENTER} preset="header" text="Enter your email" />
@@ -104,27 +105,37 @@ export default function EmailScreen() {
               keyboardType="email-address"
               value={values.email}
               onChangeText={handleChange("email")}
-              autoCapitalize='none'
+              autoCapitalize="none"
               autoCorrect={false}
             />
 
-            {(errors.email || touched.email) &&
-              <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>
-            }
+            {(errors.email || touched.email) && (
+              <Text style={{ fontSize: 10, color: "red" }}>{errors.email}</Text>
+            )}
           </View>
 
-          <View style={{ flexDirection: 'row', alignContent: 'flex-end', justifyContent: 'flex-end' }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignContent: "flex-end",
+              justifyContent: "flex-end",
+            }}
+          >
             <Button
               disabled={!isValid}
               style={!isValid ? DISABLED : null}
               text="Continue"
               preset="cta"
               onPress={async () => {
-                const available = await authService.emailAvailable(values.email);
+                const available = await authService.emailAvailable(
+                  values.email
+                );
                 if (!available) {
-                  toast.show(`An account exists with this email already.`, { color: 'red' });
+                  toast.show(`An account exists with this email already.`, {
+                    color: "red",
+                  });
                 } else {
-                  navigation.navigate('Age');
+                  navigation.navigate("Age");
                 }
               }}
             />
