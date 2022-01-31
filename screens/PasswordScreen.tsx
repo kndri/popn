@@ -103,6 +103,7 @@ export default function PasswordScreen() {
       initialValues={formValues}
       initialErrors={formErrors}
       enableReinitialize
+      validateOnMount={true}
     >
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>

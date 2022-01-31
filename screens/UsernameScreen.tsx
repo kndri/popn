@@ -86,7 +86,7 @@ export default function UserNameScreen() {
       initialValues={formValues}
       initialErrors={formErrors}
       enableReinitialize
-      // validateOnMount={true}
+      validateOnMount={true}
     >
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
