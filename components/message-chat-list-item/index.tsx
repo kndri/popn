@@ -45,26 +45,58 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
         getOtherUser();
     }, [])
 
+    // const getOtherUser = async () => {
+    //     const userInfo = await Auth.currentAuthenticatedUser();
+    //     setUser(userInfo);
+    //     if (chatRoom.chatRoom.chatRoomUsers.items[0].user.id === userInfo.attributes.sub) {
+    //         setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[1].user);
+    //         if (chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL === "https://popn-app.s3.amazonaws.com/default_images/defaultUser.png") {
+    //             setOtherProfilePic("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
+    //         } else {
+    //             setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
+    //         }
+    //     } else {
+    //         setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[0].user);
+    //         if (chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL === "https://popn-app.s3.amazonaws.com/default_images/defaultUser.png") {
+    //             setOtherProfilePic("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
+    //         } else {
+    //             setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
+    //         }
+    //     }
+    // }
+
     const getOtherUser = async () => {
         const userInfo = await Auth.currentAuthenticatedUser();
         setUser(userInfo);
+
         if (chatRoom.chatRoom.chatRoomUsers.items[0].user.id === userInfo.attributes.sub) {
             setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[1].user);
-            if (chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL === "https://popn-app.s3.amazonaws.com/default_images/defaultUser.png") {
-                setOtherProfilePic("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
-            } else {
+            if (chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.includes('.jpeg')) {
                 setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
+            } else if (chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.includes('.jpg')) {
+                setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.indexOf('.jpg') + '.jpg'.length))
+            } else if (chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.includes('.png')) {
+                setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.indexOf('.png') + '.png'.length))
+            } else if (chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.includes('.heic')) {
+                setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL.indexOf('.heic') + '.heic'.length))
+            } else {
+                setOtherProfilePic("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
             }
+
+
         } else {
             setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[0].user);
-            if (chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL === "https://popn-app.s3.amazonaws.com/default_images/defaultUser.png") {
-                setOtherProfilePic("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
-            } else {
+            if (chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.includes('.jpeg')) {
                 setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
+            } else if (chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.includes('.jpg')) {
+                setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.indexOf('.jpg') + '.jpg'.length))
+            } else if (chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.includes('.png')) {
+                setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.indexOf('.png') + '.png'.length))
+            } else if (chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.includes('.heic')) {
+                setOtherProfilePic(chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.substring(0, chatRoom.chatRoom.chatRoomUsers.items[0].user.avatarImageURL.indexOf('.heic') + '.heic'.length))
             }
         }
     }
-
     return (
         <>
 

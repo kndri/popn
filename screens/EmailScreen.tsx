@@ -48,7 +48,7 @@ const emailValidationSchema = yup.object().shape({
   email: yup
     .string()
     .email("Please enter valid email")
-    .required("Email Address is Required"),
+    .required(""),
 });
 
 export default function EmailScreen() {
@@ -84,7 +84,7 @@ export default function EmailScreen() {
       initialValues={formValues}
       initialErrors={formErrors}
       enableReinitialize
-      // validateOnMount={true}
+      validateOnMount={true}
     >
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>

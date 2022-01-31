@@ -72,6 +72,7 @@ export default function AgeScreen() {
       initialValues={formValues}
       initialErrors={formErrors}
       enableReinitialize
+      validateOnMount={true}
     >
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
