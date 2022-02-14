@@ -3,26 +3,22 @@ import {
   FlatList,
   StyleSheet,
   TextInput,
-  ActivityIndicator,
-  TouchableOpacity,
 } from "react-native";
 import { API, graphqlOperation, Storage } from "aws-amplify";
 import { View } from "../components/Themed";
 import { spacing } from "../theme";
-import MessageContactListItem from "../components/message-contact-list-item";
-import { Text, Screen, Header, AutoImage as Image } from "../components";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { useRoute } from "@react-navigation/native";
+import SearchedUserListItem from "../components/searched-users-list-item";
+import { Text, Screen, Header } from "../components";
+import { useNavigation, } from "@react-navigation/native";
 import { useState } from "react";
 import { listUsers } from "../src/graphql/queries";
 
 export default function UserSearchScreen() {
   const navigation = useNavigation();
-  const route = useRoute();
   const [query, setQuery] = React.useState("");
   const [searchedContacts, setSearchedContacts] = React.useState<any>([]);
   const [users, setUsers] = useState<any>([]);
-  const isFocused = useIsFocused();
+
 
   React.useEffect(() => {
     const fetchUsers = async () => {
@@ -36,6 +32,7 @@ export default function UserSearchScreen() {
       }
     };
     fetchUsers();
+    console.log('array: ', users)
   }, []);
 
   // useEffect to filter out the searched contact
@@ -53,30 +50,9 @@ export default function UserSearchScreen() {
       });
 
     setSearchedContacts(searchedObject);
+
   }, [query]);
 
-  // React.useEffect(() => {}, [users]);
-
-  const onClick = (id) => {
-    navigation.navigate("UserProfile", id);
-  };
-
-  const renderUsers = (user) => (
-    <TouchableOpacity onPress={() => onClick(user.id)}>
-      <View style={styles.usercontainer}>
-        <View style={styles.lefContainer}>
-          <Image
-            source={{ uri: `${user.avatarImageURL}` }}
-            style={styles.avatar}
-          />
-
-          <View style={styles.midContainer}>
-            <Text style={styles.username}>{user.username}</Text>
-          </View>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
 
   return (
     <Screen style={styles.container}>
@@ -121,7 +97,7 @@ export default function UserSearchScreen() {
             height: "100%",
           }}
           data={searchedContacts}
-          renderItem={({ item }) => renderUsers(item)}
+          renderItem={({ item }) => <SearchedUserListItem user={item} />}
           keyExtractor={(item) => String(item.id)}
         />
       )}

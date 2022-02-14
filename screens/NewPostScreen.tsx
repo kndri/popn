@@ -10,10 +10,7 @@ import {
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
 import { useNavigation } from "@react-navigation/native";
 
-import {
-  Text,
-  AutoImage as Image,
-} from "../components";
+import { Text, AutoImage as Image } from "../components";
 
 import { AntDesign } from "@expo/vector-icons";
 import { TextStyle } from "react-native";
@@ -25,7 +22,6 @@ import {
   checkLoggedUser,
 } from "../aws-functions/aws-functions";
 import { useToast } from "../components/Toast";
-
 
 const CONTAINER: ViewStyle = {
   flex: 1,
@@ -72,7 +68,7 @@ const IMAGE: ImageStyle = {
 };
 
 export default function NewPostScreen(props: any) {
-  const { comment, fetchPosts } = props.route.params;
+  const { comment } = props.route.params;
   const [post, setPost] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const toast = useToast();
@@ -93,7 +89,6 @@ export default function NewPostScreen(props: any) {
       description: post,
     }).then(() => {
       toast.show(`Post has been created.`);
-      fetchPosts();
       navigation.goBack();
     });
   };
@@ -103,6 +98,7 @@ export default function NewPostScreen(props: any) {
       postID: comment.id,
       text: post,
     }).then(() => {
+      toast.show(`Comment has been created.`);
       navigation.goBack();
     });
   };

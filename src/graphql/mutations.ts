@@ -36,19 +36,6 @@ export const createUser = /* GraphQL */ `
         }
         nextToken
       }
-      claims {
-        items {
-          id
-          userID
-          sneakerID
-          status
-          refNumber
-          claimMessage
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       following
       follower
       status
@@ -96,19 +83,6 @@ export const updateUser = /* GraphQL */ `
           id
           userID
           description
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      claims {
-        items {
-          id
-          userID
-          sneakerID
-          status
-          refNumber
-          claimMessage
           createdAt
           updatedAt
         }
@@ -166,19 +140,6 @@ export const deleteUser = /* GraphQL */ `
         }
         nextToken
       }
-      claims {
-        items {
-          id
-          userID
-          sneakerID
-          status
-          refNumber
-          claimMessage
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       following
       follower
       status
@@ -216,9 +177,6 @@ export const createChatRoomUser = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -276,9 +234,6 @@ export const updateChatRoomUser = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -332,9 +287,6 @@ export const deleteChatRoomUser = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -574,9 +526,6 @@ export const createMessage = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -633,9 +582,6 @@ export const updateMessage = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -690,9 +636,6 @@ export const deleteMessage = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -752,9 +695,6 @@ export const createSneaker = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -804,9 +744,6 @@ export const updateSneaker = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -860,9 +797,6 @@ export const deleteSneaker = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -905,21 +839,9 @@ export const createClaim = /* GraphQL */ `
         username
         email
         avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        claims {
-          nextToken
-        }
         following
         follower
         status
-        chatRoomUser {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -941,9 +863,6 @@ export const createClaim = /* GraphQL */ `
           status
           createdAt
           updatedAt
-        }
-        claim {
-          nextToken
         }
         createdAt
         updatedAt
@@ -975,9 +894,6 @@ export const updateClaim = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -1043,9 +959,6 @@ export const deleteClaim = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -1109,9 +1022,6 @@ export const createPost = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -1166,9 +1076,6 @@ export const updatePost = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -1227,9 +1134,6 @@ export const deletePost = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -1285,9 +1189,6 @@ export const createComment = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -1351,9 +1252,6 @@ export const updateComment = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -1413,9 +1311,6 @@ export const deleteComment = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -1478,9 +1373,6 @@ export const createLike = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -1541,9 +1433,6 @@ export const updateLike = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -1602,9 +1491,6 @@ export const deleteLike = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following

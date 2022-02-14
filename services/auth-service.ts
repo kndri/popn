@@ -68,7 +68,8 @@ const signUp = async (
     const image = await Storage.get(new_image.key, {
       level: "public",
     });
-    image_url = image;
+    const newImage = image.substring(0, image.indexOf('.jpeg') + '.jpeg'.length)
+    image_url = newImage;
     console.log(image_url);
   }
 
@@ -146,6 +147,7 @@ const usernameAvailable = async (username: string) => {
   // 1. Get all the users
   let usernames: any[] = [];
   let isUsernameAvailable = true;
+
   try {
     const users = await API.graphql(graphqlOperation(listUsers));
     usernames = users.data.listUsers.items;
@@ -162,6 +164,9 @@ const usernameAvailable = async (username: string) => {
     return isUsernameAvailable;
   } catch (error) {
     console.log("usernameAvailable Error: ", error);
+    if (error == "Error: No current user") {
+      return isUsernameAvailable;
+    }
   }
 };
 

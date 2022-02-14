@@ -1,16 +1,10 @@
-import * as React from 'react';
+import * as React from "react";
 import { View, ViewStyle, TextStyle, TouchableOpacity } from "react-native";
-import { color, spacing, typography } from "../theme"
-import {
-  Button,
-  Screen,
-  Text,
-  TextField,
-  Header
-} from "../components"
-import { useNavigation } from '@react-navigation/native';
+import { color, spacing, typography } from "../theme";
+import { Button, Screen, Text, TextField, Header } from "../components";
+import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
-import * as yup from 'yup'
+import * as yup from "yup";
 import { useFormState, useFormDispatch } from "../contexts/form-context";
 import { authService } from "../services/auth-service";
 import { useToast } from "../components/Toast";
@@ -20,27 +14,27 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[5],
   flex: 1,
-  justifyContent: 'space-between',
+  justifyContent: "space-between",
 
-  paddingBottom: 90
-}
+  paddingBottom: 90,
+};
 
 const CENTER: ViewStyle = {
-  alignItems: 'center',
-  justifyContent: 'center',
-}
+  alignItems: "center",
+  justifyContent: "center",
+};
 
 const TEXTCENTER: TextStyle = {
-  textAlign: 'center',
-  alignItems: 'center'
-}
+  textAlign: "center",
+  alignItems: "center",
+};
 
 const INPUT: TextStyle = {
   fontFamily: typography.primaryBold,
-}
+};
 
 const DISABLED: ViewStyle = {
-  backgroundColor: 'rgba(52, 52, 52, 0.25)',
+  backgroundColor: "rgba(52, 52, 52, 0.25)",
 };
 
 const PROFILE_HEADER: ViewStyle = {
@@ -55,7 +49,7 @@ const PROFILE_HEADER: ViewStyle = {
 const usernameValidationSchema = yup.object().shape({
   username: yup
     .string()
-    .required("Create a username to continue")
+    .required("")
     .min(4, "username must have at least 4 characters"),
 });
 
@@ -68,7 +62,6 @@ export default function UserNameScreen() {
   const { values: formValues, errors: formErrors } = useFormState("user");
 
   React.useEffect(() => {
-
     const unsubscribe = navigation.addListener("blur", () => {
       if (form.current) {
         const { values, errors } = form.current;
@@ -77,7 +70,7 @@ export default function UserNameScreen() {
           payload: {
             id: "user",
             data: { values, errors },
-          }
+          },
         });
       }
     });
@@ -92,26 +85,24 @@ export default function UserNameScreen() {
       validationSchema={usernameValidationSchema}
       initialValues={formValues}
       initialErrors={formErrors}
-      // isInitialValid={false} //kj
       enableReinitialize
       validateOnMount={true}
-
     >
       {({ values, handleChange, errors, isValid, touched }) => (
         <Screen style={CONTAINER}>
-
           <View style={CENTER}>
             <Header
               leftIcon="back"
               onLeftPress={() => {
-                navigation.goBack()
-
+                navigation.goBack();
               }}
             />
-            <Text style={TEXTCENTER} preset="header" text="Create your Username" />
+            <Text
+              style={TEXTCENTER}
+              preset="header"
+              text="Create your Username"
+            />
           </View>
-
-
 
           <View style={CENTER}>
             <TextField
@@ -120,41 +111,49 @@ export default function UserNameScreen() {
               keyboardType="default"
               value={values.username}
               onChangeText={handleChange("username")}
-              autoCapitalize='none'
+              autoCapitalize="none"
               autoCorrect={false}
             />
 
-            {(errors.username || touched.username) &&
-              <Text style={{ fontSize: 10, color: 'red' }}>{errors.username}</Text>
-            }
+            {(errors.username || touched.username) && (
+              <Text style={{ fontSize: 10, color: "red" }}>
+                {errors.username}
+              </Text>
+            )}
           </View>
 
-
-          <View style={{ flexDirection: 'row', alignContent: 'flex-end', justifyContent: 'flex-end' }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignContent: "flex-end",
+              justifyContent: "flex-end",
+            }}
+          >
             <Button
               disabled={!isValid}
               style={!isValid ? DISABLED : null}
               text="Continue"
               preset="cta"
               onPress={async () => {
-                const available = await authService.usernameAvailable(values.username);
+                const available = await authService.usernameAvailable(
+                  values.username
+                );
                 if (!available) {
-                  toast.show(`An account exists with this username already.`, { color: 'red' });
+                  toast.show(`An account exists with this username already.`, {
+                    color: "red",
+                  });
                 } else {
-                  navigation.navigate('Email');
+                  navigation.navigate("Email");
                 }
               }}
             />
           </View>
         </Screen>
-      )
-      }
-    </Formik >
+      )}
+    </Formik>
   );
 }
 
-
-function onGoBack(arg0: { values: import("formik").FormikValues; "": any; }) {
-  throw new Error('Function not implemented.');
+function onGoBack(arg0: { values: import("formik").FormikValues; "": any }) {
+  throw new Error("Function not implemented.");
 }
-

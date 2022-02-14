@@ -33,19 +33,6 @@ export const onCreateUser = /* GraphQL */ `
         }
         nextToken
       }
-      claims {
-        items {
-          id
-          userID
-          sneakerID
-          status
-          refNumber
-          claimMessage
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       following
       follower
       status
@@ -90,19 +77,6 @@ export const onUpdateUser = /* GraphQL */ `
           id
           userID
           description
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      claims {
-        items {
-          id
-          userID
-          sneakerID
-          status
-          refNumber
-          claimMessage
           createdAt
           updatedAt
         }
@@ -157,19 +131,6 @@ export const onDeleteUser = /* GraphQL */ `
         }
         nextToken
       }
-      claims {
-        items {
-          id
-          userID
-          sneakerID
-          status
-          refNumber
-          claimMessage
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       following
       follower
       status
@@ -204,9 +165,6 @@ export const onCreateChatRoomUser = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -261,9 +219,6 @@ export const onUpdateChatRoomUser = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -314,9 +269,6 @@ export const onDeleteChatRoomUser = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -544,9 +496,6 @@ export const onCreateMessage = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -600,9 +549,6 @@ export const onUpdateMessage = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -654,9 +600,6 @@ export const onDeleteMessage = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -713,9 +656,6 @@ export const onCreateSneaker = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -762,9 +702,6 @@ export const onUpdateSneaker = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -815,9 +752,6 @@ export const onDeleteSneaker = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -861,9 +795,6 @@ export const onCreateClaim = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -926,9 +857,6 @@ export const onUpdateClaim = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -987,9 +915,6 @@ export const onDeleteClaim = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -1052,9 +977,6 @@ export const onCreatePost = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -1106,9 +1028,6 @@ export const onUpdatePost = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -1164,9 +1083,6 @@ export const onDeletePost = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -1219,9 +1135,6 @@ export const onCreateComment = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -1282,9 +1195,6 @@ export const onUpdateComment = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -1341,9 +1251,6 @@ export const onDeleteComment = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following
@@ -1403,9 +1310,6 @@ export const onCreateLike = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -1463,9 +1367,6 @@ export const onUpdateLike = /* GraphQL */ `
         posts {
           nextToken
         }
-        claims {
-          nextToken
-        }
         following
         follower
         status
@@ -1521,9 +1422,6 @@ export const onDeleteLike = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
           nextToken
         }
         following

@@ -7,7 +7,11 @@ import {
   AutoImage as Image,
   Button,
 } from "../components";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import GestureRecognizer from "react-native-swipe-gestures";
 import { color, spacing } from "../theme";
 import {
@@ -16,6 +20,7 @@ import {
 } from "../aws-functions/aws-functions";
 
 const example = require("../assets/images/verify_example.png");
+const verified = require("../assets/images/Verified.png");
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -87,8 +92,9 @@ const MODAL_PROCESS: ViewStyle = {
   paddingHorizontal: spacing[4],
 };
 
-const ShoeDetailsScreen = (props: any) => {
-  const { shoeID } = props.route.params;
+const ShoeDetailsScreen = () => {
+  const route = useRoute();
+  const { shoeID }: any = route.params;
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -309,6 +315,9 @@ const ShoeDetailsScreen = (props: any) => {
           text={sneaker.secondaryName}
           style={{ fontSize: 30 }}
         />
+        {claim.status === "verified" ? (
+          <Image source={verified} style={{ marginTop: 5 }} />
+        ) : null}
       </View>
       <View style={IMAGE_CONTAINER}>
         <Image
@@ -381,9 +390,17 @@ const ShoeDetailsScreen = (props: any) => {
               {claim.status === "pending" ? (
                 <Button text="Pending" preset="primary" />
               ) : claim.status === "verified" ? (
-                <Button text="Verified" preset="primary" />
+                <Button
+                  text="Verified"
+                  preset="primary"
+                  style={{ backgroundColor: "#00A542" }}
+                />
               ) : (
-                <Button text="Denied" preset="primary" />
+                <Button
+                  text="Denied"
+                  preset="primary"
+                  style={{ backgroundColor: "#ef0a0a" }}
+                />
               )}
             </>
           ) : (

@@ -6,7 +6,6 @@ type User @model {
   avatarImageURL: String!
   sneakers: [Sneaker] @connection(keyName: "byUser", fields: ["id"])
   posts: [Post] @connection(keyName: "byUser", fields: ["id"])
-  claims: [Claim] @connection(keyName: "byUser", fields: ["id"])
   following: Int
   follower: Int
   status: String
@@ -63,14 +62,7 @@ type Sneaker
   createdAt: String
 }
 
-type Claim
-  @model
-  @key(
-    name: "byUser"
-    fields: ["userID", "sneakerID"]
-    queryField: "claimsByUser"
-  )
-  @key(name: "bySneaker", fields: ["sneakerID", "userID"]) {
+type Claim @model @key(name: "bySneaker", fields: ["sneakerID", "userID"]) {
   id: ID!
   userID: ID!
   sneakerID: ID!

@@ -29,8 +29,7 @@ import NewPostButton from "../components/new-post-button";
 
 //required images
 const messageIcon = require("../assets/images/message-button.png");
-const settingsIcon = require("../assets/images/SettingsIcon.png");
-const userImage = require("../assets/images/UserImage.png");
+const verified = require("../assets/images/Verified.png");
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -116,15 +115,51 @@ export default function UserProfileScreen(props?: any) {
   const [user, setUser] = React.useState<any>();
   const [selection, setSelection] = React.useState(1);
   const [isMainUser, setIsMainUser] = React.useState(true);
+  const [userAvatarImageURL, setUserAvatarImageURL] = React.useState(String);
+  const [otherUserAvatarImageURL, setOtherUserAvatarImageURL] = React.useState(String);
+  const isFocused = useIsFocused();
 
   const getSneakers = async () => {
     const sneakerlist = await getSneakersFromUser();
     const user = await checkLoggedUser();
 
+    console.log('user image', user);
     setUsername(user.attributes.preferred_username);
     setprofileImage(user.attributes["custom:blob"]);
     setCollection(sneakerlist);
+    // formatLoggedUserImage(profileImage);
   };
+
+  //WIP
+  // const formatLoggedUserImage = (image: string) => {
+  //   if (image.includes('.jpeg')) {
+  //     setUserAvatarImageURL(image.substring(0, image.indexOf('.jpeg') + '.jpeg'.length))
+  //   } else if (image.includes('.jpg')) {
+  //     setUserAvatarImageURL(image.substring(0, image.indexOf('.jpg') + '.jpg'.length))
+  //   } else if (image.includes('.png')) {
+  //     setUserAvatarImageURL(image.substring(0, image.indexOf('.png') + '.png'.length))
+  //   } else if (image.includes('.heic')) {
+  //     setUserAvatarImageURL(image.substring(0, image.indexOf('.heic') + '.heic'.length))
+  //   } else {
+  //     setUserAvatarImageURL("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
+  //   }
+  // }
+
+
+  //WIP
+  // const formatSearchedUserImage = () => {
+  //   if (user.avatarImageURL.includes('.jpeg')) {
+  //     setOtherUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
+  //   } else if (user.avatarImageURL.includes('.jpg')) {
+  //     setOtherUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.jpg') + '.jpg'.length))
+  //   } else if (user.avatarImageURL.includes('.png')) {
+  //     setOtherUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.png') + '.png'.length))
+  //   } else if (user.avatarImageURL.includes('.heic')) {
+  //     setOtherUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.heic') + '.heic'.length))
+  //   } else {
+  //     setOtherUserAvatarImageURL("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
+  //   }
+  // }
 
   const getUserData = async () => {
     const user = await getUserFromDb(userID);
@@ -149,14 +184,16 @@ export default function UserProfileScreen(props?: any) {
       setIsMainUser(true);
     } else {
       getUserData();
+      //WIP
       setIsMainUser(false);
+      // formatSearchedUserImage()
     }
   };
 
   React.useEffect(() => {
     // checks whether it is a different user
     check();
-  }, []);
+  }, [isFocused]);
 
   // Alerts when long pressed on shoe items
   const createDeleteAlert = (shoeID) =>
@@ -214,6 +251,16 @@ export default function UserProfileScreen(props?: any) {
             style={{ fontSize: 12, color: "#979797" }}
           />
           <Text text={`${item.secondaryName}`} style={{ fontSize: 10 }} />
+          {item.claim.items.length > 0 ? (
+            <>
+              {item.claim?.items[0].status === "verified" ? (
+                <Image
+                  source={verified}
+                  style={{ marginTop: 5, height: 20, width: 20 }}
+                />
+              ) : null}
+            </>
+          ) : null}
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Image
@@ -233,7 +280,7 @@ export default function UserProfileScreen(props?: any) {
               marginBottom: 15,
             }}
             onPress={() => {
-              navigation.navigate("ShoeDetails");
+              navigation.navigate("ShoeDetails", { shoeID: item.id });
             }}
           >
             <Text
@@ -306,7 +353,6 @@ export default function UserProfileScreen(props?: any) {
   };
 
   return (
-
     <Screen style={CONTAINER}>
       <View style={PROFILE_HEADER}>
         {isMainUser ? (
@@ -329,7 +375,8 @@ export default function UserProfileScreen(props?: any) {
       </View>
       {user ? (
         <View style={PROFILE_DATA}>
-          <Image style={PROFILE_IMAGE} source={{ uri: `${user.avatarImageURL}` }} />
+          {console.log('searchUserIMG:', `${user.avatarImageURL}`)}
+          <Image style={PROFILE_IMAGE} source={{ uri: user.avatarImageURL }} />
 
           <View style={{}}>
             <Text preset="header" text={`${user.username}`} />
@@ -349,7 +396,8 @@ export default function UserProfileScreen(props?: any) {
         </View>
       ) : (
         <View style={PROFILE_DATA}>
-          <Image style={PROFILE_IMAGE} source={{ uri: profileImage }} />
+          {console.log('profileIMG:', profileImage)}
+          <Image style={PROFILE_IMAGE} source={{ uri: `${profileImage}` }} />
 
           <View style={{}}>
             <Text preset="header" text={`${username}`} />
@@ -378,14 +426,14 @@ export default function UserProfileScreen(props?: any) {
         </Button>
         {user ? (
           <Button
-            style={{ width: 262, height: 48, borderRadius: 4, marginLeft: 10 }}
+            style={{ width: 262, height: 50, borderRadius: 4, marginLeft: 10 }}
             text="Follow"
             preset="primary"
           // onPress={() => navigation.navigate("")}
           />
         ) : (
           <Button
-            style={{ width: 262, height: 48, borderRadius: 4, marginLeft: 10 }}
+            style={{ width: 262, height: 50, borderRadius: 4, marginLeft: 10 }}
             text="Edit Profile"
             preset="primary"
           // onPress={() => navigation.navigate("")}

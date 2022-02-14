@@ -64,5 +64,70 @@
         }
       }
     }
+  },
+  "devhasler": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-popn-devhasler-110439-authRole",
+      "UnauthRoleArn": "arn:aws:iam::586204732146:role/amplify-popn-devhasler-110439-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::586204732146:role/amplify-popn-devhasler-110439-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+      "UnauthRoleName": "amplify-popn-devhasler-110439-unauthRole",
+      "StackName": "amplify-popn-devhasler-110439",
+      "StackId": "arn:aws:cloudformation:us-east-1:586204732146:stack/amplify-popn-devhasler-110439/d57baf70-7f8a-11ec-a57d-12f6914b066f",
+      "AmplifyAppId": "d2p4n0p4w69sci",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-popn-devhasler-110439-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "function": {
+        "S3Triggerf2de1f7e": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/S3Triggerf2de1f7e-516846734a4339565774-build.zip"
+        },
+        "popn95903adbCreateAuthChallenge": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn95903adbCreateAuthChallenge-51706d52454379307a68-build.zip"
+        },
+        "popn95903adbDefineAuthChallenge": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn95903adbDefineAuthChallenge-2b55526e716c4f584333-build.zip"
+        },
+        "popn95903adbPreSignup": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn95903adbPreSignup-74617263355569467871-build.zip"
+        },
+        "popn95903adbVerifyAuthChallengeResponse": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn95903adbVerifyAuthChallengeResponse-38744e43383669487353-build.zip"
+        },
+        "popn95903adbPreTokenGeneration": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn95903adbPreTokenGeneration-4839363468636a6a3975-build.zip"
+        },
+        "popn09CreateAuthChallenge": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn09CreateAuthChallenge-6247314341424a476f67-build.zip"
+        },
+        "popn09DefineAuthChallenge": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn09DefineAuthChallenge-71397a626b663444414a-build.zip"
+        },
+        "popn09PreSignup": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn09PreSignup-70672f6c336e4f34754b-build.zip"
+        },
+        "popn09VerifyAuthChallengeResponse": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn09VerifyAuthChallengeResponse-6a35536c436175672b38-build.zip"
+        },
+        "popn09PreTokenGeneration": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn09PreTokenGeneration-6d685056515633632b37-build.zip"
+        }
+      },
+      "auth": {
+        "popn09": {}
+      }
+    }
   }
 }

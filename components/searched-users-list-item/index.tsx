@@ -2,31 +2,24 @@ import React from 'react';
 import {
     View,
     Text,
-    TouchableWithoutFeedback,
     StyleSheet,
     TouchableOpacity
 } from "react-native";
 import { MessageContactUser } from "../../types";
 import { AutoImage as Image } from '../';
 import { useNavigation } from '@react-navigation/native';
-import {
-    API,
-    graphqlOperation,
-    Auth,
-} from "aws-amplify";
-import {
-    createChatRoom,
-    createChatRoomUser
-} from '../../src/graphql/mutations';
 
 
-export type MessageContactListItemProps = {
+
+export type SearchedUserListItemProps = {
     user: MessageContactUser;
 }
 
-const MessageContactListItem = (props: MessageContactListItemProps) => {
+const SearchedUserListItem = (props: SearchedUserListItemProps) => {
     const { user } = props;
     const [userAvatarImageURL, setUserAvatarImageURL] = React.useState(user.avatarImageURL);
+    const navigation = useNavigation();
+
 
     React.useEffect(() => {
         loadUserImages();
@@ -38,7 +31,7 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
     //     } else {
     //         setUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
     //     }
-    // 
+    // }
 
     const loadUserImages = async () => {
         if (user.avatarImageURL.includes('.jpeg')) {
@@ -55,67 +48,10 @@ const MessageContactListItem = (props: MessageContactListItemProps) => {
 
     }
 
-    const navigation = useNavigation();
-
-    const onClick = async () => {
-        try {
-
-            //  1. Create a new Chat Room
-            const newChatRoomData = await API.graphql(
-                graphqlOperation(
-                    createChatRoom, {
-                    input: {
-                        lastMessageID: Math.round(Math.random() * 1000000)
-                    }
-                }
-                )
-            )
-
-            if (!newChatRoomData.data) {
-                console.log(" Failed to create a chat room");
-                return;
-            }
-
-            const newChatRoom = newChatRoomData.data.createChatRoom;
-
-            // 2. Add `user` to the Chat Room
-            await API.graphql(
-                graphqlOperation(
-                    createChatRoomUser, {
-                    input: {
-                        userID: user.id,
-                        chatRoomID: newChatRoom.id,
-                    }
-                }
-                )
-            )
-
-            //  3. Add authenticated user to the Chat Room
-            const userInfo = await Auth.currentAuthenticatedUser();
-            await API.graphql(
-                graphqlOperation(
-                    createChatRoomUser, {
-                    input: {
-                        userID: userInfo.attributes.sub,
-                        chatRoomID: newChatRoom.id,
-                    }
-                }
-                )
-            )
-
-            navigation.navigate('NewMessageRoom', {
-                id: newChatRoom.id,
-                name: user.username,
-            })
-
-        } catch (e) {
-            console.log(e);
-        }
-    }
 
     return (
-        <TouchableOpacity onPress={onClick}>
-            {console.log("userAvatarImageURL: ", userAvatarImageURL)}
+        <TouchableOpacity onPress={() => { navigation.navigate('UserProfile', user.id) }}>
+            {/* {console.log("userAvatarImageURL: ", userAvatarImageURL)} */}
             <View style={styles.container}>
                 <View style={styles.lefContainer}>
                     <Image source={{ uri: `${userAvatarImageURL}` }} style={styles.avatar} />
@@ -161,4 +97,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default MessageContactListItem;
+export default SearchedUserListItem;

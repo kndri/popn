@@ -33,19 +33,6 @@ export const getUser = /* GraphQL */ `
         }
         nextToken
       }
-      claims {
-        items {
-          id
-          userID
-          sneakerID
-          status
-          refNumber
-          claimMessage
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       following
       follower
       status
@@ -56,6 +43,36 @@ export const getUser = /* GraphQL */ `
           chatRoomID
           createdAt
           updatedAt
+          chatRoom {
+            chatRoomUsers {
+              items {
+                id
+                userID
+                user {
+                  id
+                  username
+                  avatarImageURL
+                  age
+                }
+                chatRoomID
+                createdAt
+                updatedAt
+              }
+              nextToken
+            }
+            messages {
+              items {
+                id
+                text
+                userID
+              }
+            }
+            lastMessage {
+              id
+              text
+              updatedAt
+            }
+          }
         }
         nextToken
       }
@@ -77,9 +94,18 @@ export const listUsers = /* GraphQL */ `
         username
         email
         avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
         following
         follower
         status
+        chatRoomUser {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -103,9 +129,13 @@ export const getChatRoomUser = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
-        claims {
+          items {
+            id
+            userID
+            description
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         following
@@ -284,8 +314,13 @@ export const getMessage = /* GraphQL */ `
           nextToken
         }
         posts {
-          nextToken
-        }
+          items {
+            id
+            userID
+            description
+            createdAt
+            updatedAt
+          }
         claims {
           nextToken
         }
@@ -374,9 +409,18 @@ export const getSneaker = /* GraphQL */ `
         username
         email
         avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
         following
         follower
         status
+        chatRoomUser {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -424,6 +468,9 @@ export const listSneakers = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        claim {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -431,97 +478,7 @@ export const listSneakers = /* GraphQL */ `
     }
   }
 `;
-export const getClaim = /* GraphQL */ `
-  query GetClaim($id: ID!) {
-    getClaim(id: $id) {
-      id
-      userID
-      sneakerID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        following
-        follower
-        status
-        createdAt
-        updatedAt
-      }
-      sneaker {
-        id
-        brand
-        primaryName
-        secondaryName
-        image
-        userID
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          following
-          follower
-          status
-          createdAt
-          updatedAt
-        }
-        createdAt
-        updatedAt
-      }
-      status
-      refNumber
-      claimMessage
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listClaims = /* GraphQL */ `
-  query ListClaims(
-    $filter: ModelClaimFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listClaims(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        userID
-        sneakerID
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          following
-          follower
-          status
-          createdAt
-          updatedAt
-        }
-        sneaker {
-          id
-          brand
-          primaryName
-          secondaryName
-          image
-          userID
-          createdAt
-          updatedAt
-        }
-        status
-        refNumber
-        claimMessage
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
+
 export const getPost = /* GraphQL */ `
   query GetPost($id: ID!) {
     getPost(id: $id) {
@@ -534,9 +491,18 @@ export const getPost = /* GraphQL */ `
         username
         email
         avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
         following
         follower
         status
+        chatRoomUser {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -558,6 +524,18 @@ export const getPost = /* GraphQL */ `
           postID
           createdAt
           updatedAt
+          user {
+            id
+            age
+            username
+            email
+            avatarImageURL
+            following
+            follower
+            status
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -630,9 +608,25 @@ export const getComment = /* GraphQL */ `
         username
         email
         avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          items {
+            id
+            userID
+            description
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
         following
         follower
         status
+        chatRoomUser {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -716,9 +710,18 @@ export const getLike = /* GraphQL */ `
         username
         email
         avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
         following
         follower
         status
+        chatRoomUser {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -797,6 +800,8 @@ export const getSneakerStore = /* GraphQL */ `
       primary_name
       secondary_name
       image_url
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -914,59 +919,6 @@ export const sneakerByUser = /* GraphQL */ `
           }
           nextToken
         }
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const claimsByUser = /* GraphQL */ `
-  query ClaimsByUser(
-    $userID: ID
-    $sneakerID: ModelIDKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelClaimFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    claimsByUser(
-      userID: $userID
-      sneakerID: $sneakerID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        userID
-        sneakerID
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          following
-          follower
-          status
-          createdAt
-          updatedAt
-        }
-        sneaker {
-          id
-          brand
-          primaryName
-          secondaryName
-          image
-          userID
-          createdAt
-          updatedAt
-        }
-        status
-        refNumber
-        claimMessage
         createdAt
         updatedAt
       }

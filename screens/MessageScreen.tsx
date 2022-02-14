@@ -25,7 +25,7 @@ import {
 } from 'aws-amplify';
 import { getUser, getChatRoom } from '../src/graphql/queries';
 import { deleteChatRoomUser } from '../src/graphql/mutations';
-import { ConsoleLogger } from "@aws-amplify/core";
+
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -64,6 +64,9 @@ export default function MessageScreen() {
             )
             setUserData(userData);
             let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
+            {/*TODO: make is so users of deleted messages go back to contacts screen;
+                 currently only happens when all messages are deleted
+            */}
             if (chatRoomsArr.length > 0) {
                 chatRoomsArr.map((room) => {
                     room.chatRoom.chatRoomUsers.items.map((item) => {
