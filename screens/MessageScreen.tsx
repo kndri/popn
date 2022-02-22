@@ -1,31 +1,34 @@
 import * as React from "react";
+
 import {
+    StyleSheet,
+    TextStyle,
+    TouchableOpacity,
     View,
     ViewStyle,
-    TextStyle,
-    StyleSheet,
-    TouchableOpacity
 } from "react-native";
-import { color, spacing } from "../theme";
-import { SwipeListView } from 'react-native-swipe-list-view';
 
-import {
-    Screen,
-    Text,
-    NewMessageButton,
-    Header,
-} from "../components";
-import MessageChatListItem from '../components/message-chat-list-item';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import { useIsFocused, useNavigation } from "@react-navigation/native";
+
+import MessageChatListItem from '../components/message-chat-list-item';
+
 import {
     API,
-    graphqlOperation,
     Auth,
-    navItem,
+    graphqlOperation,
 } from 'aws-amplify';
-import { getUser, getChatRoom } from '../src/graphql/queries';
-import { deleteChatRoomUser } from '../src/graphql/mutations';
 
+import {
+    Header,
+    NewMessageButton,
+    Screen,
+    Text,
+} from "../components";
+
+import { color, spacing } from "../theme";
+import { deleteChatRoomUser } from '../src/graphql/mutations';
+import { getUser, getChatRoom } from '../src/graphql/queries';
 
 // Styles
 const CONTAINER: ViewStyle = {
