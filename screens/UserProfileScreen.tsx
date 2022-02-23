@@ -23,7 +23,7 @@ import {
 import { SneakerList } from "../types";
 // NOTE: This should be refactored
 import { API, Auth, graphqlOperation } from "aws-amplify";
-import { createUser, deleteSneaker } from "../src/graphql/mutations";
+import { createChatRoom, createChatRoomUser, createUser, deleteSneaker } from "../src/graphql/mutations";
 import { getUser } from "../src/graphql/queries";
 import NewPostButton from "../components/new-post-button";
 
@@ -352,6 +352,65 @@ export default function UserProfileScreen(props?: any) {
     );
   };
 
+  const onClick = async () => {
+    try {
+
+      //  1. Create a new Chat Room
+      const newChatRoomData = await API.graphql(
+        graphqlOperation(
+          createChatRoom, {
+          input: {
+            lastMessageID: Math.round(Math.random() * 1000000)
+          }
+        }
+        )
+      )
+
+      if (!newChatRoomData.data) {
+        console.log(" Failed to create a chat room");
+        return;
+      }
+
+      const newChatRoom = newChatRoomData.data.createChatRoom;
+
+      // 2. Add `user` to the Chat Room
+      await API.graphql(
+        graphqlOperation(
+          createChatRoomUser, {
+          input: {
+            userID: user.id,
+            chatRoomID: newChatRoom.id,
+          }
+        }
+        )
+      )
+
+      //  3. Add authenticated user to the Chat Room
+      const userInfo = await Auth.currentAuthenticatedUser();
+      await API.graphql(
+        graphqlOperation(
+          createChatRoomUser, {
+          input: {
+            userID: userInfo.attributes.sub,
+            chatRoomID: newChatRoom.id,
+          }
+        }
+        )
+      )
+
+      navigation.navigate('NewMessageRoom', {
+        id: newChatRoom.id,
+        name: user.username,
+      })
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+
+
+
   return (
     <Screen style={CONTAINER}>
       <View style={PROFILE_HEADER}>
@@ -418,22 +477,25 @@ export default function UserProfileScreen(props?: any) {
       )}
 
       <View style={{ flexDirection: "row", paddingHorizontal: spacing[5] }}>
-        <Button
-          style={{ backgroundColor: "transparent", width: 48, height: 48 }}
-          onPress={() => navigation.navigate("TabThree")}
-        >
-          <Image source={messageIcon} />
-        </Button>
+
+
         {user ? (
-          <Button
-            style={{ width: 262, height: 50, borderRadius: 4, marginLeft: 10 }}
-            text="Follow"
-            preset="primary"
-          // onPress={() => navigation.navigate("")}
-          />
+          <>
+            <Button
+              style={{ backgroundColor: "transparent", width: 48, height: 48 }}
+              onPress={onClick}
+            >
+              <Image source={messageIcon} />
+            </Button>
+
+            <Button
+              style={{ width: 262, height: 50, borderRadius: 4, marginLeft: 10 }}
+              text="Follow"
+              preset="primary" />
+          </>
         ) : (
           <Button
-            style={{ width: 262, height: 50, borderRadius: 4, marginLeft: 10 }}
+            style={{ width: '100%', height: 50, borderRadius: 4, }}
             text="Edit Profile"
             preset="primary"
           // onPress={() => navigation.navigate("")}
