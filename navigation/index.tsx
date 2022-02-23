@@ -3,36 +3,31 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome, Feather } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
-import useColorScheme from "../hooks/useColorScheme";
-import HomeScreen from "../screens/HomeScreen";
-import ClaimScreen from "../screens/ClaimScreen";
-import MessageScreen from "../screens/MessageScreen";
-import SplashScreen from "../screens/SplashScreen";
-import AgeScreen from "../screens/AgeScreen";
-import ProfilePicScreen from "../screens/ProfilePicScreen";
-import UserNameScreen from "../screens/UsernameScreen";
-import EmailScreen from "../screens/EmailScreen";
-import PasswordScreen from "../screens/PasswordScreen";
-import WelcomeToPopn from "../screens/WelcomeToPopn";
-import SignInScreen from "../screens/SignInScreen";
-import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
-import SettingsScreen from "../screens/SettingsScreen";
-import UserProfileScreen from "../screens/UserProfileScreen";
-import ChangeEmailScreen from "../screens/ChangeEmailScreen";
-import EmailVerificationCodeScreen from "../screens/EmailVerificationCodeScreen";
-import ChangePasswordScreen from "../screens/ChangePasswordScreen";
-import MessageRoomScreen from "../screens/MessageRoomScreen";
-import NewMessageRoomScreen from "../screens/NewMessageRoomScreen";
+import HomeScreen from "../screens/HomeScreen/HomeScreen";
+import ClaimScreen from "../screens/ClaimScreen/ClaimScreen";
+import MessageScreen from "../screens/MessageScreen/MessageScreen";
+import SplashScreen from "../screens/SplashScreen/SplashScreen";
+import AgeScreen from "../screens/AgeScreen/AgeScreen";
+import ProfilePicScreen from "../screens/ProfilePicScreen/ProfilePicScreen";
+import UserNameScreen from "../screens/UsernameScreen/UsernameScreen";
+import EmailScreen from "../screens/EmailScreen/EmailScreen";
+import PasswordScreen from "../screens/PasswordScreen/PasswordScreen";
+import WelcomeToPopn from "../screens/WelcomeToPopn/WelcomeToPopn";
+import SignInScreen from "../screens/SignInScreen/SignInScreen";
+import ForgotPasswordScreen from "../screens/ForgotPasswordScreen/ForgotPasswordScreen";
+import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
+import UserProfileScreen from "../screens/UserProfileScreen/UserProfileScreen";
+import ChangeEmailScreen from "../screens/ChangeEmailScreen/ChangeEmailScreen";
+import EmailVerificationCodeScreen from "../screens/EmailVerificationCodeScreen/EmailVerificationCodeScreen";
+import ChangePasswordScreen from "../screens/ChangePasswordScreen/ChangePasswordScreen";
+import MessageRoomScreen from "../screens/MessageRoomScreen/MessageRoomScreen";
+import NewMessageRoomScreen from "../screens/NewMessageRoomScreen/NewMessageRoomScreen";
 
 import {
   RootStackParamList,
@@ -40,14 +35,14 @@ import {
   RootTabScreenProps,
   SettingsStackParamList,
 } from "../types";
-import ResetPasswordScreen from "../screens/ResetPasswordScreen";
+import ResetPasswordScreen from "../screens/ResetPasswordScreen/ResetPasswordScreen";
 import { useAuth } from "../contexts/auth";
-import ShoeDetailsScreen from "../screens/ShoeDetailsScreen";
-import ReferenceScreen from "../screens/ReferenceScreen";
-import NewPostScreen from "../screens/NewPostScreen";
-import PostDetailsScreen from "../screens/PostDetailsScreen";
-import MessageContactsScreen from "../screens/MessageContactsScreen";
-import UserSearchScreen from "../screens/SearchUserScreen";
+import ShoeDetailsScreen from "../screens/ShoeDetailsScreen/ShoeDetailsScreen";
+import ReferenceScreen from "../screens/ReferenceScreen/ReferenceScreen";
+import NewPostScreen from "../screens/NewPostScreen/NewPostScreen";
+import PostDetailsScreen from "../screens/PostDetailsScreen/PostDetailsScreen";
+import MessageContactsScreen from "../screens/MessageContactsScreen/MessageContactsScreen";
+import UserSearchScreen from "../screens/SearchUserScreen/SearchUserScreen";
 
 export default function Navigation({
   colorScheme,
@@ -136,9 +131,14 @@ const SettingsNavigator = () => (
   >
     <settingStack.Screen name="settings" component={SettingsScreen} />
     <settingStack.Screen name="changeEmail" component={ChangeEmailScreen} />
-    <settingStack.Screen name="verifyEmail" component={EmailVerificationCodeScreen} />
-    <settingStack.Screen name="changePassword" component={ChangePasswordScreen} />
-
+    <settingStack.Screen
+      name="verifyEmail"
+      component={EmailVerificationCodeScreen}
+    />
+    <settingStack.Screen
+      name="changePassword"
+      component={ChangePasswordScreen}
+    />
   </settingStack.Navigator>
 );
 
