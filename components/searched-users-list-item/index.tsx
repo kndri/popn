@@ -25,29 +25,13 @@ const SearchedUserListItem = (props: SearchedUserListItemProps) => {
         loadUserImages();
     }, [])
 
-    // const loadUserImages = async () => {
-    //     if (user.avatarImageURL === "https://popn-app.s3.amazonaws.com/default_images/defaultUser.png") {
-    //         setUserAvatarImageURL("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
-    //     } else {
-    //         setUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
-    //     }
-    // }
-
     const loadUserImages = async () => {
-        if (user.avatarImageURL.includes('.jpeg')) {
-            setUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
-        } else if (user.avatarImageURL.includes('.jpg')) {
-            setUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.jpg') + '.jpg'.length))
-        } else if (user.avatarImageURL.includes('.png')) {
-            setUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.png') + '.png'.length))
-        } else if (user.avatarImageURL.includes('.heic')) {
-            setUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.heic') + '.heic'.length))
-        } else {
+        if (user.avatarImageURL === "https://popn-app.s3.amazonaws.com/default_images/defaultUser.png") {
             setUserAvatarImageURL("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
+        } else {
+            setUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
         }
-
     }
-
 
     return (
         <TouchableOpacity onPress={() => { navigation.navigate('UserProfile', user.id) }}>

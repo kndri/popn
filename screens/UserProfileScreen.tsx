@@ -9,24 +9,22 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import { color, spacing, typography } from "../theme";
-import { Button, Screen, Text, Header } from "../components";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
+
+import { color, spacing } from "../theme";
+import { Button, Screen, Text, Header } from "../components";
 import {
   getSneakersFromUser,
   checkLoggedUser,
-  getCommentFromUser,
-  getPostFromUser,
   deleteUserSneaker,
   getUserFromDb,
 } from "../aws-functions/aws-functions";
-import { SneakerList } from "../types";
 // NOTE: This should be refactored
 import { API, Auth, graphqlOperation } from "aws-amplify";
-import { createChatRoom, createChatRoomUser, createUser, deleteSneaker } from "../src/graphql/mutations";
-import { getUser } from "../src/graphql/queries";
-import NewPostButton from "../components/new-post-button";
+import { createChatRoom, createChatRoomUser } from "../src/graphql/mutations";
+import { getUser, getChatRoom } from "../src/graphql/queries";
 
+import NewPostButton from "../components/new-post-button";
 //required images
 const messageIcon = require("../assets/images/message-button.png");
 const verified = require("../assets/images/Verified.png");
@@ -34,7 +32,6 @@ const verified = require("../assets/images/Verified.png");
 // Styles
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
-  // paddingHorizontal: spacing[3],
   flex: 1,
 };
 
@@ -91,7 +88,6 @@ const BUTTON_VIEW: ViewStyle = {
   justifyContent: "center",
   alignItems: "center",
   marginBottom: 2,
-  // paddingHorizontal: spacing[4],
   borderRadius: 50,
   padding: 5,
   width: "95%",
@@ -107,7 +103,6 @@ const DATA_CONTAINER: ViewStyle = {
 
 export default function UserProfileScreen(props?: any) {
   const userID = props.route.params;
-
   const navigation = useNavigation();
   const [collection, setCollection] = React.useState<any>([]);
   const [username, setUsername] = React.useState("");
@@ -115,67 +110,21 @@ export default function UserProfileScreen(props?: any) {
   const [user, setUser] = React.useState<any>();
   const [selection, setSelection] = React.useState(1);
   const [isMainUser, setIsMainUser] = React.useState(true);
-  const [userAvatarImageURL, setUserAvatarImageURL] = React.useState(String);
-  const [otherUserAvatarImageURL, setOtherUserAvatarImageURL] = React.useState(String);
   const isFocused = useIsFocused();
 
   const getSneakers = async () => {
     const sneakerlist = await getSneakersFromUser();
     const user = await checkLoggedUser();
-
-    console.log('user image', user);
     setUsername(user.attributes.preferred_username);
     setprofileImage(user.attributes["custom:blob"]);
     setCollection(sneakerlist);
-    // formatLoggedUserImage(profileImage);
   };
-
-  //WIP
-  // const formatLoggedUserImage = (image: string) => {
-  //   if (image.includes('.jpeg')) {
-  //     setUserAvatarImageURL(image.substring(0, image.indexOf('.jpeg') + '.jpeg'.length))
-  //   } else if (image.includes('.jpg')) {
-  //     setUserAvatarImageURL(image.substring(0, image.indexOf('.jpg') + '.jpg'.length))
-  //   } else if (image.includes('.png')) {
-  //     setUserAvatarImageURL(image.substring(0, image.indexOf('.png') + '.png'.length))
-  //   } else if (image.includes('.heic')) {
-  //     setUserAvatarImageURL(image.substring(0, image.indexOf('.heic') + '.heic'.length))
-  //   } else {
-  //     setUserAvatarImageURL("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
-  //   }
-  // }
-
-
-  //WIP
-  // const formatSearchedUserImage = () => {
-  //   if (user.avatarImageURL.includes('.jpeg')) {
-  //     setOtherUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.jpeg') + '.jpeg'.length))
-  //   } else if (user.avatarImageURL.includes('.jpg')) {
-  //     setOtherUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.jpg') + '.jpg'.length))
-  //   } else if (user.avatarImageURL.includes('.png')) {
-  //     setOtherUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.png') + '.png'.length))
-  //   } else if (user.avatarImageURL.includes('.heic')) {
-  //     setOtherUserAvatarImageURL(user.avatarImageURL.substring(0, user.avatarImageURL.indexOf('.heic') + '.heic'.length))
-  //   } else {
-  //     setOtherUserAvatarImageURL("https://popn-app.s3.amazonaws.com/default_images/defaultUser.png")
-  //   }
-  // }
 
   const getUserData = async () => {
     const user = await getUserFromDb(userID);
-
     setUser(user);
-
     setCollection(user.sneakers.items);
   };
-
-  // React.useEffect(() => {
-  //   const rerender = navigation.addListener("focus", () => {
-  //     if (isFocused) {
-  //       getSneakers();
-  //     }
-  //   });
-  // }, []);
 
   const check = async () => {
     var currentUser = await checkLoggedUser();
@@ -184,9 +133,7 @@ export default function UserProfileScreen(props?: any) {
       setIsMainUser(true);
     } else {
       getUserData();
-      //WIP
       setIsMainUser(false);
-      // formatSearchedUserImage()
     }
   };
 
@@ -353,8 +300,14 @@ export default function UserProfileScreen(props?: any) {
   };
 
   const onClick = async () => {
-    try {
+    //fetch all the chatrooms that the current user is in 
 
+
+    // if the currentUser already has a chatroom with the person they're trying to message,
+    // then just navigate to that existing chatroom
+
+    //else create a new chatroom 
+    try {
       //  1. Create a new Chat Room
       const newChatRoomData = await API.graphql(
         graphqlOperation(
@@ -408,9 +361,6 @@ export default function UserProfileScreen(props?: any) {
     }
   }
 
-
-
-
   return (
     <Screen style={CONTAINER}>
       <View style={PROFILE_HEADER}>
@@ -434,44 +384,18 @@ export default function UserProfileScreen(props?: any) {
       </View>
       {user ? (
         <View style={PROFILE_DATA}>
-          {console.log('searchUserIMG:', `${user.avatarImageURL}`)}
+          {console.log("USERDATA: ", user)}
           <Image style={PROFILE_IMAGE} source={{ uri: user.avatarImageURL }} />
-
           <View style={{}}>
             <Text preset="header" text={`${user.username}`} />
-            <Text preset="secondary" text={`${user.username}`} />
-            {/* <Text preset="secondary" text={username} /> */}
-
-            <View style={{ flexDirection: "row" }}>
-              <Text preset="bold" text="Don Score: " />
-              <Text preset="bold" text="890" />
-            </View>
-
-            <View style={{ flexDirection: "row" }}>
-              <Text preset="bold" text="Collection Value: " />
-              <Text preset="bold" text="$250,000" />
-            </View>
           </View>
         </View>
       ) : (
         <View style={PROFILE_DATA}>
-          {console.log('profileIMG:', profileImage)}
+          {console.log("USERDATA: ", user)}
           <Image style={PROFILE_IMAGE} source={{ uri: `${profileImage}` }} />
-
           <View style={{}}>
             <Text preset="header" text={`${username}`} />
-            <Text preset="secondary" text={`${username}`} />
-            {/* <Text preset="secondary" text={username} /> */}
-
-            <View style={{ flexDirection: "row" }}>
-              <Text preset="bold" text="Don Score: " />
-              <Text preset="bold" text="890" />
-            </View>
-
-            <View style={{ flexDirection: "row" }}>
-              <Text preset="bold" text="Collection Value: " />
-              <Text preset="bold" text="$250,000" />
-            </View>
           </View>
         </View>
       )}
@@ -501,12 +425,6 @@ export default function UserProfileScreen(props?: any) {
           // onPress={() => navigation.navigate("")}
           />
         )}
-        {/* <Button
-          style={{ width: 262, height: 48, borderRadius: 4, marginLeft: 10 }}
-          text="Edit Profile"
-          preset="primary"
-          // onPress={() => navigation.navigate("")}
-        /> */}
       </View>
 
       <View style={COLLECTION_CONTAINER}>

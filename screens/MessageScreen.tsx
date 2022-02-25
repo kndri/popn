@@ -21,7 +21,6 @@ import {
     API,
     graphqlOperation,
     Auth,
-    navItem,
 } from 'aws-amplify';
 import { getUser, getChatRoom } from '../src/graphql/queries';
 import { deleteChatRoomUser } from '../src/graphql/mutations';
@@ -77,7 +76,8 @@ export default function MessageScreen() {
                 })
 
                 chatRoomsArr.sort((a, b) => {
-                    return b.chatRoom.lastMessage.updatedAt.localeCompare(a.chatRoom.lastMessage.updatedAt)
+                    return b.
+                        chatRoom.lastMessage.updatedAt.localeCompare(a.chatRoom.lastMessage.updatedAt)
                 });
 
                 setChatRooms(chatRoomsArr)
@@ -168,6 +168,7 @@ export default function MessageScreen() {
 
     return (
         <Screen style={CONTAINER}>
+            {/* {console.log('CHATROOMS AVAILABLE: ', chatRooms)} */}
             <View style={{ height: '100%' }}>
                 <Header
                     style={{ paddingHorizontal: spacing[3] }}
