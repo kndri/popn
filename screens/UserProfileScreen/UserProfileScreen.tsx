@@ -315,7 +315,7 @@ export default function UserProfileScreen(props?: any) {
       </View>
       {user ? (
         <View style={styles.PROFILE_DATA}>
-          {console.log("USERDATA: ", user)}
+
           <Image style={styles.PROFILE_IMAGE} source={{ uri: user.avatarImageURL }} />
           <View style={{}}>
             <Text preset="header" text={`${user.username}`} />
@@ -323,7 +323,7 @@ export default function UserProfileScreen(props?: any) {
         </View>
       ) : (
         <View style={styles.PROFILE_DATA}>
-          {console.log("USERDATA: ", user)}
+
           <Image style={styles.PROFILE_IMAGE} source={{ uri: `${profileImage}` }} />
           <View style={{}}>
             <Text preset="header" text={`${username}`} />
@@ -336,15 +336,15 @@ export default function UserProfileScreen(props?: any) {
 
         {user ? (
           <>
-            <Button
+            {/* <Button
               style={{ backgroundColor: "transparent", width: 48, height: 48 }}
               onPress={onClick}
             >
               <Image source={messageIcon} />
-            </Button>
+            </Button> */}
 
             <Button
-              style={{ width: 262, height: 50, borderRadius: 4, marginLeft: 10 }}
+              style={{ width: "100%", height: 50, borderRadius: 4, marginLeft: 10 }}
               text="Follow"
               preset="primary" />
           </>
