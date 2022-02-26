@@ -158,8 +158,8 @@ export default function MessageScreen() {
         <Header
           style={{ paddingHorizontal: spacing[3] }}
           headerTx="Messages"
-          leftIcon="profile"
-          onLeftPress={() => navigation.navigate("UserProfile")}
+          leftIcon="back"
+          onLeftPress={() => navigation.goBack()}
         />
         {chatRooms.length === 0 ? (
           <View style={{ height: "100%", justifyContent: "center" }}>

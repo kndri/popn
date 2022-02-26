@@ -82,7 +82,7 @@ export default function ClaimScreen() {
     getSneakers();
   }, [isFocused]);
 
-  React.useEffect(() => {}, [sneakerDb]);
+  React.useEffect(() => { }, [sneakerDb]);
 
   const renderSneaker = ({ item }) => {
     if (checkClaimed(item)) {
@@ -219,8 +219,8 @@ export default function ClaimScreen() {
     <Screen style={styles.CONTAINER}>
       <Header
         headerTx="Claim"
-        leftIcon="profile"
-        onLeftPress={() => navigation.navigate("UserProfile")}
+        leftIcon="message"
+        onLeftPress={() => navigation.navigate("Message")}
       />
 
       <View style={styles.CLAIM_SEARCH}>

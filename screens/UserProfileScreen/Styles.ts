@@ -5,7 +5,7 @@ import { color, spacing } from "../../theme";
 export default StyleSheet.create({
   CONTAINER: {
     backgroundColor: color.transparent,
-    // paddingHorizontal: spacing[3],
+    // paddingHorizontal: spacing[4],
     flex: 1,
   },
 
@@ -24,13 +24,13 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingBottom: 17,
-    paddingHorizontal: spacing[5],
+    paddingHorizontal: spacing[3],
   },
   PROFILE_DATA: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
-    paddingHorizontal: spacing[5],
+    paddingHorizontal: spacing[3],
   },
   PROFILE_IMAGE: {
     marginRight: 20,

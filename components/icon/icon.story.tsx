@@ -18,5 +18,8 @@ storiesOf("Icon", module)
       <UseCase text="next" usage="The icon for going to the next page">
         <Icon icon="next" />
       </UseCase>
+      {/* <UseCase text="message" usage="The icon for going to the messages screen">
+        <Icon icon="messages" />
+      </UseCase> */}
     </Story>
   ))

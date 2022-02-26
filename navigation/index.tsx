@@ -171,8 +171,8 @@ function RootNavigator() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="UserProfile"
-            component={UserProfileScreen}
+            name="Message"
+            component={MessageScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -254,12 +254,12 @@ function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Message"
-        component={MessageScreen}
+        name="UserProfile"
+        component={UserProfileScreen}
         options={{
-          title: "Messages",
+          title: "Profile",
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="message-square" color={color} />
+            <TabBarIcon name="user" color={color} />
           ),
         }}
       />

@@ -298,8 +298,8 @@ export default function UserProfileScreen(props?: any) {
         {isMainUser ? (
           <Header
             headerTx="Profile"
-            leftIcon="back"
-            onLeftPress={() => navigation.goBack()}
+            leftIcon="message"
+            onLeftPress={() => navigation.navigate("Message")}
             rightIcon="settings"
             onRightPress={() =>
               navigation.navigate("Settings", { screen: "settings" })
@@ -331,7 +331,7 @@ export default function UserProfileScreen(props?: any) {
         </View>
       )}
 
-      <View style={{ flexDirection: "row", paddingHorizontal: spacing[5] }}>
+      <View style={{ flexDirection: "row", paddingHorizontal: spacing[3] }}>
 
 
         {user ? (

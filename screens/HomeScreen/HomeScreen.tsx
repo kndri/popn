@@ -31,8 +31,8 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
 		<Screen style={styles.CONTAINER}>
 			<Header
 				headerTx="Home"
-				leftIcon="profile"
-				onLeftPress={() => navigation.navigate('UserProfile')}
+				leftIcon="message"
+				onLeftPress={() => navigation.navigate('Message')}
 				rightIcon="search"
 				onRightPress={() => navigation.navigate('UserSearch')}
 			/>
