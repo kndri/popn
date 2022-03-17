@@ -47,15 +47,12 @@ const RIGHT_SIDE_POST: ViewStyle = {
 const INTERACTIONS: ViewStyle = {
   display: "flex",
   flexDirection: "row",
-  // justifyContent: "space-between",
+  alignItems: "center",
 };
 const INTERACTIONS_BUTTONS: ViewStyle = {
   display: "flex",
   flexDirection: "row",
   backgroundColor: "transparent",
-  alignContent: "flex-start",
-  justifyContent: "space-between",
-  flex: 1,
 };
 
 const BUTTON_TEXT: TextStyle = {
@@ -176,6 +173,7 @@ const Post = ({ post, fetchPosts }) => {
               height: 40,
               width: 40,
               marginRight: 5,
+              borderRadius: 100,
               // flex: 1,
             }}
           />
@@ -226,14 +224,14 @@ const Post = ({ post, fetchPosts }) => {
               <Image source={seen} />
               <Text style={BUTTON_TEXT}>{item.seen} </Text>
             </Button> */}
-            <Button
+            {/* <Button
               style={INTERACTIONS_BUTTONS}
               // onPress={() =>
               //   navigation.navigate("Settings", { screen: "settings" })
               // }
             >
               <Image source={share} />
-            </Button>
+            </Button> */}
           </View>
         </View>
         <Tooltip

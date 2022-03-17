@@ -16,10 +16,16 @@ const Feed = ({ post }) => {
         console.error(error)
       );
 
+      postData.sort((a, b) => {
+        return b.createdAt.localeCompare(
+          a.createdAt
+        );
+      });
+
       setPosts(postData);
     } catch (e) {
       console.log(e);
-    } 
+    }
   };
 
   useEffect(() => {

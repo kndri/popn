@@ -299,11 +299,9 @@ export default function UserProfileScreen(props?: any) {
           <Header
             headerTx="Profile"
             leftIcon="message"
-            onLeftPress={() => navigation.navigate("Message")}
             rightIcon="settings"
-            onRightPress={() =>
-              navigation.navigate("Settings", { screen: "settings" })
-            }
+            onLeftPress={() => navigation.navigate("Message")}
+            onRightPress={() => navigation.navigate("Settings")}
           />
         ) : (
           <Header
@@ -349,12 +347,7 @@ export default function UserProfileScreen(props?: any) {
               preset="primary" />
           </>
         ) : (
-          <Button
-            style={{ width: '100%', height: 50, borderRadius: 4, }}
-            text="Edit Profile"
-            preset="primary"
-          // onPress={() => navigation.navigate("")}
-          />
+          null
         )}
       </View>
 

@@ -24,6 +24,8 @@ import ForgotPasswordScreen from "../screens/ForgotPasswordScreen/ForgotPassword
 import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
 import UserProfileScreen from "../screens/UserProfileScreen/UserProfileScreen";
 import ChangeEmailScreen from "../screens/ChangeEmailScreen/ChangeEmailScreen";
+import ChangeUsernameScreen from "../screens/ChangeUsernameScreen/ChangeUsernameScreen";
+import ChangeProfileImageScreen from "../screens/ChangeProfileImageScreen/ChangeProfileImageScreen";
 import EmailVerificationCodeScreen from "../screens/EmailVerificationCodeScreen/EmailVerificationCodeScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen/ChangePasswordScreen";
 import MessageRoomScreen from "../screens/MessageRoomScreen/MessageRoomScreen";
@@ -131,14 +133,10 @@ const SettingsNavigator = () => (
   >
     <settingStack.Screen name="settings" component={SettingsScreen} />
     <settingStack.Screen name="changeEmail" component={ChangeEmailScreen} />
-    <settingStack.Screen
-      name="verifyEmail"
-      component={EmailVerificationCodeScreen}
-    />
-    <settingStack.Screen
-      name="changePassword"
-      component={ChangePasswordScreen}
-    />
+    <settingStack.Screen name="verifyEmail" component={EmailVerificationCodeScreen} />
+    <settingStack.Screen name="changePassword" component={ChangePasswordScreen} />
+    <settingStack.Screen name="changeUsername" component={ChangeUsernameScreen} />
+    <settingStack.Screen name="changeProfileImage" component={ChangeProfileImageScreen} />
   </settingStack.Navigator>
 );
 

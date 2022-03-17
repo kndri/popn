@@ -58,6 +58,8 @@ export type SettingsStackParamList = {
   changeEmail: undefined;
   changePassword: undefined;
   verifyEmail: undefined;
+  changeUsername: undefined;
+  changeProfileImage: undefined;
 };
 
 export interface Sneaker {

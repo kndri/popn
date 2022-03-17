@@ -31,6 +31,16 @@ const settings = [
     pageSrc: "changePassword",
     name: "Password",
   },
+  {
+    id: "3",
+    pageSrc: "changeUsername",
+    name: "Username",
+  },
+  {
+    id: "4",
+    pageSrc: "changeProfileImage",
+    name: "Profile Picture",
+  },
 ];
 
 const about = [
@@ -59,7 +69,7 @@ const actions = [
   },
 ];
 
-interface SettingsProps {}
+interface SettingsProps { }
 const SettingsScreen: FC<SettingsProps> = () => {
   const { signOut } = useAuth();
   const navigation = useNavigation();
