@@ -22,6 +22,7 @@ import WelcomeToPopn from "../screens/WelcomeToPopn/WelcomeToPopn";
 import SignInScreen from "../screens/SignInScreen/SignInScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen/ForgotPasswordScreen";
 import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
+import ProfileScreen from "../screens/ProfileScreen/ProfileScreen";
 import UserProfileScreen from "../screens/UserProfileScreen/UserProfileScreen";
 import ChangeEmailScreen from "../screens/ChangeEmailScreen/ChangeEmailScreen";
 import ChangeUsernameScreen from "../screens/ChangeUsernameScreen/ChangeUsernameScreen";
@@ -208,6 +209,11 @@ function RootNavigator() {
             component={UserSearchScreen}
             options={{ headerShown: false }}
           />
+                    <Stack.Screen
+            name="UserProfile"
+            component={UserProfileScreen}
+            options={{ headerShown: false }}
+          />
         </>
       ) : (
         <Stack.Screen
@@ -252,8 +258,8 @@ function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="UserProfile"
-        component={UserProfileScreen}
+        name="Profile"
+        component={ProfileScreen}
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => (

@@ -2,38 +2,47 @@ import * as React from "react";
 import {
   View,
   Image,
+  Alert,
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation, CommonActions } from "@react-navigation/native";
 
-import { spacing } from "../../theme";
+import { color, spacing } from "../../theme";
 import { Button, Screen, Text, Header } from "../../components";
 import {
   getSneakersFromUser,
   checkLoggedUser,
+  deleteUserSneaker,
   getUserFromDb,
 } from "../../aws-functions/aws-functions";
 
+// NOTE: This should be refactored
+import { API, Auth, graphqlOperation } from "aws-amplify";
+import { createChatRoom, createChatRoomUser } from "../../src/graphql/mutations";
+import NewPostButton from "../../components/new-post-button";
 
-import styles from "./Styles";
+import styles from "./styles";
 
 //required images
 const messageIcon = require("../../assets/images/message-button.png");
 const verified = require("../../assets/images/Verified.png");
 
-export default function UserProfileScreen(props?: any) {
-  const userID = props.route.params;
+export default function ProfileScreen() {
   const navigation = useNavigation();
   const [collection, setCollection] = React.useState<any>([]);
   const [username, setUsername] = React.useState("");
   const [profileImage, setprofileImage] = React.useState("");
   const [user, setUser] = React.useState<any>();
   const [selection, setSelection] = React.useState(1);
+  const [isMainUser, setIsMainUser] = React.useState(true);
   const isFocused = useIsFocused();
 
   const getSneakers = async () => {
     const sneakerlist = await getSneakersFromUser();
+    const user = await checkLoggedUser();
+    setUsername(user.attributes.preferred_username);
+    setprofileImage(user.attributes["custom:blob"]);
     setCollection(sneakerlist);
   };
 
@@ -44,15 +53,46 @@ export default function UserProfileScreen(props?: any) {
   };
 
   const check = async () => {
-      getUserData();
+    const currentUser = await checkLoggedUser();
+      getSneakers();
+      setIsMainUser(true);
   };
 
   React.useEffect(() => {
+    console.log('profile pressed');
     check();
+    return () => {
+      navigation.dispatch({
+        ...CommonActions.setParams({}),
+      });
+    }
   }, [isFocused]);
+
+  // Alerts when long pressed on shoe items
+  const createDeleteAlert = (shoeID) =>
+    Alert.alert(
+      "Delete Shoe",
+      "Are you sure you want to delete this Shoe? If this is a verified shoe you will need to reverify the shoe through check check",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            deleteUserSneaker(shoeID).then(() => getSneakers());
+          },
+        },
+      ]
+    );
 
   const renderSneaker = ({ item }) => (
     <TouchableOpacity
+      onLongPress={() => {
+          createDeleteAlert(item.id);
+      }}
       onPress={() => {
         navigation.navigate("ShoeDetails", { shoeID: item.id });
       }}
@@ -140,7 +180,13 @@ export default function UserProfileScreen(props?: any) {
           <Text
             style={styles.TEXTCENTER}
             preset="bold"
-            text="Collection is empty."
+            text="Your collection is empty."
+          />
+          <Button
+            style={{ marginTop: 20 }}
+            text="Start Collecting"
+            preset="primary"
+            onPress={() => navigation.navigate("Claim")}
           />
         </>
       );
@@ -153,7 +199,6 @@ export default function UserProfileScreen(props?: any) {
           renderEmptyCollection()
         ) : (
           <View style={styles.DATA_CONTAINER}>
-            {console.log('collection: ', collection)}
             <FlatList
               data={collection}
               renderItem={renderSneaker}
@@ -170,15 +215,79 @@ export default function UserProfileScreen(props?: any) {
     );
   };
 
+  const onClick = async () => {
+    //fetch all the chatrooms that the current user is in 
+
+
+    // if the currentUser already has a chatroom with the person they're trying to message,
+    // then just navigate to that existing chatroom
+
+    //else create a new chatroom 
+    try {
+      //  1. Create a new Chat Room
+      const newChatRoomData = await API.graphql(
+        graphqlOperation(
+          createChatRoom, {
+          input: {
+            lastMessageID: Math.round(Math.random() * 1000000)
+          }
+        }
+        )
+      )
+
+      if (!newChatRoomData.data) {
+        console.log(" Failed to create a chat room");
+        return;
+      }
+
+      const newChatRoom = newChatRoomData.data.createChatRoom;
+
+      // 2. Add `user` to the Chat Room
+      await API.graphql(
+        graphqlOperation(
+          createChatRoomUser, {
+          input: {
+            userID: user.id,
+            chatRoomID: newChatRoom.id,
+          }
+        }
+        )
+      )
+
+      //  3. Add authenticated user to the Chat Room
+      const userInfo = await Auth.currentAuthenticatedUser();
+      await API.graphql(
+        graphqlOperation(
+          createChatRoomUser, {
+          input: {
+            userID: userInfo.attributes.sub,
+            chatRoomID: newChatRoom.id,
+          }
+        }
+        )
+      )
+
+      navigation.navigate('NewMessageRoom', {
+        id: newChatRoom.id,
+        name: user.username,
+      })
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <Screen style={styles.CONTAINER}>
       <View style={styles.PROFILE_HEADER}>
           <Header
             headerTx="Profile"
-            leftIcon="back"
-            onLeftPress={() => navigation.goBack()}
+            leftIcon="message"
+            rightIcon="settings"
+            onLeftPress={() => navigation.navigate("Message")}
+            onRightPress={() => navigation.navigate("Settings")}
           />
+        
       </View>
       {user ? (
         <View style={styles.PROFILE_DATA}>
@@ -200,12 +309,6 @@ export default function UserProfileScreen(props?: any) {
 
       <View style={{ flexDirection: "row", paddingHorizontal: spacing[3] }}>
 
-
-            <Button
-              style={{ width: "100%", height: 50, borderRadius: 4, marginLeft: 10 }}
-              text="Follow"
-              preset="primary" />
-     
       </View>
 
       <View style={styles.COLLECTION_CONTAINER}>
@@ -276,6 +379,7 @@ export default function UserProfileScreen(props?: any) {
               : null}
         </View>
       </View>
+      <NewPostButton />
     </Screen>
   );
 }
