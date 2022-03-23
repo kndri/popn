@@ -1,131 +1,209 @@
 type User @model {
-  id: ID!
-  age: String!
-  username: String!
-  email: String!
-  avatarImageURL: String!
-  sneakers: [Sneaker] @connection(keyName: "byUser", fields: ["id"])
-  posts: [Post] @connection(keyName: "byUser", fields: ["id"])
-  following: Int
-  follower: Int
-  status: String
-  chatRoomUser: [ChatRoomUser] @connection(keyName: "byUser", fields: ["id"])
+	id: ID!
+	age: String!
+	username: String!
+	email: String!
+	avatarImageURL: String!
+	sneakers: [Sneaker] @connection(keyName: "byUser", fields: ["id"])
+	soldSneakers: [SoldSneaker] @connection(keyName: "byUser", fields: ["id"])
+	posts: [Post] @connection(keyName: "byUser", fields: ["id"])
+	following: [Following] @connection(keyName: "byUser", fields: ["id"])
+	follower: [Followers] @connection(keyName: "byUser", fields: ["id"])
+	status: String
+	chatRoomUser: [ChatRoomUser] @connection(keyName: "byUser", fields: ["id"])
+}
+
+type Following
+	@model
+	@key(name: "byUser", fields: ["mainUserID"], queryField: "followingByUser") {
+	id: ID!
+	secondUserID: ID!
+	mainUserID: ID!
+	user: User! @connection(fields: ["mainUserID"])
+}
+type Followers
+	@model
+	@key(
+		name: "byUser"
+		fields: ["secondUserID"]
+		queryField: "followersByUser"
+	) {
+	id: ID!
+	secondUserID: ID!
+	mainUserID: ID!
+	user: User! @connection(fields: ["secondUserID"])
 }
 type ChatRoomUser
-  @model
-  @key(name: "byUser", fields: ["userID", "chatRoomID"])
-  @key(name: "byChatRoom", fields: ["chatRoomID", "userID"]) {
-  id: ID!
-  userID: ID!
-  chatRoomID: ID!
-  user: User @connection(fields: ["userID"])
-  chatRoom: ChatRoom @connection(fields: ["chatRoomID"])
+	@model
+	@key(name: "byUser", fields: ["userID", "chatRoomID"])
+	@key(name: "byChatRoom", fields: ["chatRoomID", "userID"]) {
+	id: ID!
+	userID: ID!
+	chatRoomID: ID!
+	user: User @connection(fields: ["userID"])
+	chatRoom: ChatRoom @connection(fields: ["chatRoomID"])
 }
 type ChatRoom @model {
-  id: ID!
-  chatRoomUsers: [ChatRoomUser]
-    @connection(keyName: "byChatRoom", fields: ["id"])
-  messages: [Message] @connection(keyName: "byChatRoom", fields: ["id"])
-  lastMessageID: ID!
-  lastMessage: Message @connection(fields: ["lastMessageID"])
+	id: ID!
+	chatRoomUsers: [ChatRoomUser]
+		@connection(keyName: "byChatRoom", fields: ["id"])
+	messages: [Message] @connection(keyName: "byChatRoom", fields: ["id"])
+	lastMessageID: ID!
+	lastMessage: Message @connection(fields: ["lastMessageID"])
 }
 type Message
-  @model
-  @key(
-    name: "byChatRoom"
-    fields: ["chatRoomID", "createdAt"]
-    queryField: "messagesByChatRoom"
-  ) {
-  id: ID!
-  createdAt: String
-  text: String!
-  userID: ID!
-  chatRoomID: ID!
-  user: User @connection(fields: ["userID"])
-  chatRoom: ChatRoom @connection(fields: ["chatRoomID"])
+	@model
+	@key(
+		name: "byChatRoom"
+		fields: ["chatRoomID", "createdAt"]
+		queryField: "messagesByChatRoom"
+	) {
+	id: ID!
+	createdAt: String
+	text: String!
+	userID: ID!
+	chatRoomID: ID!
+	user: User @connection(fields: ["userID"])
+	chatRoom: ChatRoom @connection(fields: ["chatRoomID"])
 }
 type Sneaker
-  @model
-  @key(
-    name: "byUser"
-    fields: ["userID", "createdAt"]
-    queryField: "sneakerByUser"
-  ) {
-  id: ID!
-  brand: String!
-  primaryName: String!
-  secondaryName: String!
-  image: String!
-  userID: ID!
-  user: User @connection(fields: ["userID"])
-  claim: [Claim] @connection(keyName: "bySneaker", fields: ["id"])
-  createdAt: String
+	@model
+	@key(
+		name: "byUser"
+		fields: ["userID", "createdAt"]
+		queryField: "sneakerByUser"
+	) {
+	id: ID!
+	brand: String!
+	primaryName: String!
+	secondaryName: String!
+	image: String!
+	userID: ID!
+	user: User @connection(fields: ["userID"])
+	claim: [Claim] @connection(keyName: "bySneaker", fields: ["id"])
+	createdAt: String
+}
+type SoldSneaker
+	@model
+	@key(name: "byUser", fields: ["userID"], queryField: "SoldItemByUser") {
+	id: ID!
+	brand: String!
+	primaryName: String!
+	secondaryName: String!
+	image: String!
+	userID: ID!
+	user: User @connection(fields: ["userID"])
+	createdAt: String
 }
 
 type Claim @model @key(name: "bySneaker", fields: ["sneakerID", "userID"]) {
-  id: ID!
-  userID: ID!
-  sneakerID: ID!
-  user: User! @connection(fields: ["userID"])
-  sneaker: Sneaker! @connection(fields: ["sneakerID"])
-  status: ClaimStatus!
-  refNumber: String!
-  claimMessage: String
-  createdAt: String
-}
-
-enum ClaimStatus {
-  verified
-  pending
-  denied
+	id: ID!
+	userID: ID!
+	sneakerID: ID!
+	user: User! @connection(fields: ["userID"])
+	sneaker: Sneaker! @connection(fields: ["sneakerID"])
+	status: ClaimStatus!
+	refNumber: String!
+	claimMessage: String
+	createdAt: String
 }
 
 type Post
-  @model
-  @key(
-    name: "byUser"
-    fields: ["userID", "createdAt"]
-    queryField: "postByUser"
-  ) {
-  id: ID!
-  userID: ID!
-  description: String
-  user: User @connection(fields: ["userID"])
-  likes: [Like] @connection(keyName: "byPost", fields: ["id"])
-  comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
-  createdAt: String
+	@model
+	@key(
+		name: "byUser"
+		fields: ["userID", "createdAt"]
+		queryField: "postByUser"
+	) {
+	id: ID!
+	userID: ID!
+	description: String
+	user: User @connection(fields: ["userID"])
+	likes: [Like] @connection(keyName: "byPost", fields: ["id"])
+	comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
+	createdAt: String
 }
 type Comment
-  @model
-  @key(
-    name: "byUser"
-    fields: ["userID", "postID", "createdAt"]
-    queryField: "commentByUser"
-  )
-  @key(name: "byPost", fields: ["postID", "userID", "createdAt"]) {
-  id: ID!
-  text: String!
-  userID: ID!
-  postID: ID!
-  user: User @connection(fields: ["userID"])
-  post: Post @connection(fields: ["postID"])
-  createdAt: String
+	@model
+	@key(
+		name: "byUser"
+		fields: ["userID", "postID", "createdAt"]
+		queryField: "commentByUser"
+	)
+	@key(name: "byPost", fields: ["postID", "userID", "createdAt"]) {
+	id: ID!
+	text: String!
+	userID: ID!
+	postID: ID!
+	user: User @connection(fields: ["userID"])
+	post: Post @connection(fields: ["postID"])
+	createdAt: String
 }
 type Like
-  @model
-  @key(name: "byUser", fields: ["userID", "postID"])
-  @key(name: "byPost", fields: ["postID", "userID"]) {
-  id: ID!
-  userID: ID!
-  postID: ID!
-  user: User! @connection(fields: ["userID"])
-  post: Post! @connection(fields: ["postID"])
+	@model
+	@key(name: "byUser", fields: ["userID", "postID"])
+	@key(name: "byPost", fields: ["postID", "userID"]) {
+	id: ID!
+	userID: ID!
+	postID: ID!
+	user: User! @connection(fields: ["userID"])
+	post: Post! @connection(fields: ["postID"])
+}
+type ListedItem
+	@model
+	@key(name: "byUser", fields: ["userID"], queryField: "listedItemByUser")
+	@key(
+		name: "byZipCode"
+		fields: ["zipCode"]
+		queryField: "listedItemByZipCode"
+	)
+	@key(name: "byTag", fields: ["tag"], queryField: "listedItemByTag")
+	@key(name: "byPrice", fields: ["price"], queryField: "listedItemByPrice")
+	@key(name: "bySize", fields: ["size"], queryField: "listedItemBySize")
+	@key(
+		name: "byItemSold"
+		fields: ["itemSold"]
+		queryField: "listedItemByItemSold"
+	)
+	@key(
+		name: "byCondition"
+		fields: ["condition"]
+		queryField: "listedItemByCondition"
+	) {
+	id: ID!
+	sneakerID: ID!
+	sneakerData: Sneaker! @connection(fields: ["sneakerID"])
+	zipCode: String!
+	images: [String]!
+	size: String!
+	condition: String!
+	price: String!
+	tag: Tag!
+	description: String
+	userID: ID!
+	user: User! @connection(fields: ["userID"])
+	prevOwners: [String]
+	createdAt: String
 }
 
 type SneakerStore @model {
-  id: ID!
-  brand: String!
-  primary_name: String!
-  secondary_name: String!
-  image_url: String!
+	id: ID!
+	brand: String!
+	primary_name: String!
+	secondary_name: String!
+	image_url: String!
+}
+
+enum ClaimStatus {
+	verified
+	pending
+	denied
+}
+enum Tag {
+	Adidas
+	Nike
+	Puma
+	Converse
+	Jordans
+	Yeezy
 }

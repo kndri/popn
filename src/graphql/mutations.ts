@@ -36,8 +36,26 @@ export const createUser = /* GraphQL */ `
         }
         nextToken
       }
-      following
-      follower
+      following {
+        items {
+          id
+          secondUserID
+          mainUserID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      follower {
+        items {
+          id
+          secondUserID
+          mainUserID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       status
       chatRoomUser {
         items {
@@ -88,8 +106,26 @@ export const updateUser = /* GraphQL */ `
         }
         nextToken
       }
-      following
-      follower
+      following {
+        items {
+          id
+          secondUserID
+          mainUserID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      follower {
+        items {
+          id
+          secondUserID
+          mainUserID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       status
       chatRoomUser {
         items {
@@ -140,8 +176,26 @@ export const deleteUser = /* GraphQL */ `
         }
         nextToken
       }
-      following
-      follower
+      following {
+        items {
+          id
+          secondUserID
+          mainUserID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      follower {
+        items {
+          id
+          secondUserID
+          mainUserID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       status
       chatRoomUser {
         items {
@@ -152,6 +206,240 @@ export const deleteUser = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createFollowing = /* GraphQL */ `
+  mutation CreateFollowing(
+    $input: CreateFollowingInput!
+    $condition: ModelFollowingConditionInput
+  ) {
+    createFollowing(input: $input, condition: $condition) {
+      id
+      secondUserID
+      mainUserID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateFollowing = /* GraphQL */ `
+  mutation UpdateFollowing(
+    $input: UpdateFollowingInput!
+    $condition: ModelFollowingConditionInput
+  ) {
+    updateFollowing(input: $input, condition: $condition) {
+      id
+      secondUserID
+      mainUserID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteFollowing = /* GraphQL */ `
+  mutation DeleteFollowing(
+    $input: DeleteFollowingInput!
+    $condition: ModelFollowingConditionInput
+  ) {
+    deleteFollowing(input: $input, condition: $condition) {
+      id
+      secondUserID
+      mainUserID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createFollowers = /* GraphQL */ `
+  mutation CreateFollowers(
+    $input: CreateFollowersInput!
+    $condition: ModelFollowersConditionInput
+  ) {
+    createFollowers(input: $input, condition: $condition) {
+      id
+      secondUserID
+      mainUserID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateFollowers = /* GraphQL */ `
+  mutation UpdateFollowers(
+    $input: UpdateFollowersInput!
+    $condition: ModelFollowersConditionInput
+  ) {
+    updateFollowers(input: $input, condition: $condition) {
+      id
+      secondUserID
+      mainUserID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteFollowers = /* GraphQL */ `
+  mutation DeleteFollowers(
+    $input: DeleteFollowersInput!
+    $condition: ModelFollowersConditionInput
+  ) {
+    deleteFollowers(input: $input, condition: $condition) {
+      id
+      secondUserID
+      mainUserID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -179,8 +467,12 @@ export const createChatRoomUser = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -234,8 +526,12 @@ export const updateChatRoomUser = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -289,8 +585,12 @@ export const deleteChatRoomUser = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -364,8 +664,6 @@ export const createChatRoom = /* GraphQL */ `
           username
           email
           avatarImageURL
-          following
-          follower
           status
           createdAt
           updatedAt
@@ -424,8 +722,6 @@ export const updateChatRoom = /* GraphQL */ `
           username
           email
           avatarImageURL
-          following
-          follower
           status
           createdAt
           updatedAt
@@ -484,8 +780,6 @@ export const deleteChatRoom = /* GraphQL */ `
           username
           email
           avatarImageURL
-          following
-          follower
           status
           createdAt
           updatedAt
@@ -526,8 +820,12 @@ export const createMessage = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -582,8 +880,12 @@ export const updateMessage = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -638,8 +940,12 @@ export const deleteMessage = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -695,8 +1001,12 @@ export const createSneaker = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -746,8 +1056,12 @@ export const updateSneaker = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -797,8 +1111,12 @@ export const deleteSneaker = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -839,9 +1157,22 @@ export const createClaim = /* GraphQL */ `
         username
         email
         avatarImageURL
-        following
-        follower
+        sneakers {
+          nextToken
+        }
+        posts {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
+        chatRoomUser {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -858,11 +1189,12 @@ export const createClaim = /* GraphQL */ `
           username
           email
           avatarImageURL
-          following
-          follower
           status
           createdAt
           updatedAt
+        }
+        claim {
+          nextToken
         }
         createdAt
         updatedAt
@@ -896,8 +1228,12 @@ export const updateClaim = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -918,8 +1254,6 @@ export const updateClaim = /* GraphQL */ `
           username
           email
           avatarImageURL
-          following
-          follower
           status
           createdAt
           updatedAt
@@ -959,8 +1293,12 @@ export const deleteClaim = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -981,8 +1319,6 @@ export const deleteClaim = /* GraphQL */ `
           username
           email
           avatarImageURL
-          following
-          follower
           status
           createdAt
           updatedAt
@@ -1022,8 +1358,12 @@ export const createPost = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -1078,8 +1418,12 @@ export const updatePost = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -1134,8 +1478,12 @@ export const deletePost = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -1191,8 +1539,12 @@ export const createComment = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -1210,8 +1562,6 @@ export const createComment = /* GraphQL */ `
           username
           email
           avatarImageURL
-          following
-          follower
           status
           createdAt
           updatedAt
@@ -1252,8 +1602,12 @@ export const updateComment = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -1271,8 +1625,6 @@ export const updateComment = /* GraphQL */ `
           username
           email
           avatarImageURL
-          following
-          follower
           status
           createdAt
           updatedAt
@@ -1313,8 +1665,12 @@ export const deleteComment = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -1332,8 +1688,6 @@ export const deleteComment = /* GraphQL */ `
           username
           email
           avatarImageURL
-          following
-          follower
           status
           createdAt
           updatedAt
@@ -1373,8 +1727,12 @@ export const createLike = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -1392,8 +1750,6 @@ export const createLike = /* GraphQL */ `
           username
           email
           avatarImageURL
-          following
-          follower
           status
           createdAt
           updatedAt
@@ -1433,8 +1789,12 @@ export const updateLike = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -1452,8 +1812,6 @@ export const updateLike = /* GraphQL */ `
           username
           email
           avatarImageURL
-          following
-          follower
           status
           createdAt
           updatedAt
@@ -1493,8 +1851,12 @@ export const deleteLike = /* GraphQL */ `
         posts {
           nextToken
         }
-        following
-        follower
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
         status
         chatRoomUser {
           nextToken
@@ -1512,8 +1874,6 @@ export const deleteLike = /* GraphQL */ `
           username
           email
           avatarImageURL
-          following
-          follower
           status
           createdAt
           updatedAt
