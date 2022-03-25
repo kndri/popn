@@ -219,12 +219,10 @@ export default function ClaimScreen() {
     <Screen style={styles.CONTAINER}>
       <Header
         headerTx="Claim"
-        leftIcon="message"
-        onLeftPress={() => navigation.navigate("Message")}
       />
 
       <View style={styles.CLAIM_SEARCH}>
-        <Image source={search_icon} style={{ marginLeft: 17 }} />
+        <Image source={search_icon} style={{ marginLeft: 17, width: 16, height: 16, }} />
         <TextInput
           style={{
             width: "100%",

@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName } from "react-native";
+import { ColorSchemeName, Image } from "react-native";
 import HomeScreen from "../screens/HomeScreen/HomeScreen";
 import ClaimScreen from "../screens/ClaimScreen/ClaimScreen";
 import MessageScreen from "../screens/MessageScreen/MessageScreen";
@@ -169,11 +169,11 @@ function RootNavigator() {
             component={SettingsNavigator}
             options={{ headerShown: false }}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="Message"
             component={MessageScreen}
             options={{ headerShown: false }}
-          />
+          /> */}
           <Stack.Screen
             name="ShoeDetails"
             component={ShoeDetailsScreen}
@@ -209,7 +209,7 @@ function RootNavigator() {
             component={UserSearchScreen}
             options={{ headerShown: false }}
           />
-                    <Stack.Screen
+          <Stack.Screen
             name="UserProfile"
             component={UserProfileScreen}
             options={{ headerShown: false }}
@@ -244,26 +244,85 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
-        options={({ navigation }: RootTabScreenProps<"Home">) => ({
-          title: "Home",
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        })}
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ focused }) => (
+            <Image
+              source={
+                focused
+                  ? require('../assets/images/Home-focused.png')
+                  : require('../assets/images/Home.png')
+              }
+              style={{
+                width: 25,
+                height: 25,
+                borderRadius: 0,
+              }}
+            />
+          ),
+        }}
+      />
+
+      <BottomTab.Screen
+        name="Message"
+        component={MessageScreen}
+        options={{
+          title: 'Messages',
+          tabBarIcon: ({ focused }) => (
+            <Image
+              source={
+                focused
+                  ? require('../assets/images/messages-focused.png')
+                  : require('../assets/images/messages.png')
+              }
+              style={{
+                width: 25,
+                height: 25,
+                borderRadius: 0,
+              }}
+            />
+          ),
+        }}
       />
       <BottomTab.Screen
-        name="Claim"
+        name="Sell"
         component={ClaimScreen}
         options={{
-          title: "Claim",
-          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+          title: 'Sell',
+          tabBarIcon: ({ focused }) => (
+            <Image
+              source={
+                focused
+                  ? require('../assets/images/plus-focused.png')
+                  : require('../assets/images/plus.png')
+              }
+              style={{
+                width: 25,
+                height: 25,
+                borderRadius: 0,
+              }}
+            />
+          ),
         }}
       />
       <BottomTab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
-          title: "Profile",
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="user" color={color} />
+          title: 'Profile',
+          tabBarIcon: ({ focused }) => (
+            <Image
+              source={
+                focused
+                  ? require('../assets/images/Profile-focused.png')
+                  : require('../assets/images/Profile.png')
+              }
+              style={{
+                width: 25,
+                height: 25,
+                borderRadius: 0,
+              }}
+            />
           ),
         }}
       />
@@ -274,9 +333,9 @@ function BottomTabNavigator() {
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof Feather>["name"];
-  color: string;
-}) {
-  return <Feather size={20} style={{ marginBottom: -3 }} {...props} />;
-}
+// function TabBarIcon(props: {
+//   name: React.ComponentProps<typeof Feather>["name"];
+//   color: string;
+// }) {
+//   return <Feather size={20} style={{ marginBottom: -3 }} {...props} />;
+// }

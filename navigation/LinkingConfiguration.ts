@@ -20,9 +20,9 @@ const linking: LinkingOptions<RootStackParamList> = {
               Home: 'one',
             },
           },
-          Claim: {
+          Message: {
             screens: {
-              Claim: 'two',
+              Messages: 'two',
             },
           },
         },

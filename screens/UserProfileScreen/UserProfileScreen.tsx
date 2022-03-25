@@ -44,7 +44,7 @@ export default function UserProfileScreen(props?: any) {
   };
 
   const check = async () => {
-      getUserData();
+    getUserData();
   };
 
   React.useEffect(() => {
@@ -135,15 +135,15 @@ export default function UserProfileScreen(props?: any) {
   };
 
   const renderEmptyCollection = () => {
-      return (
-        <>
-          <Text
-            style={styles.TEXTCENTER}
-            preset="bold"
-            text="Collection is empty."
-          />
-        </>
-      );
+    return (
+      <>
+        <Text
+          style={styles.TEXTCENTER}
+          preset="bold"
+          text="Collection is empty."
+        />
+      </>
+    );
   };
 
   const renderCollection = () => {
@@ -174,11 +174,11 @@ export default function UserProfileScreen(props?: any) {
   return (
     <Screen style={styles.CONTAINER}>
       <View style={styles.PROFILE_HEADER}>
-          <Header
-            headerTx="Profile"
-            leftIcon="back"
-            onLeftPress={() => navigation.goBack()}
-          />
+        <Header
+          headerTx="Profile"
+          leftIcon="back"
+          onLeftPress={() => navigation.goBack()}
+        />
       </View>
       {user ? (
         <View style={styles.PROFILE_DATA}>
@@ -201,11 +201,11 @@ export default function UserProfileScreen(props?: any) {
       <View style={{ flexDirection: "row", paddingHorizontal: spacing[3] }}>
 
 
-            <Button
-              style={{ width: "100%", height: 50, borderRadius: 4, marginLeft: 10 }}
-              text="Follow"
-              preset="primary" />
-     
+        <Button
+          style={{ width: "100%", height: 50, borderRadius: 4, marginLeft: 10 }}
+          text="Follow"
+          preset="primary" />
+
       </View>
 
       <View style={styles.COLLECTION_CONTAINER}>

@@ -3,6 +3,7 @@ import {
   View,
   ViewStyle,
   TextStyle,
+  StyleSheet,
   TouchableOpacity,
 } from "react-native";
 import { color, spacing } from "../../theme";
@@ -11,12 +12,22 @@ import { SwipeListView } from "react-native-swipe-list-view";
 import { Screen, Text, NewMessageButton, Header } from "../../components";
 import MessageChatListItem from "../../components/message-chat-list-item";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { API, graphqlOperation, Auth } from "aws-amplify";
+import { API, graphqlOperation, Auth, navItem } from "aws-amplify";
 import { getUser, getChatRoom } from "../../src/graphql/queries";
 import { deleteChatRoomUser } from "../../src/graphql/mutations";
 
 import styles from "./Styles";
+// Styles
+const CONTAINER: ViewStyle = {
+  backgroundColor: color.transparent,
+  flex: 1,
+};
 
+const TEXTCENTER: TextStyle = {
+  textAlign: "center",
+  alignItems: "center",
+  textAlignVertical: "center",
+};
 
 export default function MessageScreen() {
   const navigation = useNavigation();
@@ -28,7 +39,7 @@ export default function MessageScreen() {
 
   React.useEffect(() => {
     fetchChatRooms();
-  }, [isFocused, removeUserFromChatRoom()]);
+  }, [isFocused]);
 
   const fetchChatRooms = async () => {
     try {
@@ -50,13 +61,10 @@ export default function MessageScreen() {
         chatRoomsArr.map((room) => {
           room.chatRoom.chatRoomUsers.items.map((item) => {
             if (item.user.username) {
-              if (!excludedUsers.includes(item.user.username)) {
-                setExcludedUsers((excludedUsers) => [
-                  //make exluded users unique before reassigning
-                  ...new Set(excludedUsers),
-                  item.user.username,
-                ]);
-              }
+              setExcludedUsers((excludedUsers) => [
+                ...excludedUsers,
+                item.user.username,
+              ]);
             }
           });
         });
@@ -75,12 +83,9 @@ export default function MessageScreen() {
     } catch (e) {
       console.log(e);
     }
-    console.log('ran')
-
   };
 
-  // const uniqueExcludedUsers = [...new Set(excludedUsers)];
-
+  const uniqueExcludedUsers = [...new Set(excludedUsers)];
 
   Array(chatRooms.length)
     .fill("")
@@ -153,8 +158,6 @@ export default function MessageScreen() {
         <Header
           style={{ paddingHorizontal: spacing[3] }}
           headerTx="Messages"
-          leftIcon="back"
-          onLeftPress={() => navigation.goBack()}
         />
         {chatRooms.length === 0 ? (
           <View style={{ height: "100%", justifyContent: "center" }}>
@@ -182,7 +185,7 @@ export default function MessageScreen() {
         )}
       </View>
       <NewMessageButton
-        excludedUsers={excludedUsers}
+        excludedUsers={uniqueExcludedUsers}
         currentUser={userData}
       />
     </Screen>

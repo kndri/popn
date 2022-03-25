@@ -1,5 +1,5 @@
 import React from "react"
-import { View, ViewStyle, ImageStyle} from "react-native"
+import { View, ViewStyle, ImageStyle } from "react-native"
 import { HeaderProps } from "./header.props"
 import { Button } from "../button/button"
 import { Text } from "../text/text"
@@ -18,7 +18,7 @@ const ROOT: ViewStyle = {
 
 const LEFT: ViewStyle = { width: 30 }
 const RIGHT: ViewStyle = { width: 30 }
-const ICON: ImageStyle = { height: 30, width: 30 }
+const ICON: ImageStyle = { height: 15, width: 15 }
 
 /**
  * Header that appears on many screens. Will hold navigation buttons and screen title.
