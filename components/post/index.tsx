@@ -67,7 +67,7 @@ const MODAL_CONTAINER: ViewStyle = {
 	backgroundColor: 'red',
 };
 
-const Post = ({ post, fetchPosts }) => {
+const ProductCard = ({ post }) => {
 	const navigation = useNavigation();
 	const [toolTipVisible, setToolTipVisible] = React.useState(false);
 	const [myLike, setMyLike] = React.useState<any>();
@@ -259,4 +259,4 @@ const Post = ({ post, fetchPosts }) => {
 	);
 };
 
-export default Post;
+export default ProductCard;
