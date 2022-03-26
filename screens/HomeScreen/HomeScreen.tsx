@@ -1,15 +1,41 @@
-import * as React from 'react';
-import { View } from 'react-native';
+import * as React from "react";
+import { View, TextInput, FlatList, TouchableOpacity, Modal, Pressable, } from "react-native";
+// import { SliderPicker } from 'react-native-slider-picker';
+import { Slider } from '@miblanchard/react-native-slider';
+import {
+	Button,
+	Screen,
+	Text,
+	AutoImage as Image,
+	Header,
+} from "../../components";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import {
+	addUserSneaker,
+	getSneakersFromUser,
+	getSneakersFromDB,
+} from "../../aws-functions/aws-functions";
+import { useToast } from "../../components/Toast";
 
-import { Screen, Header } from '../../components';
-import Feed from '../../components/feed';
-import NewPostButton from '../../components/new-post-button';
+import styles from "./Styles";
 
-import { API, graphqlOperation } from 'aws-amplify';
-import { listPosts } from '../../src/graphql/queries';
+const search_icon = require("../../assets/images/searchIcon.png");
+const location_icon = require("../../assets/images/zipcode-icon.png");
+const close_icon = require("../../assets/images/closeIcon.png");
+const right_icon = require("../../assets/images/rightArrowIcon.png");
 
-import { RootTabScreenProps } from '../../types';
-import styles from './Styles';
+export default function HomeScreen() {
+	const navigation = useNavigation();
+	const toast = useToast();
+	const [locationModalVisible, setLocationModalVisible] = React.useState(false);
+	const [zipCodeModalVisible, setZipCodeModalVisible] = React.useState(false);
+	const [distanceValue, setDistanceValue] = React.useState(30);
+	const [query, setQuery] = React.useState("");
+	const [zipCode, setZipCode] = React.useState("");
+	const [searchedArray, setSearchedArray] = React.useState<any>([]);
+	const [collection, setCollection] = React.useState<any>([]);
+	const [sneakerDb, setSneakerDb] = React.useState<any>([]);
+	const isFocused = useIsFocused();
 
 const shoeData = [
 	{
@@ -80,14 +106,18 @@ const shoeData = [
 export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
 	const [post, setPost] = React.useState<any>([]);
 
-	const fetchPosts = async () => {
-		const postData = await API.graphql(graphqlOperation(listPosts));
-		setPost(postData);
+		if (found) {
+			return true;
+		} else {
+			return false;
+		}
 	};
 
 	React.useEffect(() => {
-		fetchPosts();
-	}, []);
+		getSneakers();
+	}, [isFocused]);
+
+	React.useEffect(() => { }, [sneakerDb]);
 
 	// const renderTrending = () => {
 	// 	return <View>{<Feed post={post} />}</View>;

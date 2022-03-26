@@ -54,8 +54,8 @@ export default function ProfileScreen() {
 
   const check = async () => {
     const currentUser = await checkLoggedUser();
-      getSneakers();
-      setIsMainUser(true);
+    getSneakers();
+    setIsMainUser(true);
   };
 
   React.useEffect(() => {
@@ -91,7 +91,7 @@ export default function ProfileScreen() {
   const renderSneaker = ({ item }) => (
     <TouchableOpacity
       onLongPress={() => {
-          createDeleteAlert(item.id);
+        createDeleteAlert(item.id);
       }}
       onPress={() => {
         navigation.navigate("ShoeDetails", { shoeID: item.id });
@@ -175,21 +175,21 @@ export default function ProfileScreen() {
   };
 
   const renderEmptyCollection = () => {
-      return (
-        <>
-          <Text
-            style={styles.TEXTCENTER}
-            preset="bold"
-            text="Your collection is empty."
-          />
-          <Button
-            style={{ marginTop: 20 }}
-            text="Start Collecting"
-            preset="primary"
-            onPress={() => navigation.navigate("Claim")}
-          />
-        </>
-      );
+    return (
+      <>
+        <Text
+          style={styles.TEXTCENTER}
+          preset="bold"
+          text="Your collection is empty."
+        />
+        <Button
+          style={{ marginTop: 20 }}
+          text="Start Collecting"
+          preset="primary"
+          onPress={() => navigation.navigate("Claim")}
+        />
+      </>
+    );
   };
 
   const renderCollection = () => {
@@ -280,14 +280,12 @@ export default function ProfileScreen() {
   return (
     <Screen style={styles.CONTAINER}>
       <View style={styles.PROFILE_HEADER}>
-          <Header
-            headerTx="Profile"
-            leftIcon="message"
-            rightIcon="settings"
-            onLeftPress={() => navigation.navigate("Message")}
-            onRightPress={() => navigation.navigate("Settings")}
-          />
-        
+        <Header
+          headerTx="Profile"
+          rightIcon="settings"
+          onRightPress={() => navigation.navigate("Settings")}
+        />
+
       </View>
       {user ? (
         <View style={styles.PROFILE_DATA}>
