@@ -5,7 +5,7 @@ import { color, spacing } from "../../theme";
 export default StyleSheet.create({
   CONTAINER: {
     backgroundColor: color.transparent,
-    paddingHorizontal: spacing[3],
+    paddingHorizontal: spacing[5],
     flex: 1,
   },
   CLAIM_SEARCH: {

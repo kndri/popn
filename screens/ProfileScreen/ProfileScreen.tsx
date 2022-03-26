@@ -26,7 +26,7 @@ import styles from "./styles";
 
 //required images
 const messageIcon = require("../../assets/images/message-button.png");
-const verified = require("../../assets/images/Verified.png");
+const verified = require("../../assets/images/verified_badge.png");
 
 export default function ProfileScreen() {
   const navigation = useNavigation();

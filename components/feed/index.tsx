@@ -14,8 +14,12 @@ const Feed = ({ productData }) => {
 				keyExtractor={(item) => String(item.id)}
 				refreshing={loading}
 				numColumns={2}
+				columnWrapperStyle={{
+					justifyContent: 'space-between',
+					marginBottom: 15,
+				}}
 				contentContainerStyle={{
-					alignItems: 'center',
+					paddingBottom: 125,
 				}}
 			/>
 		</View>

@@ -9,9 +9,11 @@ export const ProductCard: React.FC<ProductCardProps> = (props): JSX.Element => {
 	const { product } = props;
 
 	return (
-		<View style={styles.CONTAINER}>
+		<View>
 			<View style={styles.CARD}>
-				<VerificationBage type="icon" />
+				<View style={styles.BADGE}>
+					<VerificationBage type='icon' />
+				</View>
 				<Image source={{ uri: product.image_url }} style={styles.PRODUCT} />
 			</View>
 			<View style={styles.CONTENT_CONTAINER}>

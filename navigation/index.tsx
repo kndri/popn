@@ -156,7 +156,7 @@ function RootNavigator() {
 
   return (
     <Stack.Navigator>
-      {session ? (
+      {authData ? (
         <>
           <Stack.Screen
             name="Root"
