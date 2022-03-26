@@ -42,7 +42,7 @@ import { boolean } from 'yup';
 
 //required images
 const messageIcon = require('../../assets/images/message-button.png');
-const verified = require('../../assets/images/Verified.png');
+const verified = require('../../assets/images/verified_badge.png');
 
 export default function UserProfileScreen(props?: any) {
 	const userID = props.route.params;
