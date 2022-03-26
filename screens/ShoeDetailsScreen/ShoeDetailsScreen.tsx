@@ -22,7 +22,7 @@ import {
 import styles from "./Styles";
 
 const example = require("../../assets/images/verify_example.png");
-const verified = require("../../assets/images/Verified.png");
+const verified = require("../../assets/images/verified_badge.png");
 
 const ShoeDetailsScreen = () => {
   const route = useRoute();
