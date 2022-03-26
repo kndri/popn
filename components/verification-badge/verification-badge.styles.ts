@@ -1,12 +1,12 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  FULLCONTAINER: {
+  FULL_CONTAINER: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  ICONCONTAINER: {
+  ICON_CONTAINER: {
     alignItems: 'flex-end',
     justifyContent: 'center'
   },
