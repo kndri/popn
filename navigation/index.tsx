@@ -41,6 +41,7 @@ import {
 import ResetPasswordScreen from "../screens/ResetPasswordScreen/ResetPasswordScreen";
 import { useAuth } from "../contexts/auth";
 import ShoeDetailsScreen from "../screens/ShoeDetailsScreen/ShoeDetailsScreen";
+import ListingDetailsScreen from "../screens/ListingDetailScreen/ListingDetailScreen";
 import ReferenceScreen from "../screens/ReferenceScreen/ReferenceScreen";
 import NewPostScreen from "../screens/NewPostScreen/NewPostScreen";
 import PostDetailsScreen from "../screens/PostDetailsScreen/PostDetailsScreen";
@@ -177,6 +178,11 @@ function RootNavigator() {
           <Stack.Screen
             name="ShoeDetails"
             component={ShoeDetailsScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ListingDetails"
+            component={ListingDetailsScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen

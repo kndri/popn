@@ -1,6 +1,5 @@
 import * as React from "react";
-import { View, TextInput, FlatList, TouchableOpacity, Modal, Pressable, } from "react-native";
-// import { SliderPicker } from 'react-native-slider-picker';
+import { View, TextInput, FlatList, TouchableOpacity, Modal, } from "react-native";
 import { Slider } from '@miblanchard/react-native-slider';
 import {
 	Button,
@@ -21,7 +20,6 @@ import styles from "./Styles";
 
 const search_icon = require("../../assets/images/searchIcon.png");
 const location_icon = require("../../assets/images/zipcode-icon.png");
-const close_icon = require("../../assets/images/closeIcon.png");
 const right_icon = require("../../assets/images/rightArrowIcon.png");
 
 export default function HomeScreen() {
@@ -95,130 +93,140 @@ export default function HomeScreen() {
 	const renderSneaker = ({ item }) => {
 		if (checkClaimed(item)) {
 			return (
-				<View
-					style={{
-						justifyContent: "space-evenly",
-						height: 150,
-						width: 150,
-						borderWidth: 1,
-						borderColor: "#EBEBEB",
-						borderRadius: 10,
-						marginBottom: 40,
-						marginHorizontal: 10,
-						opacity: 0.5,
-					}}
-				>
+				<TouchableOpacity onPress={() => {
+					navigation.navigate("ListingDetails");
+				}}>
 					<View
 						style={{
-							justifyContent: "flex-start",
-							alignItems: "flex-start",
-							marginLeft: 10,
-							marginTop: 10,
+							justifyContent: "space-evenly",
+							height: 150,
+							width: 150,
+							borderWidth: 1,
+							borderColor: "#EBEBEB",
+							borderRadius: 10,
+							marginBottom: 40,
+							marginHorizontal: 10,
+							opacity: 0.5,
 						}}
 					>
-						<Text
-							text={`${item.primary_name}`}
-							style={{ fontSize: 12, color: "#979797" }}
-						/>
-						<Text text={`${item.secondary_name}`} style={{ fontSize: 10 }} />
-					</View>
-					<View style={{ justifyContent: "center", alignItems: "center" }}>
-						<Image
-							source={{ uri: item.image_url }}
-							style={{ height: 81, width: 100, resizeMode: "contain" }}
-						/>
-					</View>
-					<View style={{ justifyContent: "center", alignItems: "center" }}>
-						<Button
-							preset="none"
-							disabled
+						<View
 							style={{
-								justifyContent: "center",
-								width: "70%",
-								height: 20,
-								paddingVertical: 2,
-								borderRadius: 10,
-								marginBottom: 15,
-							}}
-							onPress={() => {
-								addUserSneaker(item);
-
-								// then grey out the sneaker card
+								justifyContent: "flex-start",
+								alignItems: "flex-start",
+								marginLeft: 10,
+								marginTop: 10,
 							}}
 						>
 							<Text
-								preset="bold"
-								style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
+								text={`${item.primary_name}`}
+								style={{ fontSize: 12, color: "#979797" }}
+							/>
+							<Text text={`${item.secondary_name}`} style={{ fontSize: 10 }} />
+						</View>
+						<View style={{ justifyContent: "center", alignItems: "center" }}>
+							<Image
+								source={{ uri: item.image_url }}
+								style={{ height: 81, width: 100, resizeMode: "contain" }}
+							/>
+						</View>
+						<View style={{ justifyContent: "center", alignItems: "center" }}>
+							<Button
+								preset="none"
+								disabled
+								style={{
+									justifyContent: "center",
+									width: "70%",
+									height: 20,
+									paddingVertical: 2,
+									borderRadius: 10,
+									marginBottom: 15,
+								}}
+								onPress={() => {
+									addUserSneaker(item);
+
+									// then grey out the sneaker card
+								}}
 							>
-								Claimed
-							</Text>
-						</Button>
+								<Text
+									preset="bold"
+									style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
+								>
+									Claimed
+								</Text>
+							</Button>
+						</View>
 					</View>
-				</View>
+				</TouchableOpacity>
+
 			);
 		} else {
 			return (
-				<View
-					style={{
-						justifyContent: "space-evenly",
-						height: 150,
-						width: 150,
-						borderWidth: 1,
-						borderColor: "#EBEBEB",
-						borderRadius: 10,
-						marginBottom: 40,
-						marginHorizontal: 10,
-					}}
-				>
+				<TouchableOpacity onPress={() => {
+					navigation.navigate("ListingDetails", { shoeID: item.id });
+				}}>
 					<View
 						style={{
-							justifyContent: "flex-start",
-							alignItems: "flex-start",
-							marginLeft: 10,
-							marginTop: 10,
+							justifyContent: "space-evenly",
+							height: 150,
+							width: 150,
+							borderWidth: 1,
+							borderColor: "#EBEBEB",
+							borderRadius: 10,
+							marginBottom: 40,
+							marginHorizontal: 10,
 						}}
 					>
-						<Text
-							text={`${item.primary_name}`}
-							style={{ fontSize: 12, color: "#979797" }}
-						/>
-						<Text text={`${item.secondary_name}`} style={{ fontSize: 10 }} />
-					</View>
-					<View style={{ justifyContent: "center", alignItems: "center" }}>
-						<Image
-							source={{ uri: item.image_url }}
-							style={{ height: 81, width: 100, resizeMode: "contain" }}
-						/>
-					</View>
-					<View style={{ justifyContent: "center", alignItems: "center" }}>
-						<Button
-							preset="none"
+						<View
 							style={{
-								justifyContent: "center",
-								width: "70%",
-								height: 20,
-								paddingVertical: 2,
-								borderRadius: 10,
-								marginBottom: 15,
-							}}
-							onPress={() => {
-								addUserSneaker(item)
-									.then(() => {
-										toast.show(`Sneaker has been added to your showcase.`);
-										getSneakers();
-									})
-									.catch((error) => console.log(error));
+								justifyContent: "flex-start",
+								alignItems: "flex-start",
+								marginLeft: 10,
+								marginTop: 10,
 							}}
 						>
 							<Text
-								preset="bold"
-								style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
+								text={`${item.primary_name}`}
+								style={{ fontSize: 12, color: "#979797" }}
+							/>
+							<Text text={`${item.secondary_name}`} style={{ fontSize: 10 }} />
+						</View>
+						<View style={{ justifyContent: "center", alignItems: "center" }}>
+							<Image
+								source={{ uri: item.image_url }}
+								style={{ height: 81, width: 100, resizeMode: "contain" }}
+							/>
+						</View>
+						<View style={{ justifyContent: "center", alignItems: "center" }}>
+							<Button
+								preset="none"
+								style={{
+									justifyContent: "center",
+									width: "70%",
+									height: 20,
+									paddingVertical: 2,
+									borderRadius: 10,
+									marginBottom: 15,
+								}}
+								onPress={() => {
+									addUserSneaker(item)
+										.then(() => {
+											toast.show(`Sneaker has been added to your showcase.`);
+											getSneakers();
+										})
+										.catch((error) => console.log(error));
+								}}
 							>
-								Claim
-							</Text>
-						</Button>
+								<Text
+									preset="bold"
+									style={{ fontSize: 12, color: "white", fontWeight: "bold" }}
+								>
+									Claim
+								</Text>
+							</Button>
+						</View>
 					</View>
-				</View>
+				</TouchableOpacity>
+
 			);
 		}
 	};
@@ -237,16 +245,16 @@ export default function HomeScreen() {
 			>
 				<View style={styles.CENTERED_VIEW}>
 					<View style={styles.MODAL_VIEW}>
-						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Header headerTx="Location" rightIcon="close" onRightPress={() => setLocationModalVisible(!locationModalVisible)} />
-						</View>
+
+						<Header headerTx="Location" rightIcon="close" onRightPress={() => setLocationModalVisible(!locationModalVisible)} />
+
 
 						<View style={{ width: '100%', marginTop: 59, }}>
 							<Text preset="bold" >ZIP Code</Text>
 							<TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 13 }}
 								onPress={() => { setZipCodeModalVisible(!zipCodeModalVisible), setLocationModalVisible(!locationModalVisible) }}>
 								<Text preset="default" >Charlotte, NC, 28215</Text>
-								<Image source={right_icon} style={{ width: 14, height: 14, }} />
+								<Image source={right_icon} style={{ width: 12, height: 12, }} />
 							</TouchableOpacity>
 						</View>
 
@@ -285,9 +293,9 @@ export default function HomeScreen() {
 			>
 				<View style={styles.CENTERED_VIEW}>
 					<View style={styles.MODAL_VIEW}>
-						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Header headerTx="ZIP Code" rightIcon="close" onRightPress={() => { setLocationModalVisible(!locationModalVisible), setZipCodeModalVisible(!zipCodeModalVisible) }} />
-						</View>
+
+						<Header headerTx="ZIP Code" rightIcon="close" onRightPress={() => { setLocationModalVisible(!locationModalVisible), setZipCodeModalVisible(!zipCodeModalVisible) }} />
+
 
 						<View style={{ width: '100%', flexDirection: 'column', alignItems: 'center' }}>
 							<Text preset="bold" style={{ marginTop: 65 }}>Where are you searching?</Text>
@@ -304,10 +312,10 @@ export default function HomeScreen() {
 										width: 193,
 										height: 35,
 										borderWidth: 1,
-										paddingLeft: 10,
 										borderRadius: 5,
 										borderColor: "#FFFFFF",
 										backgroundColor: "white",
+										textAlign: 'center'
 									}}
 									value={zipCode}
 									autoCorrect={false}
