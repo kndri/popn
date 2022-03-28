@@ -31,8 +31,23 @@ export default StyleSheet.create({
         height: 400,
         width: "100%",
     },
+    AUTHENTICATED_HEADING: {
+        width: "100%",
+        justifyContent: 'flex-end',
+        flexDirection: 'row'
+    },
+    AUTHENTICATED_HEADING_BOX: {
+        flexDirection: 'row',
+        borderWidth: 2,
+        borderColor: 'black',
+        borderRadius: 5,
+        backgroundColor: 'white',
+        width: 131,
+        height: 35,
+        alignItems: 'center',
+    },
 
-    AUTHENTICATED_BOX: {
+    AUTHENTICATED_INFO_BOX: {
         marginTop: 30,
         paddingHorizontal: spacing[4],
         marginBottom: 40,
@@ -43,37 +58,56 @@ export default StyleSheet.create({
         borderColor: '#EDEDED',
         alignSelf: 'center'
     },
-
-    MODAL_CONTAINER: {
-        backgroundColor: "black",
-        paddingHorizontal: spacing[3],
+    CENTERED_VIEW: {
         flex: 1,
-        paddingTop: 20,
-        //   marginBottom: 30,
-    },
-    MODAL_HEADING: {
-        alignContent: "center",
         justifyContent: "center",
-        marginBottom: 40,
-        paddingHorizontal: spacing[4],
+        alignItems: "center",
+        // top: 10
+
     },
-    MODAL_HEADING_TEXT: {
+    MODAL_VIEW: {
         paddingHorizontal: spacing[4],
+        marginTop: 50,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        // shadowColor: "#000",
+        // shadowOffset: {
+        //   width: 0,
+        //   height: 2
+        // },
+        // shadowOpacity: 0.25,
+        // shadowRadius: 4,
+        // elevation: 5,
+        width: '100%',
+        height: "100%"
+
+    },
+    OFFER_BOX: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingHorizontal: spacing[4],
+        backgroundColor: "white",
+        height: 48,
+        width: 335,
+        borderWidth: 2,
+        borderColor: "#000000",
+        borderRadius: 4,
+        marginTop: 15
+    },
+    MESSAGE_BOX: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white",
+        height: 150,
+        width: 335,
+        borderWidth: 2,
+        borderColor: "#000000",
+        borderRadius: 4,
+        marginTop: 15
     },
 
-    MODAL_EXAMPLE: {
-        paddingHorizontal: spacing[4],
-    },
-    MODAL_IMAGE_CONTAINER: {
-        alignItems: "center",
-        marginBottom: 30,
-        marginTop: 30,
-    },
-    MODAL_SHOE_IMAGE: {
-        resizeMode: "contain",
-        width: "60%",
-    },
-    MODAL_PROCESS: {
-        paddingHorizontal: spacing[4],
-    },
 });
