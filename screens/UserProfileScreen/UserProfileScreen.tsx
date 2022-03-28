@@ -1,21 +1,11 @@
 import * as React from 'react';
-import {
-	View,
-	ViewStyle,
-	TextStyle,
-	ImageStyle,
-	Image,
-	Alert,
-	FlatList,
-	TouchableOpacity,
-} from 'react-native';
+import { View, Image, Alert, FlatList, TouchableOpacity } from 'react-native';
 import { color, spacing } from '../../theme';
 import { Button, Screen, Text, Header } from '../../components';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import {
 	getSneakersFromUser,
 	checkLoggedUser,
-	getCommentFromUser,
 	getPostFromUser,
 	deleteUserSneaker,
 	getUserFromDb,
@@ -24,21 +14,13 @@ import {
 } from '../../aws-functions/aws-functions';
 import { SneakerList } from '../../types';
 // NOTE: This should be refactored
-import { API, Auth, graphqlOperation } from 'aws-amplify';
-import {
-	createFollowers,
-	createFollowing,
-	createUser,
-	deleteSneaker,
-	updateUser,
-} from '../../src/graphql/mutations';
-import { getUser } from '../../src/graphql/queries';
+import { API, graphqlOperation } from 'aws-amplify';
+import { createFollowers, createFollowing } from '../../src/graphql/mutations';
 import NewPostButton from '../../components/new-post-button';
 
 import styles from './Styles';
 import Feed from '../../components/feed';
 import { int } from 'aws-sdk/clients/datapipeline';
-import { boolean } from 'yup';
 
 //required images
 const messageIcon = require('../../assets/images/message-button.png');
@@ -64,9 +46,7 @@ export default function UserProfileScreen(props?: any) {
 		const user = await checkLoggedUser();
 		const followingList = await getFollowingFromUser();
 		const followerList = await getFollowersFromUser();
-		const postList = await getPostFromUser(user.attributes.sub);
 
-		setPosts(postList);
 		setFollowers(String(followerList.length));
 		setFollowing(String(followingList.length));
 		setUsername(user.attributes.preferred_username);
