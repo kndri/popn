@@ -3,7 +3,6 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { Feather } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -216,6 +215,11 @@ function RootNavigator() {
           <Stack.Screen
             name="UserProfile"
             component={UserProfileScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Claim"
+            component={ClaimScreen}
             options={{ headerShown: false }}
           />
         </>

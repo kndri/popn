@@ -42,6 +42,7 @@ export type RootStackParamList = {
   MessageContactsScreen: any;
   Message: undefined;
   UserSearch: undefined;
+  Claim: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

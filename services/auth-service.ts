@@ -5,19 +5,19 @@ import { createUser } from '../src/graphql/mutations';
 
 export type AuthData = {
 	error: any;
-	email: String;
-	userId: String;
-	image: String;
-	username: String;
+	email: string;
+	id: string;
+	image: string;
+	username: string;
 };
 const signIn = (email: string, _password: string): Promise<AuthData> => {
 	// variable to check if there is an error
 	let errorMessage: any;
 
 	// variable to store user id
-	let userId: String;
-	let _username: String;
-	let image_url: String;
+	let userId: string;
+	let _username: string;
+	let image_url: string;
 
 	Auth.signIn(email.toLowerCase(), _password)
 		.then((response) => {
