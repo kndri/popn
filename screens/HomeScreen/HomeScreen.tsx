@@ -1,15 +1,23 @@
 import * as React from 'react';
-import { View } from 'react-native';
-
-import { Screen, Header } from '../../components';
+import { View, TextInput, TouchableOpacity, Modal } from 'react-native';
+import {
+	Button,
+	Screen,
+	Text,
+	AutoImage as Image,
+	Header,
+} from '../../components';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Feed from '../../components/feed';
-import NewPostButton from '../../components/new-post-button';
 
-import { API, graphqlOperation } from 'aws-amplify';
-import { listPosts } from '../../src/graphql/queries';
+import { useToast } from '../../components/Toast';
 
-import { RootTabScreenProps } from '../../types';
 import styles from './Styles';
+
+const search_icon = require('../../assets/images/searchIcon.png');
+const location_icon = require('../../assets/images/zipcode-icon.png');
+const close_icon = require('../../assets/images/closeIcon.png');
+const right_icon = require('../../assets/images/rightArrowIcon.png');
 
 const shoeData = [
 	{
@@ -77,33 +85,49 @@ const shoeData = [
 	},
 ];
 
-export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
-	const [post, setPost] = React.useState<any>([]);
-
-	const fetchPosts = async () => {
-		const postData = await API.graphql(graphqlOperation(listPosts));
-		setPost(postData);
-	};
-
-	React.useEffect(() => {
-		fetchPosts();
-	}, []);
-
-	// const renderTrending = () => {
-	// 	return <View>{<Feed post={post} />}</View>;
-	// };
+export default function Home() {
+	const navigation = useNavigation();
+	const toast = useToast();
+	const [distanceValue, setDistanceValue] = React.useState(30);
+	const [query, setQuery] = React.useState('');
 
 	return (
 		<Screen style={styles.CONTAINER}>
-			<Header
-				headerTx="Home"
-				leftIcon="message"
-				onLeftPress={() => navigation.navigate('Message')}
-				rightIcon="search"
-				onRightPress={() => navigation.navigate('UserSearch')}
-			/>
-			<View style={{ paddingTop: 20 }}>{<Feed productData={shoeData} />}</View>
-			<NewPostButton />
+			<View style={styles.CLAIM_SEARCH}>
+				<Image source={search_icon} style={{ width: 16, height: 16 }} />
+				<TextInput
+					style={{
+						flex: 1,
+						width: '100%',
+						height: 35,
+						borderWidth: 1,
+						paddingLeft: 10,
+						borderRadius: 5,
+						borderColor: '#FFFFFF',
+						backgroundColor: 'white',
+					}}
+					value={query}
+					autoCorrect={false}
+					onChangeText={(text) => setQuery(text)}
+					placeholder="Search"
+					placeholderTextColor={'#878C90'}
+				/>
+			</View>
+
+			<View style={{ marginTop: 20, marginBottom: 20 }}>
+				<TouchableOpacity
+					onPress={() => navigation.navigate('Location')}
+					style={styles.LOCATION_CONTAINER}
+				>
+					<Image
+						source={location_icon}
+						style={{ width: 16, height: 16, marginRight: 5 }}
+					/>
+					<Text>Charlotte: {distanceValue} Miles</Text>
+				</TouchableOpacity>
+			</View>
+
+			<View>{<Feed productData={shoeData} />}</View>
 		</Screen>
 	);
 }

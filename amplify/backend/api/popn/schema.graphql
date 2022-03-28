@@ -7,6 +7,7 @@ type User @model {
 	sneakers: [Sneaker] @connection(keyName: "byUser", fields: ["id"])
 	soldSneakers: [SoldSneaker] @connection(keyName: "byUser", fields: ["id"])
 	posts: [Post] @connection(keyName: "byUser", fields: ["id"])
+	offers: [Offer] @connection(keyName: "byUser", fields: ["id"])
 	following: [Following] @connection(keyName: "byUser", fields: ["id"])
 	follower: [Followers] @connection(keyName: "byUser", fields: ["id"])
 	status: String
@@ -185,7 +186,23 @@ type ListedItem
 	prevOwners: [String]
 	createdAt: String
 }
-
+type Offer
+	@model
+	@key(name: "byUser", fields: ["buyingUserID"], queryField: "offerByUser") {
+	id: ID!
+	offerAmount: String!
+	status: OfferStatus!
+	buyingUserID: ID!
+	sellingUserID: ID!
+	listedItemID: ID!
+	listedItem: ListedItem! @connection(fields: ["listedItemID"])
+	createdAt: String
+}
+enum OfferStatus {
+	accepted
+	pending
+	declined
+}
 type SneakerStore @model {
 	id: ID!
 	brand: String!
@@ -193,7 +210,6 @@ type SneakerStore @model {
 	secondary_name: String!
 	image_url: String!
 }
-
 enum ClaimStatus {
 	verified
 	pending

@@ -6,62 +6,37 @@ import {
 	CommonActions,
 } from '@react-navigation/native';
 
-import { color, spacing } from '../../theme';
+import { spacing } from '../../theme';
 import { Button, Screen, Text, Header } from '../../components';
 import {
 	getSneakersFromUser,
-	checkLoggedUser,
 	deleteUserSneaker,
-	getUserFromDb,
 } from '../../aws-functions/aws-functions';
 
-// NOTE: This should be refactored
-import { API, Auth, graphqlOperation } from 'aws-amplify';
-import {
-	createChatRoom,
-	createChatRoomUser,
-} from '../../src/graphql/mutations';
-import NewPostButton from '../../components/new-post-button';
+import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';
 
 //required images
 const messageIcon = require('../../assets/images/message-button.png');
-const verified = require('../../assets/images/Verified.png');
+const verified = require('../../assets/images/verified_badge.png');
 
+//
 export default function ProfileScreen() {
+	const { authData: user } = useAuth();
 	const navigation = useNavigation();
-	const [collection, setCollection] = React.useState<any>([]);
-	const [username, setUsername] = React.useState('');
-	const [profileImage, setprofileImage] = React.useState('');
-	const [user, setUser] = React.useState<any>();
+	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
 	const [selection, setSelection] = React.useState(1);
-	const [isMainUser, setIsMainUser] = React.useState(true);
 	const isFocused = useIsFocused();
 
 	const getSneakers = async () => {
-		const sneakerlist = await getSneakersFromUser();
-		const user = await checkLoggedUser();
-		setUsername(user.attributes.preferred_username);
-		setprofileImage(user.attributes['custom:blob']);
-		setCollection(sneakerlist);
-	};
-
-	const getUserData = async () => {
-		const user = await getUserFromDb(userID);
-		setUser(user);
-		setCollection(user.sneakers.items);
-	};
-
-	const check = async () => {
-		const currentUser = await checkLoggedUser();
-		getSneakers();
-		setIsMainUser(true);
+		const sneakerlist = await getSneakersFromUser(user!.id);
+		setSneakerCollection(sneakerlist);
 	};
 
 	React.useEffect(() => {
 		console.log('profile pressed');
-		check();
+		getSneakers();
 		return () => {
 			navigation.dispatch({
 				...CommonActions.setParams({}),
@@ -89,6 +64,7 @@ export default function ProfileScreen() {
 			]
 		);
 
+	// refacter this code
 	const renderSneaker = ({ item }) => (
 		<TouchableOpacity
 			onLongPress={() => {
@@ -196,12 +172,12 @@ export default function ProfileScreen() {
 	const renderCollection = () => {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center' }}>
-				{collection.length == 0 ? (
+				{sneakerCollection.length == 0 ? (
 					renderEmptyCollection()
 				) : (
 					<View style={styles.DATA_CONTAINER}>
 						<FlatList
-							data={collection}
+							data={sneakerCollection}
 							renderItem={renderSneaker}
 							keyExtractor={(sneaker) => String(sneaker.id)}
 							numColumns={2}
@@ -216,60 +192,6 @@ export default function ProfileScreen() {
 		);
 	};
 
-	const onClick = async () => {
-		//fetch all the chatrooms that the current user is in
-
-		// if the currentUser already has a chatroom with the person they're trying to message,
-		// then just navigate to that existing chatroom
-
-		//else create a new chatroom
-		try {
-			//  1. Create a new Chat Room
-			const newChatRoomData = await API.graphql(
-				graphqlOperation(createChatRoom, {
-					input: {
-						lastMessageID: Math.round(Math.random() * 1000000),
-					},
-				})
-			);
-
-			if (!newChatRoomData.data) {
-				console.log(' Failed to create a chat room');
-				return;
-			}
-
-			const newChatRoom = newChatRoomData.data.createChatRoom;
-
-			// 2. Add `user` to the Chat Room
-			await API.graphql(
-				graphqlOperation(createChatRoomUser, {
-					input: {
-						userID: user.id,
-						chatRoomID: newChatRoom.id,
-					},
-				})
-			);
-
-			//  3. Add authenticated user to the Chat Room
-			const userInfo = await Auth.currentAuthenticatedUser();
-			await API.graphql(
-				graphqlOperation(createChatRoomUser, {
-					input: {
-						userID: userInfo.attributes.sub,
-						chatRoomID: newChatRoom.id,
-					},
-				})
-			);
-
-			navigation.navigate('NewMessageRoom', {
-				id: newChatRoom.id,
-				name: user.username,
-			});
-		} catch (e) {
-			console.log(e);
-		}
-	};
-
 	return (
 		<Screen style={styles.CONTAINER}>
 			<View style={styles.PROFILE_HEADER}>
@@ -281,28 +203,12 @@ export default function ProfileScreen() {
 					onRightPress={() => navigation.navigate('Settings')}
 				/>
 			</View>
-			{user ? (
-				<View style={styles.PROFILE_DATA}>
-					<Image
-						style={styles.PROFILE_IMAGE}
-						source={{ uri: user.avatarImageURL }}
-					/>
-					<View style={{}}>
-						<Text preset="header" text={`${user.username}`} />
-					</View>
+			<View style={styles.PROFILE_DATA}>
+				<Image style={styles.PROFILE_IMAGE} source={{ uri: user?.image }} />
+				<View style={{}}>
+					<Text preset="header" text={`${user?.username}`} />
 				</View>
-			) : (
-				<View style={styles.PROFILE_DATA}>
-					<Image
-						style={styles.PROFILE_IMAGE}
-						source={{ uri: `${profileImage}` }}
-					/>
-					<View style={{}}>
-						<Text preset="header" text={`${username}`} />
-					</View>
-				</View>
-			)}
-
+			</View>
 			<View
 				style={{ flexDirection: 'row', paddingHorizontal: spacing[3] }}
 			></View>
@@ -375,7 +281,6 @@ export default function ProfileScreen() {
 						: null}
 				</View>
 			</View>
-			<NewPostButton />
 		</Screen>
 	);
 }

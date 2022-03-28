@@ -15,6 +15,7 @@ import {
   getSneakersFromDB,
 } from "../../aws-functions/aws-functions";
 import { useToast } from "../../components/Toast";
+import { useAuth } from "../../contexts/auth";
 
 import styles from "./Styles";
 
@@ -22,6 +23,8 @@ const search_icon = require("../../assets/images/searchIcon.png");
 
 export default function ClaimScreen() {
   const navigation = useNavigation();
+  const { authData: user } = useAuth();
+
   const toast = useToast();
   const [query, setQuery] = React.useState("");
   const [searchedArray, setSearchedArray] = React.useState<any>([]);
@@ -55,18 +58,22 @@ export default function ClaimScreen() {
   }, [query]);
 
   const getSneakers = async () => {
-    const sneakerlist = await getSneakersFromUser().catch((error) =>
+    const sneakerlist = await getSneakersFromUser(user!.id).catch((error) =>
       console.error(error)
     );
     const sneakersData = await getSneakersFromDB().catch((error) =>
       console.error(error)
     );
+    console.log('sneakerList: ', sneakerlist)
     setSearchedArray(sneakersData);
     setSneakerDb(sneakersData);
     setCollection(sneakerlist);
   };
 
   const checkClaimed = (item: any) => {
+    if(!collection) {
+      return;
+    }
     const found = collection.some(
       (sneaker) => sneaker.secondaryName == item.secondary_name
     );
@@ -219,12 +226,12 @@ export default function ClaimScreen() {
     <Screen style={styles.CONTAINER}>
       <Header
         headerTx="Claim"
-        leftIcon="message"
-        onLeftPress={() => navigation.navigate("Message")}
+        leftIcon={'back'}
+        onLeftPress={() => navigation.goBack()}
       />
 
       <View style={styles.CLAIM_SEARCH}>
-        <Image source={search_icon} style={{ marginLeft: 17 }} />
+        <Image source={search_icon} style={{ marginLeft: 17, width: 16, height: 16, }} />
         <TextInput
           style={{
             width: "100%",

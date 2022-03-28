@@ -3,12 +3,11 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName } from 'react-native';
+import { ColorSchemeName, Image } from 'react-native';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import ClaimScreen from '../screens/ClaimScreen/ClaimScreen';
 import MessageScreen from '../screens/MessageScreen/MessageScreen';
@@ -22,12 +21,17 @@ import WelcomeToPopn from '../screens/WelcomeToPopn/WelcomeToPopn';
 import SignInScreen from '../screens/SignInScreen/SignInScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen/ForgotPasswordScreen';
 import SettingsScreen from '../screens/SettingsScreen/SettingsScreen';
+import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 import UserProfileScreen from '../screens/UserProfileScreen/UserProfileScreen';
 import ChangeEmailScreen from '../screens/ChangeEmailScreen/ChangeEmailScreen';
+import ChangeUsernameScreen from '../screens/ChangeUsernameScreen/ChangeUsernameScreen';
+import ChangeProfileImageScreen from '../screens/ChangeProfileImageScreen/ChangeProfileImageScreen';
 import EmailVerificationCodeScreen from '../screens/EmailVerificationCodeScreen/EmailVerificationCodeScreen';
 import ChangePasswordScreen from '../screens/ChangePasswordScreen/ChangePasswordScreen';
 import MessageRoomScreen from '../screens/MessageRoomScreen/MessageRoomScreen';
 import NewMessageRoomScreen from '../screens/NewMessageRoomScreen/NewMessageRoomScreen';
+import LocationScreen from '../screens/LocationScreen';
+import ZipCodeScreen from '../screens/ZipCodeScreen';
 
 import {
 	RootStackParamList,
@@ -170,11 +174,11 @@ function RootNavigator() {
 						component={SettingsNavigator}
 						options={{ headerShown: false }}
 					/>
-					<Stack.Screen
-						name="UserProfile"
-						component={UserProfileScreen}
-						options={{ headerShown: false }}
-					/>
+					{/* <Stack.Screen
+            name="Message"
+            component={MessageScreen}
+            options={{ headerShown: false }}
+          /> */}
 					<Stack.Screen
 						name="ShoeDetails"
 						component={ShoeDetailsScreen}
@@ -210,6 +214,26 @@ function RootNavigator() {
 						component={UserSearchScreen}
 						options={{ headerShown: false }}
 					/>
+					<Stack.Screen
+						name="UserProfile"
+						component={UserProfileScreen}
+						options={{ headerShown: false }}
+					/>
+					<Stack.Screen
+						name="Claim"
+						component={ClaimScreen}
+						options={{ headerShown: false }}
+					/>
+					<Stack.Screen
+						name="Location"
+						component={LocationScreen}
+						options={{ headerShown: false }}
+					/>
+					<Stack.Screen
+						name="ZipCode"
+						component={ZipCodeScreen}
+						options={{ headerShown: false }}
+					/>
 				</>
 			) : (
 				<Stack.Screen
@@ -240,26 +264,85 @@ function BottomTabNavigator() {
 			<BottomTab.Screen
 				name="Home"
 				component={HomeScreen}
-				options={({ navigation }: RootTabScreenProps<'Home'>) => ({
-					title: 'Home',
-					tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-				})}
-			/>
-			<BottomTab.Screen
-				name="Claim"
-				component={ClaimScreen}
 				options={{
-					title: 'Claim',
-					tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+					title: 'Home',
+					tabBarIcon: ({ focused }) => (
+						<Image
+							source={
+								focused
+									? require('../assets/images/Home-focused.png')
+									: require('../assets/images/Home.png')
+							}
+							style={{
+								width: 25,
+								height: 25,
+								borderRadius: 0,
+							}}
+						/>
+					),
 				}}
 			/>
+
 			<BottomTab.Screen
 				name="Message"
 				component={MessageScreen}
 				options={{
 					title: 'Messages',
-					tabBarIcon: ({ color }) => (
-						<TabBarIcon name="message-square" color={color} />
+					tabBarIcon: ({ focused }) => (
+						<Image
+							source={
+								focused
+									? require('../assets/images/messages-focused.png')
+									: require('../assets/images/messages.png')
+							}
+							style={{
+								width: 25,
+								height: 25,
+								borderRadius: 0,
+							}}
+						/>
+					),
+				}}
+			/>
+			<BottomTab.Screen
+				name="Sell"
+				component={ClaimScreen}
+				options={{
+					title: 'Sell',
+					tabBarIcon: ({ focused }) => (
+						<Image
+							source={
+								focused
+									? require('../assets/images/plus-focused.png')
+									: require('../assets/images/plus.png')
+							}
+							style={{
+								width: 25,
+								height: 25,
+								borderRadius: 0,
+							}}
+						/>
+					),
+				}}
+			/>
+			<BottomTab.Screen
+				name="Profile"
+				component={ProfileScreen}
+				options={{
+					title: 'Profile',
+					tabBarIcon: ({ focused }) => (
+						<Image
+							source={
+								focused
+									? require('../assets/images/Profile-focused.png')
+									: require('../assets/images/Profile.png')
+							}
+							style={{
+								width: 25,
+								height: 25,
+								borderRadius: 0,
+							}}
+						/>
 					),
 				}}
 			/>
@@ -270,9 +353,9 @@ function BottomTabNavigator() {
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
-function TabBarIcon(props: {
-	name: React.ComponentProps<typeof Feather>['name'];
-	color: string;
-}) {
-	return <Feather size={20} style={{ marginBottom: -3 }} {...props} />;
-}
+// function TabBarIcon(props: {
+//   name: React.ComponentProps<typeof Feather>["name"];
+//   color: string;
+// }) {
+//   return <Feather size={20} style={{ marginBottom: -3 }} {...props} />;
+// }

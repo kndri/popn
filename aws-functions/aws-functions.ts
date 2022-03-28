@@ -296,22 +296,20 @@ export const sendCustomChallenge = async (user: string, OTP: string) => {
 };
 
 //stores shoes
-export const getSneakersFromUser = async (): Promise<SneakerData> => {
+export const getSneakersFromUser = async (userId: string): Promise<SneakerData> => {
 	let sneakerList: any;
 
-	// const currentUser = checkLoggedUser();
-	const currentUser = await Auth.currentAuthenticatedUser({
-		bypassCache: true,
-	});
 	const sneakersData = await API.graphql(
 		graphqlOperation(sneakerByUser, {
-			userID: currentUser.attributes.sub,
+			userID: userId,
 		})
 	);
+
 	sneakerList = sneakersData.data.sneakerByUser.items;
 
 	return sneakerList;
 };
+
 export const getFollowersFromUser = async () => {
 	let followersList: any;
 
