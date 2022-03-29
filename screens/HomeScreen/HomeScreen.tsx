@@ -217,7 +217,6 @@ export default function Home() {
 										width: 193,
 										height: 35,
 										borderWidth: 1,
-										paddingLeft: 10,
 										borderRadius: 5,
 										borderColor: '#FFFFFF',
 										backgroundColor: 'white',

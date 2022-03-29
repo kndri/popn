@@ -32,19 +32,20 @@ import MessageRoomScreen from "../screens/MessageRoomScreen/MessageRoomScreen";
 import NewMessageRoomScreen from "../screens/NewMessageRoomScreen/NewMessageRoomScreen";
 
 import {
-	RootStackParamList,
-	RootTabParamList,
-	RootTabScreenProps,
-	SettingsStackParamList,
-} from '../types';
-import ResetPasswordScreen from '../screens/ResetPasswordScreen/ResetPasswordScreen';
-import { useAuth } from '../contexts/auth';
-import ShoeDetailsScreen from '../screens/ShoeDetailsScreen/ShoeDetailsScreen';
-import ReferenceScreen from '../screens/ReferenceScreen/ReferenceScreen';
-import NewPostScreen from '../screens/NewPostScreen/NewPostScreen';
-import PostDetailsScreen from '../screens/PostDetailsScreen/PostDetailsScreen';
-import MessageContactsScreen from '../screens/MessageContactsScreen/MessageContactsScreen';
-import UserSearchScreen from '../screens/SearchUserScreen/SearchUserScreen';
+  RootStackParamList,
+  RootTabParamList,
+  RootTabScreenProps,
+  SettingsStackParamList,
+} from "../types";
+import ResetPasswordScreen from "../screens/ResetPasswordScreen/ResetPasswordScreen";
+import { useAuth } from "../contexts/auth";
+import ShoeDetailsScreen from "../screens/ShoeDetailsScreen/ShoeDetailsScreen";
+import ListingDetailsScreen from "../screens/ListingDetailScreen/ListingDetailScreen";
+import ReferenceScreen from "../screens/ReferenceScreen/ReferenceScreen";
+import NewPostScreen from "../screens/NewPostScreen/NewPostScreen";
+import PostDetailsScreen from "../screens/PostDetailsScreen/PostDetailsScreen";
+import MessageContactsScreen from "../screens/MessageContactsScreen/MessageContactsScreen";
+import UserSearchScreen from "../screens/SearchUserScreen/SearchUserScreen";
 
 export default function Navigation({
 	colorScheme,
@@ -180,6 +181,11 @@ function RootNavigator() {
           <Stack.Screen
             name="ShoeDetails"
             component={ShoeDetailsScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ListingDetails"
+            component={ListingDetailsScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen

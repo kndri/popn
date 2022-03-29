@@ -8,7 +8,7 @@ export const icons = {
   search: require("./icon-search.png"),
   plus: require("./addUser.png"),
   message: require('./messages-icon2.png'),
-  close: require('./closeIcon.png')
+  close: require('./Cancel.png')
 };
 
 export type IconTypes = keyof typeof icons;
