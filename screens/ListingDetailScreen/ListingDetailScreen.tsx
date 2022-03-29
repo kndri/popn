@@ -28,12 +28,8 @@ const ListingDetailsScreen = (props: any) => {
   const [offerModalVisible, setOfferModalVisible] = React.useState(false);
   const [offerAmount, setOfferAmount] = React.useState("");
   const [offerMessage, setOfferMessage] = React.useState("");
-  const [listingImages, setListingImages] = React.useState([
-    "https://popn-app.s3.amazonaws.com/sneakers/Adidas_Yeezy_450_Cloud_White.png",
+  const [listingImages, setListingImages] = React.useState(["https://popnd82dea5bd54c4b12aa305515ccc9e5e8132355-dev.s3.amazonaws.com/public/test1ProfileImage.jpeg"]);
 
-  ]);
-
-  console.log('test', product)
   return (
     <Screen preset="scroll">
       {/* MODAL CODE*/}
@@ -82,7 +78,6 @@ const ListingDetailsScreen = (props: any) => {
             <View style={{ marginTop: 31 }}>
               <Text preset='bold'>Add a Message (optional)</Text>
               <View style={styles.MESSAGE_BOX}>
-                {/* <Image source={search_icon} style={{ width: 16, height: 16, }} /> */}
                 <TextInput
                   style={{
                     flex: 1,
@@ -171,11 +166,11 @@ const ListingDetailsScreen = (props: any) => {
       <View style={styles.LISTING_DETAILS}>
         <Text
           preset="bold"
-          text='#Jordan'
+          text={`#${product.brand}`}
         />
         <Text
           preset="default"
-          text='Jordan 11 Retro Cool Gray'
+          text={`${product.primary_name} ${product.secondary_name}`}
           style={{ marginTop: 20 }}
         />
         <Text
@@ -216,7 +211,7 @@ const ListingDetailsScreen = (props: any) => {
 
       {/* authenticated details box */}
       <View style={styles.AUTHENTICATED_INFO_BOX}>
-        <View style={{ flexDirection: 'row', marginTop: 13, alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image source={verified} style={{ height: 20, width: 20, }} />
           <Text preset="bold" style={{ marginLeft: 6, fontSize: 16 }}>Authenticated</Text>
         </View>
