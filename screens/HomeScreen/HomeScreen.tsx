@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, TextInput, TouchableOpacity, Modal } from 'react-native';
-import { Slider } from '@miblanchard/react-native-slider';
 import {
 	Button,
 	Screen,
@@ -87,169 +86,13 @@ const shoeData = [
 ];
 
 export default function Home() {
+	const navigation = useNavigation();
 	const toast = useToast();
-	const [locationModalVisible, setLocationModalVisible] = React.useState(false);
-	const [zipCodeModalVisible, setZipCodeModalVisible] = React.useState(false);
 	const [distanceValue, setDistanceValue] = React.useState(30);
 	const [query, setQuery] = React.useState('');
-	const [zipCode, setZipCode] = React.useState('');
 
 	return (
 		<Screen style={styles.CONTAINER}>
-			<Modal
-				presentationStyle="fullScreen"
-				animationType="slide"
-				// transparent={true}
-				visible={locationModalVisible}
-				onRequestClose={() => {
-					setLocationModalVisible(!locationModalVisible);
-				}}
-			>
-				<View style={styles.CENTERED_VIEW}>
-					<View style={styles.MODAL_VIEW}>
-						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Header
-								headerTx="Location"
-								rightIcon="close"
-								onRightPress={() =>
-									setLocationModalVisible(!locationModalVisible)
-								}
-							/>
-						</View>
-
-						<View style={{ width: '100%', marginTop: 59 }}>
-							<Text preset="bold">ZIP Code</Text>
-							<TouchableOpacity
-								style={{
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									marginTop: 13,
-								}}
-								onPress={() => {
-									setZipCodeModalVisible(!zipCodeModalVisible),
-										setLocationModalVisible(!locationModalVisible);
-								}}
-							>
-								<Text preset="default">Charlotte, NC, 28215</Text>
-								<Image source={right_icon} style={{ width: 14, height: 14 }} />
-							</TouchableOpacity>
-						</View>
-
-						<View style={{ width: '100%', marginTop: 100 }}>
-							<Text preset="bold" style={{ paddingTop: 20 }}>
-								Distance
-							</Text>
-							<Slider
-								value={distanceValue}
-								onValueChange={(value) => setDistanceValue(value)}
-								minimumValue={10}
-								maximumValue={100}
-								step={5}
-								trackClickable={true}
-							/>
-
-							<Text preset="default">{distanceValue} miles</Text>
-						</View>
-
-						<Button
-							style={{
-								width: '100%',
-								height: 50,
-								borderRadius: 4,
-								marginTop: 224,
-							}}
-							text="See Listings"
-							onPress={() => setLocationModalVisible(!locationModalVisible)}
-						/>
-					</View>
-				</View>
-			</Modal>
-
-			<Modal
-				presentationStyle="fullScreen"
-				animationType="slide"
-				// transparent={true}
-				visible={zipCodeModalVisible}
-				onRequestClose={() => {
-					setZipCodeModalVisible(!zipCodeModalVisible);
-				}}
-			>
-				<View style={styles.CENTERED_VIEW}>
-					<View style={styles.MODAL_VIEW}>
-						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Header
-								headerTx="ZIP Code"
-								rightIcon="close"
-								onRightPress={() => {
-									setLocationModalVisible(!locationModalVisible),
-										setZipCodeModalVisible(!zipCodeModalVisible);
-								}}
-							/>
-						</View>
-
-						<View
-							style={{
-								width: '100%',
-								flexDirection: 'column',
-								alignItems: 'center',
-							}}
-						>
-							<Text preset="bold" style={{ marginTop: 65 }}>
-								Where are you searching?
-							</Text>
-							<Button
-								style={{
-									width: 193,
-									height: 50,
-									borderRadius: 4,
-									marginTop: 23,
-								}}
-								text="Get My Location"
-								onPress={() => console.log('clicked')}
-							/>
-							<Text preset="default" style={{ marginTop: 13 }}>
-								or
-							</Text>
-							<View style={styles.ZIPCODE}>
-								<TextInput
-									style={{
-										flex: 1,
-										width: 193,
-										height: 35,
-										borderWidth: 1,
-										borderRadius: 5,
-										borderColor: '#FFFFFF',
-										backgroundColor: 'white',
-									}}
-									value={zipCode}
-									autoCorrect={false}
-									onChangeText={(text) => setZipCode(text)}
-									placeholder="Enter ZIP Code"
-									placeholderTextColor={'#878C90'}
-								/>
-							</View>
-							<Text preset="default" style={{ marginTop: 23 }}>
-								Charlotte, NC
-							</Text>
-							<Button
-								style={{
-									width: '100%',
-									height: 50,
-									borderRadius: 4,
-									marginTop: 270,
-								}}
-								text="Apply"
-								onPress={() => {
-									console.log('clicked'),
-										setZipCodeModalVisible(!zipCodeModalVisible),
-										setLocationModalVisible(!locationModalVisible);
-								}}
-							/>
-						</View>
-					</View>
-				</View>
-			</Modal>
-
 			<View style={styles.CLAIM_SEARCH}>
 				<Image source={search_icon} style={{ width: 16, height: 16 }} />
 				<TextInput
@@ -273,7 +116,7 @@ export default function Home() {
 
 			<View style={{ marginTop: 20, marginBottom: 20 }}>
 				<TouchableOpacity
-					onPress={() => setLocationModalVisible(true)}
+					onPress={() => navigation.navigate('Location')}
 					style={styles.LOCATION_CONTAINER}
 				>
 					<Image
@@ -284,7 +127,7 @@ export default function Home() {
 				</TouchableOpacity>
 			</View>
 
-			<View >{<Feed productData={shoeData} />}</View>
+			<View>{<Feed productData={shoeData} />}</View>
 		</Screen>
 	);
 }

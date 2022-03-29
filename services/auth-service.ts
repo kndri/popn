@@ -35,7 +35,7 @@ const signIn = (email: string, _password: string): Promise<AuthData> => {
 			resolve({
 				error: errorMessage,
 				email: email,
-				userId: userId,
+				id: userId,
 				username: _username,
 				image: image_url,
 			});
@@ -119,7 +119,7 @@ const signUp = async (
 			resolve({
 				error: errorMessage,
 				email: email,
-				userId: userId,
+				id: userId,
 				username: _username,
 				image: image_url,
 			});
