@@ -211,7 +211,7 @@ const ListingDetailsScreen = (props: any) => {
 
       {/* authenticated details box */}
       <View style={styles.AUTHENTICATED_INFO_BOX}>
-        <View style={{ flexDirection: 'row', marginTop: 13, alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image source={verified} style={{ height: 20, width: 20, }} />
           <Text preset="bold" style={{ marginLeft: 6, fontSize: 16 }}>Authenticated</Text>
         </View>

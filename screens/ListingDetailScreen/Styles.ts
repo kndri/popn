@@ -54,11 +54,8 @@ export default StyleSheet.create({
         borderColor: '#EDEDED',
         borderRadius: 5,
         borderWidth: 1,
-        height: 115,
-        marginBottom: 40,
-        marginTop: 30,
-        paddingHorizontal: spacing[4],
-        width: 320,
+        marginVertical: 30,
+        padding: 13,
     },
     CENTERED_VIEW: {
         flex: 1,
