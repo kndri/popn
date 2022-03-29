@@ -5,7 +5,7 @@ import {
   Text,
   Header,
   AutoImage as Image,
-  Button, TextField
+  Button, TextField, VerificationBage
 } from "../../components";
 import {
   useNavigation,
@@ -135,8 +135,7 @@ const ListingDetailsScreen = () => {
       {/* authenticated box heading */}
       <View style={styles.AUTHENTICATED_HEADING}>
         <View style={styles.AUTHENTICATED_HEADING_BOX}>
-          <Image source={verified} style={{ height: 20, width: 20, marginLeft: 9 }} />
-          <Text preset="bold" style={{ marginLeft: 6 }}>Authenticated</Text>
+          <VerificationBage type="full" />
         </View>
       </View>
 
@@ -253,7 +252,7 @@ const ListingDetailsScreen = () => {
       </View>
 
       {/* <View style={{ marginTop: 36, paddingHorizontal: spacing[4], position: 'absolute', bottom: 50, alignSelf: 'center', width: '100%' }}> */}
-      <View style={{ marginTop: 36, paddingHorizontal: spacing[4], position: 'absolute', bottom: 50, alignSelf: 'center', width: '100%' }}>
+      <View style={{ marginTop: 36, paddingHorizontal: spacing[4], }}>
         <Button
           style={{ height: 50, borderRadius: 4, flexDirection: 'row', alignSelf: 'center', width: '100%' }}
           text="Offer"
