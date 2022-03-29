@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 
 import styles from './product-card.styles';
 import { ProductCardProps } from './product-card.props';
@@ -7,9 +8,13 @@ import { Text, AutoImage as Image, VerificationBage } from '..';
 
 export const ProductCard: React.FC<ProductCardProps> = (props): JSX.Element => {
 	const { product } = props;
+	const navigation = useNavigation();
+
 
 	return (
-		<View>
+		<TouchableOpacity onPress={() => {
+			navigation.navigate("ListingDetails", product);
+		}}>
 			<View style={styles.CARD}>
 				<View style={styles.BADGE}>
 					<VerificationBage type='icon' />
@@ -21,6 +26,6 @@ export const ProductCard: React.FC<ProductCardProps> = (props): JSX.Element => {
 				<Text preset="bold">{product.secondary_name} </Text>
 				<Text preset="bold">{product.price}</Text>
 			</View>
-		</View>
+		</TouchableOpacity>
 	);
 };

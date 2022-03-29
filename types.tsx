@@ -33,6 +33,7 @@ export type RootStackParamList = {
 	ResetPassword: any;
 	Settings: NavigatorScreenParams<SettingsStackParamList> | undefined;
 	ShoeDetails: undefined | any;
+  ListingDetails: undefined | any;
 	Verify: undefined | any;
 	UserProfile: undefined;
 	MessageRoom: any;
