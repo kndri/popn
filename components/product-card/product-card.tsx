@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TouchableOpacity, View} from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 
 import styles from './product-card.styles';
@@ -13,7 +13,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props): JSX.Element => {
 
 	return (
 		<TouchableOpacity onPress={() => {
-			navigation.navigate("ListingDetails");
+			navigation.navigate("ListingDetails", product);
 		}}>
 			<View style={styles.CARD}>
 				<View style={styles.BADGE}>

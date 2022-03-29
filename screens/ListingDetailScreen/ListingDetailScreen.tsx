@@ -10,118 +10,113 @@ import {
 import {
   useNavigation,
 } from "@react-navigation/native";
-import GestureRecognizer from "react-native-swipe-gestures";
 import { color, spacing } from "../../theme";
 import { SliderBox } from "react-native-image-slider-box";
+import { FontAwesome } from '@expo/vector-icons';
+
 
 import styles from "./Styles";
 
 // const example = require("../../assets/images/verify_example.png");
 const verified = require("../../assets/images/verified_badge.png");
 const Seller = require("../../assets/images/UserImage.png");
-const dollarSign = require("../../assets/images/dollarSign.png");
 
-const ListingDetailsScreen = () => {
+
+const ListingDetailsScreen = (props: any) => {
+  const product = props.route.params;
   const navigation = useNavigation();
   const [offerModalVisible, setOfferModalVisible] = React.useState(false);
   const [offerAmount, setOfferAmount] = React.useState("");
   const [offerMessage, setOfferMessage] = React.useState("");
   const [listingImages, setListingImages] = React.useState([
     "https://popn-app.s3.amazonaws.com/sneakers/Adidas_Yeezy_450_Cloud_White.png",
-    "https://popn-app.s3.amazonaws.com/sneakers/Adidas_Yeezy_500_Clay_Brown.png",
-    "https://popn-app.s3.amazonaws.com/sneakers/Adidas_Yeezy_700_V3_Dark_Glow.png"]);
 
+  ]);
 
+  console.log('test', product)
   return (
     <Screen preset="scroll">
       {/* MODAL CODE*/}
-      <GestureRecognizer
-        onSwipeDown={() => setOfferModalVisible(false)}
-        style={{ backgroundColor: "red", padding: 0, margin: 0 }}
-        config={{
-          velocityThreshold: 0.1,
-          directionalOffsetThreshold: 10,
+      <Modal
+        animationType="slide"
+        transparent={true}
+        presentationStyle="pageSheet"
+        visible={offerModalVisible}
+        onRequestClose={() => {
+          setOfferModalVisible(!offerModalVisible);
         }}
       >
-        <Modal
-          animationType="slide"
-          transparent={true}
-          presentationStyle="pageSheet"
-          visible={offerModalVisible}
-          onRequestClose={() => {
-            setOfferModalVisible(!offerModalVisible);
-          }}
-        >
 
-          <View style={styles.CENTERED_VIEW}>
-            <View style={styles.MODAL_VIEW}>
-              <View style={{}}>
-                <Text preset="bold">Your Offer</Text>
-                <View style={styles.OFFER_BOX}>
-                  {/* <Image source={dollarSign} style={{ width: 20, height: 28, }} /> */}
-                  <TextInput
-                    style={{
-                      flex: 1,
-                      width: "100%",
-                      height: 35,
-                      borderWidth: 1,
-                      paddingLeft: 10,
-                      borderRadius: 5,
-                      borderColor: "#FFFFFF",
-                      backgroundColor: "white",
-                      alignItems: 'flex-start'
-                    }}
-                    value={offerAmount}
-                    autoCorrect={false}
-                    onChangeText={(text) => setOfferAmount(text)}
-                    placeholder=""
-                    placeholderTextColor={"#878C90"}
-                    keyboardType='numeric'
-                    returnKeyType="done"
-                  />
-                </View>
+        <View style={styles.CENTERED_VIEW}>
+          <View style={styles.MODAL_VIEW}>
+            <Header
+              rightIcon="close"
+              onRightPress={() => { setOfferModalVisible(!offerModalVisible) }}
+            />
+            <View>
+              <Text preset="bold">Your Offer</Text>
+              <View style={styles.OFFER_BOX}>
+                <FontAwesome name="dollar" size={20} color="black" />
+                <TextInput
+                  style={{
+                    flex: 1,
+                    width: "100%",
+                    height: 35,
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    borderColor: "#FFFFFF",
+                    backgroundColor: "white",
+                    alignItems: 'flex-start'
+                  }}
+                  value={offerAmount}
+                  autoCorrect={false}
+                  onChangeText={(text) => setOfferAmount(text)}
+                  placeholder="0"
+                  placeholderTextColor={"#878C90"}
+                  keyboardType='numeric'
+                  returnKeyType="done"
+                />
               </View>
-
-              <View style={{ marginTop: 31 }}>
-                <Text preset='bold'>Add a Message (optional)</Text>
-                <View style={styles.MESSAGE_BOX}>
-                  {/* <Image source={search_icon} style={{ width: 16, height: 16, }} /> */}
-                  <TextInput
-                    style={{
-                      flex: 1,
-                      width: "10%",
-                      height: "100%",
-                      borderWidth: 1,
-                      paddingLeft: 10,
-                      borderRadius: 5,
-                      borderColor: "#FFFFFF",
-                      backgroundColor: "white",
-
-                    }}
-                    value={offerMessage}
-                    autoCorrect={false}
-                    onChangeText={(text) => setOfferMessage(text)}
-                    placeholder=""
-                    placeholderTextColor={"#878C90"}
-                    keyboardType='default'
-                    multiline={true}
-                    blurOnSubmit = {true}
-                    returnKeyType="done"
-                  />
-                </View>
-              </View>
-
-              <Button
-                style={{ width: "100%", height: 50, borderRadius: 4, marginTop: 40 }}
-                text="Make Offer"
-                onPress={() => setOfferModalVisible(!offerModalVisible)}
-              />
-
             </View>
-          </View>
 
-        </Modal>
-      </GestureRecognizer>
+            <View style={{ marginTop: 31 }}>
+              <Text preset='bold'>Add a Message (optional)</Text>
+              <View style={styles.MESSAGE_BOX}>
+                {/* <Image source={search_icon} style={{ width: 16, height: 16, }} /> */}
+                <TextInput
+                  style={{
+                    flex: 1,
+                    width: "10%",
+                    height: "100%",
+                    borderWidth: 1,
+                    paddingLeft: 10,
+                    borderRadius: 5,
+                    borderColor: "#FFFFFF",
+                    backgroundColor: "white",
+
+                  }}
+                  value={offerMessage}
+                  autoCorrect={false}
+                  onChangeText={(text) => setOfferMessage(text)}
+                  placeholder=""
+                  placeholderTextColor={"#878C90"}
+                  keyboardType='default'
+                  multiline={true}
+                  blurOnSubmit={true}
+                  returnKeyType="done"
+                />
+              </View>
+            </View>
+
+            <Button
+              style={offerAmount ? styles.OFFER_BUTTON : styles.DISABLED_OFFER_BUTTON}
+              text="Make Offer"
+              onPress={() => setOfferModalVisible(!offerModalVisible)}
+              disabled={offerAmount ? false : true}
+            />
+          </View>
+        </View>
+      </Modal>
       {/* END OF MODAL CODE*/}
 
 
@@ -142,17 +137,13 @@ const ListingDetailsScreen = () => {
 
       {/* image slider */}
       <SliderBox
-        // ImageComponent={FastImage}
         images={listingImages}
-        sliderBoxHeight={200}
-        // onCurrentImagePressed={index => console.warn(`image ${index} pressed`)}
+        sliderBoxHeight={315}
         dotColor="black"
         inactiveDotColor="#90A4AE"
-        paginationBoxVerticalPadding={20}
-        autoplay
         circleLoop
         resizeMethod={'resize'}
-        resizeMode={'cover'}
+        resizeMode={"contain"}
         paginationBoxStyle={{
           position: "absolute",
           bottom: 0,
@@ -160,7 +151,7 @@ const ListingDetailsScreen = () => {
           alignItems: "center",
           alignSelf: "center",
           justifyContent: "center",
-          paddingVertical: 10
+          paddingVertical: 10,
         }}
         dotStyle={{
           width: 10,
@@ -168,14 +159,11 @@ const ListingDetailsScreen = () => {
           borderRadius: 5,
           marginHorizontal: 0,
           padding: 0,
-          margin: 0,
+
           backgroundColor: "rgba(128, 128, 128, 0.92)"
         }}
-        ImageComponentStyle={{ borderRadius: 15, width: '97%', marginTop: 5 }}
-        imageLoadingColor="#2196F3"
+        imageLoadingColor="black"
       />
-
-
       {/* end of image slider */}
 
 

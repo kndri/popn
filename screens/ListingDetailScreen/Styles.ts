@@ -36,6 +36,7 @@ export default StyleSheet.create({
         justifyContent: 'flex-end',
         paddingHorizontal: spacing[4],
         width: "100%",
+        paddingBottom: 50
 
     },
     AUTHENTICATED_HEADING_BOX: {
@@ -102,5 +103,18 @@ export default StyleSheet.create({
         borderRadius: 4,
         marginTop: 15
     },
+    OFFER_BUTTON: {
+        width: "100%",
+        height: 50,
+        borderRadius: 4,
+        marginTop: 40,
+    },
+    DISABLED_OFFER_BUTTON: {
+        width: "100%",
+        height: 50,
+        borderRadius: 4,
+        marginTop: 40,
+        backgroundColor: "rgba(52, 52, 52, 0.25)",
+    }
 
 });
