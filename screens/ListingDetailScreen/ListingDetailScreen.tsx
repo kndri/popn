@@ -33,7 +33,7 @@ const ListingDetailsScreen = () => {
 
 
   return (
-    <Screen style={styles.CONTAINER}>
+    <Screen preset="scroll">
       {/* MODAL CODE*/}
       <GestureRecognizer
         onSwipeDown={() => setOfferModalVisible(false)}
@@ -105,13 +105,14 @@ const ListingDetailsScreen = () => {
                     placeholderTextColor={"#878C90"}
                     keyboardType='default'
                     multiline={true}
-                  // returnKeyType="done"
+                    blurOnSubmit = {true}
+                    returnKeyType="done"
                   />
                 </View>
               </View>
 
               <Button
-                style={{ width: "100%", height: 50, borderRadius: 4, marginTop: 49 }}
+                style={{ width: "100%", height: 50, borderRadius: 4, marginTop: 40 }}
                 text="Make Offer"
                 onPress={() => setOfferModalVisible(!offerModalVisible)}
               />
@@ -252,7 +253,7 @@ const ListingDetailsScreen = () => {
       </View>
 
       {/* <View style={{ marginTop: 36, paddingHorizontal: spacing[4], position: 'absolute', bottom: 50, alignSelf: 'center', width: '100%' }}> */}
-      <View style={{ marginTop: 36, paddingHorizontal: spacing[4], }}>
+      <View style={{ marginTop: 36, paddingHorizontal: spacing[4], paddingBottom: 50 }}>
         <Button
           style={{ height: 50, borderRadius: 4, flexDirection: 'row', alignSelf: 'center', width: '100%' }}
           text="Offer"

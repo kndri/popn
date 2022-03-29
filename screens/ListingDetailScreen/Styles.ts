@@ -19,44 +19,45 @@ export default StyleSheet.create({
     },
 
     IMAGE_CONTAINER: {
-        justifyContent: "center",
         alignItems: "center",
+        height: "40%",
+        justifyContent: "center",
         marginTop: 15,
         paddingHorizontal: spacing[4],
-        height: "40%",
     },
 
     SHOE_STYLE: {
-        resizeMode: "contain",
         height: 400,
+        resizeMode: "contain",
         width: "100%",
     },
     AUTHENTICATED_HEADING: {
-        width: "100%",
+        flexDirection: 'row',
         justifyContent: 'flex-end',
-        flexDirection: 'row'
+        paddingHorizontal: spacing[4],
+        width: "100%",
+
     },
     AUTHENTICATED_HEADING_BOX: {
-        flexDirection: 'row',
-        borderWidth: 2,
+        alignItems: 'center',
+        backgroundColor: 'white',
         borderColor: 'black',
         borderRadius: 5,
-        backgroundColor: 'white',
-        width: 131,
-        height: 35,
-        alignItems: 'center',
+        borderWidth: 2,
+        flexDirection: 'row',
+        padding: 10
     },
 
     AUTHENTICATED_INFO_BOX: {
+        alignSelf: 'center',
+        borderColor: '#EDEDED',
+        borderRadius: 5,
+        borderWidth: 1,
+        height: 115,
+        marginBottom: 40,
         marginTop: 30,
         paddingHorizontal: spacing[4],
-        marginBottom: 40,
-        height: 115,
         width: 320,
-        borderWidth: 1,
-        borderRadius: 5,
-        borderColor: '#EDEDED',
-        alignSelf: 'center'
     },
     CENTERED_VIEW: {
         flex: 1,
@@ -66,22 +67,14 @@ export default StyleSheet.create({
 
     },
     MODAL_VIEW: {
-        paddingHorizontal: spacing[4],
-        marginTop: 50,
+        alignItems: "center",
         backgroundColor: "white",
         borderRadius: 20,
+        height: "100%",
+        marginTop: 50,
         padding: 35,
-        alignItems: "center",
-        // shadowColor: "#000",
-        // shadowOffset: {
-        //   width: 0,
-        //   height: 2
-        // },
-        // shadowOpacity: 0.25,
-        // shadowRadius: 4,
-        // elevation: 5,
+        paddingHorizontal: spacing[4],
         width: '100%',
-        height: "100%"
 
     },
     OFFER_BOX: {
