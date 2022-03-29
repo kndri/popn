@@ -6,7 +6,6 @@ type User @model {
 	avatarImageURL: String!
 	sneakers: [Sneaker] @connection(keyName: "byUser", fields: ["id"])
 	soldSneakers: [SoldSneaker] @connection(keyName: "byUser", fields: ["id"])
-	posts: [Post] @connection(keyName: "byUser", fields: ["id"])
 	offers: [Offer] @connection(keyName: "byUser", fields: ["id"])
 	following: [Following] @connection(keyName: "byUser", fields: ["id"])
 	follower: [Followers] @connection(keyName: "byUser", fields: ["id"])

@@ -9,14 +9,21 @@
 // }
 
 interface Product {
-  id: string,
-  brand: string,
-  primary_name: string,
-  secondary_name: string,
-  price: string,
-  image_url: string
+	id: String;
+	sneakerID: String;
+	sneakerData: {};
+	zipCode: String;
+	images: [String];
+	size: String;
+	condition: String;
+	price: String;
+	brand: String;
+	description: String;
+	sellerID: String;
+	seller: {};
+	prevSellers: [String];
 }
 
 export interface ProductCardProps {
-  product: Product
+	product: Product;
 }

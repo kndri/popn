@@ -19,69 +19,62 @@ const location_icon = require('../../assets/images/zipcode-icon.png');
 const close_icon = require('../../assets/images/closeIcon.png');
 const right_icon = require('../../assets/images/rightArrowIcon.png');
 
-const shoeData = [
+const listingData = [
 	{
-		id: 1,
-		brand: 'Jordan',
-		primary_name: 'Jordan 11 Retro',
-		secondary_name: 'Cool Grey',
-		price: '$235.00',
-		image_url:
+		id: '46321348',
+		sneakerID: '65463166351',
+		sneakerData: {
+			id: 1,
+			brand: 'Jordan',
+			primary_name: 'Jordan 11 Retro',
+			secondary_name: 'Cool Grey',
+			price: '$235.00',
+			image_url:
+				'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
+		},
+		zipCode: '28215',
+		// THIS IS JUST AN EXAMPLE OF HOW IMAGES WILL LOOK LIKE!
+		images: [
 			'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
-	},
-	{
-		id: 2,
-		brand: 'Nike',
-		primary_name: 'Nike Dunk Low',
-		secondary_name: 'Retro White Black',
-		price: '$235.00',
-		image_url:
 			'https://popn-app.s3.amazonaws.com/sneakers/nike_dunk_low_retro_white_black.png',
-	},
-	{
-		id: 3,
-		brand: 'Nike',
-		primary_name: 'Nike Air Force 1 Low',
-		secondary_name: 'White',
-		price: '$235.00',
-		image_url:
-			'https://popn-app.s3.amazonaws.com/sneakers/nike_air_force_1_low_white.png',
-	},
-	{
-		id: 4,
+		],
+		size: '9 1/2',
+		condition: 'New',
+		price: '$200',
 		brand: 'Jordan',
-		primary_name: 'Jordan 1 Retro High OG',
-		secondary_name: 'Bordeaux',
-		price: '$235.00',
-		image_url:
-			'https://popn-app.s3.amazonaws.com/sneakers/jordan_1_retro_high_og_bordeaux.png',
-	},
-	{
-		id: 5,
-		brand: 'Jordan',
-		primary_name: 'Jordan 2 Retro Low SP',
-		secondary_name: 'Off-White Black Blue',
-		price: '$235.00',
-		image_url:
-			'https://popn-app.s3.amazonaws.com/sneakers/jordan_2_retro_low_sp_off_white_black_blue.png',
-	},
-	{
-		id: 6,
-		brand: 'Jordan',
-		primary_name: 'Jordan 12 Retro',
-		secondary_name: 'Royalty Taxi',
-		price: '$235.00',
-		image_url:
-			'https://popn-app.s3.amazonaws.com/sneakers/jordan_12_retro_royalty_taxi.png',
-	},
-	{
-		id: 7,
-		brand: 'Jordan',
-		primary_name: 'Jordan 4 Retro',
-		secondary_name: 'Lightning',
-		price: '$235.00',
-		image_url:
-			'https://popn-app.s3.amazonaws.com/sneakers/jordan_4_retro_lightning.png',
+		description: 'Some description',
+		sellerID: '6513551651238216188',
+		seller: {
+			id: '6513551651238216188',
+			age: '16',
+			username: 'jimmy',
+			email: 'jimmy@gmail.com',
+			avatarImageURL: 'some url image',
+			sneakers: [
+				{
+					//sneakers object
+				},
+			],
+			soldSneakers: [
+				{
+					//sold sneakers object
+				},
+			],
+			offers: [
+				{
+					// offers object
+				},
+			],
+			following: [{}],
+			follower: [{}],
+			status: 'Verified',
+			chatRoomUser: [
+				{
+					// chatRoomUsers object
+				},
+			],
+		},
+		prevSellers: ['3486321864', '68435186615665', '435431321531313331'],
 	},
 ];
 
@@ -127,7 +120,7 @@ export default function Home() {
 				</TouchableOpacity>
 			</View>
 
-			<View>{<Feed productData={shoeData} />}</View>
+			<View>{<Feed productData={listingData} />}</View>
 		</Screen>
 	);
 }
