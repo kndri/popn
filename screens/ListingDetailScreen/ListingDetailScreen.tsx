@@ -17,7 +17,7 @@ import { SliderBox } from "react-native-image-slider-box";
 import styles from "./Styles";
 
 // const example = require("../../assets/images/verify_example.png");
-const verified = require("../../assets/images/Verified.png");
+const verified = require("../../assets/images/verified_badge.png");
 const Seller = require("../../assets/images/UserImage.png");
 const dollarSign = require("../../assets/images/dollarSign.png");
 
