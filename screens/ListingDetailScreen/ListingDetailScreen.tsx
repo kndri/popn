@@ -170,7 +170,7 @@ const ListingDetailsScreen = (props: any) => {
         />
         <Text
           preset="default"
-          text={`${product.primary_name}`}
+          text={`${product.primary_name} ${product.secondary_name}`}
           style={{ marginTop: 20 }}
         />
         <Text
