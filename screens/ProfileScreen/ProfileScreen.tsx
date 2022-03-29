@@ -11,14 +11,14 @@ import { Button, Screen, Text, Header } from '../../components';
 import {
 	getSneakersFromUser,
 	deleteUserSneaker,
+	getFollowingFromUser,
+	getFollowersFromUser,
 } from '../../aws-functions/aws-functions';
-
 import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';
 
 //required images
-const messageIcon = require('../../assets/images/message-button.png');
 const verified = require('../../assets/images/verified_badge.png');
 
 //
@@ -26,17 +26,32 @@ export default function ProfileScreen() {
 	const { authData: user } = useAuth();
 	const navigation = useNavigation();
 	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
+	const [following, setFollowing] = React.useState<number>(0);
+	const [followers, setFollowers] = React.useState<number>(0);
 	const [selection, setSelection] = React.useState(1);
 	const isFocused = useIsFocused();
 
-	const getSneakers = async () => {
-		const sneakerlist = await getSneakersFromUser(user!.id);
+	/**
+	 * getUserData() will retrieve sneaker and following/followers data
+	 */
+	const getUserData = async () => {
+		const sneakerlist = await getSneakersFromUser(user!.id).catch((error) =>
+			console.log('error', error)
+		);
+		const following = await getFollowingFromUser(user!.id).catch((error) =>
+			console.log('error', error)
+		);
+		const followers = await getFollowersFromUser(user!.id).catch((error) =>
+			console.log('error', error)
+		);
+
 		setSneakerCollection(sneakerlist);
+		setFollowing(following.length);
+		setFollowers(followers.length);
 	};
 
 	React.useEffect(() => {
-		console.log('profile pressed');
-		getSneakers();
+		getUserData();
 		return () => {
 			navigation.dispatch({
 				...CommonActions.setParams({}),
@@ -58,90 +73,94 @@ export default function ProfileScreen() {
 				{
 					text: 'OK',
 					onPress: () => {
-						deleteUserSneaker(shoeID).then(() => getSneakers());
+						deleteUserSneaker(shoeID).then(() => getUserData());
 					},
 				},
 			]
 		);
 
 	// refacter this code
-	const renderSneaker = ({ item }) => (
-		<TouchableOpacity
-			onLongPress={() => {
-				createDeleteAlert(item.id);
-			}}
-			onPress={() => {
-				navigation.navigate('ShoeDetails', { shoeID: item.id });
-			}}
-		>
-			<View
-				style={{
-					justifyContent: 'space-evenly',
-					height: 150,
-					width: 150,
-					borderWidth: 1,
-					borderColor: '#EBEBEB',
-					borderRadius: 10,
-					marginBottom: 40,
-					marginHorizontal: 10,
+	const renderSneaker = ({ item }) => {
+		const { id, image, primaryName, secondaryName, claim } = item;
+
+		return (
+			<TouchableOpacity
+				onLongPress={() => {
+					createDeleteAlert(id);
+				}}
+				onPress={() => {
+					navigation.navigate('ShoeDetails', { shoeID: id });
 				}}
 			>
 				<View
 					style={{
-						justifyContent: 'flex-start',
-						alignItems: 'flex-start',
-						marginLeft: 10,
-						marginTop: 10,
+						justifyContent: 'space-evenly',
+						height: 150,
+						width: 150,
+						borderWidth: 1,
+						borderColor: '#EBEBEB',
+						borderRadius: 10,
+						marginBottom: 40,
+						marginHorizontal: 10,
 					}}
 				>
-					<Text
-						text={`${item.primaryName}`}
-						style={{ fontSize: 12, color: '#979797' }}
-					/>
-					<Text text={`${item.secondaryName}`} style={{ fontSize: 10 }} />
-					{item.claim.items.length > 0 ? (
-						<>
-							{item.claim?.items[0].status === 'verified' ? (
-								<Image
-									source={verified}
-									style={{ marginTop: 5, height: 20, width: 20 }}
-								/>
-							) : null}
-						</>
-					) : null}
-				</View>
-				<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-					<Image
-						source={{ uri: item.image }}
-						style={{ height: 81, width: 100, resizeMode: 'contain' }}
-					/>
-				</View>
-				<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-					<Button
-						preset="none"
+					<View
 						style={{
-							justifyContent: 'center',
-							width: '70%',
-							height: 20,
-							paddingVertical: 2,
-							borderRadius: 10,
-							marginBottom: 15,
-						}}
-						onPress={() => {
-							navigation.navigate('ShoeDetails', { shoeID: item.id });
+							justifyContent: 'flex-start',
+							alignItems: 'flex-start',
+							marginLeft: 10,
+							marginTop: 10,
 						}}
 					>
 						<Text
-							preset="bold"
-							style={{ fontSize: 12, color: 'white', fontWeight: 'bold' }}
+							text={`${primaryName}`}
+							style={{ fontSize: 12, color: '#979797' }}
+						/>
+						<Text text={`${secondaryName}`} style={{ fontSize: 10 }} />
+						{claim.items.length > 0 ? (
+							<>
+								{claim.items[0].status === 'verified' ? (
+									<Image
+										source={verified}
+										style={{ marginTop: 5, height: 20, width: 20 }}
+									/>
+								) : null}
+							</>
+						) : null}
+					</View>
+					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
+						<Image
+							source={{ uri: image }}
+							style={{ height: 81, width: 100, resizeMode: 'contain' }}
+						/>
+					</View>
+					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
+						<Button
+							preset="none"
+							style={{
+								justifyContent: 'center',
+								width: '70%',
+								height: 20,
+								paddingVertical: 2,
+								borderRadius: 10,
+								marginBottom: 15,
+							}}
+							onPress={() => {
+								navigation.navigate('ShoeDetails', { shoeID: id });
+							}}
 						>
-							View
-						</Text>
-					</Button>
+							<Text
+								preset="bold"
+								style={{ fontSize: 12, color: 'white', fontWeight: 'bold' }}
+							>
+								View
+							</Text>
+						</Button>
+					</View>
 				</View>
-			</View>
-		</TouchableOpacity>
-	);
+			</TouchableOpacity>
+		);
+	};
 
 	const renderPosts = () => {
 		return (
@@ -196,7 +215,7 @@ export default function ProfileScreen() {
 		<Screen style={styles.CONTAINER}>
 			<View style={styles.PROFILE_HEADER}>
 				<Header
-					headerTx="Profile"
+					headerTx={`${user?.username}`}
 					leftIcon="message"
 					rightIcon="settings"
 					onLeftPress={() => navigation.navigate('Message')}
@@ -205,8 +224,19 @@ export default function ProfileScreen() {
 			</View>
 			<View style={styles.PROFILE_DATA}>
 				<Image style={styles.PROFILE_IMAGE} source={{ uri: user?.image }} />
-				<View style={{}}>
-					<Text preset="header" text={`${user?.username}`} />
+				<View style={{ flexDirection: 'row' }}>
+					<View style={styles.PROFILE_DETAILS}>
+						<Text preset="bold" text={`${sneakerCollection.length}`} />
+						<Text preset="default" text={'Collection'} />
+					</View>
+					<View style={styles.PROFILE_DETAILS}>
+						<Text preset="bold" text={`${following}`} />
+						<Text preset="default" text={'Following'} />
+					</View>
+					<View style={styles.PROFILE_DETAILS}>
+						<Text preset="bold" text={`${followers}`} />
+						<Text preset="default" text={'Followers'} />
+					</View>
 				</View>
 			</View>
 			<View
@@ -214,72 +244,7 @@ export default function ProfileScreen() {
 			></View>
 
 			<View style={styles.COLLECTION_CONTAINER}>
-				<View style={styles.BUTTON_VIEW}>
-					<Button
-						onPress={() => setSelection(1)}
-						style={[
-							selection === 1
-								? {
-										borderRadius: 34,
-										width: 101,
-										margin: 2,
-								  }
-								: {
-										backgroundColor: 'white',
-										borderRadius: 34,
-										width: 101,
-										borderColor: '#E8EDF2',
-										borderWidth: 1,
-										margin: 2,
-								  },
-						]}
-					>
-						<Text
-							preset="bold"
-							style={[
-								selection === 1 ? { color: 'white' } : { color: 'black' },
-							]}
-						>
-							Collection
-						</Text>
-					</Button>
-					<Button
-						onPress={() => setSelection(2)}
-						style={[
-							selection === 2
-								? {
-										borderRadius: 34,
-										width: 101,
-										margin: 2,
-								  }
-								: {
-										backgroundColor: 'white',
-										borderRadius: 34,
-										width: 101,
-										borderColor: '#E8EDF2',
-										borderWidth: 1,
-										margin: 2,
-								  },
-						]}
-					>
-						<Text
-							preset="bold"
-							style={[
-								selection === 2 ? { color: 'white' } : { color: 'black' },
-							]}
-						>
-							Posts
-						</Text>
-					</Button>
-				</View>
-
-				<View style={styles.DATA_CONTAINER}>
-					{selection === 1
-						? renderCollection()
-						: selection === 2
-						? renderPosts()
-						: null}
-				</View>
+				<View style={styles.DATA_CONTAINER}>{renderCollection()}</View>
 			</View>
 		</Screen>
 	);

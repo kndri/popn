@@ -32,6 +32,7 @@ import MessageRoomScreen from '../screens/MessageRoomScreen/MessageRoomScreen';
 import NewMessageRoomScreen from '../screens/NewMessageRoomScreen/NewMessageRoomScreen';
 import LocationScreen from '../screens/LocationScreen';
 import ZipCodeScreen from '../screens/ZipCodeScreen';
+import NewListingScreen from '../screens/NewListingScreen';
 
 import {
   RootStackParamList,
@@ -238,6 +239,11 @@ function RootNavigator() {
 					<Stack.Screen
 						name="ZipCode"
 						component={ZipCodeScreen}
+						options={{ headerShown: false }}
+					/>
+					<Stack.Screen
+						name="NewListing"
+						component={NewListingScreen}
 						options={{ headerShown: false }}
 					/>
 				</>
