@@ -45,6 +45,7 @@ export type RootStackParamList = {
 	Claim: undefined;
 	ZipCode: undefined;
 	Location: undefined;
+	NewListing: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

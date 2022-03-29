@@ -296,7 +296,9 @@ export const sendCustomChallenge = async (user: string, OTP: string) => {
 };
 
 //stores shoes
-export const getSneakersFromUser = async (userId: string): Promise<SneakerData> => {
+export const getSneakersFromUser = async (
+	userId: string
+): Promise<SneakerData> => {
 	let sneakerList: any;
 
 	const sneakersData = await API.graphql(
@@ -310,16 +312,12 @@ export const getSneakersFromUser = async (userId: string): Promise<SneakerData> 
 	return sneakerList;
 };
 
-export const getFollowersFromUser = async () => {
+export const getFollowersFromUser = async (userId: string) => {
 	let followersList: any;
 
-	// const currentUser = checkLoggedUser();
-	const currentUser = await Auth.currentAuthenticatedUser({
-		bypassCache: true,
-	});
 	const followers = await API.graphql(
 		graphqlOperation(followersByUser, {
-			secondUserID: currentUser.attributes.sub,
+			secondUserID: userId,
 		})
 	);
 	followersList = followers.data.followersByUser.items;
@@ -327,16 +325,12 @@ export const getFollowersFromUser = async () => {
 	return followersList;
 };
 
-export const getFollowingFromUser = async () => {
+export const getFollowingFromUser = async (userId: string) => {
 	let followingList: any;
 
-	// const currentUser = checkLoggedUser();
-	const currentUser = await Auth.currentAuthenticatedUser({
-		bypassCache: true,
-	});
 	const following = await API.graphql(
 		graphqlOperation(followingByUser, {
-			mainUserID: currentUser.attributes.sub,
+			mainUserID: userId,
 		})
 	);
 	followingList = following.data.followingByUser.items;
