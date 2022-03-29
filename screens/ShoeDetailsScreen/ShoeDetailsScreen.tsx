@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ViewStyle, ImageStyle, Modal } from 'react-native';
+import { View, Modal, ActionSheetIOS } from 'react-native';
 import {
 	Screen,
 	Text,
@@ -20,6 +20,7 @@ import {
 } from '../../aws-functions/aws-functions';
 
 import styles from './Styles';
+import { useAuth } from '../../contexts/auth';
 
 const example = require('../../assets/images/verify_example.png');
 const verified = require('../../assets/images/verified_badge.png');
@@ -27,20 +28,28 @@ const verified = require('../../assets/images/verified_badge.png');
 const ShoeDetailsScreen = () => {
 	const route = useRoute();
 	const { shoeID }: any = route.params;
+	const { authData: user } = useAuth();
 	const isFocused = useIsFocused();
 	const navigation = useNavigation();
 	const [modalVisible, setModalVisible] = React.useState(false);
 	const [sneaker, setSneaker] = React.useState<any>({});
 	const [claim, setClaim] = React.useState<any>({});
-	const [isMain, setIsMain] = React.useState<boolean>();
+	const [isSignedinUser, setIsSignedinUser] = React.useState<boolean>();
 
+	/**
+	 * If the signed in user ID matches with the current shoe owner
+	 * then the signed in user is viewing its own shoe
+	 * Else it is another user
+	 */
 	const getShoe = async () => {
 		const shoe = await getCurrentSneaker(shoeID);
-		const user = await checkLoggedUser();
-		if (shoe.userID === user.attributes.sub) {
-			setIsMain(true);
-		} else {
-			setIsMain(false);
+
+		switch (shoe.userID) {
+			case user?.id:
+				setIsSignedinUser(true);
+				break;
+			default:
+				setIsSignedinUser(false);
 		}
 
 		if (shoe.claim.items.length > 0) {
@@ -49,94 +58,27 @@ const ShoeDetailsScreen = () => {
 		setSneaker(shoe);
 	};
 
-	const checking = async () => {
-		const user = await checkLoggedUser();
-
-		if (sneaker.userID === user.attributes.sub) {
-			if (claim) {
-				return [
-					<>
-						<View style={styles.SHOE_DATA}>
-							<Text
-								preset="bold"
-								text="SNEAKER DETAILS"
-								style={{ fontSize: 20 }}
-							/>
-							<View
-								style={{
-									display: 'flex',
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									paddingTop: 20,
-								}}
-							>
-								<Text text="Retail Price" />
-								<Text text="$225" />
-							</View>
-							<View
-								style={{
-									display: 'flex',
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									paddingTop: 10,
-								}}
-							>
-								<Text text="Release Date" />
-								<Text text="12/11/2021" />
-							</View>
-							<View
-								style={{
-									display: 'flex',
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									paddingTop: 10,
-								}}
-							>
-								<Text text="Status" />
-								<Text text={claim.claimMessage} />
-							</View>
-						</View>
-					</>,
-				];
+	const handleAction = () =>
+		ActionSheetIOS.showActionSheetWithOptions(
+			{
+				options: ['Create a Listing', 'Delete Sneaker'],
+				destructiveButtonIndex: 0,
+				cancelButtonIndex: 0,
+				// userInterfaceStyle: 'dark',
+			},
+			(buttonIndex) => {
+				if (buttonIndex === 0) {
+					console.log('cancel');
+					// cancel action
+				} else if (buttonIndex === 1) {
+					console.log('Create a Listing');
+					// setResult(Math.floor(Math.random() * 100) + 1);
+				} else if (buttonIndex === 2) {
+					console.log('Delete Sneaker');
+					// setResult('🔮');
+				}
 			}
-		}
-
-		return [
-			<>
-				<View style={styles.SHOE_DATA}>
-					<Text preset="bold" text="SNEAKER DETAILS" style={{ fontSize: 20 }} />
-					<View
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							justifyContent: 'space-between',
-							paddingTop: 20,
-						}}
-					>
-						<Text text="Retail Price" />
-						<Text text="$225" />
-					</View>
-					<View
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							justifyContent: 'space-between',
-							paddingTop: 10,
-						}}
-					>
-						<Text text="Release Date" />
-						<Text text="12/11/2021" />
-					</View>
-				</View>
-
-				<Button
-					text="Contact User"
-					preset="primary"
-					// onPress={() => setModalVisible(true)}
-				/>
-			</>,
-		];
-	};
+		);
 
 	React.useEffect(() => {
 		const rerender = navigation.addListener('focus', () => {
@@ -234,7 +176,9 @@ const ShoeDetailsScreen = () => {
 			<Header
 				style={styles.BACK_BUTTON}
 				leftIcon="back"
+				rightIcon="more"
 				onLeftPress={() => navigation.goBack()}
+				onRightPress={() => handleAction()}
 			/>
 			<View style={styles.SHOE_HEADING}>
 				<Text
@@ -285,7 +229,7 @@ const ShoeDetailsScreen = () => {
 					<Text text="12/11/2021" />
 				</View>
 
-				{isMain ? (
+				{isSignedinUser ? (
 					<>
 						{claim.id ? (
 							<View
@@ -315,7 +259,7 @@ const ShoeDetailsScreen = () => {
 					</>
 				) : null}
 			</View>
-			{isMain ? (
+			{isSignedinUser ? (
 				<>
 					{claim.id ? (
 						<>

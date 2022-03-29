@@ -36,7 +36,11 @@ type Followers
 }
 type ChatRoomUser
 	@model
-	@key(name: "byUser", fields: ["userID", "chatRoomID"])
+	@key(
+		name: "byUser"
+		fields: ["userID", "chatRoomID"]
+		queryField: "chatRoomUserByUser"
+	)
 	@key(name: "byChatRoom", fields: ["chatRoomID", "userID"]) {
 	id: ID!
 	userID: ID!
@@ -96,7 +100,6 @@ type SoldSneaker
 	user: User @connection(fields: ["userID"])
 	createdAt: String
 }
-
 type Claim @model @key(name: "bySneaker", fields: ["sneakerID", "userID"]) {
 	id: ID!
 	userID: ID!
@@ -109,47 +112,6 @@ type Claim @model @key(name: "bySneaker", fields: ["sneakerID", "userID"]) {
 	createdAt: String
 }
 
-type Post
-	@model
-	@key(
-		name: "byUser"
-		fields: ["userID", "createdAt"]
-		queryField: "postByUser"
-	) {
-	id: ID!
-	userID: ID!
-	description: String
-	user: User @connection(fields: ["userID"])
-	likes: [Like] @connection(keyName: "byPost", fields: ["id"])
-	comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
-	createdAt: String
-}
-type Comment
-	@model
-	@key(
-		name: "byUser"
-		fields: ["userID", "postID", "createdAt"]
-		queryField: "commentByUser"
-	)
-	@key(name: "byPost", fields: ["postID", "userID", "createdAt"]) {
-	id: ID!
-	text: String!
-	userID: ID!
-	postID: ID!
-	user: User @connection(fields: ["userID"])
-	post: Post @connection(fields: ["postID"])
-	createdAt: String
-}
-type Like
-	@model
-	@key(name: "byUser", fields: ["userID", "postID"])
-	@key(name: "byPost", fields: ["postID", "userID"]) {
-	id: ID!
-	userID: ID!
-	postID: ID!
-	user: User! @connection(fields: ["userID"])
-	post: Post! @connection(fields: ["postID"])
-}
 type ListedItem
 	@model
 	@key(name: "byUser", fields: ["userID"], queryField: "listedItemByUser")
@@ -158,7 +120,7 @@ type ListedItem
 		fields: ["zipCode"]
 		queryField: "listedItemByZipCode"
 	)
-	@key(name: "byTag", fields: ["tag"], queryField: "listedItemByTag")
+	@key(name: "byTag", fields: ["brand"], queryField: "listedItemByBrand")
 	@key(name: "byPrice", fields: ["price"], queryField: "listedItemByPrice")
 	@key(name: "bySize", fields: ["size"], queryField: "listedItemBySize")
 	@key(
@@ -179,11 +141,11 @@ type ListedItem
 	size: String!
 	condition: String!
 	price: String!
-	tag: Tag!
+	brand: String!
 	description: String
-	userID: ID!
-	user: User! @connection(fields: ["userID"])
-	prevOwners: [String]
+	sellerID: ID!
+	seller: User! @connection(fields: ["userID"])
+	prevSellers: [String]
 	createdAt: String
 }
 type Offer
@@ -214,12 +176,4 @@ enum ClaimStatus {
 	verified
 	pending
 	denied
-}
-enum Tag {
-	Adidas
-	Nike
-	Puma
-	Converse
-	Jordans
-	Yeezy
 }
