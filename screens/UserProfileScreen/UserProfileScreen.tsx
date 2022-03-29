@@ -194,18 +194,18 @@ export default function UserProfileScreen(props?: any) {
 						style={[
 							selection === 1
 								? {
-										borderRadius: 34,
-										width: 101,
-										margin: 2,
-								  }
+									borderRadius: 34,
+									width: 101,
+									margin: 2,
+								}
 								: {
-										backgroundColor: 'white',
-										borderRadius: 34,
-										width: 101,
-										borderColor: '#E8EDF2',
-										borderWidth: 1,
-										margin: 2,
-								  },
+									backgroundColor: 'white',
+									borderRadius: 34,
+									width: 101,
+									borderColor: '#E8EDF2',
+									borderWidth: 1,
+									margin: 2,
+								},
 						]}
 					>
 						<Text
@@ -222,18 +222,18 @@ export default function UserProfileScreen(props?: any) {
 						style={[
 							selection === 2
 								? {
-										borderRadius: 34,
-										width: 101,
-										margin: 2,
-								  }
+									borderRadius: 34,
+									width: 101,
+									margin: 2,
+								}
 								: {
-										backgroundColor: 'white',
-										borderRadius: 34,
-										width: 101,
-										borderColor: '#E8EDF2',
-										borderWidth: 1,
-										margin: 2,
-								  },
+									backgroundColor: 'white',
+									borderRadius: 34,
+									width: 101,
+									borderColor: '#E8EDF2',
+									borderWidth: 1,
+									margin: 2,
+								},
 						]}
 					>
 						<Text
@@ -251,8 +251,8 @@ export default function UserProfileScreen(props?: any) {
 					{selection === 1
 						? renderCollection()
 						: selection === 2
-						? renderPosts()
-						: null}
+							? renderPosts()
+							: null}
 				</View>
 			</View>
 		</Screen>
