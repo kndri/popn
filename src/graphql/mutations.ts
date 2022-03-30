@@ -26,11 +26,27 @@ export const createUser = /* GraphQL */ `
         }
         nextToken
       }
-      posts {
+      soldSneakers {
         items {
           id
+          brand
+          primaryName
+          secondaryName
+          image
           userID
-          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      offers {
+        items {
+          id
+          offerAmount
+          status
+          buyingUserID
+          sellingUserID
+          listedItemID
           createdAt
           updatedAt
         }
@@ -96,11 +112,27 @@ export const updateUser = /* GraphQL */ `
         }
         nextToken
       }
-      posts {
+      soldSneakers {
         items {
           id
+          brand
+          primaryName
+          secondaryName
+          image
           userID
-          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      offers {
+        items {
+          id
+          offerAmount
+          status
+          buyingUserID
+          sellingUserID
+          listedItemID
           createdAt
           updatedAt
         }
@@ -166,11 +198,27 @@ export const deleteUser = /* GraphQL */ `
         }
         nextToken
       }
-      posts {
+      soldSneakers {
         items {
           id
+          brand
+          primaryName
+          secondaryName
+          image
           userID
-          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      offers {
+        items {
+          id
+          offerAmount
+          status
+          buyingUserID
+          sellingUserID
+          listedItemID
           createdAt
           updatedAt
         }
@@ -230,7 +278,10 @@ export const createFollowing = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -269,7 +320,10 @@ export const updateFollowing = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -308,7 +362,10 @@ export const deleteFollowing = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -347,7 +404,10 @@ export const createFollowers = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -386,7 +446,10 @@ export const updateFollowers = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -425,7 +488,10 @@ export const deleteFollowers = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -464,7 +530,10 @@ export const createChatRoomUser = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -523,7 +592,10 @@ export const updateChatRoomUser = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -582,7 +654,10 @@ export const deleteChatRoomUser = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -817,7 +892,10 @@ export const createMessage = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -877,7 +955,10 @@ export const updateMessage = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -937,7 +1018,10 @@ export const deleteMessage = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -998,7 +1082,10 @@ export const createSneaker = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1053,7 +1140,10 @@ export const updateSneaker = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1108,7 +1198,10 @@ export const deleteSneaker = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1142,6 +1235,141 @@ export const deleteSneaker = /* GraphQL */ `
     }
   }
 `;
+export const createSoldSneaker = /* GraphQL */ `
+  mutation CreateSoldSneaker(
+    $input: CreateSoldSneakerInput!
+    $condition: ModelSoldSneakerConditionInput
+  ) {
+    createSoldSneaker(input: $input, condition: $condition) {
+      id
+      brand
+      primaryName
+      secondaryName
+      image
+      userID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        soldSneakers {
+          nextToken
+        }
+        offers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateSoldSneaker = /* GraphQL */ `
+  mutation UpdateSoldSneaker(
+    $input: UpdateSoldSneakerInput!
+    $condition: ModelSoldSneakerConditionInput
+  ) {
+    updateSoldSneaker(input: $input, condition: $condition) {
+      id
+      brand
+      primaryName
+      secondaryName
+      image
+      userID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        soldSneakers {
+          nextToken
+        }
+        offers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteSoldSneaker = /* GraphQL */ `
+  mutation DeleteSoldSneaker(
+    $input: DeleteSoldSneakerInput!
+    $condition: ModelSoldSneakerConditionInput
+  ) {
+    deleteSoldSneaker(input: $input, condition: $condition) {
+      id
+      brand
+      primaryName
+      secondaryName
+      image
+      userID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        soldSneakers {
+          nextToken
+        }
+        offers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createClaim = /* GraphQL */ `
   mutation CreateClaim(
     $input: CreateClaimInput!
@@ -1160,7 +1388,10 @@ export const createClaim = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1225,7 +1456,10 @@ export const updateClaim = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1290,7 +1524,10 @@ export const deleteClaim = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1337,16 +1574,46 @@ export const deleteClaim = /* GraphQL */ `
     }
   }
 `;
-export const createPost = /* GraphQL */ `
-  mutation CreatePost(
-    $input: CreatePostInput!
-    $condition: ModelPostConditionInput
+export const createListedItem = /* GraphQL */ `
+  mutation CreateListedItem(
+    $input: CreateListedItemInput!
+    $condition: ModelListedItemConditionInput
   ) {
-    createPost(input: $input, condition: $condition) {
+    createListedItem(input: $input, condition: $condition) {
       id
-      userID
+      sneakerID
+      sneakerData {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          status
+          createdAt
+          updatedAt
+        }
+        claim {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      zipCode
+      images
+      size
+      condition
+      price
+      brand
       description
-      user {
+      sellerID
+      seller {
         id
         age
         username
@@ -1355,7 +1622,10 @@ export const createPost = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1371,42 +1641,52 @@ export const createPost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      likes {
-        items {
-          id
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      comments {
-        items {
-          id
-          text
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      prevSellers
       createdAt
       updatedAt
     }
   }
 `;
-export const updatePost = /* GraphQL */ `
-  mutation UpdatePost(
-    $input: UpdatePostInput!
-    $condition: ModelPostConditionInput
+export const updateListedItem = /* GraphQL */ `
+  mutation UpdateListedItem(
+    $input: UpdateListedItemInput!
+    $condition: ModelListedItemConditionInput
   ) {
-    updatePost(input: $input, condition: $condition) {
+    updateListedItem(input: $input, condition: $condition) {
       id
-      userID
+      sneakerID
+      sneakerData {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          status
+          createdAt
+          updatedAt
+        }
+        claim {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      zipCode
+      images
+      size
+      condition
+      price
+      brand
       description
-      user {
+      sellerID
+      seller {
         id
         age
         username
@@ -1415,7 +1695,10 @@ export const updatePost = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1431,42 +1714,52 @@ export const updatePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      likes {
-        items {
-          id
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      comments {
-        items {
-          id
-          text
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      prevSellers
       createdAt
       updatedAt
     }
   }
 `;
-export const deletePost = /* GraphQL */ `
-  mutation DeletePost(
-    $input: DeletePostInput!
-    $condition: ModelPostConditionInput
+export const deleteListedItem = /* GraphQL */ `
+  mutation DeleteListedItem(
+    $input: DeleteListedItemInput!
+    $condition: ModelListedItemConditionInput
   ) {
-    deletePost(input: $input, condition: $condition) {
+    deleteListedItem(input: $input, condition: $condition) {
       id
-      userID
+      sneakerID
+      sneakerData {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          status
+          createdAt
+          updatedAt
+        }
+        claim {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      zipCode
+      images
+      size
+      condition
+      price
+      brand
       description
-      user {
+      sellerID
+      seller {
         id
         age
         username
@@ -1475,7 +1768,10 @@ export const deletePost = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1491,72 +1787,98 @@ export const deletePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      likes {
-        items {
+      prevSellers
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createOffer = /* GraphQL */ `
+  mutation CreateOffer(
+    $input: CreateOfferInput!
+    $condition: ModelOfferConditionInput
+  ) {
+    createOffer(input: $input, condition: $condition) {
+      id
+      offerAmount
+      status
+      buyingUserID
+      sellingUserID
+      listedItemID
+      listedItem {
+        id
+        sneakerID
+        sneakerData {
           id
+          brand
+          primaryName
+          secondaryName
+          image
           userID
-          postID
           createdAt
           updatedAt
         }
-        nextToken
-      }
-      comments {
-        items {
+        zipCode
+        images
+        size
+        condition
+        price
+        brand
+        description
+        sellerID
+        seller {
           id
-          text
+          age
+          username
+          email
+          avatarImageURL
+          status
+          createdAt
+          updatedAt
+        }
+        prevSellers
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateOffer = /* GraphQL */ `
+  mutation UpdateOffer(
+    $input: UpdateOfferInput!
+    $condition: ModelOfferConditionInput
+  ) {
+    updateOffer(input: $input, condition: $condition) {
+      id
+      offerAmount
+      status
+      buyingUserID
+      sellingUserID
+      listedItemID
+      listedItem {
+        id
+        sneakerID
+        sneakerData {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
           userID
-          postID
           createdAt
           updatedAt
         }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createComment = /* GraphQL */ `
-  mutation CreateComment(
-    $input: CreateCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    createComment(input: $input, condition: $condition) {
-      id
-      text
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following {
-          nextToken
-        }
-        follower {
-          nextToken
-        }
-        status
-        chatRoomUser {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
+        zipCode
+        images
+        size
+        condition
+        price
+        brand
         description
-        user {
+        sellerID
+        seller {
           id
           age
           username
@@ -1566,12 +1888,7 @@ export const createComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
+        prevSellers
         createdAt
         updatedAt
       }
@@ -1580,46 +1897,40 @@ export const createComment = /* GraphQL */ `
     }
   }
 `;
-export const updateComment = /* GraphQL */ `
-  mutation UpdateComment(
-    $input: UpdateCommentInput!
-    $condition: ModelCommentConditionInput
+export const deleteOffer = /* GraphQL */ `
+  mutation DeleteOffer(
+    $input: DeleteOfferInput!
+    $condition: ModelOfferConditionInput
   ) {
-    updateComment(input: $input, condition: $condition) {
+    deleteOffer(input: $input, condition: $condition) {
       id
-      text
-      userID
-      postID
-      user {
+      offerAmount
+      status
+      buyingUserID
+      sellingUserID
+      listedItemID
+      listedItem {
         id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
+        sneakerID
+        sneakerData {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          userID
+          createdAt
+          updatedAt
         }
-        posts {
-          nextToken
-        }
-        following {
-          nextToken
-        }
-        follower {
-          nextToken
-        }
-        status
-        chatRoomUser {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
+        zipCode
+        images
+        size
+        condition
+        price
+        brand
         description
-        user {
+        sellerID
+        seller {
           id
           age
           username
@@ -1629,261 +1940,7 @@ export const updateComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteComment = /* GraphQL */ `
-  mutation DeleteComment(
-    $input: DeleteCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    deleteComment(input: $input, condition: $condition) {
-      id
-      text
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following {
-          nextToken
-        }
-        follower {
-          nextToken
-        }
-        status
-        chatRoomUser {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          status
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createLike = /* GraphQL */ `
-  mutation CreateLike(
-    $input: CreateLikeInput!
-    $condition: ModelLikeConditionInput
-  ) {
-    createLike(input: $input, condition: $condition) {
-      id
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following {
-          nextToken
-        }
-        follower {
-          nextToken
-        }
-        status
-        chatRoomUser {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          status
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateLike = /* GraphQL */ `
-  mutation UpdateLike(
-    $input: UpdateLikeInput!
-    $condition: ModelLikeConditionInput
-  ) {
-    updateLike(input: $input, condition: $condition) {
-      id
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following {
-          nextToken
-        }
-        follower {
-          nextToken
-        }
-        status
-        chatRoomUser {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          status
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteLike = /* GraphQL */ `
-  mutation DeleteLike(
-    $input: DeleteLikeInput!
-    $condition: ModelLikeConditionInput
-  ) {
-    deleteLike(input: $input, condition: $condition) {
-      id
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following {
-          nextToken
-        }
-        follower {
-          nextToken
-        }
-        status
-        chatRoomUser {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          status
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
+        prevSellers
         createdAt
         updatedAt
       }

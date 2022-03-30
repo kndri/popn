@@ -23,11 +23,27 @@ export const getUser = /* GraphQL */ `
 				}
 				nextToken
 			}
-			posts {
+			soldSneakers {
 				items {
 					id
+					brand
+					primaryName
+					secondaryName
+					image
 					userID
-					description
+					createdAt
+					updatedAt
+				}
+				nextToken
+			}
+			offers {
+				items {
+					id
+					offerAmount
+					status
+					buyingUserID
+					sellingUserID
+					listedItemID
 					createdAt
 					updatedAt
 				}
@@ -82,7 +98,25 @@ export const listUsers = /* GraphQL */ `
 				username
 				email
 				avatarImageURL
+				sneakers {
+					nextToken
+				}
+				soldSneakers {
+					nextToken
+				}
+				offers {
+					nextToken
+				}
+				following {
+					nextToken
+				}
+				follower {
+					nextToken
+				}
 				status
+				chatRoomUser {
+					nextToken
+				}
 				createdAt
 				updatedAt
 			}
@@ -102,7 +136,6 @@ export const getFollowing = /* GraphQL */ `
 				username
 				email
 				avatarImageURL
-				status
 				createdAt
 				updatedAt
 			}
@@ -151,7 +184,6 @@ export const getFollowers = /* GraphQL */ `
 				username
 				email
 				avatarImageURL
-				status
 				createdAt
 				updatedAt
 			}
@@ -200,7 +232,25 @@ export const getChatRoomUser = /* GraphQL */ `
 				username
 				email
 				avatarImageURL
+				sneakers {
+					nextToken
+				}
+				soldSneakers {
+					nextToken
+				}
+				offers {
+					nextToken
+				}
+				following {
+					nextToken
+				}
+				follower {
+					nextToken
+				}
 				status
+				chatRoomUser {
+					nextToken
+				}
 				createdAt
 				updatedAt
 			}
@@ -363,7 +413,25 @@ export const getMessage = /* GraphQL */ `
 				username
 				email
 				avatarImageURL
+				sneakers {
+					nextToken
+				}
+				soldSneakers {
+					nextToken
+				}
+				offers {
+					nextToken
+				}
+				following {
+					nextToken
+				}
+				follower {
+					nextToken
+				}
 				status
+				chatRoomUser {
+					nextToken
+				}
 				createdAt
 				updatedAt
 			}
@@ -441,7 +509,25 @@ export const getSneaker = /* GraphQL */ `
 				username
 				email
 				avatarImageURL
+				sneakers {
+					nextToken
+				}
+				soldSneakers {
+					nextToken
+				}
+				offers {
+					nextToken
+				}
+				following {
+					nextToken
+				}
+				follower {
+					nextToken
+				}
 				status
+				chatRoomUser {
+					nextToken
+				}
 				createdAt
 				updatedAt
 			}
@@ -497,6 +583,79 @@ export const listSneakers = /* GraphQL */ `
 		}
 	}
 `;
+export const getSoldSneaker = /* GraphQL */ `
+	query GetSoldSneaker($id: ID!) {
+		getSoldSneaker(id: $id) {
+			id
+			brand
+			primaryName
+			secondaryName
+			image
+			userID
+			user {
+				id
+				age
+				username
+				email
+				avatarImageURL
+				sneakers {
+					nextToken
+				}
+				soldSneakers {
+					nextToken
+				}
+				offers {
+					nextToken
+				}
+				following {
+					nextToken
+				}
+				follower {
+					nextToken
+				}
+				status
+				chatRoomUser {
+					nextToken
+				}
+				createdAt
+				updatedAt
+			}
+			createdAt
+			updatedAt
+		}
+	}
+`;
+export const listSoldSneakers = /* GraphQL */ `
+	query ListSoldSneakers(
+		$filter: ModelSoldSneakerFilterInput
+		$limit: Int
+		$nextToken: String
+	) {
+		listSoldSneakers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+			items {
+				id
+				brand
+				primaryName
+				secondaryName
+				image
+				userID
+				user {
+					id
+					age
+					username
+					email
+					avatarImageURL
+					status
+					createdAt
+					updatedAt
+				}
+				createdAt
+				updatedAt
+			}
+			nextToken
+		}
+	}
+`;
 export const getClaim = /* GraphQL */ `
 	query GetClaim($id: ID!) {
 		getClaim(id: $id) {
@@ -509,7 +668,25 @@ export const getClaim = /* GraphQL */ `
 				username
 				email
 				avatarImageURL
+				sneakers {
+					nextToken
+				}
+				soldSneakers {
+					nextToken
+				}
+				offers {
+					nextToken
+				}
+				following {
+					nextToken
+				}
+				follower {
+					nextToken
+				}
 				status
+				chatRoomUser {
+					nextToken
+				}
 				createdAt
 				updatedAt
 			}
@@ -585,13 +762,43 @@ export const listClaims = /* GraphQL */ `
 		}
 	}
 `;
-export const getPost = /* GraphQL */ `
-	query GetPost($id: ID!) {
-		getPost(id: $id) {
+export const getListedItem = /* GraphQL */ `
+	query GetListedItem($id: ID!) {
+		getListedItem(id: $id) {
 			id
-			userID
+			sneakerID
+			sneakerData {
+				id
+				brand
+				primaryName
+				secondaryName
+				image
+				userID
+				user {
+					id
+					age
+					username
+					email
+					avatarImageURL
+					status
+					createdAt
+					updatedAt
+				}
+				claim {
+					nextToken
+				}
+				createdAt
+				updatedAt
+			}
+			zipCode
+			images
+			size
+			condition
+			price
+			brand
 			description
-			user {
+			sellerID
+			seller {
 				id
 				age
 				username
@@ -600,7 +807,10 @@ export const getPost = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				posts {
+				soldSneakers {
+					nextToken
+				}
+				offers {
 					nextToken
 				}
 				following {
@@ -616,44 +826,41 @@ export const getPost = /* GraphQL */ `
 				createdAt
 				updatedAt
 			}
-			likes {
-				items {
-					id
-					userID
-					postID
-					createdAt
-					updatedAt
-				}
-				nextToken
-			}
-			comments {
-				items {
-					id
-					text
-					userID
-					postID
-					createdAt
-					updatedAt
-				}
-				nextToken
-			}
+			prevSellers
 			createdAt
 			updatedAt
 		}
 	}
 `;
-export const listPosts = /* GraphQL */ `
-	query ListPosts(
-		$filter: ModelPostFilterInput
+export const listListedItems = /* GraphQL */ `
+	query ListListedItems(
+		$filter: ModelListedItemFilterInput
 		$limit: Int
 		$nextToken: String
 	) {
-		listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+		listListedItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
 			items {
 				id
-				userID
+				sneakerID
+				sneakerData {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					userID
+					createdAt
+					updatedAt
+				}
+				zipCode
+				images
+				size
+				condition
+				price
+				brand
 				description
-				user {
+				sellerID
+				seller {
 					id
 					age
 					username
@@ -663,27 +870,7 @@ export const listPosts = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
-				likes {
-					items {
-						id
-						userID
-						postID
-						createdAt
-						updatedAt
-					}
-					nextToken
-				}
-				comments {
-					items {
-						id
-						text
-						userID
-						postID
-						createdAt
-						updatedAt
-					}
-					nextToken
-				}
+				prevSellers
 				createdAt
 				updatedAt
 			}
@@ -691,28 +878,37 @@ export const listPosts = /* GraphQL */ `
 		}
 	}
 `;
-export const getComment = /* GraphQL */ `
-	query GetComment($id: ID!) {
-		getComment(id: $id) {
+export const getOffer = /* GraphQL */ `
+	query GetOffer($id: ID!) {
+		getOffer(id: $id) {
 			id
-			text
-			userID
-			postID
-			user {
+			offerAmount
+			status
+			buyingUserID
+			sellingUserID
+			listedItemID
+			listedItem {
 				id
-				age
-				username
-				email
-				avatarImageURL
-				status
-				createdAt
-				updatedAt
-			}
-			post {
-				id
-				userID
+				sneakerID
+				sneakerData {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					userID
+					createdAt
+					updatedAt
+				}
+				zipCode
+				images
+				size
+				condition
+				price
+				brand
 				description
-				user {
+				sellerID
+				seller {
 					id
 					age
 					username
@@ -722,12 +918,7 @@ export const getComment = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
-				likes {
-					nextToken
-				}
-				comments {
-					nextToken
-				}
+				prevSellers
 				createdAt
 				updatedAt
 			}
@@ -736,111 +927,32 @@ export const getComment = /* GraphQL */ `
 		}
 	}
 `;
-export const listComments = /* GraphQL */ `
-	query ListComments(
-		$filter: ModelCommentFilterInput
+export const listOffers = /* GraphQL */ `
+	query ListOffers(
+		$filter: ModelOfferFilterInput
 		$limit: Int
 		$nextToken: String
 	) {
-		listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+		listOffers(filter: $filter, limit: $limit, nextToken: $nextToken) {
 			items {
 				id
-				text
-				userID
-				postID
-				user {
-					id
-					age
-					username
-					email
-					avatarImageURL
-					status
-					createdAt
-					updatedAt
-				}
-				post {
-					id
-					userID
-					description
-					createdAt
-					updatedAt
-				}
-				createdAt
-				updatedAt
-			}
-			nextToken
-		}
-	}
-`;
-export const getLike = /* GraphQL */ `
-	query GetLike($id: ID!) {
-		getLike(id: $id) {
-			id
-			userID
-			postID
-			user {
-				id
-				age
-				username
-				email
-				avatarImageURL
+				offerAmount
 				status
-				createdAt
-				updatedAt
-			}
-			post {
-				id
-				userID
-				description
-				user {
+				buyingUserID
+				sellingUserID
+				listedItemID
+				listedItem {
 					id
-					age
-					username
-					email
-					avatarImageURL
-					status
-					createdAt
-					updatedAt
-				}
-				likes {
-					nextToken
-				}
-				comments {
-					nextToken
-				}
-				createdAt
-				updatedAt
-			}
-			createdAt
-			updatedAt
-		}
-	}
-`;
-export const listLikes = /* GraphQL */ `
-	query ListLikes(
-		$filter: ModelLikeFilterInput
-		$limit: Int
-		$nextToken: String
-	) {
-		listLikes(filter: $filter, limit: $limit, nextToken: $nextToken) {
-			items {
-				id
-				userID
-				postID
-				user {
-					id
-					age
-					username
-					email
-					avatarImageURL
-					status
-					createdAt
-					updatedAt
-				}
-				post {
-					id
-					userID
+					sneakerID
+					zipCode
+					images
+					size
+					condition
+					price
+					brand
 					description
+					sellerID
+					prevSellers
 					createdAt
 					updatedAt
 				}
@@ -859,6 +971,8 @@ export const getSneakerStore = /* GraphQL */ `
 			primary_name
 			secondary_name
 			image_url
+			createdAt
+			updatedAt
 		}
 	}
 `;
@@ -942,6 +1056,50 @@ export const followersByUser = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					createdAt
+					updatedAt
+				}
+				createdAt
+				updatedAt
+			}
+			nextToken
+		}
+	}
+`;
+export const chatRoomUserByUser = /* GraphQL */ `
+	query ChatRoomUserByUser(
+		$userID: ID
+		$chatRoomID: ModelIDKeyConditionInput
+		$sortDirection: ModelSortDirection
+		$filter: ModelChatRoomUserFilterInput
+		$limit: Int
+		$nextToken: String
+	) {
+		chatRoomUserByUser(
+			userID: $userID
+			chatRoomID: $chatRoomID
+			sortDirection: $sortDirection
+			filter: $filter
+			limit: $limit
+			nextToken: $nextToken
+		) {
+			items {
+				id
+				userID
+				chatRoomID
+				user {
+					id
+					age
+					username
+					email
+					avatarImageURL
+					status
+					createdAt
+					updatedAt
+				}
+				chatRoom {
+					id
+					lastMessageID
 					createdAt
 					updatedAt
 				}
@@ -1051,18 +1209,16 @@ export const sneakerByUser = /* GraphQL */ `
 		}
 	}
 `;
-export const postByUser = /* GraphQL */ `
-	query PostByUser(
+export const soldItemByUser = /* GraphQL */ `
+	query SoldItemByUser(
 		$userID: ID
-		$createdAt: ModelStringKeyConditionInput
 		$sortDirection: ModelSortDirection
-		$filter: ModelPostFilterInput
+		$filter: ModelSoldSneakerFilterInput
 		$limit: Int
 		$nextToken: String
 	) {
-		postByUser(
+		SoldItemByUser(
 			userID: $userID
-			createdAt: $createdAt
 			sortDirection: $sortDirection
 			filter: $filter
 			limit: $limit
@@ -1070,8 +1226,11 @@ export const postByUser = /* GraphQL */ `
 		) {
 			items {
 				id
+				brand
+				primaryName
+				secondaryName
+				image
 				userID
-				description
 				user {
 					id
 					age
@@ -1081,12 +1240,6 @@ export const postByUser = /* GraphQL */ `
 					status
 					createdAt
 					updatedAt
-				}
-				likes {
-					nextToken
-				}
-				comments {
-					nextToken
 				}
 				createdAt
 				updatedAt
@@ -1095,18 +1248,16 @@ export const postByUser = /* GraphQL */ `
 		}
 	}
 `;
-export const commentByUser = /* GraphQL */ `
-	query CommentByUser(
-		$userID: ID
-		$postIDCreatedAt: ModelCommentByUserCompositeKeyConditionInput
+export const listedItemByUser = /* GraphQL */ `
+	query ListedItemByUser(
+		$sellerID: ID
 		$sortDirection: ModelSortDirection
-		$filter: ModelCommentFilterInput
+		$filter: ModelListedItemFilterInput
 		$limit: Int
 		$nextToken: String
 	) {
-		commentByUser(
-			userID: $userID
-			postIDCreatedAt: $postIDCreatedAt
+		listedItemByUser(
+			sellerID: $sellerID
 			sortDirection: $sortDirection
 			filter: $filter
 			limit: $limit
@@ -1114,10 +1265,26 @@ export const commentByUser = /* GraphQL */ `
 		) {
 			items {
 				id
-				text
-				userID
-				postID
-				user {
+				sneakerID
+				sneakerData {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					userID
+					createdAt
+					updatedAt
+				}
+				zipCode
+				images
+				size
+				condition
+				price
+				brand
+				description
+				sellerID
+				seller {
 					id
 					age
 					username
@@ -1127,10 +1294,318 @@ export const commentByUser = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
-				post {
+				prevSellers
+				createdAt
+				updatedAt
+			}
+			nextToken
+		}
+	}
+`;
+export const listedItemByZipCode = /* GraphQL */ `
+	query ListedItemByZipCode(
+		$zipCode: String
+		$sortDirection: ModelSortDirection
+		$filter: ModelListedItemFilterInput
+		$limit: Int
+		$nextToken: String
+	) {
+		listedItemByZipCode(
+			zipCode: $zipCode
+			sortDirection: $sortDirection
+			filter: $filter
+			limit: $limit
+			nextToken: $nextToken
+		) {
+			items {
+				id
+				sneakerID
+				sneakerData {
 					id
+					brand
+					primaryName
+					secondaryName
+					image
 					userID
+					createdAt
+					updatedAt
+				}
+				zipCode
+				images
+				size
+				condition
+				price
+				brand
+				description
+				sellerID
+				seller {
+					id
+					age
+					username
+					email
+					avatarImageURL
+					status
+					createdAt
+					updatedAt
+				}
+				prevSellers
+				createdAt
+				updatedAt
+			}
+			nextToken
+		}
+	}
+`;
+export const listedItemByBrand = /* GraphQL */ `
+	query ListedItemByBrand(
+		$brand: String
+		$sortDirection: ModelSortDirection
+		$filter: ModelListedItemFilterInput
+		$limit: Int
+		$nextToken: String
+	) {
+		listedItemByBrand(
+			brand: $brand
+			sortDirection: $sortDirection
+			filter: $filter
+			limit: $limit
+			nextToken: $nextToken
+		) {
+			items {
+				id
+				sneakerID
+				sneakerData {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					userID
+					createdAt
+					updatedAt
+				}
+				zipCode
+				images
+				size
+				condition
+				price
+				brand
+				description
+				sellerID
+				seller {
+					id
+					age
+					username
+					email
+					avatarImageURL
+					status
+					createdAt
+					updatedAt
+				}
+				prevSellers
+				createdAt
+				updatedAt
+			}
+			nextToken
+		}
+	}
+`;
+export const listedItemByPrice = /* GraphQL */ `
+	query ListedItemByPrice(
+		$price: String
+		$sortDirection: ModelSortDirection
+		$filter: ModelListedItemFilterInput
+		$limit: Int
+		$nextToken: String
+	) {
+		listedItemByPrice(
+			price: $price
+			sortDirection: $sortDirection
+			filter: $filter
+			limit: $limit
+			nextToken: $nextToken
+		) {
+			items {
+				id
+				sneakerID
+				sneakerData {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					userID
+					createdAt
+					updatedAt
+				}
+				zipCode
+				images
+				size
+				condition
+				price
+				brand
+				description
+				sellerID
+				seller {
+					id
+					age
+					username
+					email
+					avatarImageURL
+					status
+					createdAt
+					updatedAt
+				}
+				prevSellers
+				createdAt
+				updatedAt
+			}
+			nextToken
+		}
+	}
+`;
+export const listedItemBySize = /* GraphQL */ `
+	query ListedItemBySize(
+		$size: String
+		$sortDirection: ModelSortDirection
+		$filter: ModelListedItemFilterInput
+		$limit: Int
+		$nextToken: String
+	) {
+		listedItemBySize(
+			size: $size
+			sortDirection: $sortDirection
+			filter: $filter
+			limit: $limit
+			nextToken: $nextToken
+		) {
+			items {
+				id
+				sneakerID
+				sneakerData {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					userID
+					createdAt
+					updatedAt
+				}
+				zipCode
+				images
+				size
+				condition
+				price
+				brand
+				description
+				sellerID
+				seller {
+					id
+					age
+					username
+					email
+					avatarImageURL
+					status
+					createdAt
+					updatedAt
+				}
+				prevSellers
+				createdAt
+				updatedAt
+			}
+			nextToken
+		}
+	}
+`;
+export const listedItemByCondition = /* GraphQL */ `
+	query ListedItemByCondition(
+		$condition: String
+		$sortDirection: ModelSortDirection
+		$filter: ModelListedItemFilterInput
+		$limit: Int
+		$nextToken: String
+	) {
+		listedItemByCondition(
+			condition: $condition
+			sortDirection: $sortDirection
+			filter: $filter
+			limit: $limit
+			nextToken: $nextToken
+		) {
+			items {
+				id
+				sneakerID
+				sneakerData {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					userID
+					createdAt
+					updatedAt
+				}
+				zipCode
+				images
+				size
+				condition
+				price
+				brand
+				description
+				sellerID
+				seller {
+					id
+					age
+					username
+					email
+					avatarImageURL
+					status
+					createdAt
+					updatedAt
+				}
+				prevSellers
+				createdAt
+				updatedAt
+			}
+			nextToken
+		}
+	}
+`;
+export const offerByUser = /* GraphQL */ `
+	query OfferByUser(
+		$buyingUserID: ID
+		$sortDirection: ModelSortDirection
+		$filter: ModelOfferFilterInput
+		$limit: Int
+		$nextToken: String
+	) {
+		offerByUser(
+			buyingUserID: $buyingUserID
+			sortDirection: $sortDirection
+			filter: $filter
+			limit: $limit
+			nextToken: $nextToken
+		) {
+			items {
+				id
+				offerAmount
+				status
+				buyingUserID
+				sellingUserID
+				listedItemID
+				listedItem {
+					id
+					sneakerID
+					zipCode
+					images
+					size
+					condition
+					price
+					brand
 					description
+					sellerID
+					prevSellers
 					createdAt
 					updatedAt
 				}

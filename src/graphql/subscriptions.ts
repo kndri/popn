@@ -23,11 +23,27 @@ export const onCreateUser = /* GraphQL */ `
         }
         nextToken
       }
-      posts {
+      soldSneakers {
         items {
           id
+          brand
+          primaryName
+          secondaryName
+          image
           userID
-          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      offers {
+        items {
+          id
+          offerAmount
+          status
+          buyingUserID
+          sellingUserID
+          listedItemID
           createdAt
           updatedAt
         }
@@ -90,11 +106,27 @@ export const onUpdateUser = /* GraphQL */ `
         }
         nextToken
       }
-      posts {
+      soldSneakers {
         items {
           id
+          brand
+          primaryName
+          secondaryName
+          image
           userID
-          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      offers {
+        items {
+          id
+          offerAmount
+          status
+          buyingUserID
+          sellingUserID
+          listedItemID
           createdAt
           updatedAt
         }
@@ -157,11 +189,27 @@ export const onDeleteUser = /* GraphQL */ `
         }
         nextToken
       }
-      posts {
+      soldSneakers {
         items {
           id
+          brand
+          primaryName
+          secondaryName
+          image
           userID
-          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      offers {
+        items {
+          id
+          offerAmount
+          status
+          buyingUserID
+          sellingUserID
+          listedItemID
           createdAt
           updatedAt
         }
@@ -218,7 +266,10 @@ export const onCreateFollowing = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -254,7 +305,10 @@ export const onUpdateFollowing = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -290,7 +344,10 @@ export const onDeleteFollowing = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -326,7 +383,10 @@ export const onCreateFollowers = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -362,7 +422,10 @@ export const onUpdateFollowers = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -398,7 +461,10 @@ export const onDeleteFollowers = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -434,7 +500,10 @@ export const onCreateChatRoomUser = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -490,7 +559,10 @@ export const onUpdateChatRoomUser = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -546,7 +618,10 @@ export const onDeleteChatRoomUser = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -769,7 +844,10 @@ export const onCreateMessage = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -826,7 +904,10 @@ export const onUpdateMessage = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -883,7 +964,10 @@ export const onDeleteMessage = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -941,7 +1025,10 @@ export const onCreateSneaker = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -993,7 +1080,10 @@ export const onUpdateSneaker = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1045,7 +1135,10 @@ export const onDeleteSneaker = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1079,6 +1172,132 @@ export const onDeleteSneaker = /* GraphQL */ `
     }
   }
 `;
+export const onCreateSoldSneaker = /* GraphQL */ `
+  subscription OnCreateSoldSneaker {
+    onCreateSoldSneaker {
+      id
+      brand
+      primaryName
+      secondaryName
+      image
+      userID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        soldSneakers {
+          nextToken
+        }
+        offers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSoldSneaker = /* GraphQL */ `
+  subscription OnUpdateSoldSneaker {
+    onUpdateSoldSneaker {
+      id
+      brand
+      primaryName
+      secondaryName
+      image
+      userID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        soldSneakers {
+          nextToken
+        }
+        offers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSoldSneaker = /* GraphQL */ `
+  subscription OnDeleteSoldSneaker {
+    onDeleteSoldSneaker {
+      id
+      brand
+      primaryName
+      secondaryName
+      image
+      userID
+      user {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        soldSneakers {
+          nextToken
+        }
+        offers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        chatRoomUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateClaim = /* GraphQL */ `
   subscription OnCreateClaim {
     onCreateClaim {
@@ -1094,7 +1313,10 @@ export const onCreateClaim = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1156,7 +1378,10 @@ export const onUpdateClaim = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1218,7 +1443,10 @@ export const onDeleteClaim = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1265,13 +1493,43 @@ export const onDeleteClaim = /* GraphQL */ `
     }
   }
 `;
-export const onCreatePost = /* GraphQL */ `
-  subscription OnCreatePost {
-    onCreatePost {
+export const onCreateListedItem = /* GraphQL */ `
+  subscription OnCreateListedItem {
+    onCreateListedItem {
       id
-      userID
+      sneakerID
+      sneakerData {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          status
+          createdAt
+          updatedAt
+        }
+        claim {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      zipCode
+      images
+      size
+      condition
+      price
+      brand
       description
-      user {
+      sellerID
+      seller {
         id
         age
         username
@@ -1280,7 +1538,10 @@ export const onCreatePost = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1296,39 +1557,49 @@ export const onCreatePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      likes {
-        items {
-          id
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      comments {
-        items {
-          id
-          text
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      prevSellers
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdatePost = /* GraphQL */ `
-  subscription OnUpdatePost {
-    onUpdatePost {
+export const onUpdateListedItem = /* GraphQL */ `
+  subscription OnUpdateListedItem {
+    onUpdateListedItem {
       id
-      userID
+      sneakerID
+      sneakerData {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          status
+          createdAt
+          updatedAt
+        }
+        claim {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      zipCode
+      images
+      size
+      condition
+      price
+      brand
       description
-      user {
+      sellerID
+      seller {
         id
         age
         username
@@ -1337,7 +1608,10 @@ export const onUpdatePost = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1353,39 +1627,49 @@ export const onUpdatePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      likes {
-        items {
-          id
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      comments {
-        items {
-          id
-          text
-          userID
-          postID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      prevSellers
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeletePost = /* GraphQL */ `
-  subscription OnDeletePost {
-    onDeletePost {
+export const onDeleteListedItem = /* GraphQL */ `
+  subscription OnDeleteListedItem {
+    onDeleteListedItem {
       id
-      userID
+      sneakerID
+      sneakerData {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        userID
+        user {
+          id
+          age
+          username
+          email
+          avatarImageURL
+          status
+          createdAt
+          updatedAt
+        }
+        claim {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      zipCode
+      images
+      size
+      condition
+      price
+      brand
       description
-      user {
+      sellerID
+      seller {
         id
         age
         username
@@ -1394,7 +1678,10 @@ export const onDeletePost = /* GraphQL */ `
         sneakers {
           nextToken
         }
-        posts {
+        soldSneakers {
+          nextToken
+        }
+        offers {
           nextToken
         }
         following {
@@ -1410,69 +1697,92 @@ export const onDeletePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      likes {
-        items {
+      prevSellers
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateOffer = /* GraphQL */ `
+  subscription OnCreateOffer {
+    onCreateOffer {
+      id
+      offerAmount
+      status
+      buyingUserID
+      sellingUserID
+      listedItemID
+      listedItem {
+        id
+        sneakerID
+        sneakerData {
           id
+          brand
+          primaryName
+          secondaryName
+          image
           userID
-          postID
           createdAt
           updatedAt
         }
-        nextToken
-      }
-      comments {
-        items {
+        zipCode
+        images
+        size
+        condition
+        price
+        brand
+        description
+        sellerID
+        seller {
           id
-          text
+          age
+          username
+          email
+          avatarImageURL
+          status
+          createdAt
+          updatedAt
+        }
+        prevSellers
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateOffer = /* GraphQL */ `
+  subscription OnUpdateOffer {
+    onUpdateOffer {
+      id
+      offerAmount
+      status
+      buyingUserID
+      sellingUserID
+      listedItemID
+      listedItem {
+        id
+        sneakerID
+        sneakerData {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
           userID
-          postID
           createdAt
           updatedAt
         }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateComment = /* GraphQL */ `
-  subscription OnCreateComment {
-    onCreateComment {
-      id
-      text
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following {
-          nextToken
-        }
-        follower {
-          nextToken
-        }
-        status
-        chatRoomUser {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
+        zipCode
+        images
+        size
+        condition
+        price
+        brand
         description
-        user {
+        sellerID
+        seller {
           id
           age
           username
@@ -1482,12 +1792,7 @@ export const onCreateComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
+        prevSellers
         createdAt
         updatedAt
       }
@@ -1496,43 +1801,37 @@ export const onCreateComment = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateComment = /* GraphQL */ `
-  subscription OnUpdateComment {
-    onUpdateComment {
+export const onDeleteOffer = /* GraphQL */ `
+  subscription OnDeleteOffer {
+    onDeleteOffer {
       id
-      text
-      userID
-      postID
-      user {
+      offerAmount
+      status
+      buyingUserID
+      sellingUserID
+      listedItemID
+      listedItem {
         id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
+        sneakerID
+        sneakerData {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          userID
+          createdAt
+          updatedAt
         }
-        posts {
-          nextToken
-        }
-        following {
-          nextToken
-        }
-        follower {
-          nextToken
-        }
-        status
-        chatRoomUser {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
+        zipCode
+        images
+        size
+        condition
+        price
+        brand
         description
-        user {
+        sellerID
+        seller {
           id
           age
           username
@@ -1542,249 +1841,7 @@ export const onUpdateComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteComment = /* GraphQL */ `
-  subscription OnDeleteComment {
-    onDeleteComment {
-      id
-      text
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following {
-          nextToken
-        }
-        follower {
-          nextToken
-        }
-        status
-        chatRoomUser {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          status
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateLike = /* GraphQL */ `
-  subscription OnCreateLike {
-    onCreateLike {
-      id
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following {
-          nextToken
-        }
-        follower {
-          nextToken
-        }
-        status
-        chatRoomUser {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          status
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateLike = /* GraphQL */ `
-  subscription OnUpdateLike {
-    onUpdateLike {
-      id
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following {
-          nextToken
-        }
-        follower {
-          nextToken
-        }
-        status
-        chatRoomUser {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          status
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteLike = /* GraphQL */ `
-  subscription OnDeleteLike {
-    onDeleteLike {
-      id
-      userID
-      postID
-      user {
-        id
-        age
-        username
-        email
-        avatarImageURL
-        sneakers {
-          nextToken
-        }
-        posts {
-          nextToken
-        }
-        following {
-          nextToken
-        }
-        follower {
-          nextToken
-        }
-        status
-        chatRoomUser {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        userID
-        description
-        user {
-          id
-          age
-          username
-          email
-          avatarImageURL
-          status
-          createdAt
-          updatedAt
-        }
-        likes {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
+        prevSellers
         createdAt
         updatedAt
       }

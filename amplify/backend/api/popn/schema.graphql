@@ -113,7 +113,7 @@ type Claim @model @key(name: "bySneaker", fields: ["sneakerID", "userID"]) {
 
 type ListedItem
 	@model
-	@key(name: "byUser", fields: ["userID"], queryField: "listedItemByUser")
+	@key(name: "byUser", fields: ["sellerID"], queryField: "listedItemByUser")
 	@key(
 		name: "byZipCode"
 		fields: ["zipCode"]
@@ -122,11 +122,6 @@ type ListedItem
 	@key(name: "byTag", fields: ["brand"], queryField: "listedItemByBrand")
 	@key(name: "byPrice", fields: ["price"], queryField: "listedItemByPrice")
 	@key(name: "bySize", fields: ["size"], queryField: "listedItemBySize")
-	@key(
-		name: "byItemSold"
-		fields: ["itemSold"]
-		queryField: "listedItemByItemSold"
-	)
 	@key(
 		name: "byCondition"
 		fields: ["condition"]
@@ -143,7 +138,7 @@ type ListedItem
 	brand: String!
 	description: String
 	sellerID: ID!
-	seller: User! @connection(fields: ["userID"])
+	seller: User! @connection(fields: ["sellerID"])
 	prevSellers: [String]
 	createdAt: String
 }

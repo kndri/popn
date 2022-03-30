@@ -16,7 +16,11 @@ export const VerificationBage: React.FC<VerificationBadgeProps> = (
 			style={type == 'icon' ? styles.ICON_CONTAINER : styles.FULL_CONTAINER}
 		>
 			<Image source={badge} style={styles.ICON} />
-			{type == 'full' && <Text preset="bold" style={{ marginLeft: 5}}>Authenticated</Text>}
+			{type == 'full' && (
+				<Text preset="bold" style={{ marginLeft: 5 }}>
+					Authenticated
+				</Text>
+			)}
 		</View>
 	);
 };

@@ -28,7 +28,6 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const toast = useToast();
 	const [authData, setAuthData] = useState<AuthData>();
-	const [session, setSession] = useState<boolean>(false);
 
 	// the AuthContext start with loading equals true
 	// and stay like this, until the data be load from Async Storage

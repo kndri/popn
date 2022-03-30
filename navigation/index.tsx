@@ -35,20 +35,20 @@ import ZipCodeScreen from '../screens/ZipCodeScreen';
 import NewListingScreen from '../screens/NewListingScreen';
 
 import {
-  RootStackParamList,
-  RootTabParamList,
-  RootTabScreenProps,
-  SettingsStackParamList,
-} from "../types";
-import ResetPasswordScreen from "../screens/ResetPasswordScreen/ResetPasswordScreen";
-import { useAuth } from "../contexts/auth";
-import ShoeDetailsScreen from "../screens/ShoeDetailsScreen/ShoeDetailsScreen";
-import ListingDetailsScreen from "../screens/ListingDetailScreen/ListingDetailScreen";
-import ReferenceScreen from "../screens/ReferenceScreen/ReferenceScreen";
-import NewPostScreen from "../screens/NewPostScreen/NewPostScreen";
-import PostDetailsScreen from "../screens/PostDetailsScreen/PostDetailsScreen";
-import MessageContactsScreen from "../screens/MessageContactsScreen/MessageContactsScreen";
-import UserSearchScreen from "../screens/SearchUserScreen/SearchUserScreen";
+	RootStackParamList,
+	RootTabParamList,
+	SettingsStackParamList,
+} from '../types';
+import ResetPasswordScreen from '../screens/ResetPasswordScreen/ResetPasswordScreen';
+import { useAuth } from '../contexts/auth';
+import ShoeDetailsScreen from '../screens/ShoeDetailsScreen/ShoeDetailsScreen';
+import ListingDetailsScreen from '../screens/ListingDetailScreen/ListingDetailScreen';
+import ReferenceScreen from '../screens/ReferenceScreen/ReferenceScreen';
+import NewPostScreen from '../screens/NewPostScreen/NewPostScreen';
+import PostDetailsScreen from '../screens/PostDetailsScreen/PostDetailsScreen';
+import MessageContactsScreen from '../screens/MessageContactsScreen/MessageContactsScreen';
+import UserSearchScreen from '../screens/SearchUserScreen/SearchUserScreen';
+import { Auth } from 'aws-amplify';
 
 export default function Navigation({
 	colorScheme,
@@ -155,8 +155,22 @@ const SettingsNavigator = () => (
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-	const { authData } = useAuth();
+	const { authData, signOut } = useAuth();
 
+	/**
+	 * This is to check if the user is not authenticated
+	 * and if so take user back to sign in screen
+	 */
+	React.useEffect(() => {
+		Auth.currentAuthenticatedUser({
+			bypassCache: true,
+		}).catch((error) => {
+			console.log('error', error);
+			if (error === 'The user is not authenticated') {
+				signOut();
+			}
+		});
+	}, []);
 	return (
 		<Stack.Navigator>
 			{authData ? (
@@ -186,11 +200,11 @@ function RootNavigator() {
 						component={ShoeDetailsScreen}
 						options={{ headerShown: false }}
 					/>
-          <Stack.Screen
-          name="ListingDetails"
-          component={ListingDetailsScreen}
-          options={{ headerShown: false }}
-        />
+					<Stack.Screen
+						name="ListingDetails"
+						component={ListingDetailsScreen}
+						options={{ headerShown: false }}
+					/>
 					<Stack.Screen
 						name="Verify"
 						component={ReferenceScreen}

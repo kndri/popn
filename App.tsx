@@ -27,6 +27,8 @@ export default function App() {
 			// Get current authenticated user
 			const userInfo = await Auth.currentAuthenticatedUser({
 				bypassCache: true,
+			}).catch((error) => {
+				console.log('error', error);
 			});
 
 			if (userInfo) {

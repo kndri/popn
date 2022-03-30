@@ -10,7 +10,6 @@ import { Text, AutoImage as Image, VerificationBage } from '..';
 export const ProductCard = (props): JSX.Element => {
 	const { product } = props;
 	const navigation = useNavigation();
-	console.log(product);
 
 	return (
 		<TouchableOpacity
