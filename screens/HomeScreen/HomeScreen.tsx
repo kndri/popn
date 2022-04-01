@@ -42,7 +42,7 @@ const listingData = [
 		condition: 'New',
 		price: '$200',
 		brand: 'Jordan',
-		description: 'Some description',
+		description: 'I have the box in great condition. I have never worn the shoes, they are brand new. The shoes have no creases. I have the receipt for proof of purchase as well. I have the box in great condition. I have never worn the shoes, they are brand new. The shoes have no creases. I have the receipt for proof of purchase as well.',
 		sellerID: '6513551651238216188',
 		seller: {
 			id: '6513551651238216188',
