@@ -49,7 +49,8 @@ const listingData = [
 			age: '16',
 			username: 'jimmy',
 			email: 'jimmy@gmail.com',
-			avatarImageURL: 'some url image',
+			avatarImageURL:
+				'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
 			sneakers: [
 				{
 					//sneakers object

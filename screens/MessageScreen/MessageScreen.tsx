@@ -7,7 +7,11 @@ import { Screen, Text, NewMessageButton, Header } from '../../components';
 import MessageChatListItem from '../../components/message-chat-list-item';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
-import { getUser, getChatRoom } from '../../src/graphql/queries';
+import {
+	getUser,
+	getChatRoom,
+	chatRoomUserByUser,
+} from '../../src/graphql/queries';
 import { deleteChatRoomUser } from '../../src/graphql/mutations';
 
 import styles from './Styles';
@@ -23,20 +27,17 @@ export default function MessageScreen() {
 
 	React.useEffect(() => {
 		fetchChatRooms();
-	}, [isFocused, removeUserFromChatRoom()]);
+	}, [isFocused]);
 
 	const fetchChatRooms = async () => {
 		try {
-			/*TODO: Use getChatRoomByUser in the graphqlOperation 
-            it will fetch all the chat rooms that the user has
-            */
 			const userData = await API.graphql(
-				graphqlOperation(getUser, {
+				graphqlOperation(chatRoomUserByUser, {
 					id: user?.id,
 				})
 			);
 			setUserData(userData);
-			let chatRoomsArr = userData.data.getUser.chatRoomUser.items;
+			let chatRoomsArr = userData.data.getUser.chatRoomUserByUser.items;
 			{
 				/*TODO: make is so users of deleted messages go back to contacts screen;
                  currently only happens when all messages are deleted
@@ -46,13 +47,10 @@ export default function MessageScreen() {
 				chatRoomsArr.map((room) => {
 					room.chatRoom.chatRoomUsers.items.map((item) => {
 						if (item.user.username) {
-							if (!excludedUsers.includes(item.user.username)) {
-								setExcludedUsers((excludedUsers) => [
-									//make exluded users unique before reassigning
-									...new Set(excludedUsers),
-									item.user.username,
-								]);
-							}
+							setExcludedUsers((excludedUsers) => [
+								...excludedUsers,
+								item.user.username,
+							]);
 						}
 					});
 				});

@@ -3,23 +3,12 @@ import { useNavigation } from '@react-navigation/native';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import {
 	createSneaker,
-	createPost,
-	createComment,
-	createLike,
-	deletePost,
-	deleteComment,
-	deleteLike,
 	deleteSneaker,
 	createClaim,
 } from '../src/graphql/mutations';
 import {
 	listSneakerStores,
 	sneakerByUser,
-	listPosts,
-	postByUser,
-	commentByUser,
-	listComments,
-	getPost,
 	getUser,
 	getSneaker,
 	followersByUser,
@@ -74,168 +63,6 @@ export const deleteUserSneaker = async (id: string) => {
 			id: id,
 		};
 		await API.graphql(graphqlOperation(deleteSneaker, { input: newSneaker }));
-	} catch (e) {
-		console.log(e);
-	}
-};
-
-export const addPost = async (postObject: Object) => {
-	try {
-		// const currentUser = checkLoggedUser();
-		const currentUser = await Auth.currentAuthenticatedUser({
-			bypassCache: true,
-		});
-
-		const newPost = {
-			userID: currentUser.attributes.sub,
-			description: postObject.description,
-		};
-		await API.graphql(graphqlOperation(createPost, { input: newPost }));
-	} catch (e) {
-		console.log(e);
-	}
-};
-
-export const getPostFromDB = async () => {
-	let postList: any;
-
-	const postData = await API.graphql(graphqlOperation(listPosts));
-
-	postList = postData.data.listPosts.items;
-
-	return postList;
-};
-
-export const getCurrentPost = async (postID: any) => {
-	let postList: any;
-
-	const postData = await API.graphql(
-		graphqlOperation(getPost, {
-			id: postID,
-		})
-	);
-
-	postList = postData.data.getPost;
-
-	return postList;
-};
-
-export const getPostFromUser = async (userID: String) => {
-	let postList: any;
-
-	const postData = await API.graphql(
-		graphqlOperation(postByUser, {
-			userID: userID,
-		})
-	);
-	postList = postData.data.postByUser.items;
-
-	return postList;
-};
-
-export const postDeletion = async (id: string) => {
-	try {
-		const post = {
-			id: id,
-		};
-
-		const deletedNote = await API.graphql(
-			graphqlOperation(deletePost, { input: post })
-		);
-	} catch (e) {
-		console.log(e);
-	}
-};
-
-export const addComment = async (commentObject: any) => {
-	try {
-		console.log('creating commetn', commentObject);
-		// const currentUser = checkLoggedUser();
-		const currentUser = await Auth.currentAuthenticatedUser({
-			bypassCache: true,
-		});
-
-		const newComment = {
-			userID: currentUser.attributes.sub,
-			text: commentObject.text,
-			postID: commentObject.postID,
-		};
-		await API.graphql(graphqlOperation(createComment, { input: newComment }));
-	} catch (e) {
-		console.log(e);
-	}
-};
-
-export const getCommentFromDB = async () => {
-	let commentList: any;
-
-	const commentData = await API.graphql(graphqlOperation(listComments));
-
-	commentList = commentData.data.listComments.items;
-
-	return commentList;
-};
-
-export const getCommentFromUser = async () => {
-	let commentList: any;
-
-	const currentUser = await Auth.currentAuthenticatedUser({
-		bypassCache: true,
-	});
-	const commentData = await API.graphql(
-		graphqlOperation(commentByUser, {
-			userID: currentUser.attributes.sub,
-		})
-	);
-	commentList = commentData.data.commentByUser.items;
-
-	return commentList;
-};
-
-export const commentDeletion = async (id: string) => {
-	try {
-		const comment = {
-			id: id,
-		};
-
-		const deletedNote = await API.graphql(
-			graphqlOperation(deleteComment, { input: comment })
-		);
-	} catch (e) {
-		console.log(e);
-	}
-};
-
-export const addLike = async (postID: Object) => {
-	try {
-		// const currentUser = checkLoggedUser();
-		const currentUser = await Auth.currentAuthenticatedUser({
-			bypassCache: true,
-		});
-
-		const newLike = {
-			userID: currentUser.attributes.sub,
-			postID: postID,
-		};
-		const result = await API.graphql(
-			graphqlOperation(createLike, { input: newLike })
-		);
-
-		return result;
-	} catch (e) {
-		console.log(e);
-	}
-};
-
-export const likeDeletion = async (id: string) => {
-	try {
-		const like = {
-			id: id,
-		};
-
-		const deletedNote = await API.graphql(
-			graphqlOperation(deleteLike, { input: like })
-		);
 	} catch (e) {
 		console.log(e);
 	}

@@ -72,6 +72,7 @@ const ShoeDetailsScreen = () => {
 					// cancel action
 				} else if (buttonIndex === 1) {
 					console.log('Create a Listing');
+					navigation.navigate('NewListing');
 					// setResult(Math.floor(Math.random() * 100) + 1);
 				} else if (buttonIndex === 2) {
 					console.log('Delete Sneaker');
