@@ -190,11 +190,6 @@ function RootNavigator() {
 						component={SettingsNavigator}
 						options={{ headerShown: false }}
 					/>
-					{/* <Stack.Screen
-            name="Message"
-            component={MessageScreen}
-            options={{ headerShown: false }}
-          /> */}
 					<Stack.Screen
 						name="ShoeDetails"
 						component={ShoeDetailsScreen}

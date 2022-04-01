@@ -12,9 +12,14 @@ export const ProductCard = (props): JSX.Element => {
 	const navigation = useNavigation();
 
 	return (
+		// <TouchableOpacity
+		// 	onPress={() => {
+		// 		navigation.navigate('ListingDetails', product);
+		// 	}}
+		// >
 		<TouchableOpacity
 			onPress={() => {
-				navigation.navigate('ListingDetails', product);
+				navigation.navigate('NewListing');
 			}}
 		>
 			<View style={styles.CARD}>

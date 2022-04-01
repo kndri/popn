@@ -90,16 +90,7 @@ export default function Home() {
 			<View style={styles.CLAIM_SEARCH}>
 				<Image source={search_icon} style={{ width: 16, height: 16 }} />
 				<TextInput
-					style={{
-						flex: 1,
-						width: '100%',
-						height: 35,
-						borderWidth: 1,
-						paddingLeft: 10,
-						borderRadius: 5,
-						borderColor: '#FFFFFF',
-						backgroundColor: 'white',
-					}}
+					style={styles.TEXTFIELD_STYLE}
 					value={query}
 					autoCorrect={false}
 					onChangeText={(text) => setQuery(text)}
