@@ -70,6 +70,7 @@ export const getUser = /* GraphQL */ `
 				nextToken
 			}
 			status
+			zipCode
 			chatRoomUser {
 				items {
 					id
@@ -114,6 +115,7 @@ export const listUsers = /* GraphQL */ `
 					nextToken
 				}
 				status
+				zipCode
 				chatRoomUser {
 					nextToken
 				}
@@ -136,6 +138,26 @@ export const getFollowing = /* GraphQL */ `
 				username
 				email
 				avatarImageURL
+				sneakers {
+					nextToken
+				}
+				soldSneakers {
+					nextToken
+				}
+				offers {
+					nextToken
+				}
+				following {
+					nextToken
+				}
+				follower {
+					nextToken
+				}
+				status
+				zipCode
+				chatRoomUser {
+					nextToken
+				}
 				createdAt
 				updatedAt
 			}
@@ -162,6 +184,7 @@ export const listFollowings = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -184,6 +207,26 @@ export const getFollowers = /* GraphQL */ `
 				username
 				email
 				avatarImageURL
+				sneakers {
+					nextToken
+				}
+				soldSneakers {
+					nextToken
+				}
+				offers {
+					nextToken
+				}
+				following {
+					nextToken
+				}
+				follower {
+					nextToken
+				}
+				status
+				zipCode
+				chatRoomUser {
+					nextToken
+				}
 				createdAt
 				updatedAt
 			}
@@ -210,6 +253,7 @@ export const listFollowerss = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -248,6 +292,7 @@ export const getChatRoomUser = /* GraphQL */ `
 					nextToken
 				}
 				status
+				zipCode
 				chatRoomUser {
 					nextToken
 				}
@@ -297,6 +342,7 @@ export const listChatRoomUsers = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -352,6 +398,7 @@ export const getChatRoom = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -429,6 +476,7 @@ export const getMessage = /* GraphQL */ `
 					nextToken
 				}
 				status
+				zipCode
 				chatRoomUser {
 					nextToken
 				}
@@ -479,6 +527,7 @@ export const listMessages = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -525,6 +574,7 @@ export const getSneaker = /* GraphQL */ `
 					nextToken
 				}
 				status
+				zipCode
 				chatRoomUser {
 					nextToken
 				}
@@ -570,10 +620,21 @@ export const listSneakers = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
 				claim {
+					items {
+						id
+						userID
+						sneakerID
+						status
+						refNumber
+						claimMessage
+						createdAt
+						updatedAt
+					}
 					nextToken
 				}
 				createdAt
@@ -614,6 +675,7 @@ export const getSoldSneaker = /* GraphQL */ `
 					nextToken
 				}
 				status
+				zipCode
 				chatRoomUser {
 					nextToken
 				}
@@ -646,6 +708,7 @@ export const listSoldSneakers = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -684,6 +747,7 @@ export const getClaim = /* GraphQL */ `
 					nextToken
 				}
 				status
+				zipCode
 				chatRoomUser {
 					nextToken
 				}
@@ -704,6 +768,7 @@ export const getClaim = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -739,6 +804,7 @@ export const listClaims = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -781,6 +847,7 @@ export const getListedItem = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -820,6 +887,7 @@ export const getListedItem = /* GraphQL */ `
 					nextToken
 				}
 				status
+				zipCode
 				chatRoomUser {
 					nextToken
 				}
@@ -867,6 +935,7 @@ export const listListedItems = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -915,6 +984,7 @@ export const getOffer = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -971,8 +1041,6 @@ export const getSneakerStore = /* GraphQL */ `
 			primary_name
 			secondary_name
 			image_url
-			createdAt
-			updatedAt
 		}
 	}
 `;
@@ -1020,6 +1088,7 @@ export const followingByUser = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -1056,6 +1125,7 @@ export const followersByUser = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -1094,6 +1164,7 @@ export const chatRoomUserByUser = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -1140,6 +1211,7 @@ export const messagesByChatRoom = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -1186,20 +1258,11 @@ export const sneakerByUser = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
 				claim {
-					items {
-						id
-						userID
-						sneakerID
-						status
-						refNumber
-						claimMessage
-						createdAt
-						updatedAt
-					}
 					nextToken
 				}
 				createdAt
@@ -1238,6 +1301,7 @@ export const soldItemByUser = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -1291,6 +1355,7 @@ export const listedItemByUser = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -1345,6 +1410,7 @@ export const listedItemByZipCode = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -1399,6 +1465,7 @@ export const listedItemByBrand = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -1453,6 +1520,7 @@ export const listedItemByPrice = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -1507,6 +1575,7 @@ export const listedItemBySize = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}
@@ -1561,6 +1630,7 @@ export const listedItemByCondition = /* GraphQL */ `
 					email
 					avatarImageURL
 					status
+					zipCode
 					createdAt
 					updatedAt
 				}

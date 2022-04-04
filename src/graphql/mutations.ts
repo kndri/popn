@@ -73,6 +73,7 @@ export const createUser = /* GraphQL */ `
         nextToken
       }
       status
+      zipCode
       chatRoomUser {
         items {
           id
@@ -159,6 +160,7 @@ export const updateUser = /* GraphQL */ `
         nextToken
       }
       status
+      zipCode
       chatRoomUser {
         items {
           id
@@ -245,6 +247,7 @@ export const deleteUser = /* GraphQL */ `
         nextToken
       }
       status
+      zipCode
       chatRoomUser {
         items {
           id
@@ -291,6 +294,7 @@ export const createFollowing = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -333,6 +337,7 @@ export const updateFollowing = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -375,6 +380,7 @@ export const deleteFollowing = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -417,6 +423,7 @@ export const createFollowers = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -459,6 +466,7 @@ export const updateFollowers = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -501,6 +509,7 @@ export const deleteFollowers = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -543,6 +552,7 @@ export const createChatRoomUser = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -605,6 +615,7 @@ export const updateChatRoomUser = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -667,6 +678,7 @@ export const deleteChatRoomUser = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -740,6 +752,7 @@ export const createChatRoom = /* GraphQL */ `
           email
           avatarImageURL
           status
+          zipCode
           createdAt
           updatedAt
         }
@@ -798,6 +811,7 @@ export const updateChatRoom = /* GraphQL */ `
           email
           avatarImageURL
           status
+          zipCode
           createdAt
           updatedAt
         }
@@ -856,6 +870,7 @@ export const deleteChatRoom = /* GraphQL */ `
           email
           avatarImageURL
           status
+          zipCode
           createdAt
           updatedAt
         }
@@ -905,6 +920,7 @@ export const createMessage = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -968,6 +984,7 @@ export const updateMessage = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1031,6 +1048,7 @@ export const deleteMessage = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1095,6 +1113,7 @@ export const createSneaker = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1153,6 +1172,7 @@ export const updateSneaker = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1211,6 +1231,7 @@ export const deleteSneaker = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1269,6 +1290,7 @@ export const createSoldSneaker = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1314,6 +1336,7 @@ export const updateSoldSneaker = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1359,6 +1382,7 @@ export const deleteSoldSneaker = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1401,6 +1425,7 @@ export const createClaim = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1421,6 +1446,7 @@ export const createClaim = /* GraphQL */ `
           email
           avatarImageURL
           status
+          zipCode
           createdAt
           updatedAt
         }
@@ -1469,6 +1495,7 @@ export const updateClaim = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1489,6 +1516,7 @@ export const updateClaim = /* GraphQL */ `
           email
           avatarImageURL
           status
+          zipCode
           createdAt
           updatedAt
         }
@@ -1537,6 +1565,7 @@ export const deleteClaim = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1557,6 +1586,7 @@ export const deleteClaim = /* GraphQL */ `
           email
           avatarImageURL
           status
+          zipCode
           createdAt
           updatedAt
         }
@@ -1596,6 +1626,7 @@ export const createListedItem = /* GraphQL */ `
           email
           avatarImageURL
           status
+          zipCode
           createdAt
           updatedAt
         }
@@ -1635,6 +1666,7 @@ export const createListedItem = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1669,6 +1701,7 @@ export const updateListedItem = /* GraphQL */ `
           email
           avatarImageURL
           status
+          zipCode
           createdAt
           updatedAt
         }
@@ -1708,6 +1741,7 @@ export const updateListedItem = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1742,6 +1776,7 @@ export const deleteListedItem = /* GraphQL */ `
           email
           avatarImageURL
           status
+          zipCode
           createdAt
           updatedAt
         }
@@ -1781,6 +1816,7 @@ export const deleteListedItem = /* GraphQL */ `
           nextToken
         }
         status
+        zipCode
         chatRoomUser {
           nextToken
         }
@@ -1833,6 +1869,7 @@ export const createOffer = /* GraphQL */ `
           email
           avatarImageURL
           status
+          zipCode
           createdAt
           updatedAt
         }
@@ -1885,6 +1922,7 @@ export const updateOffer = /* GraphQL */ `
           email
           avatarImageURL
           status
+          zipCode
           createdAt
           updatedAt
         }
@@ -1937,6 +1975,7 @@ export const deleteOffer = /* GraphQL */ `
           email
           avatarImageURL
           status
+          zipCode
           createdAt
           updatedAt
         }
