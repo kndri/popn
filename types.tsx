@@ -33,7 +33,7 @@ export type RootStackParamList = {
 	ResetPassword: any;
 	Settings: NavigatorScreenParams<SettingsStackParamList> | undefined;
 	ShoeDetails: undefined | any;
-  ListingDetails: undefined | any;
+	ListingDetails: undefined | any;
 	Verify: undefined | any;
 	UserProfile: undefined;
 	MessageRoom: any;
@@ -47,6 +47,7 @@ export type RootStackParamList = {
 	ZipCode: undefined;
 	Location: undefined;
 	NewListing: undefined;
+	ZipScreen: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -66,6 +67,7 @@ export type SettingsStackParamList = {
 	verifyEmail: undefined;
 	changeUsername: undefined;
 	changeProfileImage: undefined;
+	changeZipCode: undefined;
 };
 
 export interface Sneaker {

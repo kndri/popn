@@ -156,17 +156,9 @@ export default function PasswordScreen() {
 											values.password,
 											values.age,
 											values.username,
-											values.image
+											values.image,
+											values.zipCode
 										);
-										// .then(() => {
-										// 	dispatch({
-										// 		type: 'RESET_FORM',
-										// 		payload: {
-										// 			id: 'user',
-										// 			data: {},
-										// 		},
-										// 	});
-										// });
 										setIsLoading(true);
 									}
 								}}

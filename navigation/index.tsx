@@ -49,6 +49,8 @@ import PostDetailsScreen from '../screens/PostDetailsScreen/PostDetailsScreen';
 import MessageContactsScreen from '../screens/MessageContactsScreen/MessageContactsScreen';
 import UserSearchScreen from '../screens/SearchUserScreen/SearchUserScreen';
 import { Auth } from 'aws-amplify';
+import ZipScreen from '../screens/AuthZipScreen';
+import ChangeZipCode from '../screens/ChangeZipCodeScreen';
 
 export default function Navigation({
 	colorScheme,
@@ -80,6 +82,11 @@ function OnboardingNavigator() {
 			<onboardingStack.Screen
 				name="Age"
 				component={AgeScreen}
+				options={{ headerShown: false }}
+			/>
+			<onboardingStack.Screen
+				name="ZipScreen"
+				component={ZipScreen}
 				options={{ headerShown: false }}
 			/>
 			<onboardingStack.Screen
@@ -145,6 +152,7 @@ const SettingsNavigator = () => (
 			name="changePassword"
 			component={ChangePasswordScreen}
 		/>
+		<settingStack.Screen name="changeZipCode" component={ChangeZipCode} />
 	</settingStack.Navigator>
 );
 
