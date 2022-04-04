@@ -112,6 +112,49 @@ export default StyleSheet.create({
         borderRadius: 4,
         marginTop: 40,
         backgroundColor: "rgba(52, 52, 52, 0.25)",
-    }
+    },
+
+    //authentication modal styles
+    MODAL_CONTAINER: {
+        backgroundColor: "white",
+        paddingHorizontal: spacing[3],
+        flex: 1,
+        paddingTop: 20,
+        //   marginBottom: 30,
+    },
+    MODAL_HEADING: {
+        alignContent: "center",
+        justifyContent: "center",
+        marginBottom: 40,
+        paddingHorizontal: spacing[4],
+    },
+    MODAL_HEADING_TEXT: {
+        paddingHorizontal: spacing[4],
+    },
+
+    MODAL_EXAMPLE: {
+        paddingHorizontal: spacing[4],
+        // backgroundColor: 'red',
+        height: 220,
+        width: 300,
+        alignSelf: 'center',
+        marginVertical: 30,
+    },
+    // MODAL_IMAGE_CONTAINER: {
+    //     alignItems: "center",
+    //     // backgroundColor: 'blue',
+    //     height: "100%"
+    //     // marginBottom: 30,
+    //     // marginTop: 30,
+    // },
+    MODAL_SHOE_IMAGE: {
+        height: "100%",
+        width: "100%",
+        alignSelf: 'center'
+    },
+    MODAL_PROCESS: {
+        paddingHorizontal: spacing[4],
+        // backgroundColor: 'yellow',
+    },
 
 });

@@ -23,7 +23,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import styles from './Styles';
 
-// const example = require("../../assets/images/verify_example.png");
+const example = require("../../assets/images/verify_example.png");
 const verified = require('../../assets/images/verified_badge.png');
 const Seller = require('../../assets/images/UserImage.png');
 
@@ -32,6 +32,7 @@ const ListingDetailsScreen = (props: any) => {
 	const { sneakerData, seller } = product;
 	const navigation = useNavigation();
 	const [offerModalVisible, setOfferModalVisible] = React.useState(false);
+	const [authenticationModalVisible, setAuthenticationModalVisible] = React.useState(false);
 	const [offerAmount, setOfferAmount] = React.useState('');
 	const [offerMessage, setOfferMessage] = React.useState('');
 	const [listingImages, setListingImages] = React.useState([
@@ -40,10 +41,10 @@ const ListingDetailsScreen = (props: any) => {
 
 	return (
 		<Screen preset="scroll">
-			{/* MODAL CODE*/}
+			{/* OFfER MODAL CODE*/}
 			<Modal
 				animationType="slide"
-				transparent={true}
+				// transparent={true}
 				presentationStyle="pageSheet"
 				visible={offerModalVisible}
 				onRequestClose={() => {
@@ -122,7 +123,79 @@ const ListingDetailsScreen = (props: any) => {
 					</View>
 				</View>
 			</Modal>
-			{/* END OF MODAL CODE*/}
+			{/* END OF OFFER MODAL CODE*/}
+
+
+			{/* AUTHENTICATION PROCESS MODAL CODE*/}
+			<Modal
+				animationType="slide"
+				transparent={true}
+				presentationStyle="formSheet"
+				visible={authenticationModalVisible}
+				onRequestClose={() => {
+					setAuthenticationModalVisible(!authenticationModalVisible);
+				}}
+			>
+				<View style={styles.MODAL_CONTAINER}>
+
+					<Header
+						headerTx='Sneaker Verification'
+						rightIcon="close"
+						onRightPress={() => {
+							setAuthenticationModalVisible(!authenticationModalVisible);
+
+						}}
+					/>
+
+					<View style={styles.MODAL_HEADING_TEXT}>
+						<Text preset='default'>
+							Want to let people know your sneakers are legit? 🤔 {'\n'}
+							{'\n'}
+							The green verified badge on sneakers lets people know that your
+							sneaker were legit checked and are authentic.{'\n'}
+							{'\n'}
+							Example:
+						</Text>
+					</View>
+
+					<View style={styles.MODAL_EXAMPLE}>
+						<Image style={styles.MODAL_SHOE_IMAGE} source={example} />
+					</View>
+
+					<View style={styles.MODAL_PROCESS}>
+						<Text preset="bold" >
+							How to get your sneaker verified?
+						</Text>
+						<View style={{ marginTop: 30 }}>
+							<Text preset='default'>
+								1. Download the CheckCheck app to get started{'\n'}
+								{'\n'}
+								2. Go through the verficiation process on CheckCheck{'\n'}
+								{'\n'}
+								3. Enter your reference number on POPN
+							</Text>
+						</View>
+					</View>
+				</View>
+			</Modal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 			<Header
 				style={styles.BACK_BUTTON}
@@ -195,6 +268,16 @@ const ListingDetailsScreen = (props: any) => {
 						style={{ marginTop: 31 }}
 					/>
 				</View>
+
+
+				<View style={{ justifyContent: 'space-between' }}>
+					<Text preset="bold" text="Description" style={{ marginTop: 31, textDecorationLine: 'underline' }} />
+					<Text
+						preset="default"
+						text={product.description}
+						style={{ marginTop: 5 }}
+					/>
+				</View>
 			</View>
 
 			{/* authenticated details box */}
@@ -208,8 +291,12 @@ const ListingDetailsScreen = (props: any) => {
 				<Text preset="default" style={{ marginTop: 5 }}>
 					Our authentication partner has reviewed the images, title, and
 					description of this listing to verify this item. Learn more about the
-					partner's authentication process
+					partner's
+
+					<Text preset="bold" style={{ textDecorationLine: 'underline', }} onPress={() => setAuthenticationModalVisible(!authenticationModalVisible)}> authentication process.</Text>
+
 				</Text>
+
 			</View>
 
 			<View style={{ paddingHorizontal: spacing[4] }}>
@@ -219,7 +306,7 @@ const ListingDetailsScreen = (props: any) => {
 				<View style={{ flexDirection: 'row', marginTop: 4 }}>
 					<Image
 						source={{ uri: seller.avatarImageURL }}
-						style={{ height: 30, width: 30 }}
+						style={{ height: 35, width: 35, borderRadius: 50 }}
 					/>
 					<View style={{ marginLeft: 5 }}>
 						<Text preset="bold">{seller.username}</Text>

@@ -54,15 +54,17 @@ export default StyleSheet.create({
 		borderRadius: 20,
 		padding: 35,
 		alignItems: 'center',
-		// shadowColor: "#000",
-		// shadowOffset: {
-		//   width: 0,
-		//   height: 2
-		// },
-		// shadowOpacity: 0.25,
-		// shadowRadius: 4,
-		// elevation: 5,
 		width: '100%',
 		height: '100%',
+	},
+	TEXTFIELD_STYLE: {
+		flex: 1,
+		width: '100%',
+		height: 35,
+		borderWidth: 1,
+		paddingLeft: 10,
+		borderRadius: 5,
+		borderColor: '#FFFFFF',
+		backgroundColor: 'white',
 	},
 });

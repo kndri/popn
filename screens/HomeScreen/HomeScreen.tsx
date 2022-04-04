@@ -42,7 +42,7 @@ const listingData = [
 		condition: 'New',
 		price: '$200',
 		brand: 'Jordan',
-		description: 'Some description',
+		description: 'I have the box in great condition. I have never worn the shoes, they are brand new. The shoes have no creases. I have the receipt for proof of purchase as well. I have the box in great condition. I have never worn the shoes, they are brand new. The shoes have no creases. I have the receipt for proof of purchase as well.',
 		sellerID: '6513551651238216188',
 		seller: {
 			id: '6513551651238216188',
@@ -90,16 +90,7 @@ export default function Home() {
 			<View style={styles.CLAIM_SEARCH}>
 				<Image source={search_icon} style={{ width: 16, height: 16 }} />
 				<TextInput
-					style={{
-						flex: 1,
-						width: '100%',
-						height: 35,
-						borderWidth: 1,
-						paddingLeft: 10,
-						borderRadius: 5,
-						borderColor: '#FFFFFF',
-						backgroundColor: 'white',
-					}}
+					style={styles.TEXTFIELD_STYLE}
 					value={query}
 					autoCorrect={false}
 					onChangeText={(text) => setQuery(text)}
