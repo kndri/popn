@@ -13,8 +13,10 @@ type AuthContextData = {
 		password: string,
 		age: string,
 		username: string,
-		image: string
+		image: string,
+		zipCode: string
 	): Promise<void>;
+	updateAuth(): void;
 };
 
 export type AuthProviderProps = {
@@ -82,7 +84,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 		password: string,
 		age: string,
 		username: string,
-		image: string
+		image: string,
+		zipCode: string
 	) => {
 		// call the service passing credential (email and password).
 		// In a real App this data will be provided by the user from some InputText components.
@@ -91,7 +94,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			password,
 			age,
 			username,
-			image
+			image,
+			zipCode
 		);
 
 		// if there is an error alert the screen of the message
@@ -102,7 +106,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			// const token = client.createUserToken(email);
 			// Set the data in the context, so the App can be notified
 			// and send the user to the AuthStack
-
 			setAuthData(_authData);
 
 			// Persist the data in the Async Storage
@@ -121,11 +124,30 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 		await AsyncStorage.removeItem('@AuthData');
 	};
 
+	const updateAuth = async () => {
+		// update auth data when ever a email, username, zipcode has been changed
+		const _authData = await authService.retrieveUser();
+
+		console.log('auth data', _authData);
+
+		if (_authData.error) {
+			toast.show(`${_authData.error}`, { color: 'red' });
+		} else {
+			// Set the data in the context, so the App can be notified
+			// and send the user to the AuthStack
+			setAuthData(_authData);
+
+			// Persist the data in the Async Storage
+			// to be recovered in the next user session.
+			AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
+		}
+	};
+
 	return (
 		// This component will be used to encapsulate the whole App,
 		// so all components will have access to the Context
 		<AuthContext.Provider
-			value={{ authData, loading, signIn, signOut, signUp }}
+			value={{ authData, loading, signIn, signOut, signUp, updateAuth }}
 		>
 			{children}
 		</AuthContext.Provider>
