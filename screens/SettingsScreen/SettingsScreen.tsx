@@ -32,6 +32,11 @@ const settings = [
 		pageSrc: 'changeProfileImage',
 		name: 'Profile Picture',
 	},
+	{
+		id: '5',
+		pageSrc: 'changeZipCode',
+		name: 'Zip Code',
+	},
 ];
 
 const about = [

@@ -9,21 +9,21 @@ export type AuthData = {
 	id: string;
 	image: string;
 	username: string;
+	zipCode: string;
 };
 const signIn = (email: string, _password: string): Promise<AuthData> => {
 	// variable to check if there is an error
 	let errorMessage: any;
 
 	// variable to store user id
-	let userId: string;
-	let _username: string;
-	let image_url: string;
+	let userId: string, _username: string, image_url: string, _zipCode: string;
 
 	Auth.signIn(email.toLowerCase(), _password)
 		.then((response) => {
 			userId = response.attributes.sub;
 			_username = response.attributes['preferred_username'];
 			image_url = response.attributes['custom:blob'];
+			_zipCode = response.attributes['custom:zipCode'];
 		})
 		.catch((error) => {
 			errorMessage = error.message;
@@ -38,6 +38,7 @@ const signIn = (email: string, _password: string): Promise<AuthData> => {
 				id: userId,
 				username: _username,
 				image: image_url,
+				zipCode: _zipCode,
 			});
 		}, 1000);
 	});
@@ -60,7 +61,8 @@ const signUp = async (
 	_password: string,
 	age: string,
 	_username: string,
-	image_url: string
+	image_url: string,
+	zipCode: string
 ): Promise<AuthData> => {
 	// variable to check if there is an error
 	let errorMessage: any;
@@ -88,6 +90,7 @@ const signUp = async (
 			'custom:age': age,
 			'custom:blob': image_url,
 			preferred_username: _username,
+			'custom:zipCode': zipCode,
 		},
 	})
 		.then(async (response) => {
@@ -99,6 +102,7 @@ const signUp = async (
 				username: _username,
 				avatarImageURL: image_url,
 				email: email,
+				zipCode: zipCode,
 			};
 			try {
 				await Auth.signIn(email, _password).then(() => {
@@ -122,6 +126,7 @@ const signUp = async (
 				id: userId,
 				username: _username,
 				image: image_url,
+				zipCode: zipCode,
 			});
 		}, 1000);
 	});
@@ -139,7 +144,6 @@ const emailAvailable = async (email: string) => {
 		// this should always throw an error of some kind, but if for some reason this succeeds then the user probably exists.
 		return true;
 	} catch (err: any) {
-		console.log('response', err);
 		switch (err.code) {
 			case 'UserNotFoundException':
 				return true;
@@ -185,9 +189,30 @@ const usernameAvailable = async (username: string) => {
 	}
 };
 
+const retrieveUser = async (): Promise<AuthData> => {
+	let errorMessage: any;
+
+	const user = await Auth.currentAuthenticatedUser({
+		bypassCache: true,
+	}).catch((error) => {
+		console.log('error: ', error);
+		errorMessage = error;
+	});
+
+	return {
+		error: errorMessage,
+		email: user.attributes.email,
+		id: user.attributes.sub,
+		username: user.attributes.preferred_username,
+		image: user.attributes['custom:blob'],
+		zipCode: user.attributes['custom:zipCode'],
+	};
+};
+
 export const authService = {
 	signIn,
 	signUp,
 	emailAvailable,
 	usernameAvailable,
+	retrieveUser,
 };

@@ -10,6 +10,7 @@ type User @model {
 	following: [Following] @connection(keyName: "byUser", fields: ["id"])
 	follower: [Followers] @connection(keyName: "byUser", fields: ["id"])
 	status: String
+	zipCode: String!
 	chatRoomUser: [ChatRoomUser] @connection(keyName: "byUser", fields: ["id"])
 }
 

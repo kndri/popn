@@ -48,6 +48,7 @@ export type RootStackParamList = {
 	Location: undefined;
 	NewListing: undefined;
 	ListingDescripton: undefined | any;
+	ZipScreen: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -67,6 +68,7 @@ export type SettingsStackParamList = {
 	verifyEmail: undefined;
 	changeUsername: undefined;
 	changeProfileImage: undefined;
+	changeZipCode: undefined;
 };
 
 export interface Sneaker {

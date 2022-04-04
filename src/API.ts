@@ -9,6 +9,7 @@ export type CreateUserInput = {
   email: string,
   avatarImageURL: string,
   status?: string | null,
+  zipCode: string,
 };
 
 export type ModelUserConditionInput = {
@@ -17,6 +18,7 @@ export type ModelUserConditionInput = {
   email?: ModelStringInput | null,
   avatarImageURL?: ModelStringInput | null,
   status?: ModelStringInput | null,
+  zipCode?: ModelStringInput | null,
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
@@ -75,6 +77,7 @@ export type User = {
   following?: ModelFollowingConnection | null,
   follower?: ModelFollowersConnection | null,
   status?: string | null,
+  zipCode: string,
   chatRoomUser?: ModelChatRoomUserConnection | null,
   createdAt: string,
   updatedAt: string,
@@ -276,6 +279,7 @@ export type UpdateUserInput = {
   email?: string | null,
   avatarImageURL?: string | null,
   status?: string | null,
+  zipCode?: string | null,
 };
 
 export type DeleteUserInput = {
@@ -674,6 +678,7 @@ export type ModelUserFilterInput = {
   email?: ModelStringInput | null,
   avatarImageURL?: ModelStringInput | null,
   status?: ModelStringInput | null,
+  zipCode?: ModelStringInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
@@ -939,6 +944,7 @@ export type CreateUserMutation = {
       nextToken?: string | null,
     } | null,
     status?: string | null,
+    zipCode: string,
     chatRoomUser?:  {
       __typename: "ModelChatRoomUserConnection",
       items:  Array< {
@@ -1039,6 +1045,7 @@ export type UpdateUserMutation = {
       nextToken?: string | null,
     } | null,
     status?: string | null,
+    zipCode: string,
     chatRoomUser?:  {
       __typename: "ModelChatRoomUserConnection",
       items:  Array< {
@@ -1139,6 +1146,7 @@ export type DeleteUserMutation = {
       nextToken?: string | null,
     } | null,
     status?: string | null,
+    zipCode: string,
     chatRoomUser?:  {
       __typename: "ModelChatRoomUserConnection",
       items:  Array< {
@@ -1195,6 +1203,7 @@ export type CreateFollowingMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -1246,6 +1255,7 @@ export type UpdateFollowingMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -1297,6 +1307,7 @@ export type DeleteFollowingMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -1348,6 +1359,7 @@ export type CreateFollowersMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -1399,6 +1411,7 @@ export type UpdateFollowersMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -1450,6 +1463,7 @@ export type DeleteFollowersMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -1501,6 +1515,7 @@ export type CreateChatRoomUserMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -1576,6 +1591,7 @@ export type UpdateChatRoomUserMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -1651,6 +1667,7 @@ export type DeleteChatRoomUserMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -1737,6 +1754,7 @@ export type CreateChatRoomMutation = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -1804,6 +1822,7 @@ export type UpdateChatRoomMutation = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -1871,6 +1890,7 @@ export type DeleteChatRoomMutation = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -1929,6 +1949,7 @@ export type CreateMessageMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2005,6 +2026,7 @@ export type UpdateMessageMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2081,6 +2103,7 @@ export type DeleteMessageMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2158,6 +2181,7 @@ export type CreateSneakerMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2227,6 +2251,7 @@ export type UpdateSneakerMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2296,6 +2321,7 @@ export type DeleteSneakerMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2365,6 +2391,7 @@ export type CreateSoldSneakerMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2419,6 +2446,7 @@ export type UpdateSoldSneakerMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2473,6 +2501,7 @@ export type DeleteSoldSneakerMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2524,6 +2553,7 @@ export type CreateClaimMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2547,6 +2577,7 @@ export type CreateClaimMutation = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -2604,6 +2635,7 @@ export type UpdateClaimMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2627,6 +2659,7 @@ export type UpdateClaimMutation = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -2684,6 +2717,7 @@ export type DeleteClaimMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2707,6 +2741,7 @@ export type DeleteClaimMutation = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -2751,6 +2786,7 @@ export type CreateListedItemMutation = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -2797,6 +2833,7 @@ export type CreateListedItemMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2836,6 +2873,7 @@ export type UpdateListedItemMutation = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -2882,6 +2920,7 @@ export type UpdateListedItemMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -2921,6 +2960,7 @@ export type DeleteListedItemMutation = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -2967,6 +3007,7 @@ export type DeleteListedItemMutation = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -3025,6 +3066,7 @@ export type CreateOfferMutation = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -3082,6 +3124,7 @@ export type UpdateOfferMutation = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -3139,6 +3182,7 @@ export type DeleteOfferMutation = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -3287,6 +3331,7 @@ export type GetUserQuery = {
       nextToken?: string | null,
     } | null,
     status?: string | null,
+    zipCode: string,
     chatRoomUser?:  {
       __typename: "ModelChatRoomUserConnection",
       items:  Array< {
@@ -3341,6 +3386,7 @@ export type ListUsersQuery = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -3390,6 +3436,7 @@ export type GetFollowingQuery = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -3424,6 +3471,7 @@ export type ListFollowingsQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -3472,6 +3520,7 @@ export type GetFollowersQuery = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -3506,6 +3555,7 @@ export type ListFollowerssQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -3554,6 +3604,7 @@ export type GetChatRoomUserQuery = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -3612,6 +3663,7 @@ export type ListChatRoomUsersQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -3678,6 +3730,7 @@ export type GetChatRoomQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -3772,6 +3825,7 @@ export type GetMessageQuery = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -3831,6 +3885,7 @@ export type ListMessagesQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -3888,6 +3943,7 @@ export type GetSneakerQuery = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -3940,6 +3996,7 @@ export type ListSneakersQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -3995,6 +4052,7 @@ export type GetSoldSneakerQuery = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -4032,6 +4090,7 @@ export type ListSoldSneakersQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -4080,6 +4139,7 @@ export type GetClaimQuery = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -4103,6 +4163,7 @@ export type GetClaimQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -4143,6 +4204,7 @@ export type ListClaimsQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -4192,6 +4254,7 @@ export type GetListedItemQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -4238,6 +4301,7 @@ export type GetListedItemQuery = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -4291,6 +4355,7 @@ export type ListListedItemsQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -4346,6 +4411,7 @@ export type GetOfferQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -4462,6 +4528,7 @@ export type FollowingByUserQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -4496,6 +4563,7 @@ export type FollowersByUserQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -4531,6 +4599,7 @@ export type ChatRoomUserByUserQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -4575,6 +4644,7 @@ export type MessagesByChatRoomQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -4619,6 +4689,7 @@ export type SneakerByUserQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -4660,6 +4731,7 @@ export type SoldItemByUserQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -4712,6 +4784,7 @@ export type ListedItemByUserQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -4765,6 +4838,7 @@ export type ListedItemByZipCodeQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -4818,6 +4892,7 @@ export type ListedItemByBrandQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -4871,6 +4946,7 @@ export type ListedItemByPriceQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -4924,6 +5000,7 @@ export type ListedItemBySizeQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -4977,6 +5054,7 @@ export type ListedItemByConditionQuery = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -5108,6 +5186,7 @@ export type OnCreateUserSubscription = {
       nextToken?: string | null,
     } | null,
     status?: string | null,
+    zipCode: string,
     chatRoomUser?:  {
       __typename: "ModelChatRoomUserConnection",
       items:  Array< {
@@ -5203,6 +5282,7 @@ export type OnUpdateUserSubscription = {
       nextToken?: string | null,
     } | null,
     status?: string | null,
+    zipCode: string,
     chatRoomUser?:  {
       __typename: "ModelChatRoomUserConnection",
       items:  Array< {
@@ -5298,6 +5378,7 @@ export type OnDeleteUserSubscription = {
       nextToken?: string | null,
     } | null,
     status?: string | null,
+    zipCode: string,
     chatRoomUser?:  {
       __typename: "ModelChatRoomUserConnection",
       items:  Array< {
@@ -5349,6 +5430,7 @@ export type OnCreateFollowingSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -5395,6 +5477,7 @@ export type OnUpdateFollowingSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -5441,6 +5524,7 @@ export type OnDeleteFollowingSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -5487,6 +5571,7 @@ export type OnCreateFollowersSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -5533,6 +5618,7 @@ export type OnUpdateFollowersSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -5579,6 +5665,7 @@ export type OnDeleteFollowersSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -5625,6 +5712,7 @@ export type OnCreateChatRoomUserSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -5695,6 +5783,7 @@ export type OnUpdateChatRoomUserSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -5765,6 +5854,7 @@ export type OnDeleteChatRoomUserSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -5846,6 +5936,7 @@ export type OnCreateChatRoomSubscription = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -5908,6 +5999,7 @@ export type OnUpdateChatRoomSubscription = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -5970,6 +6062,7 @@ export type OnDeleteChatRoomSubscription = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -6023,6 +6116,7 @@ export type OnCreateMessageSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6094,6 +6188,7 @@ export type OnUpdateMessageSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6165,6 +6260,7 @@ export type OnDeleteMessageSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6237,6 +6333,7 @@ export type OnCreateSneakerSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6301,6 +6398,7 @@ export type OnUpdateSneakerSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6365,6 +6463,7 @@ export type OnDeleteSneakerSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6429,6 +6528,7 @@ export type OnCreateSoldSneakerSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6478,6 +6578,7 @@ export type OnUpdateSoldSneakerSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6527,6 +6628,7 @@ export type OnDeleteSoldSneakerSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6573,6 +6675,7 @@ export type OnCreateClaimSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6596,6 +6699,7 @@ export type OnCreateClaimSubscription = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -6648,6 +6752,7 @@ export type OnUpdateClaimSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6671,6 +6776,7 @@ export type OnUpdateClaimSubscription = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -6723,6 +6829,7 @@ export type OnDeleteClaimSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6746,6 +6853,7 @@ export type OnDeleteClaimSubscription = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -6785,6 +6893,7 @@ export type OnCreateListedItemSubscription = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -6831,6 +6940,7 @@ export type OnCreateListedItemSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6865,6 +6975,7 @@ export type OnUpdateListedItemSubscription = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -6911,6 +7022,7 @@ export type OnUpdateListedItemSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -6945,6 +7057,7 @@ export type OnDeleteListedItemSubscription = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -6991,6 +7104,7 @@ export type OnDeleteListedItemSubscription = {
         nextToken?: string | null,
       } | null,
       status?: string | null,
+      zipCode: string,
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
@@ -7044,6 +7158,7 @@ export type OnCreateOfferSubscription = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -7096,6 +7211,7 @@ export type OnUpdateOfferSubscription = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -7148,6 +7264,7 @@ export type OnDeleteOfferSubscription = {
         email: string,
         avatarImageURL: string,
         status?: string | null,
+        zipCode: string,
         createdAt: string,
         updatedAt: string,
       },
