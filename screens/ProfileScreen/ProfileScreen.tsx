@@ -117,7 +117,7 @@ export default function ProfileScreen() {
 							style={{ fontSize: 12, color: '#979797' }}
 						/>
 						<Text text={`${secondaryName}`} style={{ fontSize: 10 }} />
-						{claim.items.length > 0 ? (
+						{claim.item != undefined && claim.items.length > 0 ? (
 							<>
 								{claim.items[0].status === 'verified' ? (
 									<Image
