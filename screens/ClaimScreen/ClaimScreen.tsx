@@ -13,6 +13,7 @@ import {
 	addUserSneaker,
 	getSneakersFromUser,
 	getSneakersFromDB,
+	getListUser,
 } from '../../aws-functions/aws-functions';
 import { useToast } from '../../components/Toast';
 import { useAuth } from '../../contexts/auth';
@@ -30,9 +31,15 @@ export default function ClaimScreen() {
 	const [searchedArray, setSearchedArray] = React.useState<any>([]);
 	const [collection, setCollection] = React.useState<any>([]);
 	const [sneakerDb, setSneakerDb] = React.useState<any>([]);
+
+	//contains a list of users
+	const [users, setUsers] = React.useState<any>([]);
+	// contains a list of searched users
+	const [searchedUser, setSearchedUsers] = React.useState<any>([]);
 	const isFocused = useIsFocused();
 
 	React.useEffect(() => {
+		// if there is nothing being search set the feed to be the list of sneakers from sneaker store
 		if (query.length === 0) {
 			setSearchedArray(sneakerDb);
 		} else {
@@ -57,10 +64,35 @@ export default function ClaimScreen() {
 		}
 	}, [query]);
 
+	/**
+	 * This useEffect filters the list of users
+	 */
+	React.useEffect(() => {
+		const searchedObject: any = [];
+		users
+			.filter((contactObject) =>
+				contactObject.username
+					.toLowerCase()
+					.replace(/\s+/g, '')
+					.includes(query.toLowerCase().replace(/\s+/g, ''))
+			)
+			.map((filteredContact) => {
+				searchedObject.push(filteredContact);
+			});
+
+		setSearchedUsers(searchedObject);
+	}, [query]);
+
+	/**
+	 * getSneakers fetches sneakers that the user has claimed
+	 * and the sneakers from the sneaker store
+	 */
 	const getSneakers = async () => {
+		// sneakers from user
 		const sneakerlist = await getSneakersFromUser(user!.id).catch((error) =>
 			console.error(error)
 		);
+		// sneakers from sneaker store
 		const sneakersData = await getSneakersFromDB().catch((error) =>
 			console.error(error)
 		);
@@ -69,6 +101,12 @@ export default function ClaimScreen() {
 		setCollection(sneakerlist);
 	};
 
+	/**
+	 * checkClaimed checks whether the user has claimed the shoe so they dont claim the
+	 * same sneaker multiple time
+	 * @param item
+	 * @returns
+	 */
 	const checkClaimed = (item: any) => {
 		if (!collection) {
 			return;
@@ -84,12 +122,33 @@ export default function ClaimScreen() {
 		}
 	};
 
+	/**
+	 * fetchUser fetches the list of users
+	 */
+
+	const fetchUsers = async () => {
+		try {
+			const userList = await getListUser();
+			setUsers(userList.items);
+		} catch (e) {
+			console.log(e);
+		}
+	};
+	/**
+	 * The useEffect will fetch for sneakers and user
+	 */
 	React.useEffect(() => {
+		fetchUsers();
 		getSneakers();
 	}, [isFocused]);
 
-	React.useEffect(() => {}, [sneakerDb]);
+	// React.useEffect(() => {}, [sneakerDb]);
 
+	/**
+	 *
+	 * @param param0 This function renders the sneakers
+	 * @returns
+	 */
 	const renderSneaker = ({ item }) => {
 		if (checkClaimed(item)) {
 			return (

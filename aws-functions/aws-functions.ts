@@ -13,6 +13,7 @@ import {
 	getSneaker,
 	followersByUser,
 	followingByUser,
+	listUsers,
 } from '../src/graphql/queries';
 
 export const getUserFromDb = async (userID: string) => {
@@ -27,6 +28,11 @@ export const getUserFromDb = async (userID: string) => {
 	user = postData.data.getUser;
 
 	return user;
+};
+export const getListUser = async () => {
+	const userList = await API.graphql(graphqlOperation(listUsers));
+
+	return userList.data.listUsers;
 };
 
 //stores shoes
