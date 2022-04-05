@@ -14,6 +14,7 @@ import {
 	getSneakersFromUser,
 	getSneakersFromDB,
 	getListUser,
+	getLeaderBoardByZipCode,
 } from '../../aws-functions/aws-functions';
 import { useToast } from '../../components/Toast';
 import { useAuth } from '../../contexts/auth';
@@ -135,11 +136,24 @@ export default function ClaimScreen() {
 		}
 	};
 	/**
+	 * fetchUser fetches the list of users
+	 */
+
+	const fetchLeaderBoardByZipCode = async () => {
+		try {
+			const leaderBoard = await getLeaderBoardByZipCode('27330');
+			console.log('leader board: ', leaderBoard);
+		} catch (e) {
+			console.log('error:', e);
+		}
+	};
+	/**
 	 * The useEffect will fetch for sneakers and user
 	 */
 	React.useEffect(() => {
 		fetchUsers();
 		getSneakers();
+		fetchLeaderBoardByZipCode();
 	}, [isFocused]);
 
 	// React.useEffect(() => {}, [sneakerDb]);

@@ -14,6 +14,7 @@ import {
 	followersByUser,
 	followingByUser,
 	listUsers,
+	donScoreByZipCode,
 } from '../src/graphql/queries';
 
 export const getUserFromDb = async (userID: string) => {
@@ -202,5 +203,21 @@ export const addClaim = async (sneakerID: any, refNumber: any) => {
 		await API.graphql(graphqlOperation(createClaim, { input: newClaim }));
 	} catch (e) {
 		console.log(e);
+	}
+};
+
+export const getLeaderBoardByZipCode = async (zipCode: string) => {
+	try {
+		const scores = await API.graphql(
+			graphqlOperation(donScoreByZipCode, {
+				zipCode: zipCode,
+				limit: 10,
+				sortDirection: 'DESC',
+			})
+		);
+
+		return scores.data.donScoreByZipCode.items;
+	} catch (e) {
+		console.log('error: ', e);
 	}
 };

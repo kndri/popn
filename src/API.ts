@@ -79,6 +79,7 @@ export type User = {
   status?: string | null,
   zipCode: string,
   chatRoomUser?: ModelChatRoomUserConnection | null,
+  donScore?: DonScore | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -272,6 +273,16 @@ export type Message = {
   updatedAt: string,
 };
 
+export type DonScore = {
+  __typename: "DonScore",
+  id: string,
+  userID: string,
+  zipCode: string,
+  score: number,
+  createdAt: string,
+  updatedAt: string,
+};
+
 export type UpdateUserInput = {
   id: string,
   age?: string | null,
@@ -284,6 +295,44 @@ export type UpdateUserInput = {
 
 export type DeleteUserInput = {
   id: string,
+};
+
+export type CreateDonScoreInput = {
+  id?: string | null,
+  userID: string,
+  zipCode: string,
+  score: number,
+};
+
+export type ModelDonScoreConditionInput = {
+  zipCode?: ModelStringInput | null,
+  score?: ModelIntInput | null,
+  and?: Array< ModelDonScoreConditionInput | null > | null,
+  or?: Array< ModelDonScoreConditionInput | null > | null,
+  not?: ModelDonScoreConditionInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type UpdateDonScoreInput = {
+  id?: string | null,
+  userID: string,
+  zipCode?: string | null,
+  score?: number | null,
+};
+
+export type DeleteDonScoreInput = {
+  userID: string,
 };
 
 export type CreateFollowingInput = {
@@ -690,6 +739,28 @@ export type ModelUserConnection = {
   nextToken?: string | null,
 };
 
+export type ModelDonScoreFilterInput = {
+  id?: ModelIDInput | null,
+  userID?: ModelIDInput | null,
+  zipCode?: ModelStringInput | null,
+  score?: ModelIntInput | null,
+  and?: Array< ModelDonScoreFilterInput | null > | null,
+  or?: Array< ModelDonScoreFilterInput | null > | null,
+  not?: ModelDonScoreFilterInput | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
+export type ModelDonScoreConnection = {
+  __typename: "ModelDonScoreConnection",
+  items:  Array<DonScore | null >,
+  nextToken?: string | null,
+};
+
 export type ModelFollowingFilterInput = {
   id?: ModelIDInput | null,
   secondUserID?: ModelIDInput | null,
@@ -835,11 +906,14 @@ export type ModelSneakerStoreConnection = {
   nextToken?: string | null,
 };
 
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
+export type ModelIntKeyConditionInput = {
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+};
 
 export type ModelIDKeyConditionInput = {
   eq?: string | null,
@@ -957,6 +1031,15 @@ export type CreateUserMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    donScore?:  {
+      __typename: "DonScore",
+      id: string,
+      userID: string,
+      zipCode: string,
+      score: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1057,6 +1140,15 @@ export type UpdateUserMutation = {
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
+    } | null,
+    donScore?:  {
+      __typename: "DonScore",
+      id: string,
+      userID: string,
+      zipCode: string,
+      score: number,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1159,6 +1251,66 @@ export type DeleteUserMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    donScore?:  {
+      __typename: "DonScore",
+      id: string,
+      userID: string,
+      zipCode: string,
+      score: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateDonScoreMutationVariables = {
+  input: CreateDonScoreInput,
+  condition?: ModelDonScoreConditionInput | null,
+};
+
+export type CreateDonScoreMutation = {
+  createDonScore?:  {
+    __typename: "DonScore",
+    id: string,
+    userID: string,
+    zipCode: string,
+    score: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateDonScoreMutationVariables = {
+  input: UpdateDonScoreInput,
+  condition?: ModelDonScoreConditionInput | null,
+};
+
+export type UpdateDonScoreMutation = {
+  updateDonScore?:  {
+    __typename: "DonScore",
+    id: string,
+    userID: string,
+    zipCode: string,
+    score: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteDonScoreMutationVariables = {
+  input: DeleteDonScoreInput,
+  condition?: ModelDonScoreConditionInput | null,
+};
+
+export type DeleteDonScoreMutation = {
+  deleteDonScore?:  {
+    __typename: "DonScore",
+    id: string,
+    userID: string,
+    zipCode: string,
+    score: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1207,6 +1359,15 @@ export type CreateFollowingMutation = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1260,6 +1421,15 @@ export type UpdateFollowingMutation = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1311,6 +1481,15 @@ export type DeleteFollowingMutation = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1364,6 +1543,15 @@ export type CreateFollowersMutation = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1415,6 +1603,15 @@ export type UpdateFollowersMutation = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1468,6 +1665,15 @@ export type DeleteFollowersMutation = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1519,6 +1725,15 @@ export type CreateChatRoomUserMutation = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1596,6 +1811,15 @@ export type UpdateChatRoomUserMutation = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -1671,6 +1895,15 @@ export type DeleteChatRoomUserMutation = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1954,6 +2187,15 @@ export type CreateMessageMutation = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -2031,6 +2273,15 @@ export type UpdateMessageMutation = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -2107,6 +2358,15 @@ export type DeleteMessageMutation = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -2186,6 +2446,15 @@ export type CreateSneakerMutation = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -2255,6 +2524,15 @@ export type UpdateSneakerMutation = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -2326,6 +2604,15 @@ export type DeleteSneakerMutation = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -2396,6 +2683,15 @@ export type CreateSoldSneakerMutation = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -2450,6 +2746,15 @@ export type UpdateSoldSneakerMutation = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -2506,6 +2811,15 @@ export type DeleteSoldSneakerMutation = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -2557,6 +2871,15 @@ export type CreateClaimMutation = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -2640,6 +2963,15 @@ export type UpdateClaimMutation = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -2721,6 +3053,15 @@ export type DeleteClaimMutation = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -2838,6 +3179,15 @@ export type CreateListedItemMutation = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -2925,6 +3275,15 @@ export type UpdateListedItemMutation = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -3011,6 +3370,15 @@ export type DeleteListedItemMutation = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -3344,6 +3712,15 @@ export type GetUserQuery = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    donScore?:  {
+      __typename: "DonScore",
+      id: string,
+      userID: string,
+      zipCode: string,
+      score: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3391,6 +3768,55 @@ export type ListUsersQuery = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetDonScoreQueryVariables = {
+  userID: string,
+};
+
+export type GetDonScoreQuery = {
+  getDonScore?:  {
+    __typename: "DonScore",
+    id: string,
+    userID: string,
+    zipCode: string,
+    score: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListDonScoresQueryVariables = {
+  userID?: string | null,
+  filter?: ModelDonScoreFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
+};
+
+export type ListDonScoresQuery = {
+  listDonScores?:  {
+    __typename: "ModelDonScoreConnection",
+    items:  Array< {
+      __typename: "DonScore",
+      id: string,
+      userID: string,
+      zipCode: string,
+      score: number,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -3440,6 +3866,15 @@ export type GetFollowingQuery = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -3525,6 +3960,15 @@ export type GetFollowersQuery = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -3608,6 +4052,15 @@ export type GetChatRoomUserQuery = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -3830,6 +4283,15 @@ export type GetMessageQuery = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -3948,6 +4410,15 @@ export type GetSneakerQuery = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -4057,6 +4528,15 @@ export type GetSoldSneakerQuery = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -4143,6 +4623,15 @@ export type GetClaimQuery = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -4305,6 +4794,15 @@ export type GetListedItemQuery = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -4497,6 +4995,31 @@ export type ListSneakerStoresQuery = {
       primary_name: string,
       secondary_name: string,
       image_url: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type DonScoreByZipCodeQueryVariables = {
+  zipCode?: string | null,
+  score?: ModelIntKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelDonScoreFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type DonScoreByZipCodeQuery = {
+  donScoreByZipCode?:  {
+    __typename: "ModelDonScoreConnection",
+    items:  Array< {
+      __typename: "DonScore",
+      id: string,
+      userID: string,
+      zipCode: string,
+      score: number,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -5199,6 +5722,15 @@ export type OnCreateUserSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    donScore?:  {
+      __typename: "DonScore",
+      id: string,
+      userID: string,
+      zipCode: string,
+      score: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -5294,6 +5826,15 @@ export type OnUpdateUserSubscription = {
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
+    } | null,
+    donScore?:  {
+      __typename: "DonScore",
+      id: string,
+      userID: string,
+      zipCode: string,
+      score: number,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -5391,6 +5932,51 @@ export type OnDeleteUserSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    donScore?:  {
+      __typename: "DonScore",
+      id: string,
+      userID: string,
+      zipCode: string,
+      score: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateDonScoreSubscription = {
+  onCreateDonScore?:  {
+    __typename: "DonScore",
+    id: string,
+    userID: string,
+    zipCode: string,
+    score: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateDonScoreSubscription = {
+  onUpdateDonScore?:  {
+    __typename: "DonScore",
+    id: string,
+    userID: string,
+    zipCode: string,
+    score: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteDonScoreSubscription = {
+  onDeleteDonScore?:  {
+    __typename: "DonScore",
+    id: string,
+    userID: string,
+    zipCode: string,
+    score: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -5434,6 +6020,15 @@ export type OnCreateFollowingSubscription = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -5482,6 +6077,15 @@ export type OnUpdateFollowingSubscription = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -5528,6 +6132,15 @@ export type OnDeleteFollowingSubscription = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -5576,6 +6189,15 @@ export type OnCreateFollowersSubscription = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -5622,6 +6244,15 @@ export type OnUpdateFollowersSubscription = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -5670,6 +6301,15 @@ export type OnDeleteFollowersSubscription = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -5716,6 +6356,15 @@ export type OnCreateChatRoomUserSubscription = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -5788,6 +6437,15 @@ export type OnUpdateChatRoomUserSubscription = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -5858,6 +6516,15 @@ export type OnDeleteChatRoomUserSubscription = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -6121,6 +6788,15 @@ export type OnCreateMessageSubscription = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -6193,6 +6869,15 @@ export type OnUpdateMessageSubscription = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -6264,6 +6949,15 @@ export type OnDeleteMessageSubscription = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -6338,6 +7032,15 @@ export type OnCreateSneakerSubscription = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -6402,6 +7105,15 @@ export type OnUpdateSneakerSubscription = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -6468,6 +7180,15 @@ export type OnDeleteSneakerSubscription = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -6533,6 +7254,15 @@ export type OnCreateSoldSneakerSubscription = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -6582,6 +7312,15 @@ export type OnUpdateSoldSneakerSubscription = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -6633,6 +7372,15 @@ export type OnDeleteSoldSneakerSubscription = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -6679,6 +7427,15 @@ export type OnCreateClaimSubscription = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -6757,6 +7514,15 @@ export type OnUpdateClaimSubscription = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -6833,6 +7599,15 @@ export type OnDeleteClaimSubscription = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -6945,6 +7720,15 @@ export type OnCreateListedItemSubscription = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -7027,6 +7811,15 @@ export type OnUpdateListedItemSubscription = {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
       } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -7108,6 +7901,15 @@ export type OnDeleteListedItemSubscription = {
       chatRoomUser?:  {
         __typename: "ModelChatRoomUserConnection",
         nextToken?: string | null,
+      } | null,
+      donScore?:  {
+        __typename: "DonScore",
+        id: string,
+        userID: string,
+        zipCode: string,
+        score: number,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,

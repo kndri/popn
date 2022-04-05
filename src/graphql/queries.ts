@@ -81,6 +81,14 @@ export const getUser = /* GraphQL */ `
 				}
 				nextToken
 			}
+			donScore {
+				id
+				userID
+				zipCode
+				score
+				createdAt
+				updatedAt
+			}
 			createdAt
 			updatedAt
 		}
@@ -119,6 +127,53 @@ export const listUsers = /* GraphQL */ `
 				chatRoomUser {
 					nextToken
 				}
+				donScore {
+					id
+					userID
+					zipCode
+					score
+					createdAt
+					updatedAt
+				}
+				createdAt
+				updatedAt
+			}
+			nextToken
+		}
+	}
+`;
+export const getDonScore = /* GraphQL */ `
+	query GetDonScore($userID: ID!) {
+		getDonScore(userID: $userID) {
+			id
+			userID
+			zipCode
+			score
+			createdAt
+			updatedAt
+		}
+	}
+`;
+export const listDonScores = /* GraphQL */ `
+	query ListDonScores(
+		$userID: ID
+		$filter: ModelDonScoreFilterInput
+		$limit: Int
+		$nextToken: String
+		$sortDirection: ModelSortDirection
+	) {
+		listDonScores(
+			userID: $userID
+			filter: $filter
+			limit: $limit
+			nextToken: $nextToken
+			sortDirection: $sortDirection
+		) {
+			items {
+				id
+				userID
+				zipCode
+				score
 				createdAt
 				updatedAt
 			}
@@ -157,6 +212,14 @@ export const getFollowing = /* GraphQL */ `
 				zipCode
 				chatRoomUser {
 					nextToken
+				}
+				donScore {
+					id
+					userID
+					zipCode
+					score
+					createdAt
+					updatedAt
 				}
 				createdAt
 				updatedAt
@@ -227,6 +290,14 @@ export const getFollowers = /* GraphQL */ `
 				chatRoomUser {
 					nextToken
 				}
+				donScore {
+					id
+					userID
+					zipCode
+					score
+					createdAt
+					updatedAt
+				}
 				createdAt
 				updatedAt
 			}
@@ -295,6 +366,14 @@ export const getChatRoomUser = /* GraphQL */ `
 				zipCode
 				chatRoomUser {
 					nextToken
+				}
+				donScore {
+					id
+					userID
+					zipCode
+					score
+					createdAt
+					updatedAt
 				}
 				createdAt
 				updatedAt
@@ -480,6 +559,14 @@ export const getMessage = /* GraphQL */ `
 				chatRoomUser {
 					nextToken
 				}
+				donScore {
+					id
+					userID
+					zipCode
+					score
+					createdAt
+					updatedAt
+				}
 				createdAt
 				updatedAt
 			}
@@ -577,6 +664,14 @@ export const getSneaker = /* GraphQL */ `
 				zipCode
 				chatRoomUser {
 					nextToken
+				}
+				donScore {
+					id
+					userID
+					zipCode
+					score
+					createdAt
+					updatedAt
 				}
 				createdAt
 				updatedAt
@@ -679,6 +774,14 @@ export const getSoldSneaker = /* GraphQL */ `
 				chatRoomUser {
 					nextToken
 				}
+				donScore {
+					id
+					userID
+					zipCode
+					score
+					createdAt
+					updatedAt
+				}
 				createdAt
 				updatedAt
 			}
@@ -750,6 +853,14 @@ export const getClaim = /* GraphQL */ `
 				zipCode
 				chatRoomUser {
 					nextToken
+				}
+				donScore {
+					id
+					userID
+					zipCode
+					score
+					createdAt
+					updatedAt
 				}
 				createdAt
 				updatedAt
@@ -890,6 +1001,14 @@ export const getListedItem = /* GraphQL */ `
 				zipCode
 				chatRoomUser {
 					nextToken
+				}
+				donScore {
+					id
+					userID
+					zipCode
+					score
+					createdAt
+					updatedAt
 				}
 				createdAt
 				updatedAt
@@ -1057,6 +1176,33 @@ export const listSneakerStores = /* GraphQL */ `
 				primary_name
 				secondary_name
 				image_url
+			}
+			nextToken
+		}
+	}
+`;
+export const donScoreByZipCode = /* GraphQL */ `
+	query DonScoreByZipCode(
+		$zipCode: String
+		$score: ModelIntKeyConditionInput
+		$sortDirection: ModelSortDirection
+		$filter: ModelDonScoreFilterInput
+		$limit: Int
+		$nextToken: String
+	) {
+		donScoreByZipCode(
+			zipCode: $zipCode
+			score: $score
+			sortDirection: $sortDirection
+			filter: $filter
+			limit: $limit
+			nextToken: $nextToken
+		) {
+			items {
+				id
+				userID
+				zipCode
+				score
 			}
 			nextToken
 		}

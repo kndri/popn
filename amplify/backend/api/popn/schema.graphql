@@ -12,6 +12,20 @@ type User @model {
 	status: String
 	zipCode: String!
 	chatRoomUser: [ChatRoomUser] @connection(keyName: "byUser", fields: ["id"])
+	donScore: DonScore @connection(fields: ["id"])
+}
+type DonScore
+	@model
+	@key(fields: ["userID"])
+	@key(
+		name: "byZipCode"
+		fields: ["zipCode", "score"]
+		queryField: "donScoreByZipCode"
+	) {
+	id: ID!
+	userID: ID!
+	zipCode: String!
+	score: Int!
 }
 
 type Following
