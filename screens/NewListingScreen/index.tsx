@@ -97,7 +97,7 @@ const NewListingScreen: FC<NewListingProps> = () => {
 
 
 				{/* SECTION: for condition selection */}
-				<Text text="Condition" preset='bold' style={{ marginTop: 26 }} />
+				<Text text="Condition" preset='bold' style={{ marginTop: 26, marginBottom: 6 }} />
 				<DropDownPicker
 					open={openCondition}
 					value={conditionValue}
@@ -109,11 +109,15 @@ const NewListingScreen: FC<NewListingProps> = () => {
 						borderWidth: 2,
 						borderRadius: 5,
 						height: 48,
+
 					}}
 					style={{
 						backgroundColor: "white",
 						borderColor: 'white',
-						height: 42
+						height: 42,
+					}}
+					dropDownContainerStyle={{
+						borderWidth: 2
 					}}
 					zIndex={3000}
 					zIndexInverse={1000}
@@ -121,7 +125,7 @@ const NewListingScreen: FC<NewListingProps> = () => {
 
 
 				{/* SECTION: for shoe size selection */}
-				<Text text="Size" preset='bold' style={{ marginTop: 26 }} />
+				<Text text="Size" preset='bold' style={{ marginTop: 26, marginBottom: 6 }} />
 				<DropDownPicker
 					open={openSize}
 					value={sizeValue}
@@ -139,8 +143,12 @@ const NewListingScreen: FC<NewListingProps> = () => {
 						borderColor: 'white',
 						height: 42
 					}}
+					dropDownContainerStyle={{
+						borderWidth: 2
+					}}
 					zIndex={2000}
 					zIndexInverse={2000}
+
 				/>
 
 
@@ -161,48 +169,6 @@ const NewListingScreen: FC<NewListingProps> = () => {
 						disabled={price != '' && conditionValue != null && sizeValue != null ? false : true}
 					/>
 				</View>
-
-
-				{/* SECTION: for inputing the descriptions */}
-				{/* <Text text="Description" preset='bold' style={{ marginTop: 6 }} />
-				<View style={styles.MESSAGE_BOX}>
-					<TextInput
-						style={{
-							flex: 1,
-							width: '10%',
-							height: '100%',
-							borderWidth: 1,
-							paddingLeft: 10,
-							borderRadius: 5,
-							borderColor: '#FFFFFF',
-							backgroundColor: 'white',
-						}}
-						value={description}
-						autoCorrect={false}
-						onChangeText={(text) => setDescription(text)}
-						placeholder=""
-						placeholderTextColor={'#878C90'}
-						keyboardType="default"
-						multiline={true}
-						blurOnSubmit={true}
-						returnKeyType="done"
-					/>
-				</View> */}
-
-				{/* SECTION: for importing images */}
-				{/* <Text text="Add Photos" preset='bold' style={{ marginTop: 6 }} />
-				<View style={styles.INPUT_FIELDS_CONTAINER}>
-					<TextInput
-						style={styles.TEXTFIELD_STYLE}
-						// value={query}
-						autoCorrect={false}
-						// onChangeText={(text) => setQuery(text)}
-						placeholder="Search"
-						placeholderTextColor={'#878C90'}
-					/>
-					<Text>{'Make sure you include the following photos'}</Text>
-				</View>
-				<Text>{'Make sure you include the following photos'}</Text> */}
 			</View>
 		</Screen>
 	);
