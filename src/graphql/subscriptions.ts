@@ -89,6 +89,14 @@ export const onCreateUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      totalSold {
+        id
+        userID
+        zipCode
+        total
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -178,6 +186,14 @@ export const onUpdateUser = /* GraphQL */ `
         userID
         zipCode
         score
+        createdAt
+        updatedAt
+      }
+      totalSold {
+        id
+        userID
+        zipCode
+        total
         createdAt
         updatedAt
       }
@@ -273,6 +289,14 @@ export const onDeleteUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      totalSold {
+        id
+        userID
+        zipCode
+        total
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -309,6 +333,42 @@ export const onDeleteDonScore = /* GraphQL */ `
       userID
       zipCode
       score
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateTotalSoldSneaker = /* GraphQL */ `
+  subscription OnCreateTotalSoldSneaker {
+    onCreateTotalSoldSneaker {
+      id
+      userID
+      zipCode
+      total
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTotalSoldSneaker = /* GraphQL */ `
+  subscription OnUpdateTotalSoldSneaker {
+    onUpdateTotalSoldSneaker {
+      id
+      userID
+      zipCode
+      total
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTotalSoldSneaker = /* GraphQL */ `
+  subscription OnDeleteTotalSoldSneaker {
+    onDeleteTotalSoldSneaker {
+      id
+      userID
+      zipCode
+      total
       createdAt
       updatedAt
     }
@@ -351,6 +411,14 @@ export const onCreateFollowing = /* GraphQL */ `
           userID
           zipCode
           score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
           createdAt
           updatedAt
         }
@@ -402,6 +470,14 @@ export const onUpdateFollowing = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -447,6 +523,14 @@ export const onDeleteFollowing = /* GraphQL */ `
           userID
           zipCode
           score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
           createdAt
           updatedAt
         }
@@ -498,6 +582,14 @@ export const onCreateFollowers = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -543,6 +635,14 @@ export const onUpdateFollowers = /* GraphQL */ `
           userID
           zipCode
           score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
           createdAt
           updatedAt
         }
@@ -594,6 +694,14 @@ export const onDeleteFollowers = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -639,6 +747,14 @@ export const onCreateChatRoomUser = /* GraphQL */ `
           userID
           zipCode
           score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
           createdAt
           updatedAt
         }
@@ -710,6 +826,14 @@ export const onUpdateChatRoomUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -775,6 +899,14 @@ export const onDeleteChatRoomUser = /* GraphQL */ `
           userID
           zipCode
           score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
           createdAt
           updatedAt
         }
@@ -1016,6 +1148,14 @@ export const onCreateMessage = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -1085,6 +1225,14 @@ export const onUpdateMessage = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -1151,6 +1299,14 @@ export const onDeleteMessage = /* GraphQL */ `
           userID
           zipCode
           score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
           createdAt
           updatedAt
         }
@@ -1224,6 +1380,14 @@ export const onCreateSneaker = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -1285,6 +1449,14 @@ export const onUpdateSneaker = /* GraphQL */ `
           userID
           zipCode
           score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
           createdAt
           updatedAt
         }
@@ -1352,6 +1524,14 @@ export const onDeleteSneaker = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -1416,6 +1596,14 @@ export const onCreateSoldSneaker = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -1464,6 +1652,14 @@ export const onUpdateSoldSneaker = /* GraphQL */ `
           userID
           zipCode
           score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
           createdAt
           updatedAt
         }
@@ -1518,6 +1714,14 @@ export const onDeleteSoldSneaker = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -1563,6 +1767,14 @@ export const onCreateClaim = /* GraphQL */ `
           userID
           zipCode
           score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
           createdAt
           updatedAt
         }
@@ -1641,6 +1853,14 @@ export const onUpdateClaim = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -1713,6 +1933,14 @@ export const onDeleteClaim = /* GraphQL */ `
           userID
           zipCode
           score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
           createdAt
           updatedAt
         }
@@ -1822,6 +2050,14 @@ export const onCreateListedItem = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -1902,6 +2138,14 @@ export const onUpdateListedItem = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -1979,6 +2223,14 @@ export const onDeleteListedItem = /* GraphQL */ `
           userID
           zipCode
           score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
           createdAt
           updatedAt
         }

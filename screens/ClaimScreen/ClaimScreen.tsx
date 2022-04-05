@@ -15,6 +15,7 @@ import {
 	getSneakersFromDB,
 	getListUser,
 	getLeaderBoardByZipCode,
+	getTopSellersByZipCode,
 } from '../../aws-functions/aws-functions';
 import { useToast } from '../../components/Toast';
 import { useAuth } from '../../contexts/auth';
@@ -136,7 +137,7 @@ export default function ClaimScreen() {
 		}
 	};
 	/**
-	 * fetchUser fetches the list of users
+	 * fetchUser fetches the list of leader board by zipcode
 	 */
 
 	const fetchLeaderBoardByZipCode = async () => {
@@ -148,12 +149,25 @@ export default function ClaimScreen() {
 		}
 	};
 	/**
+	 * fetchUser fetches the list of users
+	 */
+
+	const fetchTopSellersByZipCode = async () => {
+		try {
+			const topSellers = await getTopSellersByZipCode('27330');
+			console.log('topSellers: ', topSellers);
+		} catch (e) {
+			console.log('error:', e);
+		}
+	};
+	/**
 	 * The useEffect will fetch for sneakers and user
 	 */
 	React.useEffect(() => {
 		fetchUsers();
 		getSneakers();
 		fetchLeaderBoardByZipCode();
+		fetchTopSellersByZipCode();
 	}, [isFocused]);
 
 	// React.useEffect(() => {}, [sneakerDb]);

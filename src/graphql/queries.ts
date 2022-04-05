@@ -89,6 +89,14 @@ export const getUser = /* GraphQL */ `
 				createdAt
 				updatedAt
 			}
+			totalSold {
+				id
+				userID
+				zipCode
+				total
+				createdAt
+				updatedAt
+			}
 			createdAt
 			updatedAt
 		}
@@ -132,6 +140,14 @@ export const listUsers = /* GraphQL */ `
 					userID
 					zipCode
 					score
+					createdAt
+					updatedAt
+				}
+				totalSold {
+					id
+					userID
+					zipCode
+					total
 					createdAt
 					updatedAt
 				}
@@ -181,6 +197,45 @@ export const listDonScores = /* GraphQL */ `
 		}
 	}
 `;
+export const getTotalSoldSneaker = /* GraphQL */ `
+	query GetTotalSoldSneaker($userID: ID!) {
+		getTotalSoldSneaker(userID: $userID) {
+			id
+			userID
+			zipCode
+			total
+			createdAt
+			updatedAt
+		}
+	}
+`;
+export const listTotalSoldSneakers = /* GraphQL */ `
+	query ListTotalSoldSneakers(
+		$userID: ID
+		$filter: ModelTotalSoldSneakerFilterInput
+		$limit: Int
+		$nextToken: String
+		$sortDirection: ModelSortDirection
+	) {
+		listTotalSoldSneakers(
+			userID: $userID
+			filter: $filter
+			limit: $limit
+			nextToken: $nextToken
+			sortDirection: $sortDirection
+		) {
+			items {
+				id
+				userID
+				zipCode
+				total
+				createdAt
+				updatedAt
+			}
+			nextToken
+		}
+	}
+`;
 export const getFollowing = /* GraphQL */ `
 	query GetFollowing($id: ID!) {
 		getFollowing(id: $id) {
@@ -218,6 +273,14 @@ export const getFollowing = /* GraphQL */ `
 					userID
 					zipCode
 					score
+					createdAt
+					updatedAt
+				}
+				totalSold {
+					id
+					userID
+					zipCode
+					total
 					createdAt
 					updatedAt
 				}
@@ -298,6 +361,14 @@ export const getFollowers = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
+				totalSold {
+					id
+					userID
+					zipCode
+					total
+					createdAt
+					updatedAt
+				}
 				createdAt
 				updatedAt
 			}
@@ -372,6 +443,14 @@ export const getChatRoomUser = /* GraphQL */ `
 					userID
 					zipCode
 					score
+					createdAt
+					updatedAt
+				}
+				totalSold {
+					id
+					userID
+					zipCode
+					total
 					createdAt
 					updatedAt
 				}
@@ -567,6 +646,14 @@ export const getMessage = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
+				totalSold {
+					id
+					userID
+					zipCode
+					total
+					createdAt
+					updatedAt
+				}
 				createdAt
 				updatedAt
 			}
@@ -670,6 +757,14 @@ export const getSneaker = /* GraphQL */ `
 					userID
 					zipCode
 					score
+					createdAt
+					updatedAt
+				}
+				totalSold {
+					id
+					userID
+					zipCode
+					total
 					createdAt
 					updatedAt
 				}
@@ -782,6 +877,14 @@ export const getSoldSneaker = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
+				totalSold {
+					id
+					userID
+					zipCode
+					total
+					createdAt
+					updatedAt
+				}
 				createdAt
 				updatedAt
 			}
@@ -859,6 +962,14 @@ export const getClaim = /* GraphQL */ `
 					userID
 					zipCode
 					score
+					createdAt
+					updatedAt
+				}
+				totalSold {
+					id
+					userID
+					zipCode
+					total
 					createdAt
 					updatedAt
 				}
@@ -1007,6 +1118,14 @@ export const getListedItem = /* GraphQL */ `
 					userID
 					zipCode
 					score
+					createdAt
+					updatedAt
+				}
+				totalSold {
+					id
+					userID
+					zipCode
+					total
 					createdAt
 					updatedAt
 				}
@@ -1203,6 +1322,33 @@ export const donScoreByZipCode = /* GraphQL */ `
 				userID
 				zipCode
 				score
+			}
+			nextToken
+		}
+	}
+`;
+export const totalSoldSneakersByZipCode = /* GraphQL */ `
+	query TotalSoldSneakersByZipCode(
+		$zipCode: String
+		$total: ModelIntKeyConditionInput
+		$sortDirection: ModelSortDirection
+		$filter: ModelTotalSoldSneakerFilterInput
+		$limit: Int
+		$nextToken: String
+	) {
+		totalSoldSneakersByZipCode(
+			zipCode: $zipCode
+			total: $total
+			sortDirection: $sortDirection
+			filter: $filter
+			limit: $limit
+			nextToken: $nextToken
+		) {
+			items {
+				id
+				userID
+				zipCode
+				total
 			}
 			nextToken
 		}
