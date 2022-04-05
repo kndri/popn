@@ -12,6 +12,40 @@ type User @model {
 	status: String
 	zipCode: String!
 	chatRoomUser: [ChatRoomUser] @connection(keyName: "byUser", fields: ["id"])
+	donScore: DonScore @connection(fields: ["id"])
+	totalSold: TotalSoldSneaker @connection(fields: ["id"])
+}
+# NOTE: will need to add user: User! @connection(fields: ["userID"])
+# I am leaving it out to show we can get by zip and sort scores
+# Will add it when we figure out when are we creating,updating scores
+type DonScore
+	@model
+	@key(fields: ["userID"])
+	@key(
+		name: "byZipCode"
+		fields: ["zipCode", "score"]
+		queryField: "donScoreByZipCode"
+	) {
+	id: ID!
+	userID: ID!
+	zipCode: String!
+	score: Int!
+}
+# NOTE: will need to add user: User! @connection(fields: ["userID"])
+# I am leaving it out to show we can get by zip and sort scores
+# Will add it when we figure out when are we creating,updating scores
+type TotalSoldSneaker
+	@model
+	@key(fields: ["userID"])
+	@key(
+		name: "byZipCode"
+		fields: ["zipCode", "total"]
+		queryField: "totalSoldSneakersByZipCode"
+	) {
+	id: ID!
+	userID: ID!
+	zipCode: String!
+	total: Int!
 }
 
 type Following
