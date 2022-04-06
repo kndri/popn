@@ -49,6 +49,7 @@ export type RootStackParamList = {
 	NewListing: undefined;
 	ListingDescription: undefined;
 	ListingImages: undefined;
+	ImageBrowser: undefined;
 	ZipScreen: undefined;
 };
 

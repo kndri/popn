@@ -1,10 +1,6 @@
-import { TextInput, View, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, Image, ScrollView } from 'react-native';
 import React, { FC } from 'react';
 import { useNavigation } from '@react-navigation/native';
-
-// import ImagePicker from 'react-native-image-crop-picker';
-{/* https://stackoverflow.com/questions/45543706/how-to-add-multiple-image-using-react-native-image-picker */ }
-{/* https://github.com/ivpusic/react-native-image-crop-picker */ }
 
 import {
     Screen,
@@ -16,47 +12,30 @@ import {
 import styles from './styles';
 
 
-interface NewListingProps { }
+const ListingImagesScreen = (props) => {
 
-const ListingImagesScreen: FC<NewListingProps> = () => {
+    const photos = props.route.params;
     const navigation = useNavigation();
-
-    const [description, setDescription] = React.useState('');
     const [images, setImages] = React.useState([]);
 
-    {/* WIP */ }
-    // const selectPics = () => {
+    React.useEffect(() => {
+        if (photos) {
+            console.log('props:', photos)
+            setImages(photos)
+        } else {
+            console.log('no images have been selected')
+        }
+    }, [photos]);
 
-    //     let imageList = [];
-
-    //     ImagePicker.openPicker({
-    //         width: 200,
-    //         height: 200,
-    //         multiple: true,
-    //         waitAnimationEnd: false,
-    //         includeExif: true,
-    //         forceJpg: true,
-    //         compressImageQuality: 0.8,
-    //         maxFiles: 15,
-    //         compressImageMaxHeight: 400,
-    //         mediaType: 'photo',
-    //         includeBase64: true,
-    //     }).then(response => {
-    //         console.log('response: ', response);
-    //         response.map(image => {
-    //             imageList.push({
-    //                 filename: image.path,
-
-    //             })
-    //         })
-    //     })
-    //         .catch(e => console.log('Error: ', e.message));
-    // }
-
-
-
-
-
+    const renderImage = (item, i) => {
+        return (
+            <Image
+                style={{ height: 150, width: 135 }}
+                source={{ uri: item.uri }}
+                key={i}
+            />
+        )
+    }
 
     return (
         <Screen style={styles.CONTAINER}>
@@ -64,21 +43,33 @@ const ListingImagesScreen: FC<NewListingProps> = () => {
             <Header
                 headerTx="New Listing"
                 leftIcon="back"
-                onLeftPress={() => navigation.goBack()}
+                onLeftPress={() => { navigation.goBack() }}
             />
 
             {/* SECTION: for description input */}
             <View style={styles.LISTING_CONTAINER}>
-
                 <Text text="Please provide the photos you sent to CheckCheck for verification." preset='bold' />
-                <View style={styles.IMAGE_BOX}>
 
-                </View>
+                {images.length > 0 ? (
+                    <View style={{ height: 150 }}>
+                        <ScrollView
+                            // centerContent
+                            horizontal
+                            style={{ borderWidth: 2, borderColor: 'black', borderRadius: 5, }}
+
+                        >
+                            {images.map((item, i) => renderImage(item, i))}
+                        </ScrollView>
+
+                    </View>
+                ) : (
+                    null
+                )}
 
                 <Button
                     text="Choose Photos"
-                    style={{ marginTop: 45 }}
-                    onPress={() => { selectPics() }}
+                    style={{ marginTop: 90 }}
+                    onPress={() => { navigation.navigate('ImageBrowser') }}
                 />
 
                 {/* BUTTON uploads the listing to the marketplace and navigates to ... */}
@@ -90,12 +81,12 @@ const ListingImagesScreen: FC<NewListingProps> = () => {
                     }}>
                     <Button
                         style={
-                            description ?
+                            images.length > 0 ?
                                 styles.NEXT_BUTTON : styles.DISABLED_NEXT_BUTTON
                         }
                         text="Next"
-                        onPress={() => { selectPics() }}
-                        disabled={description != '' ? false : true}
+                        // onPress={() => {  }}
+                        disabled={images.length != 0 ? false : true}
                     />
                 </View>
 

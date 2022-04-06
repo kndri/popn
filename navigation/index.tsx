@@ -35,6 +35,7 @@ import ZipCodeScreen from '../screens/ZipCodeScreen';
 import NewListingScreen from '../screens/NewListingScreen';
 import ListingDescriptionScreen from '../screens/ListingDescriptionScreen'
 import ListingImagesScreen from '../screens/ListingImagesScreen'
+import ImageBrowserScreen from '../screens/ImageBrowserScreen/ImageBrowserScreen';
 import {
 	RootStackParamList,
 	RootTabParamList,
@@ -274,6 +275,13 @@ function RootNavigator() {
 						component={ListingImagesScreen}
 						options={{ headerShown: false }}
 					/>
+					<Stack.Screen
+						name='ImageBrowser'
+						component={ImageBrowserScreen}
+						options={{
+							title: 'Selected 0 photos',
+						}}
+					/>
 				</>
 			) : (
 				<Stack.Screen
@@ -389,13 +397,3 @@ function BottomTabNavigator() {
 		</BottomTab.Navigator>
 	);
 }
-
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-// function TabBarIcon(props: {
-//   name: React.ComponentProps<typeof Feather>["name"];
-//   color: string;
-// }) {
-//   return <Feather size={20} style={{ marginBottom: -3 }} {...props} />;
-// }

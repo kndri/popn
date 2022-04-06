@@ -24,6 +24,7 @@ const verified = require('../../assets/images/verified_badge.png');
 //
 export default function ProfileScreen() {
 	const { authData: user } = useAuth();
+	console.log(user)
 	const navigation = useNavigation();
 	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
 	const [following, setFollowing] = React.useState<number>(0);
@@ -191,7 +192,7 @@ export default function ProfileScreen() {
 	const renderCollection = () => {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center' }}>
-				{sneakerCollection.length == 0 ? (
+				{sneakerCollection != undefined && sneakerCollection.length == 0 ? (
 					renderEmptyCollection()
 				) : (
 					<View style={styles.DATA_CONTAINER}>
@@ -226,7 +227,7 @@ export default function ProfileScreen() {
 				<Image style={styles.PROFILE_IMAGE} source={{ uri: user?.image }} />
 				<View style={{ flexDirection: 'row' }}>
 					<View style={styles.PROFILE_DETAILS}>
-						<Text preset="bold" text={`${sneakerCollection.length}`} />
+						{/* <Text preset="bold" text={`${sneakerCollection.length}`} /> */}
 						<Text preset="default" text={'Collection'} />
 					</View>
 					<View style={styles.PROFILE_DETAILS}>
