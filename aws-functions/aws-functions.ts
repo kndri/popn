@@ -16,6 +16,7 @@ import {
 	listUsers,
 	donScoreByZipCode,
 	totalSoldSneakersByZipCode,
+	listedItemByZipCode,
 } from '../src/graphql/queries';
 
 export const getUserFromDb = async (userID: string) => {
@@ -130,7 +131,6 @@ export const sendCustomChallenge = async (user: string, OTP: string) => {
 	}
 };
 
-//stores shoes
 export const getSneakersFromUser = async (
 	userId: string
 ): Promise<SneakerData> => {
@@ -234,6 +234,20 @@ export const getTopSellersByZipCode = async (zipCode: string) => {
 		);
 
 		return topSellers.data.totalSoldSneakersByZipCode.items;
+	} catch (e) {
+		console.log('error: ', e);
+	}
+};
+
+export const getListingByZipCode = async (zipCode: string) => {
+	try {
+		const listings = await API.graphql(
+			graphqlOperation(listedItemByZipCode, {
+				zipCode: zipCode,
+			})
+		);
+
+		return listings.data.listedItemByZipCode.items;
 	} catch (e) {
 		console.log('error: ', e);
 	}

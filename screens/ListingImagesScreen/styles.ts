@@ -13,12 +13,12 @@ export default StyleSheet.create({
         paddingHorizontal: spacing[1],
         backgroundColor: 'white'
     },
-    MESSAGE_BOX: {
+    IMAGE_BOX: {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "white",
-        height: 150,
+        height: 250,
         width: 335,
         borderWidth: 2,
         borderColor: "#000000",

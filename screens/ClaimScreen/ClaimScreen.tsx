@@ -143,7 +143,6 @@ export default function ClaimScreen() {
 	const fetchLeaderBoardByZipCode = async () => {
 		try {
 			const leaderBoard = await getLeaderBoardByZipCode('27330');
-			console.log('leader board: ', leaderBoard);
 		} catch (e) {
 			console.log('error:', e);
 		}
@@ -155,7 +154,6 @@ export default function ClaimScreen() {
 	const fetchTopSellersByZipCode = async () => {
 		try {
 			const topSellers = await getTopSellersByZipCode('27330');
-			console.log('topSellers: ', topSellers);
 		} catch (e) {
 			console.log('error:', e);
 		}

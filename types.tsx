@@ -47,7 +47,8 @@ export type RootStackParamList = {
 	ZipCode: undefined;
 	Location: undefined;
 	NewListing: undefined;
-	ListingDescripton: undefined | any;
+	ListingDescription: undefined;
+	ListingImages: undefined;
 	ZipScreen: undefined;
 };
 

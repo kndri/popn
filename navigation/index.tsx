@@ -33,8 +33,8 @@ import NewMessageRoomScreen from '../screens/NewMessageRoomScreen/NewMessageRoom
 import LocationScreen from '../screens/LocationScreen';
 import ZipCodeScreen from '../screens/ZipCodeScreen';
 import NewListingScreen from '../screens/NewListingScreen';
-import ListingDescriptionScreen from '../screens/ListingDescriptionScreen/ListingDescriptionScreen';
-
+import ListingDescriptionScreen from '../screens/ListingDescriptionScreen'
+import ListingImagesScreen from '../screens/ListingImagesScreen'
 import {
 	RootStackParamList,
 	RootTabParamList,
@@ -267,6 +267,11 @@ function RootNavigator() {
 					<Stack.Screen
 						name="ListingDescription"
 						component={ListingDescriptionScreen}
+						options={{ headerShown: false }}
+					/>
+					<Stack.Screen
+						name="ListingImages"
+						component={ListingImagesScreen}
 						options={{ headerShown: false }}
 					/>
 				</>
