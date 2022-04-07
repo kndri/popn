@@ -1,13 +1,3 @@
-// @TODO: Make API so we can use camelCase instead of snake_case
-// interface Product {
-//   id: string,
-//   brand: string,
-//   primaryName: string,
-//   secondaryName: string,
-//   price: string,
-//   imageUrl: string
-// }
-
 interface Product {
 	id: String;
 	sneakerID: String;
@@ -26,4 +16,7 @@ interface Product {
 
 export interface ProductCardProps {
 	product: Product;
+	showVerificationBage?: Boolean,
+	sneakerPoint?: Number
+	showPrice?: Boolean
 }

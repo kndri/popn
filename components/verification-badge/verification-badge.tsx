@@ -2,7 +2,8 @@ import * as React from 'react';
 import { View } from 'react-native';
 
 import styles from './verification-badge.styles';
-import { Text, AutoImage as Image } from '..';
+import { Text } from "../text/text"
+import { AutoImage as Image } from "../auto-image/auto-image"
 import { VerificationBadgeProps } from './verification-badge.props';
 
 export const VerificationBage: React.FC<VerificationBadgeProps> = (

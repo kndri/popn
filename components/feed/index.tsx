@@ -10,7 +10,7 @@ const Feed = ({ productData }) => {
 		<View>
 			<FlatList
 				data={productData}
-				renderItem={({ item }) => <ProductCard product={item} />}
+				renderItem={({ item }) => <ProductCard product={item} showPrice showVerificationBage />}
 				keyExtractor={(item) => String(item.id)}
 				refreshing={loading}
 				numColumns={2}

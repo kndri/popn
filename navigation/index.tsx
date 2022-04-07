@@ -52,6 +52,7 @@ import UserSearchScreen from '../screens/SearchUserScreen/SearchUserScreen';
 import { Auth } from 'aws-amplify';
 import ZipScreen from '../screens/AuthZipScreen';
 import ChangeZipCode from '../screens/ChangeZipCodeScreen';
+import { DiscoverScreen } from '../screens/DiscoverScreen';
 
 export default function Navigation({
 	colorScheme,
@@ -312,6 +313,27 @@ function BottomTabNavigator() {
 								focused
 									? require('../assets/images/Home-focused.png')
 									: require('../assets/images/Home.png')
+							}
+							style={{
+								width: 25,
+								height: 25,
+								borderRadius: 0,
+							}}
+						/>
+					),
+				}}
+			/>
+			<BottomTab.Screen
+				name="Discover"
+				component={DiscoverScreen}
+				options={{
+					title: 'Discover',
+					tabBarIcon: ({ focused }) => (
+						<Image
+							source={
+								focused
+									? require('../assets/images/discover_focused.png')
+									: require('../assets/images/discover.png')
 							}
 							style={{
 								width: 25,
