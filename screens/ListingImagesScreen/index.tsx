@@ -116,6 +116,7 @@ const ListingImagesScreen = (props) => {
                                 text="Next"
                                 onPress={() => {
                                     setFieldValue('images', images)
+                                    //have to call the mutation to create the listing
                                     // console.log('formik: ', values)
                                     // navigation.navigate("ListingDescription")
                                 }}

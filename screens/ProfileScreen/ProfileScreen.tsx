@@ -217,17 +217,15 @@ export default function ProfileScreen() {
 			<View style={styles.PROFILE_HEADER}>
 				<Header
 					headerTx={`${user?.username}`}
-					leftIcon="message"
 					rightIcon="settings"
-					onLeftPress={() => navigation.navigate('Message')}
 					onRightPress={() => navigation.navigate('Settings')}
 				/>
 			</View>
 			<View style={styles.PROFILE_DATA}>
 				<Image style={styles.PROFILE_IMAGE} source={{ uri: user?.image }} />
-				<View style={{ flexDirection: 'row' }}>
+				<View style={{ flexDirection: 'row', marginLeft: 20 }}>
 					<View style={styles.PROFILE_DETAILS}>
-						{/* <Text preset="bold" text={`${sneakerCollection.length}`} /> */}
+						<Text preset="bold" text={`${sneakerCollection.length}`} />
 						<Text preset="default" text={'Collection'} />
 					</View>
 					<View style={styles.PROFILE_DETAILS}>
