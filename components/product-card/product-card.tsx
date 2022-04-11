@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View } from 'react-native';
 
 import styles from './product-card.styles';
 import { ProductCardProps } from './product-card.props';
@@ -12,19 +11,8 @@ import { VerificationBage } from '../verification-badge/verification-badge';
 // I will fix the props later
 export const ProductCard = (props): JSX.Element => {
 	const { product } = props;
-	const navigation = useNavigation();
 
 	return (
-		// <TouchableOpacity
-		// 	onPress={() => {
-		// 		navigation.navigate('ListingDetails', product);
-		// 	}}
-		// >
-		<TouchableOpacity
-			onPress={() => {
-				navigation.navigate('NewListing');
-			}}
-		>
 			<View style={styles.CARD}>
 				<View style={styles.BADGE}>
 					<VerificationBage type="icon" />
@@ -36,6 +24,5 @@ export const ProductCard = (props): JSX.Element => {
 				<Text preset="bold">{product.sneakerData.secondary_name} </Text>
 				<Text preset="bold">{product.sneakerData.price}</Text>
 			</View>
-		</TouchableOpacity>
 	);
 };
