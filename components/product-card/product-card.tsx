@@ -4,7 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 
 import styles from './product-card.styles';
 import { ProductCardProps } from './product-card.props';
-import { Text, AutoImage as Image, VerificationBage } from '..';
+
+import { AutoImage as Image } from '../auto-image/auto-image';
+import { Text } from '../text/text';
+import { VerificationBage } from '../verification-badge/verification-badge';
 
 // I will fix the props later
 export const ProductCard = (props): JSX.Element => {
