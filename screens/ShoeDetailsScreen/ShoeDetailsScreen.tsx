@@ -7,15 +7,16 @@ import {
 	AutoImage as Image,
 	Button,
 } from '../../components';
+import { useToast } from '../../components/Toast';
 import {
 	useIsFocused,
 	useNavigation,
 	useRoute,
 } from '@react-navigation/native';
-import GestureRecognizer from 'react-native-swipe-gestures';
 
 import {
 	checkLoggedUser,
+	deleteUserSneaker,
 	getCurrentSneaker,
 } from '../../aws-functions/aws-functions';
 
@@ -35,6 +36,7 @@ const ShoeDetailsScreen = () => {
 	const [sneaker, setSneaker] = React.useState<any>({});
 	const [claim, setClaim] = React.useState<any>({});
 	const [isSignedinUser, setIsSignedinUser] = React.useState<boolean>();
+	const toast = useToast();
 
 	/**
 	 * If the signed in user ID matches with the current shoe owner
@@ -68,12 +70,9 @@ const ShoeDetailsScreen = () => {
 			},
 			(buttonIndex) => {
 				if (buttonIndex === 1) {
-					console.log('Create a Listing');
 					navigation.navigate('NewListing', { sneakerData: sneaker });
-					// setResult(Math.floor(Math.random() * 100) + 1);
 				} else if (buttonIndex === 2) {
-					console.log('Delete Sneaker');
-					// setResult('🔮');
+					deleteUserSneaker(shoeID).then(() => navigation.goBack());
 				}
 			}
 		);
@@ -92,84 +91,73 @@ const ShoeDetailsScreen = () => {
 
 	return (
 		<Screen style={styles.CONTAINER}>
-			<GestureRecognizer
-				onSwipeDown={() => setModalVisible(false)}
-				style={{ backgroundColor: 'red', padding: 0, margin: 0 }}
-				config={{
-					velocityThreshold: 0.1,
-					directionalOffsetThreshold: 10,
+			<Modal
+				animationType="slide"
+				// transparent={true}
+				presentationStyle="formSheet"
+				visible={modalVisible}
+				onRequestClose={() => {
+					setModalVisible(!modalVisible);
 				}}
 			>
-				<Modal
-					animationType="slide"
-					// transparent={true}
-					presentationStyle="formSheet"
-					visible={modalVisible}
-					onRequestClose={() => {
-						setModalVisible(!modalVisible);
-					}}
-				>
-					<View style={styles.MODAL_CONTAINER}>
-						<View style={styles.MODAL_HEADING}>
-							<Text
-								text="Sneaker Verification"
-								preset="header"
-								style={{ color: 'white', textAlign: 'center' }}
-							/>
-						</View>
-						<View style={styles.MODAL_HEADING_TEXT}>
-							<Text style={{ color: 'white', fontSize: 13 }}>
-								Want to let people know your sneakers are legit? 🤔 {'\n'}
-								{'\n'}
-								The green verified badge on sneakers lets people know that your
-								sneaker were legit checked and are authentic.{'\n'}
-								{'\n'}
-								Example:
-							</Text>
-						</View>
-						<View style={styles.MODAL_EXAMPLE}>
-							<View style={styles.MODAL_IMAGE_CONTAINER}>
-								<Image style={styles.MODAL_SHOE_IMAGE} source={example} />
-							</View>
-						</View>
-						<View style={styles.MODAL_PROCESS}>
-							<Text preset="bold" style={{ color: 'white', fontSize: 15 }}>
-								How to get your sneaker verified?
-							</Text>
-							<View style={{ marginTop: 30 }}>
-								<Text style={{ color: 'white', fontSize: 13 }}>
-									1. Download the CheckCheck app to get started{'\n'}
-									{'\n'}
-									2. Go through the verficiation process on CheckCheck{'\n'}
-									{'\n'}
-									3. Enter your reference number on POPN
-								</Text>
-							</View>
-						</View>
-
-						<View style={{ marginTop: 30, marginBottom: 30 }}>
-							<Text
-								style={{ color: 'white', fontSize: 13, textAlign: 'center' }}
-							>
-								Have your reference number handy?
-							</Text>
-						</View>
-						<Button
-							style={{
-								backgroundColor: 'white',
-								width: '85%',
-								alignSelf: 'center',
-							}}
-							textStyle={{ color: 'black' }}
-							text="Get Sneaker Verified"
-							onPress={() => {
-								setModalVisible(false);
-								navigation.navigate('Verify', { shoeID: shoeID });
-							}}
-						/>
+				<View style={styles.MODAL_CONTAINER}>
+					<Header
+						headerTx="Sneaker Verification"
+						rightIcon="close"
+						onRightPress={() => {
+							setModalVisible(!modalVisible);
+						}}
+					/>
+					<View style={styles.MODAL_HEADING_TEXT}>
+						<Text style={{ color: 'black', fontSize: 13 }}>
+							Want to let people know your sneakers are legit? 🤔 {'\n'}
+							{'\n'}
+							The green verified badge on sneakers lets people know that your
+							sneaker were legit checked and are authentic.{'\n'}
+							{'\n'}
+							Example:
+						</Text>
 					</View>
-				</Modal>
-			</GestureRecognizer>
+					<View style={styles.MODAL_EXAMPLE}>
+						{/* <View style={styles.MODAL_IMAGE_CONTAINER}> */}
+						<Image style={styles.MODAL_SHOE_IMAGE} source={example} />
+						{/* </View> */}
+					</View>
+					<View style={styles.MODAL_PROCESS}>
+						<Text preset="bold" style={{ color: 'black', fontSize: 15 }}>
+							How to get your sneaker verified?
+						</Text>
+						<View style={{ marginTop: 30 }}>
+							<Text style={{ color: 'black', fontSize: 13 }}>
+								1. Download the CheckCheck app to get started{'\n'}
+								{'\n'}
+								2. Go through the verficiation process on CheckCheck{'\n'}
+								{'\n'}
+								3. Enter your reference number on POPN
+							</Text>
+						</View>
+					</View>
+
+					<View style={{ marginTop: 30, marginBottom: 30 }}>
+						<Text style={{ color: 'black', fontSize: 13, textAlign: 'center' }}>
+							Have your reference number handy?
+						</Text>
+					</View>
+					<Button
+						style={{
+							backgroundColor: 'black',
+							width: '85%',
+							alignSelf: 'center',
+						}}
+						textStyle={{ color: 'white' }}
+						text="Get Sneaker Verified"
+						onPress={() => {
+							setModalVisible(false);
+							navigation.navigate('Verify', { shoeID: shoeID });
+						}}
+					/>
+				</View>
+			</Modal>
 
 			<Header
 				style={styles.BACK_BUTTON}

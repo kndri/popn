@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { ImageBrowser } from 'expo-image-picker-multiple';
-
 import styles from './styles';
+import { useRoute } from '@react-navigation/native';
 
 
 const ImageBrowserScreen = (props: { navigation: any; }) => {
+    const route = useRoute();
+    const { setFormikImages }: any = route.params;
+    console.log('formik: ', setFormikImages)
 
     const getHeaderLoader = () => (
         <ActivityIndicator size='small' color={'#0580FF'} />
@@ -29,6 +32,7 @@ const ImageBrowserScreen = (props: { navigation: any; }) => {
                 })
             }
             console.log('selected Pics', cPhotos)
+            setFormikImages('images', cPhotos)
             navigation.navigate('ListingImages', cPhotos);
         })
             .catch((e) => console.log(e));
@@ -68,6 +72,7 @@ const ImageBrowserScreen = (props: { navigation: any; }) => {
 
     return (
         <View style={[styles.flex, styles.container]}>
+
             <ImageBrowser
                 max={15}
                 onChange={updateHandler}

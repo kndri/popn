@@ -52,6 +52,10 @@ const ListingImagesScreen = (props) => {
 		);
 	};
 
+	const setFormikImages = (setFieldValue) => {
+		setFieldValue('images', images);
+	};
+
 	return (
 		<Formik
 			innerRef={form}
@@ -96,7 +100,9 @@ const ListingImagesScreen = (props) => {
 							text="Choose Photos"
 							style={{ marginTop: 90 }}
 							onPress={() => {
-								navigation.navigate('ImageBrowser');
+								navigation.navigate('ImageBrowser', {
+									setFormikImages: setFieldValue,
+								});
 							}}
 						/>
 
@@ -114,17 +120,10 @@ const ListingImagesScreen = (props) => {
 										? styles.NEXT_BUTTON
 										: styles.DISABLED_NEXT_BUTTON
 								}
-								text="Create"
+								text="Next"
 								onPress={async () => {
-									// need to set the images before adding a listed item
-									setFieldValue('images', images);
-
-									await addListedItem(values);
-									// .then(() =>
-									// 	navigation.navigate('')
-									// );
 									//have to call the mutation to create the listing
-									// console.log('formik: ', values)
+									await addListedItem(values);
 									// navigation.navigate("ListingDescription")
 								}}
 								disabled={images.length != 0 ? false : true}
