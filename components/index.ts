@@ -15,3 +15,4 @@ export * from './new-message-button/index';
 export * from './message-chat-list-item/index';
 export * from './verification-badge/verification-badge';
 export * from './product-card/product-card';
+export * from './sneaker-card/sneaker-card';

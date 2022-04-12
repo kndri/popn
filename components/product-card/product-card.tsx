@@ -18,7 +18,8 @@ export const ProductCard: React.FC<ProductCardProps> = (props): JSX.Element => {
 				<View style={styles.BADGE}>
 					{props.showVerificationBage && <VerificationBage type="icon" />}
 				</View>
-				<Image source={{ uri: product.images[0] }} style={styles.PRODUCT} />
+				{/* <Image source={{ uri: product.images[0] }} style={styles.PRODUCT} /> */}
+				<Image source={{ uri: product.sneakerData.image_url }} style={styles.PRODUCT} />
 			</View>
 			<View style={styles.CONTENT_CONTAINER}>
 				<Text preset="secondary">{product.sneakerData.primary_name} </Text>

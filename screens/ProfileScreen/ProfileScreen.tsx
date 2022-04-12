@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native';
 
 import { spacing } from '../../theme';
-import { Button, Screen, Text, Header } from '../../components';
+import { Button, Screen, Text, Header, SneakerCard } from '../../components';
 import {
 	getSneakersFromUser,
 	deleteUserSneaker,
@@ -18,10 +18,7 @@ import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';
 
-//required images
-const verified = require('../../assets/images/verified_badge.png');
 
-//
 export default function ProfileScreen() {
 	const { authData: user } = useAuth();
 	console.log(user)
@@ -80,89 +77,6 @@ export default function ProfileScreen() {
 			]
 		);
 
-	// refacter this code
-	const renderSneaker = ({ item }) => {
-		const { id, image, primaryName, secondaryName, claim } = item;
-
-		return (
-			<TouchableOpacity
-				onLongPress={() => {
-					createDeleteAlert(id);
-				}}
-				onPress={() => {
-					navigation.navigate('ShoeDetails', { shoeID: id });
-				}}
-			>
-				<View
-					style={{
-						justifyContent: 'space-evenly',
-						height: 150,
-						width: 150,
-						borderWidth: 1,
-						borderColor: '#EBEBEB',
-						borderRadius: 10,
-						marginBottom: 40,
-						marginHorizontal: 10,
-					}}
-				>
-					<View
-						style={{
-							justifyContent: 'flex-start',
-							alignItems: 'flex-start',
-							marginLeft: 10,
-							marginTop: 10,
-						}}
-					>
-						<Text
-							text={`${primaryName}`}
-							style={{ fontSize: 12, color: '#979797' }}
-						/>
-						<Text text={`${secondaryName}`} style={{ fontSize: 10 }} />
-						{claim.item != undefined && claim.items.length > 0 ? (
-							<>
-								{claim.items[0].status === 'verified' ? (
-									<Image
-										source={verified}
-										style={{ marginTop: 5, height: 20, width: 20 }}
-									/>
-								) : null}
-							</>
-						) : null}
-					</View>
-					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-						<Image
-							source={{ uri: image }}
-							style={{ height: 81, width: 100, resizeMode: 'contain' }}
-						/>
-					</View>
-					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-						<Button
-							preset="none"
-							style={{
-								justifyContent: 'center',
-								width: '70%',
-								height: 20,
-								paddingVertical: 2,
-								borderRadius: 10,
-								marginBottom: 15,
-							}}
-							onPress={() => {
-								navigation.navigate('ShoeDetails', { shoeID: id });
-							}}
-						>
-							<Text
-								preset="bold"
-								style={{ fontSize: 12, color: 'white', fontWeight: 'bold' }}
-							>
-								View
-							</Text>
-						</Button>
-					</View>
-				</View>
-			</TouchableOpacity>
-		);
-	};
-
 	const renderPosts = () => {
 		return (
 			<View style={styles.CENTER}>
@@ -198,7 +112,15 @@ export default function ProfileScreen() {
 					<View style={styles.DATA_CONTAINER}>
 						<FlatList
 							data={sneakerCollection}
-							renderItem={renderSneaker}
+							renderItem={({ item }) => (
+								<TouchableOpacity
+									onPress={() => {
+										navigation.navigate('ShoeDetails', { shoeID: item.id });
+									}}
+								>
+									<SneakerCard sneaker={item} showVerificationBage sneakerPoint={100} />
+								</TouchableOpacity>
+							)}
 							keyExtractor={(sneaker) => String(sneaker.id)}
 							numColumns={2}
 							contentContainerStyle={{
