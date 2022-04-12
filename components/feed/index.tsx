@@ -18,7 +18,7 @@ const Feed = ({ productData }) => {
 							navigation.navigate('ListingDetails', item);
 						}}
 					>
-						<ProductCard product={item} />
+						<ProductCard product={item} showPrice showVerificationBage />
 					</TouchableOpacity>
 				)}
 				keyExtractor={(item) => String(item.id)}
