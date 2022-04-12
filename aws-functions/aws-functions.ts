@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { API, graphqlOperation, Auth } from 'aws-amplify';
+
+import { API, graphqlOperation, Auth, Storage } from 'aws-amplify';
 import {
 	createSneaker,
 	deleteSneaker,
@@ -41,7 +41,6 @@ export const getListUser = async () => {
 
 //stores shoes
 export const addUserSneaker = async (sneakerObject: Object) => {
-	console.log('sneaker', sneakerObject);
 	try {
 		// const currentUser = checkLoggedUser();
 		const currentUser = await Auth.currentAuthenticatedUser({
@@ -240,6 +239,18 @@ export const getTopSellersByZipCode = async (zipCode: string) => {
 	}
 };
 
+const uploadImageToS3 = async (username: string, imageUrl: string) => {
+	console.log('imageUrl: ', imageUrl);
+
+	const response = await fetch(imageUrl);
+	const blob = await response.blob();
+
+	const fileName = `${username}ProfileImage.jpeg`;
+	const data = await Storage.put(fileName, blob, {
+		contentType: 'image/jpeg',
+	});
+	return data;
+};
 /**
  *
  * addListedItem() creates a listed item
@@ -262,7 +273,7 @@ export const getTopSellersByZipCode = async (zipCode: string) => {
 interface listedParams {
 	sneakerID: string;
 	zipCode: string;
-	images: Array<string>;
+	images: Array<any>;
 	size: string;
 	condition: string;
 	price: string;
@@ -271,32 +282,45 @@ interface listedParams {
 	sellerID: string;
 	prevSellers: Array<string>;
 }
-// export const addListedItem = async (verifiedSneaker : listedParams)  => {
+export const addListedItem = async (verifiedSneaker: listedParams) => {
+	const uriImages: any = [];
 
-// 	try {
-// 		const listedItem = {
-// 			sneakerID: ,
-// 			zipCode: ,
-// 			images: ,
-// 			size: ,
-// 			condition: ,
-// 			price: ,
-// 			brand: ,
-// 			description: ,
-// 			sellerID: ,
-// 			prevSellers: ,
-// 		}
+	try {
+		verifiedSneaker.images.map(async (image, i) => {
+			const newImage = await uploadImageToS3(
+				image.name,
+				verifiedSneaker.sellerID
+			);
+			const imageURI = await Storage.get(newImage.key, {
+				level: 'public',
+			});
 
-// 		const listings = await API.graphql(
-// 			graphqlOperation( createListedItem, {
+			const newImageURI = imageURI.substring(
+				0,
+				image.indexOf('.jpeg') + '.jpeg'.length
+			);
+			uriImages.push(newImageURI);
+		});
+	} catch (e) {
+		console.log('error: ', e);
+	} finally {
+		const listedItem = {
+			sneakerID: verifiedSneaker.sneakerID,
+			zipCode: verifiedSneaker.zipCode,
+			images: uriImages,
+			size: verifiedSneaker.size,
+			condition: verifiedSneaker.condition,
+			price: verifiedSneaker.price,
+			brand: verifiedSneaker.brand,
+			description: verifiedSneaker.description,
+			sellerID: verifiedSneaker.sellerID,
+		};
 
-// 			})
-// 		);
-
-// 	} catch (e) {
-// 		console.log('error: ', e);
-// 	}
-// }
+		const listings = await API.graphql(
+			graphqlOperation(createListedItem, { input: listedItem })
+		);
+	}
+};
 
 export const getListingByZipCode = async (zipCode: string) => {
 	try {

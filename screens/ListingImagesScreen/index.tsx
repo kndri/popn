@@ -7,6 +7,7 @@ import { useFormState, useFormDispatch } from '../../contexts/form-context';
 import { Screen, Text, Header, Button } from '../../components';
 
 import styles from './styles';
+import { addListedItem } from '../../aws-functions/aws-functions';
 
 const ListingImagesScreen = (props) => {
 	const photos = props.route.params;
@@ -113,13 +114,15 @@ const ListingImagesScreen = (props) => {
 										? styles.NEXT_BUTTON
 										: styles.DISABLED_NEXT_BUTTON
 								}
-								text="Next"
-								onPress={() => {
+								text="Create"
+								onPress={async () => {
+									// need to set the images before adding a listed item
 									setFieldValue('images', images);
-									console.log('formik: ', values);
-									// addListedItem({
 
-									// });
+									await addListedItem(values);
+									// .then(() =>
+									// 	navigation.navigate('')
+									// );
 									//have to call the mutation to create the listing
 									// console.log('formik: ', values)
 									// navigation.navigate("ListingDescription")

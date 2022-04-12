@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native';
 
 import { spacing } from '../../theme';
-import { Button, Screen, Text, Header } from '../../components';
+import { Button, Screen, Text, Header, SneakerCard } from '../../components';
 import {
 	getSneakersFromUser,
 	deleteUserSneaker,
@@ -17,9 +17,6 @@ import {
 import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';
-
-//required images
-const verified = require('../../assets/images/verified_badge.png');
 
 export default function ProfileScreen() {
 	const { authData: user } = useAuth();
@@ -188,7 +185,19 @@ export default function ProfileScreen() {
 					<View style={styles.DATA_CONTAINER}>
 						<FlatList
 							data={sneakerCollection}
-							renderItem={renderSneaker}
+							renderItem={({ item }) => (
+								<TouchableOpacity
+									onPress={() => {
+										navigation.navigate('ShoeDetails', { shoeID: item.id });
+									}}
+								>
+									<SneakerCard
+										sneaker={item}
+										showVerificationBage
+										sneakerPoint={100}
+									/>
+								</TouchableOpacity>
+							)}
 							keyExtractor={(sneaker) => String(sneaker.id)}
 							numColumns={2}
 							contentContainerStyle={{

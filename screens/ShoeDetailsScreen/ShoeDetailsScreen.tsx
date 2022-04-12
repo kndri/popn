@@ -61,18 +61,15 @@ const ShoeDetailsScreen = () => {
 	const handleAction = () =>
 		ActionSheetIOS.showActionSheetWithOptions(
 			{
-				options: ['Create a Listing', 'Delete Sneaker'],
-				destructiveButtonIndex: 0,
+				options: ['Cancel', 'Create a Listing', 'Delete Sneaker'],
+				destructiveButtonIndex: 1,
 				cancelButtonIndex: 0,
 				// userInterfaceStyle: 'dark',
 			},
 			(buttonIndex) => {
-				if (buttonIndex === 0) {
-					console.log('cancel');
-					// cancel action
-				} else if (buttonIndex === 1) {
+				if (buttonIndex === 1) {
 					console.log('Create a Listing');
-					navigation.navigate('NewListing');
+					navigation.navigate('NewListing', { sneakerData: sneaker });
 					// setResult(Math.floor(Math.random() * 100) + 1);
 				} else if (buttonIndex === 2) {
 					console.log('Delete Sneaker');

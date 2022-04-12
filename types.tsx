@@ -13,7 +13,7 @@ import { QuickReplies, User } from 'react-native-gifted-chat';
 
 declare global {
 	namespace ReactNavigation {
-		interface RootParamList extends RootStackParamList { }
+		interface RootParamList extends RootStackParamList {}
 	}
 }
 
@@ -46,7 +46,7 @@ export type RootStackParamList = {
 	Claim: undefined;
 	ZipCode: undefined;
 	Location: undefined;
-	NewListing: undefined;
+	NewListing: undefined | any;
 	ListingDescription: undefined;
 	ListingImages: undefined;
 	ImageBrowser: undefined;
