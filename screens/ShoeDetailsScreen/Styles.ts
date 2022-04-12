@@ -39,7 +39,7 @@ export default StyleSheet.create({
   },
 
   MODAL_CONTAINER: {
-    backgroundColor: "black",
+    backgroundColor: "white",
     paddingHorizontal: spacing[3],
     flex: 1,
     paddingTop: 20,
@@ -57,6 +57,10 @@ export default StyleSheet.create({
 
   MODAL_EXAMPLE: {
     paddingHorizontal: spacing[4],
+    height: 220,
+    width: 300,
+    alignSelf: 'center',
+    marginVertical: 30,
   },
   MODAL_IMAGE_CONTAINER: {
     alignItems: "center",
@@ -64,8 +68,9 @@ export default StyleSheet.create({
     marginTop: 30,
   },
   MODAL_SHOE_IMAGE: {
-    resizeMode: "contain",
-    width: "60%",
+    height: "100%",
+    width: "100%",
+    alignSelf: 'center'
   },
   MODAL_PROCESS: {
     paddingHorizontal: spacing[4],

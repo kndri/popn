@@ -40,8 +40,8 @@ export default function MessageScreen() {
 			let chatRoomsArr = userData.data.getUser.chatRoomUserByUser.items;
 			{
 				/*TODO: make is so users of deleted messages go back to contacts screen;
-                 currently only happens when all messages are deleted
-            */
+				 currently only happens when all messages are deleted
+			*/
 			}
 			if (chatRoomsArr.length > 0) {
 				chatRoomsArr.map((room) => {
