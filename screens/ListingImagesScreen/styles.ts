@@ -13,29 +13,23 @@ export default StyleSheet.create({
         paddingHorizontal: spacing[1],
         backgroundColor: 'white'
     },
-    IMAGE_BOX: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "white",
-        height: 250,
-        width: 335,
-        borderWidth: 2,
-        borderColor: "#000000",
-        borderRadius: 4,
-        marginTop: 6,
-    },
     NEXT_BUTTON: {
         width: "100%",
         height: 50,
         borderRadius: 4,
-        marginTop: 40,
+        marginTop: 55,
+        // position: 'absolute'
     },
     DISABLED_NEXT_BUTTON: {
         width: "100%",
         height: 50,
         borderRadius: 4,
-        marginTop: 40,
+        marginTop: 55,
         backgroundColor: "rgba(52, 52, 52, 0.25)",
+        // position: 'absolute'
     },
+    CONTENT_CONTAINER: {
+        height: 5,
+        backgroundColor: 'green'
+    }
 });
