@@ -60,6 +60,11 @@ const ListingImagesScreen = (props) => {
         )
     }
 
+    const setFormikImages = (setFieldValue) => {
+        setFieldValue('images', images)
+    }
+
+
     return (
         <Formik
             innerRef={form}
@@ -98,7 +103,7 @@ const ListingImagesScreen = (props) => {
                         <Button
                             text="Choose Photos"
                             style={{ marginTop: 90 }}
-                            onPress={() => { navigation.navigate('ImageBrowser') }}
+                            onPress={() => { navigation.navigate('ImageBrowser', { setFormikImages: setFieldValue }) }}
                         />
 
                         {/* BUTTON uploads the listing to the marketplace and navigates to ... */}
@@ -115,9 +120,8 @@ const ListingImagesScreen = (props) => {
                                 }
                                 text="Next"
                                 onPress={() => {
-                                    setFieldValue('images', images)
                                     //have to call the mutation to create the listing
-                                    // console.log('formik: ', values)
+                                    console.log('formik: ', values)
                                     // navigation.navigate("ListingDescription")
                                 }}
                                 disabled={images.length != 0 ? false : true}

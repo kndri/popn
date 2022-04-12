@@ -69,14 +69,14 @@ const ShoeDetailsScreen = () => {
 			},
 			(buttonIndex) => {
 				if (buttonIndex === 0) {
-					if (claim.status === 'verified') {
-						navigation.navigate('NewListing');
-					} else {
-						toast.show(`This shoe must verified to create a listing.`, {
-							color: 'red',
-						});
-					}
-
+					// if (claim.status === 'verified') {
+					// 	navigation.navigate('NewListing');
+					// } else {
+					// 	toast.show(`This shoe must verified to create a listing.`, {
+					// 		color: 'red',
+					// 	});
+					// }
+					navigation.navigate('NewListing');
 				} else if (buttonIndex === 1) {
 					console.log('Pressed Remove');
 					// setResult(Math.floor(Math.random() * 100) + 1);
