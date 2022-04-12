@@ -173,19 +173,19 @@ export default function ProfileScreen() {
 
 	const renderEmptyCollection = () => {
 		return (
-			<>
+			<View>
 				<Text
 					style={styles.TEXTCENTER}
 					preset="bold"
 					text="Your collection is empty."
 				/>
 				<Button
-					style={{ marginTop: 20 }}
+					style={{ marginTop: 20, alignSelf: 'center' }}
 					text="Start Collecting"
-					preset="primary"
+					preset="cta"
 					onPress={() => navigation.navigate('Claim')}
 				/>
-			</>
+			</View>
 		);
 	};
 
