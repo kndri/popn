@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { ProductCard } from '..';
 
 const Feed = ({ productData }) => {
 	const [loading] = useState(false);
+	const navigation = useNavigation();
 
 	return (
 		<View>
 			<FlatList
 				data={productData}
-				renderItem={({ item }) => <ProductCard product={item} />}
+				renderItem={({ item }) => (
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate('ListingDetails', item);
+						}}
+					>
+						<ProductCard product={item} showPrice showVerificationBage />
+					</TouchableOpacity>
+				)}
 				keyExtractor={(item) => String(item.id)}
 				refreshing={loading}
 				numColumns={2}

@@ -5,6 +5,7 @@ import {
 	createSneaker,
 	deleteSneaker,
 	createClaim,
+	createListedItem,
 } from '../src/graphql/mutations';
 import {
 	listSneakerStores,
@@ -238,6 +239,64 @@ export const getTopSellersByZipCode = async (zipCode: string) => {
 		console.log('error: ', e);
 	}
 };
+
+/**
+ *
+ * addListedItem() creates a listed item
+ *
+ * Prams: claim sneaker data
+ *
+ * sneakerID,
+ * zipCode,
+ * images,
+ * size,
+ * condition,
+ * price,
+ * brand,
+ * description,
+ * sellerID,
+ * prevSellers,
+ *
+ */
+
+interface listedParams {
+	sneakerID: string;
+	zipCode: string;
+	images: Array<string>;
+	size: string;
+	condition: string;
+	price: string;
+	brand: string;
+	description: string;
+	sellerID: string;
+	prevSellers: Array<string>;
+}
+// export const addListedItem = async (verifiedSneaker : listedParams)  => {
+
+// 	try {
+// 		const listedItem = {
+// 			sneakerID: ,
+// 			zipCode: ,
+// 			images: ,
+// 			size: ,
+// 			condition: ,
+// 			price: ,
+// 			brand: ,
+// 			description: ,
+// 			sellerID: ,
+// 			prevSellers: ,
+// 		}
+
+// 		const listings = await API.graphql(
+// 			graphqlOperation( createListedItem, {
+
+// 			})
+// 		);
+
+// 	} catch (e) {
+// 		console.log('error: ', e);
+// 	}
+// }
 
 export const getListingByZipCode = async (zipCode: string) => {
 	try {

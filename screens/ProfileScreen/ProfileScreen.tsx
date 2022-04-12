@@ -21,7 +21,6 @@ import styles from './styles';
 //required images
 const verified = require('../../assets/images/verified_badge.png');
 
-//
 export default function ProfileScreen() {
 	const { authData: user } = useAuth();
 	const navigation = useNavigation();
@@ -162,29 +161,21 @@ export default function ProfileScreen() {
 		);
 	};
 
-	const renderPosts = () => {
-		return (
-			<View style={styles.CENTER}>
-				<Text>You have no posts!</Text>
-			</View>
-		);
-	};
-
 	const renderEmptyCollection = () => {
 		return (
-			<>
+			<View>
 				<Text
 					style={styles.TEXTCENTER}
 					preset="bold"
 					text="Your collection is empty."
 				/>
 				<Button
-					style={{ marginTop: 20 }}
+					style={{ marginTop: 20, alignSelf: 'center' }}
 					text="Start Collecting"
-					preset="primary"
+					preset="cta"
 					onPress={() => navigation.navigate('Claim')}
 				/>
-			</>
+			</View>
 		);
 	};
 
@@ -216,15 +207,13 @@ export default function ProfileScreen() {
 			<View style={styles.PROFILE_HEADER}>
 				<Header
 					headerTx={`${user?.username}`}
-					leftIcon="message"
 					rightIcon="settings"
-					onLeftPress={() => navigation.navigate('Message')}
 					onRightPress={() => navigation.navigate('Settings')}
 				/>
 			</View>
 			<View style={styles.PROFILE_DATA}>
 				<Image style={styles.PROFILE_IMAGE} source={{ uri: user?.image }} />
-				<View style={{ flexDirection: 'row' }}>
+				<View style={{ flexDirection: 'row', marginLeft: 20 }}>
 					<View style={styles.PROFILE_DETAILS}>
 						{sneakerCollection != undefined ? (
 							<Text preset="bold" text={`${sneakerCollection.length}`} />

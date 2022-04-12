@@ -1,98 +1,137 @@
 import { View, Image, ScrollView } from 'react-native';
 import React, { FC } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { Formik } from 'formik';
+import { useFormState, useFormDispatch } from '../../contexts/form-context';
 
-import {
-    Screen,
-    Text,
-    Header,
-    Button,
-} from '../../components';
+import { Screen, Text, Header, Button } from '../../components';
 
 import styles from './styles';
 
-
 const ListingImagesScreen = (props) => {
+	const photos = props.route.params;
+	const navigation = useNavigation();
+	const [images, setImages] = React.useState([]);
+	const form = React.useRef();
+	const dispatch = useFormDispatch();
+	const { values: formValues, errors: formErrors } = useFormState('user');
 
-    const photos = props.route.params;
-    const navigation = useNavigation();
-    const [images, setImages] = React.useState([]);
+	React.useEffect(() => {
+		const unsubscribe = navigation.addListener('blur', async () => {
+			if (form.current) {
+				const { values, errors } = form.current;
+				dispatch({
+					type: 'UPDATE_FORM',
+					payload: {
+						id: 'user',
+						data: { values, errors },
+					},
+				});
+			}
+		});
 
-    React.useEffect(() => {
-        if (photos) {
-            console.log('props:', photos)
-            setImages(photos)
-        } else {
-            console.log('no images have been selected')
-        }
-    }, [photos]);
+		return unsubscribe;
+	}, [navigation]);
 
-    const renderImage = (item, i) => {
-        return (
-            <Image
-                style={{ height: 150, width: 135 }}
-                source={{ uri: item.uri }}
-                key={i}
-            />
-        )
-    }
+	React.useEffect(() => {
+		if (photos) {
+			setImages(photos);
+		} else {
+			null;
+		}
+	}, [photos]);
 
-    return (
-        <Screen style={styles.CONTAINER}>
+	const renderImage = (item, i) => {
+		return (
+			<Image
+				style={{ height: 150, width: 135 }}
+				source={{ uri: item.uri }}
+				key={i}
+			/>
+		);
+	};
 
-            <Header
-                headerTx="New Listing"
-                leftIcon="back"
-                onLeftPress={() => { navigation.goBack() }}
-            />
+	return (
+		<Formik
+			innerRef={form}
+			validateOnBlur={true}
+			initialValues={formValues}
+			initialErrors={formErrors}
+			enableReinitialize
+		>
+			{({ values, setFieldValue }) => (
+				<Screen style={styles.CONTAINER}>
+					<Header
+						headerTx="New Listing"
+						leftIcon="back"
+						onLeftPress={() => {
+							navigation.goBack();
+						}}
+					/>
 
-            {/* SECTION: for description input */}
-            <View style={styles.LISTING_CONTAINER}>
-                <Text text="Please provide the photos you sent to CheckCheck for verification." preset='bold' />
+					{/* SECTION: for description input */}
+					<View style={styles.LISTING_CONTAINER}>
+						<Text
+							text="Please provide the photos you sent to CheckCheck for verification."
+							preset="bold"
+						/>
+						{images.length > 0 ? (
+							<View style={{ height: 150 }}>
+								<ScrollView
+									// centerContent
+									horizontal
+									style={{
+										borderWidth: 2,
+										borderColor: 'black',
+										borderRadius: 5,
+									}}
+								>
+									{images.map((item, i) => renderImage(item, i))}
+								</ScrollView>
+							</View>
+						) : null}
 
-                {images.length > 0 ? (
-                    <View style={{ height: 150 }}>
-                        <ScrollView
-                            // centerContent
-                            horizontal
-                            style={{ borderWidth: 2, borderColor: 'black', borderRadius: 5, }}
+						<Button
+							text="Choose Photos"
+							style={{ marginTop: 90 }}
+							onPress={() => {
+								navigation.navigate('ImageBrowser');
+							}}
+						/>
 
-                        >
-                            {images.map((item, i) => renderImage(item, i))}
-                        </ScrollView>
+						{/* BUTTON uploads the listing to the marketplace and navigates to ... */}
+						<View
+							style={{
+								marginTop: 175,
+								paddingBottom: 50,
+								backgroundColor: 'white',
+							}}
+						>
+							<Button
+								style={
+									images.length > 0
+										? styles.NEXT_BUTTON
+										: styles.DISABLED_NEXT_BUTTON
+								}
+								text="Next"
+								onPress={() => {
+									setFieldValue('images', images);
+									console.log('formik: ', values);
+									// addListedItem({
 
-                    </View>
-                ) : (
-                    null
-                )}
-
-                <Button
-                    text="Choose Photos"
-                    style={{ marginTop: 90 }}
-                    onPress={() => { navigation.navigate('ImageBrowser') }}
-                />
-
-                {/* BUTTON uploads the listing to the marketplace and navigates to ... */}
-                <View
-                    style={{
-                        marginTop: 175,
-                        paddingBottom: 50,
-                        backgroundColor: 'white'
-                    }}>
-                    <Button
-                        style={
-                            images.length > 0 ?
-                                styles.NEXT_BUTTON : styles.DISABLED_NEXT_BUTTON
-                        }
-                        text="Next"
-                        // onPress={() => {  }}
-                        disabled={images.length != 0 ? false : true}
-                    />
-                </View>
-
-            </View>
-        </Screen>
-    );
+									// });
+									//have to call the mutation to create the listing
+									// console.log('formik: ', values)
+									// navigation.navigate("ListingDescription")
+								}}
+								disabled={images.length != 0 ? false : true}
+							/>
+						</View>
+					</View>
+				</Screen>
+			)}
+		</Formik>
+	);
 };
 
 export default ListingImagesScreen;
