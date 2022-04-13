@@ -318,18 +318,11 @@ export const addListedItem = async (verifiedSneaker: listedParams) => {
 			description: verifiedSneaker.description,
 			sellerID: verifiedSneaker.sellerID,
 		};
-		console.log('listedItem:', listedItem);
 
 		const listings = await API.graphql(
 			graphqlOperation(createListedItem, { input: listedItem })
 		);
 	}
-
-	// console.log('uriImages:', uriImages);
-
-	// const listings = await API.graphql(
-	// 	graphqlOperation(createListedItem, { input: listedItem })
-	// );
 };
 
 export const getListingByZipCode = async (zipCode: string) => {
