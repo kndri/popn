@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { View, TextInput, TouchableOpacity } from 'react-native';
-import {
-	Screen,
-	Text,
-	AutoImage as Image,
-} from '../../components';
+import { Screen, Text, AutoImage as Image } from '../../components';
 import { useNavigation } from '@react-navigation/native';
 import Feed from '../../components/feed';
 
@@ -13,7 +9,6 @@ import { useToast } from '../../components/Toast';
 import styles from './styles';
 const search_icon = require('../../assets/images/searchIcon.png');
 const location_icon = require('../../assets/images/zipcode-icon.png');
-
 
 const listingData = [
 	{

@@ -8,6 +8,7 @@ import { Screen, Text, Header, Button } from '../../components';
 
 import styles from './styles';
 import { addListedItem } from '../../aws-functions/aws-functions';
+import { useToast } from '../../components/Toast';
 
 const ListingImagesScreen = (props) => {
 	const photos = props.route.params;
@@ -16,6 +17,7 @@ const ListingImagesScreen = (props) => {
 	const form = React.useRef();
 	const dispatch = useFormDispatch();
 	const { values: formValues, errors: formErrors } = useFormState('user');
+	const toast = useToast();
 
 	React.useEffect(() => {
 		const unsubscribe = navigation.addListener('blur', async () => {

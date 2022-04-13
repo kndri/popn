@@ -1,4 +1,6 @@
 import { Alert } from 'react-native';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 import { API, graphqlOperation, Auth, Storage } from 'aws-amplify';
 import {
@@ -240,15 +242,14 @@ export const getTopSellersByZipCode = async (zipCode: string) => {
 };
 
 const uploadImageToS3 = async (username: string, imageUrl: string) => {
-	console.log('imageUrl: ', imageUrl);
-
 	const response = await fetch(imageUrl);
 	const blob = await response.blob();
-
-	const fileName = `${username}ProfileImage.jpeg`;
+	//uuidv4() Generates Random Values for images
+	const fileName = `${username + uuidv4()}ListedItem.jpeg`;
 	const data = await Storage.put(fileName, blob, {
 		contentType: 'image/jpeg',
 	});
+
 	return data;
 };
 /**
@@ -283,24 +284,26 @@ interface listedParams {
 	prevSellers: Array<string>;
 }
 export const addListedItem = async (verifiedSneaker: listedParams) => {
-	const uriImages: any = [];
-
+	let uriImages: Array<string> = [];
 	try {
-		verifiedSneaker.images.map(async (image, i) => {
-			const newImage = await uploadImageToS3(
-				image.name,
-				verifiedSneaker.sellerID
-			);
-			const imageURI = await Storage.get(newImage.key, {
-				level: 'public',
-			});
+		await Promise.all(
+			verifiedSneaker.images.map(async (image, i) => {
+				const newImage = await uploadImageToS3(
+					verifiedSneaker.sellerID,
+					image.uri
+				);
 
-			const newImageURI = imageURI.substring(
-				0,
-				image.indexOf('.jpeg') + '.jpeg'.length
-			);
-			uriImages.push(newImageURI);
-		});
+				const imageURI = await Storage.get(newImage.key, {
+					level: 'public',
+				});
+
+				const newImageURI = imageURI.substring(
+					0,
+					imageURI.indexOf('.jpeg') + '.jpeg'.length
+				);
+				uriImages.push(newImageURI);
+			})
+		);
 	} catch (e) {
 		console.log('error: ', e);
 	} finally {
@@ -315,11 +318,18 @@ export const addListedItem = async (verifiedSneaker: listedParams) => {
 			description: verifiedSneaker.description,
 			sellerID: verifiedSneaker.sellerID,
 		};
+		console.log('listedItem:', listedItem);
 
 		const listings = await API.graphql(
 			graphqlOperation(createListedItem, { input: listedItem })
 		);
 	}
+
+	// console.log('uriImages:', uriImages);
+
+	// const listings = await API.graphql(
+	// 	graphqlOperation(createListedItem, { input: listedItem })
+	// );
 };
 
 export const getListingByZipCode = async (zipCode: string) => {
