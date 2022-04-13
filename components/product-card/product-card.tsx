@@ -12,6 +12,7 @@ import { VerificationBage } from '../verification-badge/verification-badge';
 export const ProductCard: React.FC<ProductCardProps> = (props): JSX.Element => {
 	const { product } = props;
 	const sneakerPointIcon = require('../../assets/images/sneakerpoint_icon.png');
+
 	return (
 		<>
 			<View style={styles.CARD}>
@@ -19,14 +20,14 @@ export const ProductCard: React.FC<ProductCardProps> = (props): JSX.Element => {
 					{props.showVerificationBage && <VerificationBage type="icon" />}
 				</View>
 				{/* <Image source={{ uri: product.images[0] }} style={styles.PRODUCT} /> */}
-				<Image source={{ uri: product.sneakerData.image_url }} style={styles.PRODUCT} />
+				<Image source={{ uri: product.images[0] }} style={styles.PRODUCT} />
 			</View>
 			<View style={styles.CONTENT_CONTAINER}>
-				<Text preset="secondary">{product.sneakerData.primary_name} </Text>
-				<Text preset="primaryProduct">{product.sneakerData.secondary_name} </Text>
-				{props.showPrice && (
-					<Text preset="extraBold">{product.sneakerData.price}</Text>
-				)}
+				<Text preset="secondary">{product.sneakerData.primaryName} </Text>
+				<Text preset="primaryProduct">
+					{product.sneakerData.secondaryName}{' '}
+				</Text>
+				{props.showPrice && <Text preset="extraBold">{product.price}</Text>}
 				{props.sneakerPoint && (
 					<View style={{ flexDirection: 'row' }}>
 						<Image
@@ -38,7 +39,9 @@ export const ProductCard: React.FC<ProductCardProps> = (props): JSX.Element => {
 								marginRight: 5,
 							}}
 						/>
-						<Text preset="bold" style={{}}>{props.sneakerPoint}</Text>
+						<Text preset="bold" style={{}}>
+							{props.sneakerPoint}
+						</Text>
 					</View>
 				)}
 			</View>
