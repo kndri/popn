@@ -341,7 +341,6 @@ interface Offer {
 	listedItemID: string;
 }
 export const addOffer = async (offerData: Offer) => {
-	console.log('offerData', offerData);
 	const offer = {
 		offerAmount: offerData.offerAmount,
 		status: 'pending',
@@ -349,7 +348,10 @@ export const addOffer = async (offerData: Offer) => {
 		sellingUserID: offerData.sellingUserID,
 		listedItemID: offerData.listedItemID,
 	};
-	await API.graphql(graphqlOperation(createOffer, { input: offer }));
+	const result = await API.graphql(
+		graphqlOperation(createOffer, { input: offer })
+	);
+	return result.data;
 };
 
 export const getOfferByUser = async (userID: string) => {

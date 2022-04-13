@@ -44,7 +44,7 @@ const ListingDetailsScreen = (props: any) => {
 	const [offerAmount, setOfferAmount] = React.useState('');
 	const [offerMessage, setOfferMessage] = React.useState('');
 
-	const onClick = async () => {
+	const onClick = async (offer: any) => {
 		try {
 			//  1. Create a new Chat Room
 			const newChatRoomData = await addChatRoom();
@@ -67,6 +67,7 @@ const ListingDetailsScreen = (props: any) => {
 				name: seller.username,
 				product: product,
 				offerMessage: offerMessage,
+				offer: offer,
 			});
 		} catch (e) {
 			console.log(e);
@@ -163,8 +164,8 @@ const ListingDetailsScreen = (props: any) => {
 									buyingUserID: user?.id as string,
 									sellingUserID: seller.id,
 									listedItemID: product.id,
-								}).then(() => {
-									onClick();
+								}).then((offer) => {
+									onClick(offer);
 									setOfferModalVisible(!offerModalVisible);
 								});
 							}}
