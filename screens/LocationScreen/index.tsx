@@ -16,38 +16,38 @@ import styles from './styles';
 // required icons
 const right_icon = require('../../assets/images/rightArrowIcon.png');
 
-interface LocationProps {}
+interface LocationProps { }
 const LocationScreen: FC<LocationProps> = () => {
 	const navigation = useNavigation();
 	const [distanceValue, setDistanceValue] = React.useState(30);
 	return (
 		<Screen style={styles.CONTAINER}>
-					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-						<Header
-							headerTx="Location"
-							rightIcon="close"
-							onRightPress={() => navigation.goBack()}
-						/>
-					</View>
+			<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+				<Header
+					headerTx="Location"
+					rightIcon="close"
+					onRightPress={() => navigation.goBack()}
+				/>
+			</View>
 
-					<View style={{ width: '100%', marginTop: 59 }}>
-						<Text preset="bold">ZIP Code</Text>
-						<TouchableOpacity
-							style={{
-								flexDirection: 'row',
-								justifyContent: 'space-between',
-								marginTop: 13,
-							}}
-							onPress={() => {
-								navigation.navigate('ZipCode');
-							}}
-						>
-							<Text preset="default">Charlotte, NC, 28215</Text>
-							<Image source={right_icon} style={{ width: 14, height: 14 }} />
-						</TouchableOpacity>
-					</View>
+			<View style={{ flex: 1, justifyContent: 'space-between' }}>
+				<View style={{ width: '100%', marginTop: 59 }}>
+					<Text preset="bold">ZIP Code</Text>
+					<TouchableOpacity
+						style={{
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+							marginTop: 13,
+						}}
+						onPress={() => {
+							navigation.navigate('ZipCode');
+						}}
+					>
+						<Text preset="default">Charlotte, NC, 28215</Text>
+						<Image source={right_icon} style={{ width: 14, height: 14 }} />
+					</TouchableOpacity>
 
-					<View style={{ width: '100%', marginTop: 100 }}>
+					<View style={{ width: '100%', marginTop: 50 }}>
 						<Text preset="bold" style={{ paddingTop: 20 }}>
 							Distance
 						</Text>
@@ -62,17 +62,19 @@ const LocationScreen: FC<LocationProps> = () => {
 
 						<Text preset="default">{distanceValue} miles</Text>
 					</View>
+				</View>
 
-					{/* TODO: @Ant - Remove the marginTop, and position this relative to bottom of the screen */}
-					<Button
-						style={{
-							width: '100%',
-							borderRadius: 4,
-							marginTop: 224,
-						}}
-						text="See Listings"
-						onPress={() => navigation.goBack()}
-					/>
+				<Button
+					style={{
+						width: '100%',
+						borderRadius: 4,
+					}}
+					text="See Listings"
+					onPress={() => navigation.goBack()}
+				/>
+			</View>
+
+
 		</Screen>
 	);
 };

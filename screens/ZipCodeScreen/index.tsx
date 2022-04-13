@@ -12,7 +12,7 @@ import {
 
 import styles from './styles';
 
-interface ZipCodeProps {}
+interface ZipCodeProps { }
 const ZipCodeScreen: FC<ZipCodeProps> = () => {
 	const navigation = useNavigation();
 	const [zipCode, setZipCode] = React.useState('');
@@ -28,56 +28,56 @@ const ZipCodeScreen: FC<ZipCodeProps> = () => {
 					}}
 				/>
 			</View>
-
-			<View
-				style={{
-					width: '100%',
-					flexDirection: 'column',
-					alignItems: 'center',
-				}}
-			>
-				<Text preset="bold" style={{ marginTop: 65 }}>
-					Where are you searching?
-				</Text>
-				<Button
+			<View style={{ flex: 1, justifyContent: 'space-between' }}>
+				<View
 					style={{
-						borderRadius: 4,
-						marginTop: 23,
+						width: '100%',
+						flexDirection: 'column',
+						alignItems: 'center',
 					}}
-					text="Get My Location"
-					onPress={() => console.log('clicked')}
-				/>
-				<Text preset="default" style={{ marginTop: 13 }}>
-					or
-				</Text>
-				<View style={styles.ZIPCODE}>
-					<TextInput
+				>
+					<Text preset="bold" style={{ marginTop: 65 }}>
+						Where are you searching?
+					</Text>
+					<Button
 						style={{
-							flex: 1,
-							width: 193,
-							height: 35,
-							borderWidth: 1,
-							paddingLeft: 10,
-							borderRadius: 5,
-							borderColor: '#FFFFFF',
-							backgroundColor: 'white',
+							borderRadius: 4,
+							marginTop: 23,
 						}}
-						value={zipCode}
-						autoCorrect={false}
-						onChangeText={(text) => setZipCode(text)}
-						placeholder="Enter ZIP Code"
-						placeholderTextColor={'#878C90'}
+						text="Get My Location"
+						onPress={() => console.log('clicked')}
 					/>
+					<Text preset="default" style={{ marginTop: 13 }}>
+						or
+					</Text>
+					<View style={styles.ZIPCODE}>
+						<TextInput
+							style={{
+								flex: 1,
+								width: 193,
+								height: 35,
+								borderWidth: 1,
+								paddingLeft: 10,
+								borderRadius: 5,
+								borderColor: '#FFFFFF',
+								backgroundColor: 'white',
+							}}
+							value={zipCode}
+							autoCorrect={false}
+							onChangeText={(text) => setZipCode(text)}
+							placeholder="Enter ZIP Code"
+							placeholderTextColor={'#878C90'}
+						/>
+					</View>
+					<Text preset="default" style={{ marginTop: 23 }}>
+						Charlotte, NC
+					</Text>
 				</View>
-				<Text preset="default" style={{ marginTop: 23 }}>
-					Charlotte, NC
-				</Text>
-				{/* TODO: @Ant - Remove the marginTop, and position this relative to bottom of the screen */}
+
 				<Button
 					style={{
 						width: '100%',
 						borderRadius: 4,
-						marginTop: 270,
 					}}
 					text="Apply"
 					onPress={() => {
@@ -85,6 +85,7 @@ const ZipCodeScreen: FC<ZipCodeProps> = () => {
 					}}
 				/>
 			</View>
+
 		</Screen>
 	);
 };

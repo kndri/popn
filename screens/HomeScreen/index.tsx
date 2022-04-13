@@ -6,7 +6,7 @@ import Feed from '../../components/feed';
 
 import { useToast } from '../../components/Toast';
 
-import styles from './styles';
+import styles from './Styles';
 import { getListingByZipCode } from '../../aws-functions/aws-functions';
 const search_icon = require('../../assets/images/searchIcon.png');
 const location_icon = require('../../assets/images/zipcode-icon.png');

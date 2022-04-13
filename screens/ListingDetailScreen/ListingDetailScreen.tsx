@@ -302,7 +302,7 @@ const ListingDetailsScreen = (props: any) => {
 				</Text>
 			</View>
 
-			<View style={{ paddingHorizontal: spacing[4] }}>
+			<View style={{ paddingHorizontal: spacing[4], marginBottom: 36 }}>
 				<Text preset="bold" style={{ fontSize: 16 }}>
 					Seller
 				</Text>
@@ -325,10 +325,8 @@ const ListingDetailsScreen = (props: any) => {
 				</View>
 			</View>
 
-			{/* <View style={{ marginTop: 36, paddingHorizontal: spacing[4], position: 'absolute', bottom: 50, alignSelf: 'center', width: '100%' }}> */}
 			<View
 				style={{
-					marginTop: 36,
 					paddingHorizontal: spacing[4],
 					paddingBottom: 50,
 				}}

@@ -7,6 +7,7 @@ export default StyleSheet.create({
 		backgroundColor: color.transparent,
 		paddingHorizontal: spacing[5],
 		flex: 1,
+		paddingBottom: 90,
 	},
 	CENTERED_VIEW: {
 		flex: 1,

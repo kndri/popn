@@ -7,6 +7,7 @@ export default StyleSheet.create({
 		backgroundColor: color.transparent,
 		paddingHorizontal: spacing[5],
 		flex: 1,
+		paddingBottom: 90,
 	},
 	CENTERED_VIEW: {
 		flex: 1,
@@ -19,14 +20,6 @@ export default StyleSheet.create({
 		borderRadius: 20,
 		padding: 35,
 		alignItems: 'center',
-		// shadowColor: "#000",
-		// shadowOffset: {
-		//   width: 0,
-		//   height: 2
-		// },
-		// shadowOpacity: 0.25,
-		// shadowRadius: 4,
-		// elevation: 5,
 		width: '100%',
 		height: '100%',
 	},
