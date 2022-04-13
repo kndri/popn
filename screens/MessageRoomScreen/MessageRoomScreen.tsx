@@ -190,7 +190,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 				/>
 			</View>
 			{/* TODO: @ANT - Here is where the Offer details will go */}
-			<View style={{backgroundColor: 'black', height: 100}}>
+			<View style={{ backgroundColor: 'black', height: 100 }}>
 
 			</View>
 
