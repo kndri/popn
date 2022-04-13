@@ -99,7 +99,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 		);
 
 		// if there is an error alert the screen of the message
-
 		if (_authData.error) {
 			toast.show(`${_authData.error}`), { color: 'red' };
 		} else {

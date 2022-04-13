@@ -8,6 +8,9 @@ import {
 	deleteSneaker,
 	createClaim,
 	createListedItem,
+	createOffer,
+	createChatRoom,
+	createChatRoomUser,
 } from '../src/graphql/mutations';
 import {
 	listSneakerStores,
@@ -20,6 +23,8 @@ import {
 	donScoreByZipCode,
 	totalSoldSneakersByZipCode,
 	listedItemByZipCode,
+	getOffer,
+	offerByUser,
 } from '../src/graphql/queries';
 
 export const getUserFromDb = async (userID: string) => {
@@ -258,16 +263,6 @@ const uploadImageToS3 = async (username: string, imageUrl: string) => {
  *
  * Prams: claim sneaker data
  *
- * sneakerID,
- * zipCode,
- * images,
- * size,
- * condition,
- * price,
- * brand,
- * description,
- * sellerID,
- * prevSellers,
  *
  */
 
@@ -337,4 +332,59 @@ export const getListingByZipCode = async (zipCode: string) => {
 	} catch (e) {
 		console.log('error: ', e);
 	}
+};
+
+interface Offer {
+	offerAmount: string;
+	buyingUserID: string;
+	sellingUserID: string;
+	listedItemID: string;
+}
+export const addOffer = async (offerData: Offer) => {
+	console.log('offerData', offerData);
+	const offer = {
+		offerAmount: offerData.offerAmount,
+		status: 'pending',
+		buyingUserID: offerData.buyingUserID,
+		sellingUserID: offerData.sellingUserID,
+		listedItemID: offerData.listedItemID,
+	};
+	await API.graphql(graphqlOperation(createOffer, { input: offer }));
+};
+
+export const getOfferByUser = async (userID: string) => {
+	let offer: any;
+
+	const offerData = await API.graphql(
+		graphqlOperation(offerByUser, {
+			id: userID,
+		})
+	);
+
+	offer = offerData.data.offerByUser;
+
+	return offer;
+};
+
+export const addChatRoom = async () => {
+	const newChatRoomData = await API.graphql(
+		graphqlOperation(createChatRoom, {
+			input: {
+				lastMessageID: Math.round(Math.random() * 1000000),
+			},
+		})
+	);
+	return newChatRoomData;
+};
+
+export const addChatRoomUser = async (userID: string, chatRoomID: string) => {
+	const newChatRoomData = await API.graphql(
+		graphqlOperation(createChatRoomUser, {
+			input: {
+				userID: userID,
+				chatRoomID: chatRoomID,
+			},
+		})
+	);
+	return newChatRoomData;
 };

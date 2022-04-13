@@ -46,6 +46,10 @@ export default function NewMessageRoomScreen(props: NewMessageRoomScreenProps) {
           but it is not clears who's ID it is
             */
 	const route = useRoute();
+	/**
+	 * What is in route.params is the product, name of chatroom and id
+	 */
+	console.log('Params: ', route.params);
 	const navigation = useNavigation();
 	const insets = useSafeAreaInsets();
 	const [messages, setMessages] = React.useState<IMessage[]>([]);

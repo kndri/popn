@@ -22,22 +22,61 @@ import { SliderBox } from 'react-native-image-slider-box';
 import { FontAwesome } from '@expo/vector-icons';
 
 import styles from './Styles';
+import {
+	addChatRoom,
+	addChatRoomUser,
+	addOffer,
+} from '../../aws-functions/aws-functions';
+import { useAuth } from '../../contexts/auth';
 
-const example = require("../../assets/images/verify_example.png");
+const example = require('../../assets/images/verify_example.png');
 const verified = require('../../assets/images/verified_badge.png');
 const Seller = require('../../assets/images/UserImage.png');
 
 const ListingDetailsScreen = (props: any) => {
 	const product = props.route.params;
 	const { sneakerData, seller } = product;
+	const { authData: user } = useAuth();
 	const navigation = useNavigation();
 	const [offerModalVisible, setOfferModalVisible] = React.useState(false);
-	const [authenticationModalVisible, setAuthenticationModalVisible] = React.useState(false);
+	const [authenticationModalVisible, setAuthenticationModalVisible] =
+		React.useState(false);
 	const [offerAmount, setOfferAmount] = React.useState('');
 	const [offerMessage, setOfferMessage] = React.useState('');
-	const [listingImages, setListingImages] = React.useState([
-		'https://popnd82dea5bd54c4b12aa305515ccc9e5e8132355-dev.s3.amazonaws.com/public/test1ProfileImage.jpeg',
-	]);
+
+	const onClick = async () => {
+		try {
+			//  1. Create a new Chat Room
+			const newChatRoomData = await addChatRoom();
+
+			if (!newChatRoomData.data) {
+				console.log(' Failed to create a chat room');
+				return;
+			}
+
+			const newChatRoom = newChatRoomData.data.createChatRoom;
+
+			// 2. Add `seller` to the Chat Room
+			await addChatRoomUser(seller.id, newChatRoom.id);
+
+			//  3. Add authenticated user to the Chat Room
+			await addChatRoomUser(user?.id as string, newChatRoom.id);
+
+			navigation.navigate('NewMessageRoom', {
+				id: newChatRoom.id,
+				name: seller.username,
+				product: product,
+				offerMessage: offerMessage,
+			});
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
+	/**
+	 * use getOfferByUser(buyersID) to check if an offer already exist
+	 * so user does not make another offer
+	 */
 
 	return (
 		<Screen preset="scroll" statusBar="dark-content">
@@ -117,14 +156,24 @@ const ListingDetailsScreen = (props: any) => {
 								offerAmount ? styles.OFFER_BUTTON : styles.DISABLED_OFFER_BUTTON
 							}
 							text="Make Offer"
-							onPress={() => setOfferModalVisible(!offerModalVisible)}
+							onPress={() => {
+								// The offer message will not be stored in the offer data
+								addOffer({
+									offerAmount: offerAmount,
+									buyingUserID: user?.id as string,
+									sellingUserID: seller.id,
+									listedItemID: product.id,
+								}).then(() => {
+									onClick();
+									setOfferModalVisible(!offerModalVisible);
+								});
+							}}
 							disabled={offerAmount ? false : true}
 						/>
 					</View>
 				</View>
 			</Modal>
 			{/* END OF OFFER MODAL CODE*/}
-
 
 			{/* AUTHENTICATION PROCESS MODAL CODE*/}
 			<Modal
@@ -137,18 +186,16 @@ const ListingDetailsScreen = (props: any) => {
 				}}
 			>
 				<View style={styles.MODAL_CONTAINER}>
-
 					<Header
-						headerTx='Sneaker Verification'
+						headerTx="Sneaker Verification"
 						rightIcon="close"
 						onRightPress={() => {
 							setAuthenticationModalVisible(!authenticationModalVisible);
-
 						}}
 					/>
 
 					<View style={styles.MODAL_HEADING_TEXT}>
-						<Text preset='default'>
+						<Text preset="default">
 							Want to let people know your sneakers are legit? 🤔 {'\n'}
 							{'\n'}
 							The green verified badge on sneakers lets people know that your
@@ -163,11 +210,9 @@ const ListingDetailsScreen = (props: any) => {
 					</View>
 
 					<View style={styles.MODAL_PROCESS}>
-						<Text preset="bold" >
-							How to get your sneaker verified?
-						</Text>
+						<Text preset="bold">How to get your sneaker verified?</Text>
 						<View style={{ marginTop: 30 }}>
-							<Text preset='default'>
+							<Text preset="default">
 								1. Download the CheckCheck app to get started{'\n'}
 								{'\n'}
 								2. Go through the verficiation process on CheckCheck{'\n'}
@@ -178,7 +223,6 @@ const ListingDetailsScreen = (props: any) => {
 					</View>
 				</View>
 			</Modal>
-
 
 			<Header
 				style={styles.BACK_BUTTON}
@@ -229,7 +273,7 @@ const ListingDetailsScreen = (props: any) => {
 				<Text preset="bold" text={`#${product.brand}`} />
 				<Text
 					preset="default"
-					text={`${sneakerData.primary_name} ${sneakerData.secondary_name}`}
+					text={`${sneakerData.primaryName} ${sneakerData.secondaryName}`}
 					style={{ marginTop: 20 }}
 				/>
 				<Text preset="header" text={product.price} style={{ marginTop: 20 }} />
@@ -252,9 +296,12 @@ const ListingDetailsScreen = (props: any) => {
 					/>
 				</View>
 
-
 				<View style={{ justifyContent: 'space-between' }}>
-					<Text preset="bold" text="Description" style={{ marginTop: 31, textDecorationLine: 'underline' }} />
+					<Text
+						preset="bold"
+						text="Description"
+						style={{ marginTop: 31, textDecorationLine: 'underline' }}
+					/>
 					<Text
 						preset="default"
 						text={product.description}
@@ -275,11 +322,17 @@ const ListingDetailsScreen = (props: any) => {
 					Our authentication partner has reviewed the images, title, and
 					description of this listing to verify this item. Learn more about the
 					partner's
-
-					<Text preset="bold" style={{ textDecorationLine: 'underline', }} onPress={() => setAuthenticationModalVisible(!authenticationModalVisible)}> authentication process.</Text>
-
+					<Text
+						preset="bold"
+						style={{ textDecorationLine: 'underline' }}
+						onPress={() =>
+							setAuthenticationModalVisible(!authenticationModalVisible)
+						}
+					>
+						{' '}
+						authentication process.
+					</Text>
 				</Text>
-
 			</View>
 
 			<View style={{ paddingHorizontal: spacing[4], marginBottom: 36 }}>
