@@ -40,7 +40,7 @@ const ListingDetailsScreen = (props: any) => {
 	]);
 
 	return (
-		<Screen preset="scroll">
+		<Screen preset="scroll" statusBar="dark-content">
 			{/* OFfER MODAL CODE*/}
 			<Modal
 				animationType="slide"
@@ -178,23 +178,6 @@ const ListingDetailsScreen = (props: any) => {
 					</View>
 				</View>
 			</Modal>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 			<Header
