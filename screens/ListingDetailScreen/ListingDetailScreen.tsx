@@ -277,7 +277,11 @@ const ListingDetailsScreen = (props: any) => {
 					text={`${sneakerData.primaryName} ${sneakerData.secondaryName}`}
 					style={{ marginTop: 20 }}
 				/>
-				<Text preset="header" text={product.price} style={{ marginTop: 20 }} />
+				<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+					<FontAwesome name="dollar" size={30} color="black" style={{ marginTop: 20 }} />
+					<Text preset="header" text={product.price} style={{ marginTop: 20 }} />
+				</View>
+
 
 				<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 					<Text preset="default" text="Condition" style={{ marginTop: 31 }} />

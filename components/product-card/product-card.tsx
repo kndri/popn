@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-
+import { FontAwesome } from '@expo/vector-icons';
 import styles from './product-card.styles';
 import { ProductCardProps } from './product-card.props';
 
@@ -27,7 +27,12 @@ export const ProductCard: React.FC<ProductCardProps> = (props): JSX.Element => {
 				<Text preset="primaryProduct">
 					{product.sneakerData.secondaryName}{' '}
 				</Text>
-				{props.showPrice && <Text preset="extraBold">{product.price}</Text>}
+				{props.showPrice &&
+					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+						<FontAwesome name="dollar" size={13} color="black" />
+						<Text preset="extraBold">{product.price}</Text>
+					</View>
+				}
 				{props.sneakerPoint && (
 					<View style={{ flexDirection: 'row' }}>
 						<Image
