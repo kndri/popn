@@ -9,7 +9,7 @@ import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
 import { messagesByChatRoom } from '../../src/graphql/queries';
 import { onCreateMessage } from '../../src/graphql/subscriptions';
 
-import { Header } from '../../components';
+import { Header, } from '../../components';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { GiftedChat, Bubble, Send, Composer } from 'react-native-gifted-chat';
 import { IMessage } from '../../types';

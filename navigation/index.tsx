@@ -8,7 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName, Image } from 'react-native';
-import HomeScreen from '../screens/HomeScreen/HomeScreen';
+import HomeScreen from '../screens/HomeScreen';
 import ClaimScreen from '../screens/ClaimScreen/ClaimScreen';
 import MessageScreen from '../screens/MessageScreen/MessageScreen';
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
@@ -33,8 +33,8 @@ import NewMessageRoomScreen from '../screens/NewMessageRoomScreen/NewMessageRoom
 import LocationScreen from '../screens/LocationScreen';
 import ZipCodeScreen from '../screens/ZipCodeScreen';
 import NewListingScreen from '../screens/NewListingScreen';
-import ListingDescriptionScreen from '../screens/ListingDescriptionScreen'
-import ListingImagesScreen from '../screens/ListingImagesScreen'
+import ListingDescriptionScreen from '../screens/ListingDescriptionScreen';
+import ListingImagesScreen from '../screens/ListingImagesScreen';
 import ImageBrowserScreen from '../screens/ImageBrowserScreen/ImageBrowserScreen';
 import {
 	RootStackParamList,
@@ -276,7 +276,7 @@ function RootNavigator() {
 						options={{ headerShown: false }}
 					/>
 					<Stack.Screen
-						name='ImageBrowser'
+						name="ImageBrowser"
 						component={ImageBrowserScreen}
 						options={{
 							title: 'Selected 0 photos',

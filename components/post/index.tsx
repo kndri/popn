@@ -27,7 +27,7 @@ const liked = require('../../assets/images/Liked.png');
 const unliked = require('../../assets/images/Unliked.png');
 const comment = require('../../assets/images/comment.png');
 const share = require('../../assets/images/share.png');
-const more = require('../../assets/images/More.png');
+const more = require('../../assets/images/more.png');
 
 const POST_CONTAINER: ViewStyle = {
 	display: 'flex',
