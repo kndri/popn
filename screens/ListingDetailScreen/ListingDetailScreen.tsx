@@ -66,6 +66,7 @@ const ListingDetailsScreen = (props: any) => {
 				id: newChatRoom.id,
 				name: seller.username,
 				product: product,
+				offerMessage: offerMessage,
 			});
 		} catch (e) {
 			console.log(e);
