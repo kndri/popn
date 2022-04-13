@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ViewStyle } from 'react-native';
+import { View, ViewStyle, Image } from 'react-native';
 import { spacing } from '../../theme';
 
 import { API, Auth, graphqlOperation } from 'aws-amplify';
@@ -9,7 +9,7 @@ import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
 import { messagesByChatRoom } from '../../src/graphql/queries';
 import { onCreateMessage } from '../../src/graphql/subscriptions';
 
-import { Header, } from '../../components';
+import { Header, Text, Button } from '../../components';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { GiftedChat, Bubble, Send, Composer } from 'react-native-gifted-chat';
 import { IMessage } from '../../types';
@@ -44,6 +44,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const navigation = useNavigation();
 	const insets = useSafeAreaInsets();
 	const [messages, setMessages] = React.useState<IMessage[]>([]);
+	const listedShoe = require("../../assets/images/jordans.png");
 
 	React.useEffect(() => {
 		const fetchUser = async () => {
@@ -182,6 +183,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 
 	return (
 		<View style={styles.CONTAINER}>
+			{/* header view */}
 			<View style={[styles.CENTER, { marginTop: insets.top }]}>
 				<Header
 					headerTx={`${route.params?.name}`}
@@ -189,12 +191,74 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 					onLeftPress={() => navigation.goBack()}
 				/>
 			</View>
-			{/* TODO: @ANT - Here is where the Offer details will go */}
-			<View style={{ backgroundColor: 'black', height: 100 }}>
 
+
+			{/* view for offer data */}
+			<View style={{ backgroundColor: 'black', height: 62, flexDirection: 'row', alignItems: 'center', }}>
+				<View style={{ marginLeft: 17 }}>
+					<Image source={listedShoe} style={{ width: 52, height: 38, }} />
+				</View>
+
+				<View style={{ marginLeft: 12, }}>
+					<Text preset='bold' style={{ color: 'white' }}>Jordan 11</Text>
+					<Text preset='bold' style={{ color: 'white' }}>Retro Cool Gray</Text>
+				</View>
+
+				<View style={{ position: 'absolute', left: 322 }}>
+					<Text preset='bold' style={{ color: 'white', }}>$200</Text>
+				</View>
 			</View>
 
-			{/* TODO: @ANT - Create the Accept/Decline buttong container group here as well */}
+			{/* conditional view based on the offer status 
+		needs to be refactored to match offer status values to render the correct buttons
+	*/}
+			{route.params?.name == undefined ? (
+				<>
+					<View style={{ height: 62, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+						<Button
+							style={{
+								borderRadius: 4,
+								width: 146,
+								backgroundColor: 'black',
+								borderWidth: 2,
+							}}
+							text="Accept"
+						// onPress={() => {
+						// 	console.log('accepted')
+						// }}
+						/>
+						<Button
+							style={{
+								borderRadius: 4,
+								width: 146,
+								backgroundColor: 'white',
+								borderWidth: 2,
+								borderColor: 'black'
+
+							}}
+							text="Decline"
+							textStyle={{ color: 'black' }}
+						// onPress={() => {
+						// 	console.log('declined')
+						// }}
+						/>
+					</View>
+				</>
+			) : (
+				<View style={{ alignSelf: 'center', marginTop: 5 }}>
+					<Button
+						style={{
+							borderRadius: 4,
+							width: 319
+						}}
+						text="Confirm Transaction"
+						onPress={() => {
+							console.log('declined')
+						}}
+					/>
+				</View>
+			)}
+
 
 			<GiftedChat
 				isTyping={true}
