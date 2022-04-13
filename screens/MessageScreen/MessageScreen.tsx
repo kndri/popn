@@ -69,7 +69,6 @@ export default function MessageScreen() {
 		} catch (e) {
 			console.log(e);
 		}
-		console.log('ran');
 	};
 
 	// const uniqueExcludedUsers = [...new Set(excludedUsers)];

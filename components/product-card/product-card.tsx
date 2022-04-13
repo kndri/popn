@@ -23,9 +23,9 @@ export const ProductCard: React.FC<ProductCardProps> = (props): JSX.Element => {
 			</View>
 			<View style={styles.CONTENT_CONTAINER}>
 				<Text preset="secondary">{product.sneakerData.primary_name} </Text>
-				<Text preset="bold">{product.sneakerData.secondary_name} </Text>
+				<Text preset="primaryProduct">{product.sneakerData.secondary_name} </Text>
 				{props.showPrice && (
-					<Text preset="bold">{product.sneakerData.price}</Text>
+					<Text preset="extraBold">{product.sneakerData.price}</Text>
 				)}
 				{props.sneakerPoint && (
 					<View style={{ flexDirection: 'row' }}>
@@ -38,7 +38,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props): JSX.Element => {
 								marginRight: 5,
 							}}
 						/>
-						<Text preset="bold">{props.sneakerPoint}</Text>
+						<Text preset="bold" style={{}}>{props.sneakerPoint}</Text>
 					</View>
 				)}
 			</View>

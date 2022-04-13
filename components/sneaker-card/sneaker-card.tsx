@@ -23,7 +23,7 @@ export const SneakerCard: React.FC<SneakerCardProps> = (props): JSX.Element => {
             </View>
             <View style={styles.CONTENT_CONTAINER}>
                 <Text preset="secondary">{sneaker.primaryName} </Text>
-                <Text preset="bold">{sneaker.secondaryName} </Text>
+                <Text preset="primaryProduct">{sneaker.secondaryName} </Text>
 
                 {props.sneakerPoint && (
                     <View style={{ flexDirection: 'row' }}>

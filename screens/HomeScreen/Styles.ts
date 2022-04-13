@@ -5,20 +5,21 @@ import { color, spacing } from '../../theme';
 export default StyleSheet.create({
 	CONTAINER: {
 		backgroundColor: color.transparent,
-		paddingHorizontal: spacing[5],
+		paddingHorizontal: spacing[4],
 		flex: 1,
 	},
 	CLAIM_SEARCH: {
-		flexDirection: 'row',
-		justifyContent: 'center',
 		alignItems: 'center',
-		paddingHorizontal: spacing[4],
 		backgroundColor: 'white',
-		height: 48,
-		width: 335,
-		borderWidth: 1,
 		borderColor: '#000000',
 		borderRadius: 5,
+		borderWidth: 1,
+		flexDirection: 'row',
+		height: 48,
+		justifyContent: 'center',
+		marginTop: 25,
+		paddingHorizontal: spacing[4],
+		width: '100%',
 	},
 	ZIPCODE: {
 		flexDirection: 'row',

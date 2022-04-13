@@ -45,9 +45,7 @@ export default function App() {
 						avatarImageURL: userInfo.attributes['custom:blob'],
 					};
 					await saveUserToDB(user);
-				} else {
-					console.log('User already exists');
-				}
+				} 
 			}
 
 			// If it doesn't, create the user in the database

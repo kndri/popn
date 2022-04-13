@@ -26,6 +26,6 @@ export default StyleSheet.create({
     },
 
     CONTENT_CONTAINER: {
-        margin: 5
+        margin: 5,
     }
 })

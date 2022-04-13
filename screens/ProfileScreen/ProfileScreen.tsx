@@ -21,12 +21,10 @@ import styles from './styles';
 
 export default function ProfileScreen() {
 	const { authData: user } = useAuth();
-	console.log(user)
 	const navigation = useNavigation();
 	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
 	const [following, setFollowing] = React.useState<number>(0);
 	const [followers, setFollowers] = React.useState<number>(0);
-	const [selection, setSelection] = React.useState(1);
 	const isFocused = useIsFocused();
 
 	/**
@@ -123,9 +121,9 @@ export default function ProfileScreen() {
 							)}
 							keyExtractor={(sneaker) => String(sneaker.id)}
 							numColumns={2}
-							contentContainerStyle={{
+							columnWrapperStyle={{
 								justifyContent: 'space-between',
-								alignItems: 'center',
+								marginBottom: 15,
 							}}
 						/>
 					</View>

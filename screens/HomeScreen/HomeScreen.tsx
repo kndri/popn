@@ -1,23 +1,19 @@
 import * as React from 'react';
-import { View, TextInput, TouchableOpacity, Modal } from 'react-native';
+import { View, TextInput, TouchableOpacity } from 'react-native';
 import {
-	Button,
 	Screen,
 	Text,
 	AutoImage as Image,
-	Header,
 } from '../../components';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Feed from '../../components/feed';
 
 import { useToast } from '../../components/Toast';
 
-import styles from './Styles';
-
+import styles from './styles';
 const search_icon = require('../../assets/images/searchIcon.png');
 const location_icon = require('../../assets/images/zipcode-icon.png');
-const close_icon = require('../../assets/images/closeIcon.png');
-const right_icon = require('../../assets/images/rightArrowIcon.png');
+
 
 const listingData = [
 	{

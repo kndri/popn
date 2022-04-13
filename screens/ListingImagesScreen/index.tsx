@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Formik } from "formik"
 import { useFormState, useFormDispatch } from "../../contexts/form-context";
 
-
 import {
     Screen,
     Text,
@@ -122,7 +121,6 @@ const ListingImagesScreen = (props) => {
                                 onPress={() => {
                                     //have to call the mutation to create the listing
                                     console.log('formik: ', values)
-                                    // navigation.navigate("ListingDescription")
                                 }}
                                 disabled={images.length != 0 ? false : true}
                             />

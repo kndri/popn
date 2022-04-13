@@ -76,7 +76,7 @@ const ShoeDetailsScreen = () => {
 					// 		color: 'red',
 					// 	});
 					// }
-					navigation.navigate('NewListing');
+					navigation.navigate('NewListing', sneaker);
 				} else if (buttonIndex === 1) {
 					console.log('Pressed Remove');
 					// setResult(Math.floor(Math.random() * 100) + 1);

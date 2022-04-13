@@ -79,7 +79,7 @@ const SettingsScreen: FC<SettingsProps> = () => {
 				<Header leftIcon="back" onLeftPress={() => navigation.goBack()} />
 			</View>
 
-			<Text style={styles.HEADING_TITLE} preset="header" text="Settings" />
+			<Text style={styles.HEADING_TITLE} preset="h1" text="Settings" />
 			{/* flat list of settings options */}
 			<View style={styles.FLATLIST}>
 				<FlatList
@@ -136,7 +136,7 @@ const SettingsScreen: FC<SettingsProps> = () => {
 				/>
 			</View>
 
-			<Text style={styles.HEADING_TITLE} preset="header" text="About" />
+			<Text style={styles.HEADING_TITLE} preset="h1" text="About" />
 			{/* flat list of about section */}
 			<View style={styles.FLATLIST}>
 				<FlatList
@@ -193,7 +193,7 @@ const SettingsScreen: FC<SettingsProps> = () => {
 				/>
 			</View>
 
-			<Text style={styles.HEADING_TITLE} preset="header" text="Actions" />
+			<Text style={styles.HEADING_TITLE} preset="h1" text="Actions" />
 			{/* flat list of Actions options */}
 			<View style={styles.FLATLIST}>
 				<FlatList

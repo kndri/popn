@@ -1,6 +1,6 @@
 import { TextInput, View } from 'react-native';
 import React, { FC } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Formik } from "formik";
@@ -14,13 +14,14 @@ import {
 } from '../../components';
 
 import styles from './styles';
-import { spacing } from '../../theme';
 
-interface NewListingProps { }
+interface NewListingProps { props: {} }
 
-const NewListingScreen: FC<NewListingProps> = () => {
+const NewListingScreen: FC<NewListingProps> = (props): JSX.Element =>  {
 	const navigation = useNavigation();
+	const route = useRoute();
 
+	const sneaker: any = route.params;
 	const form = React.useRef();
 	const dispatch = useFormDispatch();
 	const { values: formValues, errors: formErrors } = useFormState("user");
@@ -29,6 +30,7 @@ const NewListingScreen: FC<NewListingProps> = () => {
 
 	const [openCondition, setOpenCondition] = React.useState(false);
 	const [conditionValue, setConditionValue] = React.useState(null);
+	// TODO: @Hasler - Create a constanst file for these values
 	const [conditionItems, setCondtiionItems] = React.useState([
 		{ label: 'New/Never Worn', value: 'New/Never Worn' },
 		{ label: 'Gently Used', value: 'Gently Used' },
@@ -37,6 +39,7 @@ const NewListingScreen: FC<NewListingProps> = () => {
 	]);
 	const [openSize, setOpenSize] = React.useState(false);
 	const [sizeValue, setSizeValue] = React.useState(null);
+		// TODO: @Hasler - Create a constanst file for these values
 	const [sizeItems, setSizeItems] = React.useState([
 		{ label: '5', value: '5' },
 		{ label: '5.5', value: '5.5' },
@@ -77,10 +80,8 @@ const NewListingScreen: FC<NewListingProps> = () => {
 
 
 	React.useEffect(() => {
-		setTitle('Jordan 11 Retro Cool Gray')
+		setTitle(`${sneaker.primaryName} ${sneaker.secondaryName}`)
 	}, [])
-
-
 
 	return (
 		<Formik
@@ -89,7 +90,6 @@ const NewListingScreen: FC<NewListingProps> = () => {
 			initialValues={formValues}
 			initialErrors={formErrors}
 			enableReinitialize
-
 		>
 			{({ values, handleChange, setFieldValue }) => (
 				<Screen style={styles.CONTAINER}>

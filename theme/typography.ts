@@ -23,8 +23,9 @@ export const typography = {
    * The primary font.  Used in most places.
    */
   primary: Platform.select({ ios: "Inter", android: "Inter" }),
-
+  primaryLight: Platform.select({ ios: "Inter-Light", android: "Inter-Light" }),
+  primaryMedium: Platform.select({ ios: "Inter-Medium", android: "Inter-Medium" }),
   primarySemiBold: Platform.select({ ios: "Inter-SemiBold", android: "Inter-SemiBold" }),
-
   primaryBold: Platform.select({ ios: "Inter-Bold", android: "Inter-Bold" }),
+  primaryExtraBold: Platform.select({ ios: "Inter-ExtraBold", android: "Inter-ExtraBold" }),
 }

@@ -31,7 +31,8 @@ export default StyleSheet.create({
 		borderWidth: 1,
 		flex: 1,
 		height: '100%',
-		width: '100%',
+		paddingLeft: 3,
+		width: '100%'
 	},
 	MESSAGE_BOX: {
 		flexDirection: "row",

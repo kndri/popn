@@ -43,7 +43,7 @@ export function Header(props: HeaderProps) {
         <View style={LEFT} />
       )}
       {headerTx && (
-        <Text preset="header" text={`${headerTx}`} />
+        <Text preset="h1" text={`${headerTx}`} />
       )}
       {rightIcon ? (
         <Button preset="link" onPress={onRightPress}>

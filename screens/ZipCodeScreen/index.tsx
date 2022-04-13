@@ -18,79 +18,72 @@ const ZipCodeScreen: FC<ZipCodeProps> = () => {
 	const [zipCode, setZipCode] = React.useState('');
 	return (
 		<Screen style={styles.CONTAINER}>
-			<View style={styles.CENTERED_VIEW}>
-				<View style={styles.MODAL_VIEW}>
-					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-						<Header
-							headerTx="ZIP Code"
-							rightIcon="close"
-							onRightPress={() => {
-								// Fill in for the navigation
-								navigation.goBack();
-							}}
-						/>
-					</View>
+			<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+				<Header
+					headerTx="ZIP Code"
+					rightIcon="close"
+					onRightPress={() => {
+						// Fill in for the navigation
+						navigation.goBack();
+					}}
+				/>
+			</View>
 
-					<View
+			<View
+				style={{
+					width: '100%',
+					flexDirection: 'column',
+					alignItems: 'center',
+				}}
+			>
+				<Text preset="bold" style={{ marginTop: 65 }}>
+					Where are you searching?
+				</Text>
+				<Button
+					style={{
+						borderRadius: 4,
+						marginTop: 23,
+					}}
+					text="Get My Location"
+					onPress={() => console.log('clicked')}
+				/>
+				<Text preset="default" style={{ marginTop: 13 }}>
+					or
+				</Text>
+				<View style={styles.ZIPCODE}>
+					<TextInput
 						style={{
-							width: '100%',
-							flexDirection: 'column',
-							alignItems: 'center',
+							flex: 1,
+							width: 193,
+							height: 35,
+							borderWidth: 1,
+							paddingLeft: 10,
+							borderRadius: 5,
+							borderColor: '#FFFFFF',
+							backgroundColor: 'white',
 						}}
-					>
-						<Text preset="bold" style={{ marginTop: 65 }}>
-							Where are you searching?
-						</Text>
-						<Button
-							style={{
-								width: 193,
-								height: 50,
-								borderRadius: 4,
-								marginTop: 23,
-							}}
-							text="Get My Location"
-							onPress={() => console.log('clicked')}
-						/>
-						<Text preset="default" style={{ marginTop: 13 }}>
-							or
-						</Text>
-						<View style={styles.ZIPCODE}>
-							<TextInput
-								style={{
-									flex: 1,
-									width: 193,
-									height: 35,
-									borderWidth: 1,
-									paddingLeft: 10,
-									borderRadius: 5,
-									borderColor: '#FFFFFF',
-									backgroundColor: 'white',
-								}}
-								value={zipCode}
-								autoCorrect={false}
-								onChangeText={(text) => setZipCode(text)}
-								placeholder="Enter ZIP Code"
-								placeholderTextColor={'#878C90'}
-							/>
-						</View>
-						<Text preset="default" style={{ marginTop: 23 }}>
-							Charlotte, NC
-						</Text>
-						<Button
-							style={{
-								width: '100%',
-								height: 50,
-								borderRadius: 4,
-								marginTop: 270,
-							}}
-							text="Apply"
-							onPress={() => {
-								// Fill in for the navigation
-								navigation.goBack();
-							}}
-						/>
-					</View>
+						value={zipCode}
+						autoCorrect={false}
+						onChangeText={(text) => setZipCode(text)}
+						placeholder="Enter ZIP Code"
+						placeholderTextColor={'#878C90'}
+					/>
 				</View>
+				<Text preset="default" style={{ marginTop: 23 }}>
+					Charlotte, NC
+				</Text>
+				{/* TODO: @Ant - Remove the marginTop, and position this relative to bottom of the screen */}
+				<Button
+					style={{
+						width: '100%',
+						borderRadius: 4,
+						marginTop: 270,
+					}}
+					text="Apply"
+					onPress={() => {
+						navigation.goBack();
+					}}
+				/>
 			</View>
 		</Screen>
 	);

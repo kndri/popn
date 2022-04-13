@@ -22,8 +22,6 @@ const LocationScreen: FC<LocationProps> = () => {
 	const [distanceValue, setDistanceValue] = React.useState(30);
 	return (
 		<Screen style={styles.CONTAINER}>
-			<View style={styles.CENTERED_VIEW}>
-				<View style={styles.MODAL_VIEW}>
 					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Header
 							headerTx="Location"
@@ -65,19 +63,16 @@ const LocationScreen: FC<LocationProps> = () => {
 						<Text preset="default">{distanceValue} miles</Text>
 					</View>
 
+					{/* TODO: @Ant - Remove the marginTop, and position this relative to bottom of the screen */}
 					<Button
 						style={{
 							width: '100%',
-							height: 50,
 							borderRadius: 4,
 							marginTop: 224,
 						}}
 						text="See Listings"
-						// Fill in navigation
 						onPress={() => navigation.goBack()}
 					/>
-				</View>
-			</View>
 		</Screen>
 	);
 };

@@ -10,8 +10,7 @@ import { messagesByChatRoom } from '../../src/graphql/queries';
 import { onCreateMessage } from '../../src/graphql/subscriptions';
 
 import { Header } from '../../components';
-import { useNavigation } from '@react-navigation/native';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { GiftedChat, Bubble, Send, Composer } from 'react-native-gifted-chat';
 import { IMessage } from '../../types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -131,7 +130,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			);
 
 			await updateChatRoomLastMessage(newMessageData.data.createMessage.id);
-			console.log('MESSAGE SENT');
 		} catch (e) {
 			console.log(e);
 		}
@@ -191,6 +189,12 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 					onLeftPress={() => navigation.goBack()}
 				/>
 			</View>
+			{/* TODO: @ANT - Here is where the Offer details will go */}
+			<View style={{backgroundColor: 'black', height: 100}}>
+
+			</View>
+
+			{/* TODO: @ANT - Create the Accept/Decline buttong container group here as well */}
 
 			<GiftedChat
 				isTyping={true}

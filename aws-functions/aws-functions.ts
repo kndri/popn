@@ -39,7 +39,6 @@ export const getListUser = async () => {
 
 //stores shoes
 export const addUserSneaker = async (sneakerObject: Object) => {
-	console.log('sneaker', sneakerObject);
 	try {
 		// const currentUser = checkLoggedUser();
 		const currentUser = await Auth.currentAuthenticatedUser({
