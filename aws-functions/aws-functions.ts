@@ -9,6 +9,8 @@ import {
 	createClaim,
 	createListedItem,
 	createOffer,
+	createChatRoom,
+	createChatRoomUser,
 } from '../src/graphql/mutations';
 import {
 	listSneakerStores,
@@ -362,4 +364,27 @@ export const getOfferByUser = async (userID: string) => {
 	offer = offerData.data.offerByUser;
 
 	return offer;
+};
+
+export const addChatRoom = async () => {
+	const newChatRoomData = await API.graphql(
+		graphqlOperation(createChatRoom, {
+			input: {
+				lastMessageID: Math.round(Math.random() * 1000000),
+			},
+		})
+	);
+	return newChatRoomData;
+};
+
+export const addChatRoomUser = async (userID: string, chatRoomID: string) => {
+	const newChatRoomData = await API.graphql(
+		graphqlOperation(createChatRoomUser, {
+			input: {
+				userID: userID,
+				chatRoomID: chatRoomID,
+			},
+		})
+	);
+	return newChatRoomData;
 };

@@ -125,7 +125,9 @@ const ListingImagesScreen = (props) => {
 								text="Next"
 								onPress={async () => {
 									//have to call the mutation to create the listing
-									await addListedItem(values);
+									await addListedItem(values).then(() =>
+										navigation.navigate('Home')
+									);
 									// navigation.navigate("ListingDescription")
 								}}
 								disabled={images.length != 0 ? false : true}

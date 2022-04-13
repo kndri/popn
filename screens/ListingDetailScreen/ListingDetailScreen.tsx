@@ -22,7 +22,11 @@ import { SliderBox } from 'react-native-image-slider-box';
 import { FontAwesome } from '@expo/vector-icons';
 
 import styles from './Styles';
-import { addOffer } from '../../aws-functions/aws-functions';
+import {
+	addChatRoom,
+	addChatRoomUser,
+	addOffer,
+} from '../../aws-functions/aws-functions';
 import { useAuth } from '../../contexts/auth';
 
 const example = require('../../assets/images/verify_example.png');
@@ -39,9 +43,34 @@ const ListingDetailsScreen = (props: any) => {
 		React.useState(false);
 	const [offerAmount, setOfferAmount] = React.useState('');
 	const [offerMessage, setOfferMessage] = React.useState('');
-	const [listingImages, setListingImages] = React.useState([
-		'https://popnd82dea5bd54c4b12aa305515ccc9e5e8132355-dev.s3.amazonaws.com/public/test1ProfileImage.jpeg',
-	]);
+
+	const onClick = async () => {
+		try {
+			//  1. Create a new Chat Room
+			const newChatRoomData = await addChatRoom();
+
+			if (!newChatRoomData.data) {
+				console.log(' Failed to create a chat room');
+				return;
+			}
+
+			const newChatRoom = newChatRoomData.data.createChatRoom;
+
+			// 2. Add `seller` to the Chat Room
+			await addChatRoomUser(seller.id, newChatRoom.id);
+
+			//  3. Add authenticated user to the Chat Room
+			await addChatRoomUser(user?.id as string, newChatRoom.id);
+
+			navigation.navigate('NewMessageRoom', {
+				id: newChatRoom.id,
+				name: seller.username,
+				product: product,
+			});
+		} catch (e) {
+			console.log(e);
+		}
+	};
 
 	/**
 	 * use getOfferByUser(buyersID) to check if an offer already exist
@@ -133,7 +162,10 @@ const ListingDetailsScreen = (props: any) => {
 									buyingUserID: user?.id as string,
 									sellingUserID: seller.id,
 									listedItemID: product.id,
-								}).then(() => setOfferModalVisible(!offerModalVisible));
+								}).then(() => {
+									onClick();
+									setOfferModalVisible(!offerModalVisible);
+								});
 							}}
 							disabled={offerAmount ? false : true}
 						/>
