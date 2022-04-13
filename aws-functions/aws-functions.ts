@@ -1,10 +1,11 @@
 import { Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { API, graphqlOperation, Auth } from 'aws-amplify';
+
+import { API, graphqlOperation, Auth, Storage } from 'aws-amplify';
 import {
 	createSneaker,
 	deleteSneaker,
 	createClaim,
+	createListedItem,
 } from '../src/graphql/mutations';
 import {
 	listSneakerStores,
@@ -16,6 +17,7 @@ import {
 	listUsers,
 	donScoreByZipCode,
 	totalSoldSneakersByZipCode,
+	listedItemByZipCode,
 } from '../src/graphql/queries';
 
 export const getUserFromDb = async (userID: string) => {
@@ -129,7 +131,6 @@ export const sendCustomChallenge = async (user: string, OTP: string) => {
 	}
 };
 
-//stores shoes
 export const getSneakersFromUser = async (
 	userId: string
 ): Promise<SneakerData> => {
@@ -233,6 +234,103 @@ export const getTopSellersByZipCode = async (zipCode: string) => {
 		);
 
 		return topSellers.data.totalSoldSneakersByZipCode.items;
+	} catch (e) {
+		console.log('error: ', e);
+	}
+};
+
+const uploadImageToS3 = async (username: string, imageUrl: string) => {
+	console.log('imageUrl: ', imageUrl);
+
+	const response = await fetch(imageUrl);
+	const blob = await response.blob();
+
+	const fileName = `${username}ProfileImage.jpeg`;
+	const data = await Storage.put(fileName, blob, {
+		contentType: 'image/jpeg',
+	});
+	return data;
+};
+/**
+ *
+ * addListedItem() creates a listed item
+ *
+ * Prams: claim sneaker data
+ *
+ * sneakerID,
+ * zipCode,
+ * images,
+ * size,
+ * condition,
+ * price,
+ * brand,
+ * description,
+ * sellerID,
+ * prevSellers,
+ *
+ */
+
+interface listedParams {
+	sneakerID: string;
+	zipCode: string;
+	images: Array<any>;
+	size: string;
+	condition: string;
+	price: string;
+	brand: string;
+	description: string;
+	sellerID: string;
+	prevSellers: Array<string>;
+}
+export const addListedItem = async (verifiedSneaker: listedParams) => {
+	const uriImages: any = [];
+
+	try {
+		verifiedSneaker.images.map(async (image, i) => {
+			const newImage = await uploadImageToS3(
+				image.name,
+				verifiedSneaker.sellerID
+			);
+			const imageURI = await Storage.get(newImage.key, {
+				level: 'public',
+			});
+
+			const newImageURI = imageURI.substring(
+				0,
+				image.indexOf('.jpeg') + '.jpeg'.length
+			);
+			uriImages.push(newImageURI);
+		});
+	} catch (e) {
+		console.log('error: ', e);
+	} finally {
+		const listedItem = {
+			sneakerID: verifiedSneaker.sneakerID,
+			zipCode: verifiedSneaker.zipCode,
+			images: uriImages,
+			size: verifiedSneaker.size,
+			condition: verifiedSneaker.condition,
+			price: verifiedSneaker.price,
+			brand: verifiedSneaker.brand,
+			description: verifiedSneaker.description,
+			sellerID: verifiedSneaker.sellerID,
+		};
+
+		const listings = await API.graphql(
+			graphqlOperation(createListedItem, { input: listedItem })
+		);
+	}
+};
+
+export const getListingByZipCode = async (zipCode: string) => {
+	try {
+		const listings = await API.graphql(
+			graphqlOperation(listedItemByZipCode, {
+				zipCode: zipCode,
+			})
+		);
+
+		return listings.data.listedItemByZipCode.items;
 	} catch (e) {
 		console.log('error: ', e);
 	}

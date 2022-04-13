@@ -9,7 +9,7 @@ export const icons = {
 	plus: require('./addUser.png'),
 	message: require('./messages-icon2.png'),
 	close: require('./Cancel.png'),
-	more: require('./more.png'),
+	more: require('./More.png'),
 };
 
 export type IconTypes = keyof typeof icons;

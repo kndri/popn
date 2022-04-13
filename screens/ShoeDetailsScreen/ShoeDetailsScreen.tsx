@@ -16,6 +16,7 @@ import {
 
 import {
 	checkLoggedUser,
+	deleteUserSneaker,
 	getCurrentSneaker,
 } from '../../aws-functions/aws-functions';
 
@@ -62,27 +63,16 @@ const ShoeDetailsScreen = () => {
 	const handleAction = () =>
 		ActionSheetIOS.showActionSheetWithOptions(
 			{
-				options: ['Create a Listing', 'Remove From Collection', 'Cancel'],
+				options: ['Cancel', 'Create a Listing', 'Delete Sneaker'],
 				destructiveButtonIndex: 1,
-				cancelButtonIndex: 2,
+				cancelButtonIndex: 0,
 				// userInterfaceStyle: 'dark',
 			},
 			(buttonIndex) => {
-				if (buttonIndex === 0) {
-					// if (claim.status === 'verified') {
-					// 	navigation.navigate('NewListing');
-					// } else {
-					// 	toast.show(`This shoe must verified to create a listing.`, {
-					// 		color: 'red',
-					// 	});
-					// }
-					navigation.navigate('NewListing', sneaker);
-				} else if (buttonIndex === 1) {
-					console.log('Pressed Remove');
-					// setResult(Math.floor(Math.random() * 100) + 1);
+				if (buttonIndex === 1) {
+					navigation.navigate('NewListing', { sneakerData: sneaker });
 				} else if (buttonIndex === 2) {
-					console.log('Pressed Cancelled');
-					// setResult('🔮');
+					deleteUserSneaker(shoeID).then(() => navigation.goBack());
 				}
 			}
 		);
@@ -101,7 +91,6 @@ const ShoeDetailsScreen = () => {
 
 	return (
 		<Screen style={styles.CONTAINER}>
-
 			<Modal
 				animationType="slide"
 				// transparent={true}
@@ -113,11 +102,10 @@ const ShoeDetailsScreen = () => {
 			>
 				<View style={styles.MODAL_CONTAINER}>
 					<Header
-						headerTx='Sneaker Verification'
+						headerTx="Sneaker Verification"
 						rightIcon="close"
 						onRightPress={() => {
 							setModalVisible(!modalVisible);
-
 						}}
 					/>
 					<View style={styles.MODAL_HEADING_TEXT}>
@@ -151,9 +139,7 @@ const ShoeDetailsScreen = () => {
 					</View>
 
 					<View style={{ marginTop: 30, marginBottom: 30 }}>
-						<Text
-							style={{ color: 'black', fontSize: 13, textAlign: 'center' }}
-						>
+						<Text style={{ color: 'black', fontSize: 13, textAlign: 'center' }}>
 							Have your reference number handy?
 						</Text>
 					</View>
@@ -172,7 +158,6 @@ const ShoeDetailsScreen = () => {
 					/>
 				</View>
 			</Modal>
-
 
 			<Header
 				style={styles.BACK_BUTTON}
@@ -292,7 +277,7 @@ const ShoeDetailsScreen = () => {
 				<Button
 					text="Contact User"
 					preset="primary"
-				// onPress={() => setModalVisible(true)}
+					// onPress={() => setModalVisible(true)}
 				/>
 			)}
 		</Screen>

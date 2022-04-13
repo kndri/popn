@@ -1,30 +1,31 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  CARD: {
-    alignItems: 'center',
-    backgroundColor: '#E7E7E7', // @TODO: find the color varaible for this
-    borderRadius: 20,
-    height: 125,
-    justifyContent: 'center',
-    padding: 10,
-    width: 150,
-  },
+	CARD: {
+		alignItems: 'center',
+		backgroundColor: '#E7E7E7', // @TODO: find the color varaible for this
+		borderRadius: 20,
+		height: 125,
+		justifyContent: 'center',
+		padding: 10,
+		width: 150,
+		marginRight: 10,
+	},
 
-  BADGE: {
-    position: 'absolute',
-    right: 10,
-    top: 10
-  },
+	BADGE: {
+		position: 'absolute',
+		right: 10,
+		top: 10,
+	},
 
-  PRODUCT: {
-    height: 60,
-    marginHorizontal: 35,
-    marginVertical: 20,
-    width: 100,
-   },
+	PRODUCT: {
+		height: 60,
+		marginHorizontal: 35,
+		marginVertical: 20,
+		width: 100,
+	},
 
-   CONTENT_CONTAINER: {
-     paddingTop: 5
-   }
-})
+	CONTENT_CONTAINER: {
+		paddingTop: 5,
+	},
+});

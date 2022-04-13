@@ -3,28 +3,31 @@ import React, { FC } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Formik } from "formik";
-import { useFormState, useFormDispatch } from "../../contexts/form-context";
+import { Formik } from 'formik';
+import { useFormState, useFormDispatch } from '../../contexts/form-context';
 
-import {
-	Screen,
-	Text,
-	Header,
-	Button,
-} from '../../components';
+import { Screen, Text, Header, Button } from '../../components';
 
 import styles from './styles';
+import { useAuth } from '../../contexts/auth';
 
-interface NewListingProps { props: {} }
+interface NewListingProps {
+	id: string;
+	brand: string;
+	primaryName: string;
+	secondaryName: string;
+	image: string;
+	userID: string;
+}
 
-const NewListingScreen: FC<NewListingProps> = (props): JSX.Element =>  {
-	const navigation = useNavigation();
+const NewListingScreen: FC<NewListingProps> = () => {
 	const route = useRoute();
-
-	const sneaker: any = route.params;
+	const navigation = useNavigation();
+	const { sneakerData }: any = route.params;
+	const { authData: user } = useAuth();
 	const form = React.useRef();
 	const dispatch = useFormDispatch();
-	const { values: formValues, errors: formErrors } = useFormState("user");
+	const { values: formValues, errors: formErrors } = useFormState('user');
 
 	const [title, setTitle] = React.useState('');
 
@@ -63,13 +66,13 @@ const NewListingScreen: FC<NewListingProps> = (props): JSX.Element =>  {
 	]);
 
 	React.useEffect(() => {
-		const unsubscribe = navigation.addListener("blur", () => {
+		const unsubscribe = navigation.addListener('blur', () => {
 			if (form.current) {
 				const { values, errors } = form.current;
 				dispatch({
-					type: "UPDATE_FORM",
+					type: 'UPDATE_FORM',
 					payload: {
-						id: "user",
+						id: 'user',
 						data: { values, errors },
 					},
 				});
@@ -78,10 +81,9 @@ const NewListingScreen: FC<NewListingProps> = (props): JSX.Element =>  {
 		return unsubscribe;
 	}, [navigation]);
 
-
 	React.useEffect(() => {
-		setTitle(`${sneaker.primaryName} ${sneaker.secondaryName}`)
-	}, [])
+		setTitle(`${sneakerData.primaryName} ${sneakerData.secondaryName}`);
+	}, []);
 
 	return (
 		<Formik
@@ -102,33 +104,36 @@ const NewListingScreen: FC<NewListingProps> = (props): JSX.Element =>  {
 					<View style={styles.LISTING_CONTAINER}>
 						{/* SECTION: for title input */}
 						<View>
-							<Text text="Title" preset='bold' />
+							<Text text="Title" preset="bold" />
 							<View style={styles.INPUT_FIELDS_CONTAINER}>
-								<Text preset='default'>{title}</Text>
+								<Text preset="default">{title}</Text>
 							</View>
 						</View>
 
 						{/* SECTION: for price input */}
 						<View style={{ marginTop: 20 }}>
-							<Text text="Price" preset='bold' style={{ marginTop: 6 }} />
+							<Text text="Price" preset="bold" style={{ marginTop: 6 }} />
 							<View style={styles.INPUT_FIELDS_CONTAINER}>
 								<FontAwesome name="dollar" size={15} color="black" />
 								<TextInput
 									style={styles.TEXTFIELD_STYLE}
 									value={values.price}
 									autoCorrect={false}
-									onChangeText={handleChange("price")}
+									onChangeText={handleChange('price')}
 									placeholder="0"
 									placeholderTextColor={'#878C90'}
 									keyboardType="numeric"
 									returnKeyType="done"
 								/>
-
 							</View>
 						</View>
 
 						{/* SECTION: for condition selection */}
-						<Text text="Condition" preset='bold' style={{ marginTop: 26, marginBottom: 6 }} />
+						<Text
+							text="Condition"
+							preset="bold"
+							style={{ marginTop: 26, marginBottom: 6 }}
+						/>
 						<DropDownPicker
 							open={openCondition}
 							value={conditionValue}
@@ -143,19 +148,23 @@ const NewListingScreen: FC<NewListingProps> = (props): JSX.Element =>  {
 								height: 48,
 							}}
 							style={{
-								backgroundColor: "white",
+								backgroundColor: 'white',
 								borderColor: 'white',
 								height: 42,
 							}}
 							dropDownContainerStyle={{
-								borderWidth: 2
+								borderWidth: 2,
 							}}
 							zIndex={3000}
 							zIndexInverse={1000}
 						/>
 
 						{/* SECTION: for shoe size selection */}
-						<Text text="Size" preset='bold' style={{ marginTop: 26, marginBottom: 6 }} />
+						<Text
+							text="Size"
+							preset="bold"
+							style={{ marginTop: 26, marginBottom: 6 }}
+						/>
 						<DropDownPicker
 							open={openSize}
 							value={sizeValue}
@@ -170,12 +179,12 @@ const NewListingScreen: FC<NewListingProps> = (props): JSX.Element =>  {
 								height: 48,
 							}}
 							style={{
-								backgroundColor: "white",
+								backgroundColor: 'white',
 								borderColor: 'white',
-								height: 42
+								height: 42,
 							}}
 							dropDownContainerStyle={{
-								borderWidth: 2
+								borderWidth: 2,
 							}}
 							zIndex={2000}
 							zIndexInverse={2000}
@@ -186,18 +195,34 @@ const NewListingScreen: FC<NewListingProps> = (props): JSX.Element =>  {
 							style={{
 								marginTop: 156,
 								paddingBottom: 50,
-							}}>
+							}}
+						>
 							<Button
 								style={
-									values.price != '' && conditionValue != null && sizeValue != null ?
-										styles.NEXT_BUTTON : styles.DISABLED_NEXT_BUTTON
+									values.price != '' &&
+									conditionValue != null &&
+									sizeValue != null
+										? styles.NEXT_BUTTON
+										: styles.DISABLED_NEXT_BUTTON
 								}
 								text="Next"
 								onPress={() => {
-									setFieldValue('title', title)
-									navigation.navigate("ListingDescription")
+									// We dont need the title since we are using SneakerData information
+									// setFieldValue('title', title);
+									setFieldValue('sneakerID', sneakerData.id);
+									setFieldValue('brand', sneakerData.brand);
+									setFieldValue('sellerID', sneakerData.userID);
+									setFieldValue('zipCode', user?.zipCode);
+
+									// navigation.navigate('ListingDescription');
 								}}
-								disabled={values.price != '' && conditionValue != null && sizeValue != null ? false : true}
+								disabled={
+									values.price != '' &&
+									conditionValue != null &&
+									sizeValue != null
+										? false
+										: true
+								}
 							/>
 						</View>
 					</View>
