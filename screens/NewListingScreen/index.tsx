@@ -207,14 +207,11 @@ const NewListingScreen: FC<NewListingProps> = () => {
 								}
 								text="Next"
 								onPress={() => {
-									// We dont need the title since we are using SneakerData information
-									// setFieldValue('title', title);
 									setFieldValue('sneakerID', sneakerData.id);
 									setFieldValue('brand', sneakerData.brand);
 									setFieldValue('sellerID', sneakerData.userID);
 									setFieldValue('zipCode', user?.zipCode);
-
-									// navigation.navigate('ListingDescription');
+									navigation.navigate('ListingDescription');
 								}}
 								disabled={
 									values.price != '' &&
