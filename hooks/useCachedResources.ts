@@ -15,12 +15,11 @@ export default function useCachedResources() {
         // Load fonts
         await Font.loadAsync({
           ...FontAwesome.font,
-          ReadexPro: require("../assets/fonts/ReadexPro-Regular.ttf"),
-          "ReadexPro-Light": require("../assets/fonts/ReadexPro-Light.ttf"),
-          "ReadexPro-Regular": require("../assets/fonts/ReadexPro-Regular.ttf"),
-          "ReadexPro-Medium": require("../assets/fonts/ReadexPro-Medium.ttf"),
-          "ReadexPro-SemiBold": require("../assets/fonts/ReadexPro-SemiBold.ttf"),
-          "ReadexPro-Bold": require("../assets/fonts/ReadexPro-Bold.ttf")
+          Inter: require("../assets/fonts/inter/Inter-Regular.ttf"),
+          "Inter-Regular": require("../assets/fonts/inter/Inter-Regular.ttf"),
+          "Inter-Medium": require("../assets/fonts/inter/Inter-Medium.ttf"),
+          "Inter-SemiBold": require("../assets/fonts/inter/Inter-SemiBold.ttf"),
+          "Inter-Bold": require("../assets/fonts/inter/Inter-Bold.ttf")
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service

@@ -17,14 +17,14 @@ export const typography = {
   /**
    * The logo font.
    */
-   logo: Platform.select({ ios: "SFProDisplay-Heavy", android: "SFProDisplay-Heavy" }),
+   logo: Platform.select({ ios: "Inter-Bold", android: "Inter-Bold" }),
 
   /**
    * The primary font.  Used in most places.
    */
-  primary: Platform.select({ ios: "ReadexPro", android: "ReadexPro" }),
+  primary: Platform.select({ ios: "Inter", android: "Inter" }),
 
-  primarySemiBold: Platform.select({ ios: "ReadexPro-SemiBold", android: "ReadexPro-SemiBold" }),
+  primarySemiBold: Platform.select({ ios: "Inter-SemiBold", android: "Inter-SemiBold" }),
 
-  primaryBold: Platform.select({ ios: "ReadexPro-Bold", android: "ReadexPro-Bold" }),
+  primaryBold: Platform.select({ ios: "Inter-Bold", android: "Inter-Bold" }),
 }
