@@ -114,7 +114,7 @@ export default function ClaimScreen() {
 			return;
 		}
 		const found = collection.some(
-			(sneaker) => sneaker.secondaryName == item.secondary_name
+			(sneaker) => sneaker.secondaryName == item.secondaryName
 		);
 
 		if (found) {
