@@ -9,247 +9,14 @@ import { useState } from 'react';
 import { listUsers } from '../../src/graphql/queries';
 
 import styles from './Styles';
-
-const listingData = [
-	{
-		id: '46321348',
-		sneakerID: '65463166351',
-		sneakerData: {
-			id: 1,
-			brand: 'Jordan',
-			primary_name: 'Jordan 11 Retro',
-			secondary_name: 'Cool Grey',
-			price: '$235.00',
-			image_url:
-				'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
-		},
-		zipCode: '28215',
-		// THIS IS JUST AN EXAMPLE OF HOW IMAGES WILL LOOK LIKE!
-		images: [
-			'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
-			'https://popn-app.s3.amazonaws.com/sneakers/nike_dunk_low_retro_white_black.png',
-		],
-		size: '9 1/2',
-		condition: 'New',
-		price: '$200',
-		brand: 'Jordan',
-		description:
-			'I have the box in great condition. I have never worn the shoes, they are brand new. The shoes have no creases. I have the receipt for proof of purchase as well. I have the box in great condition. I have never worn the shoes, they are brand new. The shoes have no creases. I have the receipt for proof of purchase as well.',
-		sellerID: '6513551651238216188',
-		seller: {
-			id: '6513551651238216188',
-			age: '16',
-			username: 'jimmy',
-			email: 'jimmy@gmail.com',
-			avatarImageURL:
-				'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
-			sneakers: [
-				{
-					//sneakers object
-				},
-			],
-			soldSneakers: [
-				{
-					//sold sneakers object
-				},
-			],
-			offers: [
-				{
-					// offers object
-				},
-			],
-			following: [{}],
-			follower: [{}],
-			status: 'Verified',
-			chatRoomUser: [
-				{
-					// chatRoomUsers object
-				},
-			],
-		},
-		prevSellers: ['3486321864', '68435186615665', '435431321531313331'],
-	},
-	{
-		id: '463218348',
-		sneakerID: '65463166351',
-		sneakerData: {
-			id: 1,
-			brand: 'Jordan',
-			primary_name: 'Jordan 11 Retro',
-			secondary_name: 'Cool Grey',
-			price: '$235.00',
-			image_url:
-				'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
-		},
-		zipCode: '28215',
-		// THIS IS JUST AN EXAMPLE OF HOW IMAGES WILL LOOK LIKE!
-		images: [
-			'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
-			'https://popn-app.s3.amazonaws.com/sneakers/nike_dunk_low_retro_white_black.png',
-		],
-		size: '9 1/2',
-		condition: 'New',
-		price: '$200',
-		brand: 'Jordan',
-		description:
-			'I have the box in great condition. I have never worn the shoes, they are brand new. The shoes have no creases. I have the receipt for proof of purchase as well. I have the box in great condition. I have never worn the shoes, they are brand new. The shoes have no creases. I have the receipt for proof of purchase as well.',
-		sellerID: '6513551651238216188',
-		seller: {
-			id: '6513551651238216188',
-			age: '16',
-			username: 'jimmy',
-			email: 'jimmy@gmail.com',
-			avatarImageURL:
-				'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
-			sneakers: [
-				{
-					//sneakers object
-				},
-			],
-			soldSneakers: [
-				{
-					//sold sneakers object
-				},
-			],
-			offers: [
-				{
-					// offers object
-				},
-			],
-			following: [{}],
-			follower: [{}],
-			status: 'Verified',
-			chatRoomUser: [
-				{
-					// chatRoomUsers object
-				},
-			],
-		},
-		prevSellers: ['3486321864', '68435186615665', '435431321531313331'],
-	},
-	{
-		id: '463251348',
-		sneakerID: '65463166351',
-		sneakerData: {
-			id: 1,
-			brand: 'Jordan',
-			primary_name: 'Jordan 11 Retro',
-			secondary_name: 'Cool Grey',
-			price: '$235.00',
-			image_url:
-				'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
-		},
-		zipCode: '28215',
-		// THIS IS JUST AN EXAMPLE OF HOW IMAGES WILL LOOK LIKE!
-		images: [
-			'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
-			'https://popn-app.s3.amazonaws.com/sneakers/nike_dunk_low_retro_white_black.png',
-		],
-		size: '9 1/2',
-		condition: 'New',
-		price: '$200',
-		brand: 'Jordan',
-		description:
-			'I have the box in great condition. I have never worn the shoes, they are brand new. The shoes have no creases. I have the receipt for proof of purchase as well. I have the box in great condition. I have never worn the shoes, they are brand new. The shoes have no creases. I have the receipt for proof of purchase as well.',
-		sellerID: '6513551651238216188',
-		seller: {
-			id: '6513551651238216188',
-			age: '16',
-			username: 'jimmy',
-			email: 'jimmy@gmail.com',
-			avatarImageURL:
-				'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
-			sneakers: [
-				{
-					//sneakers object
-				},
-			],
-			soldSneakers: [
-				{
-					//sold sneakers object
-				},
-			],
-			offers: [
-				{
-					// offers object
-				},
-			],
-			following: [{}],
-			follower: [{}],
-			status: 'Verified',
-			chatRoomUser: [
-				{
-					// chatRoomUsers object
-				},
-			],
-		},
-		prevSellers: ['3486321864', '68435186615665', '435431321531313331'],
-	},
-	{
-		id: '463214348',
-		sneakerID: '65463166351',
-		sneakerData: {
-			id: 1,
-			brand: 'Jordan',
-			primary_name: 'Jordan 11 Retro',
-			secondary_name: 'Cool Grey',
-			price: '$235.00',
-			image_url:
-				'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
-		},
-		zipCode: '28215',
-		// THIS IS JUST AN EXAMPLE OF HOW IMAGES WILL LOOK LIKE!
-		images: [
-			'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
-			'https://popn-app.s3.amazonaws.com/sneakers/nike_dunk_low_retro_white_black.png',
-		],
-		size: '9 1/2',
-		condition: 'New',
-		price: '$200',
-		brand: 'Jordan',
-		description:
-			'I have the box in great condition. I have never worn the shoes, they are brand new. The shoes have no creases. I have the receipt for proof of purchase as well. I have the box in great condition. I have never worn the shoes, they are brand new. The shoes have no creases. I have the receipt for proof of purchase as well.',
-		sellerID: '6513551651238216188',
-		seller: {
-			id: '6513551651238216188',
-			age: '16',
-			username: 'jimmy',
-			email: 'jimmy@gmail.com',
-			avatarImageURL:
-				'https://popn-app.s3.amazonaws.com/sneakers/jordan_11_retro_cool_grey.png',
-			sneakers: [
-				{
-					//sneakers object
-				},
-			],
-			soldSneakers: [
-				{
-					//sold sneakers object
-				},
-			],
-			offers: [
-				{
-					// offers object
-				},
-			],
-			following: [{}],
-			follower: [{}],
-			status: 'Verified',
-			chatRoomUser: [
-				{
-					// chatRoomUsers object
-				},
-			],
-		},
-		prevSellers: ['3486321864', '68435186615665', '435431321531313331'],
-	},
-];
+import { getListingByZipCode } from '../../aws-functions/aws-functions';
 
 export default function UserSearchScreen() {
 	const navigation = useNavigation();
 	const [query, setQuery] = React.useState('');
 	const [searchedContacts, setSearchedContacts] = React.useState<any>([]);
 	const [searchedSneakers, setSearchedSneakers] = React.useState<any>([]);
+	const [listingData, setListingData] = React.useState<any>([]);
 	const [users, setUsers] = useState<any>([]);
 
 	const fetchUsers = async () => {
@@ -267,7 +34,10 @@ export default function UserSearchScreen() {
 	/**
 	 * This fuction will fetch the sneakers by zip code
 	 */
-	const fetchSneakersByZipCode = async () => {};
+	const fetchSneakersByZipCode = async () => {
+		const listings = await getListingByZipCode('27330');
+		setListingData(listings);
+	};
 
 	React.useEffect(() => {
 		fetchSneakersByZipCode();
@@ -292,11 +62,11 @@ export default function UserSearchScreen() {
 		listingData
 			.filter(
 				(sneakerObject) =>
-					sneakerObject.sneakerData.primary_name
+					sneakerObject.sneakerData.primaryName
 						.toLowerCase()
 						.replace(/\s+/g, '')
 						.includes(query.toLowerCase().replace(/\s+/g, '')) ||
-					sneakerObject.sneakerData.secondary_name
+					sneakerObject.sneakerData.secondaryame
 						.toLowerCase()
 						.replace(/\s+/g, '')
 						.includes(query.toLowerCase().replace(/\s+/g, ''))

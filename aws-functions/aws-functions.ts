@@ -56,9 +56,9 @@ export const addUserSneaker = async (sneakerObject: Object) => {
 
 		const newSneaker = {
 			brand: sneakerObject.brand,
-			primaryName: sneakerObject.primary_name,
-			secondaryName: sneakerObject.secondary_name,
-			image: sneakerObject.image_url,
+			primaryName: sneakerObject.primaryName,
+			secondaryName: sneakerObject.secondaryName,
+			image: sneakerObject.imageUrl,
 			userID: currentUser.attributes.sub,
 		};
 		await API.graphql(graphqlOperation(createSneaker, { input: newSneaker }));
