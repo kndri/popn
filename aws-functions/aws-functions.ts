@@ -368,10 +368,11 @@ export const getOfferByUser = async (userID: string) => {
 	return offer;
 };
 
-export const addChatRoom = async () => {
+export const addChatRoom = async (offerID: string) => {
 	const newChatRoomData = await API.graphql(
 		graphqlOperation(createChatRoom, {
 			input: {
+				offerID: offerID,
 				lastMessageID: Math.round(Math.random() * 1000000),
 			},
 		})

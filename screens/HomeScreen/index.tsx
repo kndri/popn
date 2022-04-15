@@ -42,7 +42,7 @@ export default function Home() {
 				/>
 			</View>
 
-			<View style={{ marginTop: 20, marginBottom: 20 }}>
+			{/* <View style={{ marginTop: 20, marginBottom: 20 }}>
 				<TouchableOpacity
 					onPress={() => navigation.navigate('Location')}
 					style={styles.LOCATION_CONTAINER}
@@ -53,7 +53,7 @@ export default function Home() {
 					/>
 					<Text>Charlotte: {distanceValue} Miles</Text>
 				</TouchableOpacity>
-			</View>
+			</View> */}
 
 			<View>{<Feed productData={listingData} />}</View>
 		</Screen>

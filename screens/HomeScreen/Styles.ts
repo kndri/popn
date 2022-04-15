@@ -17,7 +17,7 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		height: 48,
 		justifyContent: 'center',
-		marginTop: 25,
+		marginVertical: 25,
 		paddingHorizontal: spacing[4],
 		width: '100%',
 	},

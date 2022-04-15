@@ -1,41 +1,44 @@
 import React from 'react';
 import {
 	View,
-	ViewStyle,
-	ImageStyle,
 	Modal,
 	TouchableOpacity,
 	TextInput,
 } from 'react-native';
+
+import { API, graphqlOperation } from 'aws-amplify';
+import { FontAwesome } from '@expo/vector-icons';
+import { SliderBox } from 'react-native-image-slider-box';
+import { useNavigation } from '@react-navigation/native';
+
 import {
-	Screen,
-	Text,
-	Header,
 	AutoImage as Image,
 	Button,
-	TextField,
+	Header,
+	Screen,
+	Text,
 	VerificationBage,
 } from '../../components';
-import { useNavigation } from '@react-navigation/native';
-import { color, spacing } from '../../theme';
-import { SliderBox } from 'react-native-image-slider-box';
-import { FontAwesome } from '@expo/vector-icons';
 
-import styles from './Styles';
 import {
 	addChatRoom,
 	addChatRoomUser,
 	addOffer,
 } from '../../aws-functions/aws-functions';
+
+import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
+import { spacing } from '../../theme';
 import { useAuth } from '../../contexts/auth';
+
+import styles from './styles';
 
 const example = require('../../assets/images/verify_example.png');
 const verified = require('../../assets/images/verified_badge.png');
 const Seller = require('../../assets/images/UserImage.png');
 
 const ListingDetailsScreen = (props: any) => {
-	const product = props.route.params;
-	const { sneakerData, seller } = product;
+	const listing = props.route.params;
+	const { sneakerData, seller } = listing;
 	const { authData: user } = useAuth();
 	const navigation = useNavigation();
 	const [offerModalVisible, setOfferModalVisible] = React.useState(false);
@@ -45,9 +48,10 @@ const ListingDetailsScreen = (props: any) => {
 	const [offerMessage, setOfferMessage] = React.useState('');
 
 	const onClick = async (offer: any) => {
+		console.log('offer: ', offer)
 		try {
 			//  1. Create a new Chat Room
-			const newChatRoomData = await addChatRoom();
+			const newChatRoomData = await addChatRoom(offer.createOffer.id);
 
 			if (!newChatRoomData.data) {
 				console.log(' Failed to create a chat room');
@@ -59,15 +63,59 @@ const ListingDetailsScreen = (props: any) => {
 			// 2. Add `seller` to the Chat Room
 			await addChatRoomUser(seller.id, newChatRoom.id);
 
-			//  3. Add authenticated user to the Chat Room
+			// 3. Add authenticated user/ buyer to the Chat Room
 			await addChatRoomUser(user?.id as string, newChatRoom.id);
+
+			// 4. Add first automated message
+
+			const automatedMessage = `${user?.username} has offered ${offerAmount} for the item: ${sneakerData.primaryName} ${sneakerData.secondaryName}. Please accept or decline the offer.`
+
+			const firstMessage = await API.graphql(
+				graphqlOperation(createMessage, {
+					input: {
+						text: automatedMessage,
+						userID: user?.id,
+						chatRoomID: newChatRoom.id,
+					},
+				})
+			);
+
+			const updateChatRoomLastMessage = async (messageId: string) => {
+				try {
+					await API.graphql(
+						graphqlOperation(updateChatRoom, {
+							input: {
+								id: newChatRoom.id,
+								lastMessageID: messageId,
+							},
+						})
+					);
+				} catch (e) {
+					console.log(e);
+				}
+			};
+
+			await updateChatRoomLastMessage(firstMessage.data.createMessage.id);
+
+			// 5. Add second optional offer message
+			if (offerMessage !== '') {
+				const optionalMessage = await API.graphql(
+					graphqlOperation(createMessage, {
+						input: {
+							text: offerMessage,
+							userID: user?.id,
+							chatRoomID: newChatRoom.id,
+						},
+					})
+				);
+	
+				await updateChatRoomLastMessage(optionalMessage.data.createMessage.id);
+			}
 
 			navigation.navigate('MessageRoom', {
 				id: newChatRoom.id,
 				name: seller.username,
-				product: product,
-				offerMessage: offerMessage,
-				offer: offer,
+				offerID: offer.createOffer.id,
 			});
 		} catch (e) {
 			console.log(e);
@@ -159,12 +207,11 @@ const ListingDetailsScreen = (props: any) => {
 							}
 							text="Make Offer"
 							onPress={() => {
-								// The offer message will not be stored in the offer data
 								addOffer({
 									offerAmount: offerAmount,
 									buyingUserID: user?.id as string,
 									sellingUserID: seller.id,
-									listedItemID: product.id,
+									listedItemID: listing.id,
 								}).then((offer) => {
 									onClick(offer);
 									setOfferModalVisible(!offerModalVisible);
@@ -241,7 +288,7 @@ const ListingDetailsScreen = (props: any) => {
 
 			{/* image slider */}
 			<SliderBox
-				images={product.images}
+				images={listing.images}
 				sliderBoxHeight={315}
 				dotColor="black"
 				inactiveDotColor="#90A4AE"
@@ -270,9 +317,9 @@ const ListingDetailsScreen = (props: any) => {
 			/>
 			{/* end of image slider */}
 
-			{/* product details section  */}
+			{/* listing details section  */}
 			<View style={styles.LISTING_DETAILS}>
-				<Text preset="bold" text={`#${product.brand}`} />
+				<Text preset="bold" text={`#${listing.brand}`} />
 				<Text
 					preset="default"
 					text={`${sneakerData.primaryName} ${sneakerData.secondaryName}`}
@@ -280,7 +327,7 @@ const ListingDetailsScreen = (props: any) => {
 				/>
 				<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 					<FontAwesome name="dollar" size={30} color="black" style={{ marginTop: 20 }} />
-					<Text preset="header" text={product.price} style={{ marginTop: 20 }} />
+					<Text preset="header" text={listing.price} style={{ marginTop: 20 }} />
 				</View>
 
 
@@ -288,7 +335,7 @@ const ListingDetailsScreen = (props: any) => {
 					<Text preset="default" text="Condition" style={{ marginTop: 31 }} />
 					<Text
 						preset="default"
-						text={product.condition}
+						text={listing.condition}
 						style={{ marginTop: 31 }}
 					/>
 				</View>
@@ -297,7 +344,7 @@ const ListingDetailsScreen = (props: any) => {
 					<Text preset="default" text="Size" style={{ marginTop: 31 }} />
 					<Text
 						preset="default"
-						text={product.size}
+						text={listing.size}
 						style={{ marginTop: 31 }}
 					/>
 				</View>
@@ -310,7 +357,7 @@ const ListingDetailsScreen = (props: any) => {
 					/>
 					<Text
 						preset="default"
-						text={product.description}
+						text={listing.description}
 						style={{ marginTop: 5 }}
 					/>
 				</View>

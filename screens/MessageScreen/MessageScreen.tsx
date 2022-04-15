@@ -31,21 +31,23 @@ export default function MessageScreen() {
 
 	const fetchChatRooms = async () => {
 		try {
-			const userData = await API.graphql(
+			const chatRoomsByUser = await API.graphql(
 				graphqlOperation(chatRoomUserByUser, {
-					id: user?.id,
+					userID: user?.id,
 				})
 			);
-			setUserData(userData);
-			let chatRoomsArr = userData.data.getUser.chatRoomUserByUser.items;
+			// console.log('chatRoomsByUser: ', chatRoomsByUser)
+			let chatRoomsArr = chatRoomsByUser.data.chatRoomUserByUser.items;
 			{
 				/*TODO: make is so users of deleted messages go back to contacts screen;
 				 currently only happens when all messages are deleted
 			*/
 			}
+			// console.log('chatRoomsArr.length : ', chatRoomsArr.length )
 			if (chatRoomsArr.length > 0) {
 				chatRoomsArr.map((room) => {
 					room.chatRoom.chatRoomUsers.items.map((item) => {
+						// console.log('item: ', item);
 						if (item.user.username) {
 							setExcludedUsers((excludedUsers) => [
 								...excludedUsers,
@@ -71,7 +73,7 @@ export default function MessageScreen() {
 		}
 	};
 
-	// const uniqueExcludedUsers = [...new Set(excludedUsers)];
+	// const uniqueE xcludedUsers = [...new Set(excludedUsers)];
 
 	Array(chatRooms.length)
 		.fill('')
@@ -144,8 +146,6 @@ export default function MessageScreen() {
 				<Header
 					style={{ paddingHorizontal: spacing[3] }}
 					headerTx="Messages"
-					leftIcon="back"
-					onLeftPress={() => navigation.goBack()}
 				/>
 				{chatRooms.length === 0 ? (
 					<View style={{ height: '100%', justifyContent: 'center' }}>

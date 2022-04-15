@@ -42,6 +42,7 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
     const [otherProfilePic, setOtherProfilePic] = React.useState("");
 
     React.useEffect(() => {
+        console.log('chatRoom: ', chatRoom)
         getOtherUser();
     }, [])
 
@@ -67,7 +68,7 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
 
     return (
         <>
-            < Pressable style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, currentUser: user }); }
+            < Pressable style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, offerID: chatRoom.offerID}); }
             }>
                 <View style={LEFT_SIDE}>
                     <Image

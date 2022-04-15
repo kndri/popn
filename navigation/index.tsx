@@ -334,7 +334,7 @@ function BottomTabNavigator() {
 
 			<BottomTab.Screen
 				name="Message"
-				component={MessageRoomScreen}
+				component={MessageScreen}
 				options={{
 					title: 'Messages',
 					tabBarIcon: ({ focused }) => (

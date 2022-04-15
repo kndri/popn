@@ -1276,9 +1276,9 @@ export const getSneakerStore = /* GraphQL */ `
 		getSneakerStore(id: $id) {
 			id
 			brand
-			primary_name
-			secondary_name
-			image_url
+			primaryName
+			secondaryName
+			imageUrl
 		}
 	}
 `;
@@ -1465,6 +1465,18 @@ export const chatRoomUserByUser = /* GraphQL */ `
 					lastMessageID
 					createdAt
 					updatedAt
+					chatRoomUsers {
+          items {
+            user {
+              username
+              avatarImageURL
+            }
+          }
+        }
+				lastMessage {
+          updatedAt
+          text
+        }
 				}
 				createdAt
 				updatedAt

@@ -2,11 +2,11 @@ import * as React from 'react';
 import { View, ViewStyle, Image } from 'react-native';
 import { spacing } from '../../theme';
 
-import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
 
 import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
 
-import { messagesByChatRoom } from '../../src/graphql/queries';
+import { messagesByChatRoom, getOffer } from '../../src/graphql/queries';
 import { onCreateMessage } from '../../src/graphql/subscriptions';
 
 import { Header, Text, Button } from '../../components';
@@ -35,30 +35,19 @@ const CENTER: ViewStyle = {
 export type MessageRoomScreenProps = {
 	id: string;
 	name: string;
-	user: object;
+	offerID: string;
 };
 
 export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const { authData: user } = useAuth();
-	const route = useRoute();
-	const { offer, product } = route.params!;
+	const { offerID, id, name } = props;
 	const navigation = useNavigation();
 	const insets = useSafeAreaInsets();
+	const [offer, setOffer] = React.useState<{}>({})
+	const [lisiting, setListing] = React.useState<{}>({})
+
 	const [messages, setMessages] = React.useState<IMessage[]>([]);
 	const listedShoe = require('../../assets/images/jordans.png');
-
-	React.useEffect(() => {
-		const fetchUser = async () => {
-			const user = await Auth.currentAuthenticatedUser();
-			setMyUserId(user.attributes.sub);
-			setMyName(user.attributes.preferred_username);
-		};
-		fetchUser();
-	}, []);
-
-	React.useEffect(() => {
-		fetchMessages();
-	}, []);
 
 	const fetchMessages = async () => {
 		const messagesData = await API.graphql(
@@ -85,6 +74,25 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 		setMessages(giftedChatMessages);
 	};
 
+	const fetchOffer = async ( offerID: string) => {
+		const offer = await API.graphql(
+			graphqlOperation(getOffer, {
+				id: offerID
+			})
+		);
+
+		setOffer(offer);
+		setListing(offer.listedItem);
+		console.log('lisiting: ', offer.listedItem);
+	}
+	
+	React.useEffect(() => {
+		fetchMessages();
+		fetchOffer(offerID);
+	}, []);
+
+
+
 	React.useEffect(() => {
 		const subscription = API.graphql(
 			graphqlOperation(onCreateMessage)
@@ -109,7 +117,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			await API.graphql(
 				graphqlOperation(updateChatRoom, {
 					input: {
-						id: route.params?.id,
+						id: id,
 						lastMessageID: messageId,
 					},
 				})
@@ -126,7 +134,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 					input: {
 						text: messages[0].text,
 						userID: messages[0].user._id,
-						chatRoomID: route.params?.id,
+						chatRoomID: id,
 					},
 				})
 			);
@@ -187,9 +195,9 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			{/* header view */}
 			<View style={[styles.CENTER, { marginTop: insets.top }]}>
 				<Header
-					headerTx={`${route.params?.name}`}
+					headerTx={`${name}`}
 					leftIcon="back"
-					onLeftPress={() => navigation.goBack()}
+					onLeftPress={() => navigation.navigate('Message')}
 				/>
 			</View>
 
@@ -209,10 +217,10 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 
 				<View style={{ marginLeft: 12 }}>
 					<Text preset="bold" style={{ color: 'white' }}>
-						{product.sneakerData.primaryName}
+						{lisiting.sneakerData.primaryName}
 					</Text>
 					<Text preset="bold" style={{ color: 'white' }}>
-						{product.sneakerData.secondaryName}
+						{lisiting.sneakerData.secondaryName}
 					</Text>
 				</View>
 
