@@ -62,7 +62,7 @@ const ListingDetailsScreen = (props: any) => {
 			//  3. Add authenticated user to the Chat Room
 			await addChatRoomUser(user?.id as string, newChatRoom.id);
 
-			navigation.navigate('NewMessageRoom', {
+			navigation.navigate('MessageRoom', {
 				id: newChatRoom.id,
 				name: seller.username,
 				product: product,
@@ -102,7 +102,7 @@ const ListingDetailsScreen = (props: any) => {
 						<View>
 							<Text preset="bold">Your Offer</Text>
 							<View style={styles.OFFER_BOX}>
-								<FontAwesome name="dollar" size={20} color="black" />
+								<FontAwesome name="dollar" size={15} color="black" />
 								<TextInput
 									style={{
 										flex: 1,
@@ -113,6 +113,7 @@ const ListingDetailsScreen = (props: any) => {
 										borderColor: '#FFFFFF',
 										backgroundColor: 'white',
 										alignItems: 'flex-start',
+										paddingLeft: 3
 									}}
 									value={offerAmount}
 									autoCorrect={false}

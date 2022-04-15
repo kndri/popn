@@ -41,10 +41,11 @@ export type MessageRoomScreenProps = {
 export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const { authData: user } = useAuth();
 	const route = useRoute();
+	const { offer, product } = route.params!;
 	const navigation = useNavigation();
 	const insets = useSafeAreaInsets();
 	const [messages, setMessages] = React.useState<IMessage[]>([]);
-	const listedShoe = require("../../assets/images/jordans.png");
+	const listedShoe = require('../../assets/images/jordans.png');
 
 	React.useEffect(() => {
 		const fetchUser = async () => {
@@ -192,73 +193,90 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 				/>
 			</View>
 
-
 			{/* view for offer data */}
-			<View style={{ backgroundColor: 'black', height: 62, flexDirection: 'row', alignItems: 'center', }}>
+			<View
+				style={{
+					backgroundColor: 'black',
+					height: 62,
+					flexDirection: 'row',
+					alignItems: 'center',
+					marginBottom: 5
+				}}
+			>
 				<View style={{ marginLeft: 17 }}>
-					<Image source={listedShoe} style={{ width: 52, height: 38, }} />
+					<Image source={listedShoe} style={{ width: 52, height: 38 }} />
 				</View>
 
-				<View style={{ marginLeft: 12, }}>
-					<Text preset='bold' style={{ color: 'white' }}>Jordan 11</Text>
-					<Text preset='bold' style={{ color: 'white' }}>Retro Cool Gray</Text>
+				<View style={{ marginLeft: 12 }}>
+					<Text preset="bold" style={{ color: 'white' }}>
+						{product.sneakerData.primaryName}
+					</Text>
+					<Text preset="bold" style={{ color: 'white' }}>
+						{product.sneakerData.secondaryName}
+					</Text>
 				</View>
 
 				<View style={{ position: 'absolute', left: 322 }}>
-					<Text preset='bold' style={{ color: 'white', }}>$200</Text>
+					<Text preset="bold" style={{ color: 'white' }}>
+						${offer.createOffer.offerAmount}
+					</Text>
 				</View>
 			</View>
 
-			{/* conditional view based on the offer status 
-		needs to be refactored to match offer status values to render the correct buttons
-	*/}
-			{route.params?.name == undefined ? (
+			{offer.createOffer.status == 'pending' && (
 				<>
-					<View style={{ height: 62, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+					<View
+						style={{
+							height: 62,
+							flexDirection: 'row',
+							alignItems: 'center',
+							justifyContent: 'space-around',
+						}}
+					>
 						<Button
 							style={{
 								borderRadius: 4,
-								width: 146,
+								width: '45%',
 								backgroundColor: 'black',
 								borderWidth: 2,
 							}}
 							text="Accept"
-						// onPress={() => {
-						// 	console.log('accepted')
-						// }}
+							// onPress={() => {
+							// 	console.log('accepted')
+							// }}
 						/>
 						<Button
 							style={{
 								borderRadius: 4,
-								width: 146,
+								width: '45%',
 								backgroundColor: 'white',
 								borderWidth: 2,
-								borderColor: 'black'
-
+								borderColor: 'black',
 							}}
 							text="Decline"
 							textStyle={{ color: 'black' }}
-						// onPress={() => {
-						// 	console.log('declined')
-						// }}
+							// onPress={() => {
+							// 	console.log('declined')
+							// }}
 						/>
 					</View>
 				</>
-			) : (
+			)}
+
+			{offer.createOffer.status == 'accepted' && (
 				<View style={{ alignSelf: 'center', marginTop: 5 }}>
 					<Button
 						style={{
 							borderRadius: 4,
-							width: 319
+							width: 319,
 						}}
 						text="Confirm Transaction"
 						onPress={() => {
-							console.log('declined')
+							console.log('declined');
 						}}
 					/>
 				</View>
 			)}
-
 
 			<GiftedChat
 				isTyping={true}

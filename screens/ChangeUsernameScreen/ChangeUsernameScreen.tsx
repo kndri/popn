@@ -12,7 +12,7 @@ import { updateUser } from '../../src/graphql/mutations';
 import styles from './Styles';
 
 export default function ChangeUsernameScreen() {
-	const { authData: user } = useAuth();
+	const { authData: user, updateAuth } = useAuth();
 	const toast = useToast();
 	const navigation = useNavigation();
 	const [newUsername, setNewUsername] = useState('');
@@ -33,6 +33,8 @@ export default function ChangeUsernameScreen() {
 			await Auth.updateUserAttributes(user, {
 				preferred_username: newUsername,
 			});
+			updateAuth();
+			navigation.navigate('Profile');
 			toast.show(`Your username has been changed!`);
 		} catch (error) {
 			console.log(error);
