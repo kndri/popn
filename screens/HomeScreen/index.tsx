@@ -19,7 +19,7 @@ export default function Home() {
 	const [query, setQuery] = React.useState('');
 
 	const getListing = async () => {
-		const data = await getListingByZipCode('27330');
+		const data = await getListingByZipCode('56666');
 
 		setListingData(data);
 	};

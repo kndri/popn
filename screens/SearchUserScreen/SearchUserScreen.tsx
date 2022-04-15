@@ -35,7 +35,7 @@ export default function UserSearchScreen() {
 	 * This fuction will fetch the sneakers by zip code
 	 */
 	const fetchSneakersByZipCode = async () => {
-		const listings = await getListingByZipCode('27330');
+		const listings = await getListingByZipCode('56666');
 		setListingData(listings);
 	};
 
