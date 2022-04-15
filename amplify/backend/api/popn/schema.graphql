@@ -197,9 +197,9 @@ enum OfferStatus {
 type SneakerStore @model {
 	id: ID!
 	brand: String!
-	primary_name: String!
-	secondary_name: String!
-	image_url: String!
+	primaryName: String!
+	secondaryName: String!
+	imageUrl: String!
 }
 enum ClaimStatus {
 	verified

@@ -49,11 +49,11 @@ export default function ClaimScreen() {
 			sneakerDb
 				.filter(
 					(sneakerObject) =>
-						sneakerObject.primary_name
+						sneakerObject.primaryName
 							.toLowerCase()
 							.replace(/\s+/g, '')
 							.includes(query.toLowerCase().replace(/\s+/g, '')) ||
-						sneakerObject.secondary_name
+						sneakerObject.secondaryName
 							.toLowerCase()
 							.replace(/\s+/g, '')
 							.includes(query.toLowerCase().replace(/\s+/g, ''))
@@ -200,14 +200,14 @@ export default function ClaimScreen() {
 						}}
 					>
 						<Text
-							text={`${item.primary_name}`}
+							text={`${item.primaryName}`}
 							style={{ fontSize: 12, color: '#979797' }}
 						/>
-						<Text text={`${item.secondary_name}`} style={{ fontSize: 10 }} />
+						<Text text={`${item.secondaryName}`} style={{ fontSize: 10 }} />
 					</View>
 					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
 						<Image
-							source={{ uri: item.image_url }}
+							source={{ uri: item.imageUrl }}
 							style={{ height: 81, width: 100, resizeMode: 'contain' }}
 						/>
 					</View>
@@ -262,14 +262,14 @@ export default function ClaimScreen() {
 						}}
 					>
 						<Text
-							text={`${item.primary_name}`}
+							text={`${item.primaryName}`}
 							style={{ fontSize: 12, color: '#979797' }}
 						/>
-						<Text text={`${item.secondary_name}`} style={{ fontSize: 10 }} />
+						<Text text={`${item.secondaryName}`} style={{ fontSize: 10 }} />
 					</View>
 					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
 						<Image
-							source={{ uri: item.image_url }}
+							source={{ uri: item.imageUrl }}
 							style={{ height: 81, width: 100, resizeMode: 'contain' }}
 						/>
 					</View>

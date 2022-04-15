@@ -1292,9 +1292,9 @@ export const listSneakerStores = /* GraphQL */ `
 			items {
 				id
 				brand
-				primary_name
-				secondary_name
-				image_url
+				primaryName
+				secondaryName
+				imageUrl
 			}
 			nextToken
 		}
