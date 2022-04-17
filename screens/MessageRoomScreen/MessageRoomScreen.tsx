@@ -1,12 +1,16 @@
 import * as React from 'react';
-import { View, ViewStyle, Image } from 'react-native';
+import { View, ViewStyle, Image, ActivityIndicator } from 'react-native';
 import { spacing } from '../../theme';
 
 import { API, graphqlOperation } from 'aws-amplify';
 
 import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
 
-import { messagesByChatRoom, getOffer } from '../../src/graphql/queries';
+import {
+	messagesByChatRoom,
+	getOffer,
+	getListedItem,
+} from '../../src/graphql/queries';
 import { onCreateMessage } from '../../src/graphql/subscriptions';
 
 import { Header, Text, Button } from '../../components';
@@ -40,11 +44,13 @@ export type MessageRoomScreenProps = {
 
 export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const { authData: user } = useAuth();
-	const { offerID, id, name } = props;
 	const navigation = useNavigation();
+	const route = useRoute();
+	const { offerID, id, name } = route.params;
 	const insets = useSafeAreaInsets();
-	const [offer, setOffer] = React.useState<{}>({})
-	const [lisiting, setListing] = React.useState<{}>({})
+	const [isLoading, setIsLoading] = React.useState(true);
+	const [offer, setOffer] = React.useState<{}>({});
+	const [listing, setListing] = React.useState<{}>({});
 
 	const [messages, setMessages] = React.useState<IMessage[]>([]);
 	const listedShoe = require('../../assets/images/jordans.png');
@@ -74,24 +80,30 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 		setMessages(giftedChatMessages);
 	};
 
-	const fetchOffer = async ( offerID: string) => {
+	const fetchOffer = async (offerID: string) => {
 		const offer = await API.graphql(
 			graphqlOperation(getOffer, {
-				id: offerID
+				id: offerID,
 			})
 		);
 
-		setOffer(offer);
-		setListing(offer.listedItem);
-		console.log('lisiting: ', offer.listedItem);
-	}
-	
+		const listing = await API.graphql(
+			graphqlOperation(getListedItem, {
+				id: offer.data.getOffer.listedItemID,
+			})
+		);
+
+		Promise.all([offer, listing]).then(() => {
+			setOffer(offer.data.getOffer),
+				setListing(listing.data.getListedItem),
+				setIsLoading(false);
+		});
+	};
+
 	React.useEffect(() => {
 		fetchMessages();
 		fetchOffer(offerID);
 	}, []);
-
-
 
 	React.useEffect(() => {
 		const subscription = API.graphql(
@@ -191,125 +203,138 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	);
 
 	return (
-		<View style={styles.CONTAINER}>
-			{/* header view */}
-			<View style={[styles.CENTER, { marginTop: insets.top }]}>
-				<Header
-					headerTx={`${name}`}
-					leftIcon="back"
-					onLeftPress={() => navigation.navigate('Message')}
-				/>
-			</View>
-
-			{/* view for offer data */}
-			<View
-				style={{
-					backgroundColor: 'black',
-					height: 62,
-					flexDirection: 'row',
-					alignItems: 'center',
-					marginBottom: 5
-				}}
-			>
-				<View style={{ marginLeft: 17 }}>
-					<Image source={listedShoe} style={{ width: 52, height: 38 }} />
+		<>
+			{isLoading && (
+				<View style={{ flex: 1, justifyContent: 'center' }}>
+					<ActivityIndicator size="large" color="black" />
 				</View>
+			)}
 
-				<View style={{ marginLeft: 12 }}>
-					<Text preset="bold" style={{ color: 'white' }}>
-						{lisiting.sneakerData.primaryName}
-					</Text>
-					<Text preset="bold" style={{ color: 'white' }}>
-						{lisiting.sneakerData.secondaryName}
-					</Text>
-				</View>
-
-				<View style={{ position: 'absolute', left: 322 }}>
-					<Text preset="bold" style={{ color: 'white' }}>
-						${offer.createOffer.offerAmount}
-					</Text>
-				</View>
-			</View>
-
-			{offer.createOffer.status == 'pending' && (
-				<>
+			{!isLoading && (
+				<View style={styles.CONTAINER}>
+					{/* header view */}
+					<View style={[styles.CENTER, { marginTop: insets.top }]}>
+						<Header
+							headerTx={`${name}`}
+							leftIcon="back"
+							onLeftPress={() => navigation.navigate('Message')}
+						/>
+					</View>
+					{/* view for offer data */}
 					<View
 						style={{
+							backgroundColor: 'black',
 							height: 62,
 							flexDirection: 'row',
 							alignItems: 'center',
-							justifyContent: 'space-around',
+							marginBottom: 5,
 						}}
 					>
-						<Button
-							style={{
-								borderRadius: 4,
-								width: '45%',
-								backgroundColor: 'black',
-								borderWidth: 2,
-							}}
-							text="Accept"
-							// onPress={() => {
-							// 	console.log('accepted')
-							// }}
-						/>
-						<Button
-							style={{
-								borderRadius: 4,
-								width: '45%',
-								backgroundColor: 'white',
-								borderWidth: 2,
-								borderColor: 'black',
-							}}
-							text="Decline"
-							textStyle={{ color: 'black' }}
-							// onPress={() => {
-							// 	console.log('declined')
-							// }}
-						/>
-					</View>
-				</>
-			)}
+						<View style={{ marginLeft: 17 }}>
+							<Image
+								source={{ uri: listing.sneakerData.image }}
+								style={{ width: 52, height: 38 }}
+							/>
+						</View>
 
-			{offer.createOffer.status == 'accepted' && (
-				<View style={{ alignSelf: 'center', marginTop: 5 }}>
-					<Button
-						style={{
-							borderRadius: 4,
-							width: 319,
+						<View style={{ marginLeft: 12 }}>
+							<Text preset="bold" style={{ color: 'white' }}>
+								{listing.sneakerData.primaryName}
+							</Text>
+							<Text preset="bold" style={{ color: 'white' }}>
+								{listing.sneakerData.secondaryName}
+							</Text>
+						</View>
+
+						<View style={{ position: 'absolute', left: 322 }}>
+							<Text preset="bold" style={{ color: 'white' }}>
+								${offer.offerAmount}
+							</Text>
+						</View>
+					</View>
+
+					{offer.status == 'pending' && (
+						<>
+							<View
+								style={{
+									height: 62,
+									flexDirection: 'row',
+									alignItems: 'center',
+									justifyContent: 'space-around',
+								}}
+							>
+								<Button
+									style={{
+										borderRadius: 4,
+										width: '45%',
+										backgroundColor: 'black',
+										borderWidth: 2,
+									}}
+									text="Accept"
+									// onPress={() => {
+									// 	console.log('accepted')
+									// }}
+								/>
+								<Button
+									style={{
+										borderRadius: 4,
+										width: '45%',
+										backgroundColor: 'white',
+										borderWidth: 2,
+										borderColor: 'black',
+									}}
+									text="Decline"
+									textStyle={{ color: 'black' }}
+									// onPress={() => {
+									// 	console.log('declined')
+									// }}
+								/>
+							</View>
+						</>
+					)}
+
+					{offer.status == 'accepted' && (
+						<View style={{ alignSelf: 'center', marginTop: 5 }}>
+							<Button
+								style={{
+									borderRadius: 4,
+									width: 319,
+								}}
+								text="Confirm Transaction"
+								onPress={() => {
+									console.log('declined');
+								}}
+							/>
+						</View>
+					)}
+					{/* end view for offer data */}
+
+					<GiftedChat
+						isTyping={true}
+						alignTop={false}
+						alwaysShowSend={true}
+						renderBubble={renderBubble}
+						renderComposer={renderComposer}
+						renderSend={renderSend}
+						messages={messages}
+						onSend={(messages) => onSend(messages)}
+						user={{
+							// _id is of type string or number
+							// name is of type string or undefined
+							// had an error for types
+							_id: user?.id as any,
+							name: user?.username as any,
 						}}
-						text="Confirm Transaction"
-						onPress={() => {
-							console.log('declined');
-						}}
+						parsePatterns={(linkStyle) => [
+							{
+								pattern: /#(\w+)/,
+								style: linkStyle,
+								onPress: (tag) => console.log(`Pressed on hashtag: ${tag}`),
+							},
+						]}
 					/>
 				</View>
 			)}
-
-			<GiftedChat
-				isTyping={true}
-				alignTop={false}
-				alwaysShowSend={true}
-				renderBubble={renderBubble}
-				renderComposer={renderComposer}
-				renderSend={renderSend}
-				messages={messages}
-				onSend={(messages) => onSend(messages)}
-				user={{
-					// _id is of type string or number
-					// name is of type string or undefined
-					// had an error for types
-					_id: user?.id as any,
-					name: user?.username as any,
-				}}
-				parsePatterns={(linkStyle) => [
-					{
-						pattern: /#(\w+)/,
-						style: linkStyle,
-						onPress: (tag) => console.log(`Pressed on hashtag: ${tag}`),
-					},
-				]}
-			/>
-		</View>
+		</>
 	);
 }

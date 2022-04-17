@@ -36,7 +36,12 @@ export default function MessageScreen() {
 					userID: user?.id,
 				})
 			);
-			// console.log('chatRoomsByUser: ', chatRoomsByUser)
+
+			const chatRoomUsers = await API.graphql(
+				graphqlOperation(chatRoomUserByUser, {
+					userID: user?.id,
+				})
+			);
 			let chatRoomsArr = chatRoomsByUser.data.chatRoomUserByUser.items;
 			{
 				/*TODO: make is so users of deleted messages go back to contacts screen;
