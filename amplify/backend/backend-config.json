@@ -145,6 +145,36 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "popnPushNotification": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "popn",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
+    },
+    "pinpoint": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "analytics",
+          "resourceName": "popnPinPoint",
+          "attributes": [
+            "Id",
+            "Region"
+          ]
+        }
+      ]
     }
   },
   "api": {
@@ -162,6 +192,12 @@
           "additionalAuthenticationProviders": []
         }
       }
+    }
+  },
+  "analytics": {
+    "popnPinPoint": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
     }
   }
 }

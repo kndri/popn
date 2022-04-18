@@ -102,7 +102,6 @@ export default function ClaimScreen() {
 		getSneakers();
 	}, [isFocused]);
 
-
 	const renderSneaker = ({ item }) => {
 		if (checkClaimed(item)) {
 			return (

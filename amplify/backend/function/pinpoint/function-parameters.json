@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "analytics": {
+      "popnPinPoint": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

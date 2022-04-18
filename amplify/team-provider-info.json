@@ -123,6 +123,14 @@
         "popn09PreTokenGeneration": {
           "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
           "s3Key": "amplify-builds/popn09PreTokenGeneration-6d685056515633632b37-build.zip"
+        },
+        "popnPushNotification": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popnPushNotification-54364a6d577768547a50-build.zip"
+        },
+        "pinpoint": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/pinpoint-47664d50366f65665644-build.zip"
         }
       },
       "auth": {

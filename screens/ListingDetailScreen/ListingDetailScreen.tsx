@@ -1,15 +1,12 @@
 import React from 'react';
-import {
-	View,
-	Modal,
-	TouchableOpacity,
-	TextInput,
-} from 'react-native';
+import { View, Modal, TouchableOpacity, TextInput } from 'react-native';
 
 import { API, graphqlOperation } from 'aws-amplify';
 import { FontAwesome } from '@expo/vector-icons';
 import { SliderBox } from 'react-native-image-slider-box';
 import { useNavigation } from '@react-navigation/native';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 
 import {
 	AutoImage as Image,
@@ -24,9 +21,15 @@ import {
 	addChatRoom,
 	addChatRoomUser,
 	addOffer,
+	getUserFromDb,
 } from '../../aws-functions/aws-functions';
 
-import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
+import {
+	createMessage,
+	pinpoint,
+	updateChatRoom,
+	updateUser,
+} from '../../src/graphql/mutations';
 import { spacing } from '../../theme';
 import { useAuth } from '../../contexts/auth';
 
@@ -46,9 +49,72 @@ const ListingDetailsScreen = (props: any) => {
 		React.useState(false);
 	const [offerAmount, setOfferAmount] = React.useState('');
 	const [offerMessage, setOfferMessage] = React.useState('');
+	const [expoToken, setExpoToken] = React.useState<any>();
+
+	React.useEffect(() => {
+		// There is no expoToken available yet, so we will request that and save it into the profile
+		const CheckNotificationToken = async () => {
+			const profile = await getUserFromDb(user?.id as string).catch((err) =>
+				console.log('error:', err)
+			);
+
+			if (profile.expoToken === null) {
+				const { status } = await Permissions.askAsync(
+					Permissions.NOTIFICATIONS
+				);
+				if (status !== 'granted') {
+					alert('No notification permissions!');
+					return;
+				}
+				let token = (
+					await Notifications.getExpoPushTokenAsync({
+						experienceId: `${user?.username}/example`,
+					})
+				).data;
+				console.log('token', token);
+
+				// Only update the profile with the expoToken if it not exists yet
+				if (token !== undefined) {
+					const inputParams = {
+						id: user?.id,
+						expoToken: token,
+					};
+					setExpoToken(token);
+
+					try {
+						await API.graphql(
+							graphqlOperation(updateUser, { input: inputParams })
+						);
+					} catch (err) {
+						console.log('error:', err);
+					}
+				}
+			}
+
+			setExpoToken(profile.expoToken);
+		};
+		CheckNotificationToken();
+	}, []);
+
+	const createNotification = async (message: string) => {
+		const inputParams = {
+			message: message,
+			token: expoToken,
+			name: user?.username,
+			email: user?.email,
+			id: user?.id,
+		};
+		try {
+			const respose = await API.graphql(
+				graphqlOperation(pinpoint, { input: inputParams })
+			);
+			console.log('response', respose);
+		} catch (err) {
+			console.log('error:', err);
+		}
+	};
 
 	const onClick = async (offer: any) => {
-		console.log('offer: ', offer)
 		try {
 			//  1. Create a new Chat Room
 			const newChatRoomData = await addChatRoom(offer.createOffer.id);
@@ -68,7 +134,7 @@ const ListingDetailsScreen = (props: any) => {
 
 			// 4. Add first automated message
 
-			const automatedMessage = `${user?.username} has offered ${offerAmount} for the item: ${sneakerData.primaryName} ${sneakerData.secondaryName}. Please accept or decline the offer.`
+			const automatedMessage = `${user?.username} has offered ${offerAmount} for the item: ${sneakerData.primaryName} ${sneakerData.secondaryName}. Please accept or decline the offer.`;
 
 			const firstMessage = await API.graphql(
 				graphqlOperation(createMessage, {
@@ -108,9 +174,12 @@ const ListingDetailsScreen = (props: any) => {
 						},
 					})
 				);
-	
+
 				await updateChatRoomLastMessage(optionalMessage.data.createMessage.id);
 			}
+
+			//4 create Notification with message
+			await createNotification(automatedMessage);
 
 			navigation.navigate('MessageRoom', {
 				id: newChatRoom.id,
@@ -161,7 +230,7 @@ const ListingDetailsScreen = (props: any) => {
 										borderColor: '#FFFFFF',
 										backgroundColor: 'white',
 										alignItems: 'flex-start',
-										paddingLeft: 3
+										paddingLeft: 3,
 									}}
 									value={offerAmount}
 									autoCorrect={false}
@@ -326,10 +395,18 @@ const ListingDetailsScreen = (props: any) => {
 					style={{ marginTop: 20 }}
 				/>
 				<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-					<FontAwesome name="dollar" size={30} color="black" style={{ marginTop: 20 }} />
-					<Text preset="header" text={listing.price} style={{ marginTop: 20 }} />
+					<FontAwesome
+						name="dollar"
+						size={30}
+						color="black"
+						style={{ marginTop: 20 }}
+					/>
+					<Text
+						preset="header"
+						text={listing.price}
+						style={{ marginTop: 20 }}
+					/>
 				</View>
-
 
 				<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 					<Text preset="default" text="Condition" style={{ marginTop: 31 }} />

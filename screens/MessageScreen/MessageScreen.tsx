@@ -4,10 +4,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
-import {
-	getChatRoom,
-	chatRoomUserByUser,
-} from '../../src/graphql/queries';
+import { getChatRoom, chatRoomUserByUser } from '../../src/graphql/queries';
 
 import MessageChatListItem from '../../components/message-chat-list-item';
 import { Screen, Text, Header } from '../../components';
@@ -16,7 +13,6 @@ import { spacing } from '../../theme';
 import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';
-
 
 export default function MessageScreen() {
 	const { authData: user } = useAuth();
@@ -47,7 +43,7 @@ export default function MessageScreen() {
 
 				setChatRooms(chatRoomsArr);
 				setIsLoading(false);
-			} 
+			}
 		} catch (e) {
 			console.log(e);
 		}
