@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { View, ViewStyle, TextInput, FlatList } from 'react-native';
-import { color, spacing } from '../../theme';
+import { View, TextInput, FlatList } from 'react-native';
 import {
 	Button,
 	Screen,
@@ -13,9 +12,6 @@ import {
 	addUserSneaker,
 	getSneakersFromUser,
 	getSneakersFromDB,
-	getListUser,
-	getLeaderBoardByZipCode,
-	getTopSellersByZipCode,
 } from '../../aws-functions/aws-functions';
 import { useToast } from '../../components/Toast';
 import { useAuth } from '../../contexts/auth';
@@ -34,10 +30,7 @@ export default function ClaimScreen() {
 	const [collection, setCollection] = React.useState<any>([]);
 	const [sneakerDb, setSneakerDb] = React.useState<any>([]);
 
-	//contains a list of users
-	const [users, setUsers] = React.useState<any>([]);
 	// contains a list of searched users
-	const [searchedUser, setSearchedUsers] = React.useState<any>([]);
 	const isFocused = useIsFocused();
 
 	React.useEffect(() => {
@@ -64,25 +57,6 @@ export default function ClaimScreen() {
 
 			setSearchedArray(searchedObjects);
 		}
-	}, [query]);
-
-	/**
-	 * This useEffect filters the list of users
-	 */
-	React.useEffect(() => {
-		const searchedObject: any = [];
-		users
-			.filter((contactObject) =>
-				contactObject.username
-					.toLowerCase()
-					.replace(/\s+/g, '')
-					.includes(query.toLowerCase().replace(/\s+/g, ''))
-			)
-			.map((filteredContact) => {
-				searchedObject.push(filteredContact);
-			});
-
-		setSearchedUsers(searchedObject);
 	}, [query]);
 
 	/**
@@ -124,57 +98,11 @@ export default function ClaimScreen() {
 		}
 	};
 
-	/**
-	 * fetchUser fetches the list of users
-	 */
-
-	const fetchUsers = async () => {
-		try {
-			const userList = await getListUser();
-			setUsers(userList.items);
-		} catch (e) {
-			console.log(e);
-		}
-	};
-	/**
-	 * fetchUser fetches the list of leader board by zipcode
-	 */
-
-	const fetchLeaderBoardByZipCode = async () => {
-		try {
-			const leaderBoard = await getLeaderBoardByZipCode('27330');
-		} catch (e) {
-			console.log('error:', e);
-		}
-	};
-	/**
-	 * fetchUser fetches the list of users
-	 */
-
-	const fetchTopSellersByZipCode = async () => {
-		try {
-			const topSellers = await getTopSellersByZipCode('27330');
-		} catch (e) {
-			console.log('error:', e);
-		}
-	};
-	/**
-	 * The useEffect will fetch for sneakers and user
-	 */
 	React.useEffect(() => {
-		fetchUsers();
 		getSneakers();
-		// fetchLeaderBoardByZipCode();
-		// fetchTopSellersByZipCode();
 	}, [isFocused]);
 
-	// React.useEffect(() => {}, [sneakerDb]);
 
-	/**
-	 *
-	 * @param param0 This function renders the sneakers
-	 * @returns
-	 */
 	const renderSneaker = ({ item }) => {
 		if (checkClaimed(item)) {
 			return (
