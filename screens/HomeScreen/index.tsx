@@ -41,20 +41,6 @@ export default function Home() {
 					onPressIn={() => navigation.navigate('UserSearch')}
 				/>
 			</View>
-
-			{/* <View style={{ marginTop: 20, marginBottom: 20 }}>
-				<TouchableOpacity
-					onPress={() => navigation.navigate('Location')}
-					style={styles.LOCATION_CONTAINER}
-				>
-					<Image
-						source={location_icon}
-						style={{ width: 16, height: 16, marginRight: 5 }}
-					/>
-					<Text>Charlotte: {distanceValue} Miles</Text>
-				</TouchableOpacity>
-			</View> */}
-
 			<View>{<Feed productData={listingData} />}</View>
 		</Screen>
 	);

@@ -49,7 +49,7 @@ import ReferenceScreen from '../screens/ReferenceScreen/ReferenceScreen';
 import NewPostScreen from '../screens/NewPostScreen/NewPostScreen';
 import PostDetailsScreen from '../screens/PostDetailsScreen/PostDetailsScreen';
 import MessageContactsScreen from '../screens/MessageContactsScreen/MessageContactsScreen';
-import UserSearchScreen from '../screens/SearchUserScreen/SearchUserScreen';
+import SearchUserScreen from '../screens/SearchUserScreen/SearchUserScreen';
 import { Auth } from 'aws-amplify';
 import ZipScreen from '../screens/AuthZipScreen';
 import ChangeZipCode from '../screens/ChangeZipCodeScreen';
@@ -238,7 +238,7 @@ function RootNavigator() {
 					/>
 					<Stack.Screen
 						name="UserSearch"
-						component={UserSearchScreen}
+						component={SearchUserScreen}
 						options={{ headerShown: false }}
 					/>
 					<Stack.Screen

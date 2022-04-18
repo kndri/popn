@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, ViewStyle, View, Pressable } from 'react-native'
+import { ViewStyle, View, Pressable } from 'react-native'
 import { Text } from "../text/text";
 import { AutoImage as Image } from '../auto-image/auto-image';
 import { useNavigation } from "@react-navigation/native";

@@ -51,9 +51,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [offer, setOffer] = React.useState<{}>({});
 	const [listing, setListing] = React.useState<{}>({});
-
 	const [messages, setMessages] = React.useState<IMessage[]>([]);
-	const listedShoe = require('../../assets/images/jordans.png');
 
 	const fetchMessages = async () => {
 		const messagesData = await API.graphql(
@@ -95,8 +93,8 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 
 		Promise.all([offer, listing]).then(() => {
 			setOffer(offer.data.getOffer),
-				setListing(listing.data.getListedItem),
-				setIsLoading(false);
+			setListing(listing.data.getListedItem),
+			setIsLoading(false);
 		});
 	};
 

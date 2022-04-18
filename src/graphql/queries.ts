@@ -1304,8 +1304,6 @@ export const listSneakerStores = /* GraphQL */ `
         primaryName
         secondaryName
         imageUrl
-        createdAt
-        updatedAt
       }
       nextToken
     }

@@ -20,7 +20,7 @@ import {
 import { useToast } from '../../components/Toast';
 import { useAuth } from '../../contexts/auth';
 
-import styles from './Styles';
+import styles from './styles';
 
 const search_icon = require('../../assets/images/searchIcon.png');
 
@@ -164,8 +164,8 @@ export default function ClaimScreen() {
 	React.useEffect(() => {
 		fetchUsers();
 		getSneakers();
-		fetchLeaderBoardByZipCode();
-		fetchTopSellersByZipCode();
+		// fetchLeaderBoardByZipCode();
+		// fetchTopSellersByZipCode();
 	}, [isFocused]);
 
 	// React.useEffect(() => {}, [sneakerDb]);
@@ -320,15 +320,7 @@ export default function ClaimScreen() {
 					style={{ marginLeft: 17, width: 16, height: 16 }}
 				/>
 				<TextInput
-					style={{
-						width: '100%',
-						height: 48,
-						borderWidth: 1,
-						paddingLeft: 20,
-						borderRadius: 32,
-						borderColor: '#F4F6F9',
-						backgroundColor: '#F4F6F9',
-					}}
+					style={styles.TEXTFIELD_STYLE}
 					value={query}
 					autoCorrect={false}
 					onChangeText={(text) => setQuery(text)}

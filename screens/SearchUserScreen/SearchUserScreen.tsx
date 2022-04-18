@@ -11,7 +11,7 @@ import { listUsers } from '../../src/graphql/queries';
 import styles from './Styles';
 import { getListingByZipCode } from '../../aws-functions/aws-functions';
 
-export default function UserSearchScreen() {
+export default function SearchUserScreen() {
 	const navigation = useNavigation();
 	const [query, setQuery] = React.useState('');
 	const [searchedContacts, setSearchedContacts] = React.useState<any>([]);
@@ -66,7 +66,7 @@ export default function UserSearchScreen() {
 						.toLowerCase()
 						.replace(/\s+/g, '')
 						.includes(query.toLowerCase().replace(/\s+/g, '')) ||
-					sneakerObject.sneakerData.secondaryame
+					sneakerObject.sneakerData.secondaryName
 						.toLowerCase()
 						.replace(/\s+/g, '')
 						.includes(query.toLowerCase().replace(/\s+/g, ''))

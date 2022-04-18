@@ -1,28 +1,27 @@
 import * as React from 'react';
-import { View, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
-import { color, spacing } from '../../theme';
+import { API, graphqlOperation } from 'aws-amplify';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
-import { Screen, Text, NewMessageButton, Header } from '../../components';
-import MessageChatListItem from '../../components/message-chat-list-item';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { API, graphqlOperation, Auth } from 'aws-amplify';
 import {
-	getUser,
 	getChatRoom,
 	chatRoomUserByUser,
 } from '../../src/graphql/queries';
-import { deleteChatRoomUser } from '../../src/graphql/mutations';
 
-import styles from './Styles';
+import MessageChatListItem from '../../components/message-chat-list-item';
+import { Screen, Text, Header } from '../../components';
+import { deleteChatRoomUser } from '../../src/graphql/mutations';
+import { spacing } from '../../theme';
 import { useAuth } from '../../contexts/auth';
+
+import styles from './styles';
+
 
 export default function MessageScreen() {
 	const { authData: user } = useAuth();
-	const navigation = useNavigation();
 	const [chatRooms, setChatRooms] = React.useState<any>([]);
-	const [excludedUsers, setExcludedUsers] = React.useState<any[]>([]);
-	const [userData, setUserData] = React.useState({});
+	const [isLoading, setIsLoading] = React.useState(true);
 	const isFocused = useIsFocused();
 
 	React.useEffect(() => {
@@ -37,31 +36,9 @@ export default function MessageScreen() {
 				})
 			);
 
-			const chatRoomUsers = await API.graphql(
-				graphqlOperation(chatRoomUserByUser, {
-					userID: user?.id,
-				})
-			);
 			let chatRoomsArr = chatRoomsByUser.data.chatRoomUserByUser.items;
-			{
-				/*TODO: make is so users of deleted messages go back to contacts screen;
-				 currently only happens when all messages are deleted
-			*/
-			}
-			// console.log('chatRoomsArr.length : ', chatRoomsArr.length )
-			if (chatRoomsArr.length > 0) {
-				chatRoomsArr.map((room) => {
-					room.chatRoom.chatRoomUsers.items.map((item) => {
-						// console.log('item: ', item);
-						if (item.user.username) {
-							setExcludedUsers((excludedUsers) => [
-								...excludedUsers,
-								item.user.username,
-							]);
-						}
-					});
-				});
 
+			if (chatRoomsArr.length > 0) {
 				chatRoomsArr.sort((a, b) => {
 					return b.chatRoom.lastMessage.updatedAt.localeCompare(
 						a.chatRoom.lastMessage.updatedAt
@@ -69,16 +46,12 @@ export default function MessageScreen() {
 				});
 
 				setChatRooms(chatRoomsArr);
-			} else {
-				setExcludedUsers([]);
-				setChatRooms(chatRoomsArr);
-			}
+				setIsLoading(false);
+			} 
 		} catch (e) {
 			console.log(e);
 		}
 	};
-
-	// const uniqueE xcludedUsers = [...new Set(excludedUsers)];
 
 	Array(chatRooms.length)
 		.fill('')
@@ -146,38 +119,48 @@ export default function MessageScreen() {
 	};
 
 	return (
-		<Screen style={styles.CONTAINER}>
-			<View style={{ height: '100%' }}>
-				<Header
-					style={{ paddingHorizontal: spacing[3] }}
-					headerTx="Messages"
-				/>
-				{chatRooms.length === 0 ? (
-					<View style={{ height: '100%', justifyContent: 'center' }}>
-						<Text
-							style={styles.TEXTCENTER}
-							preset="bold"
-							text="No Messages Found."
+		<>
+			{isLoading && (
+				<View style={{ flex: 1, justifyContent: 'center' }}>
+					<ActivityIndicator size="large" color="black" />
+				</View>
+			)}
+			{!isLoading && (
+				<Screen style={styles.CONTAINER}>
+					<View style={{ height: '100%' }}>
+						<Header
+							style={{ paddingHorizontal: spacing[3] }}
+							headerTx="Messages"
 						/>
+						{chatRooms.length === 0 ? (
+							<View style={{ height: '100%', justifyContent: 'center' }}>
+								<Text
+									style={styles.TEXTCENTER}
+									preset="bold"
+									text="No Messages Found."
+								/>
+							</View>
+						) : (
+							<SwipeListView
+								disableRightSwipe
+								data={chatRooms}
+								renderItem={({ item }) => (
+									<MessageChatListItem chatRoom={item} />
+								)}
+								renderHiddenItem={renderHiddenItem}
+								onSwipeValueChange={onSwipeValueChange}
+								useNativeDriver={false}
+								keyExtractor={(item) => item.id}
+								scrollEnabled={true}
+								rightOpenValue={-75}
+								previewRowKey={'0'}
+								previewOpenValue={-20}
+								previewOpenDelay={3000}
+							/>
+						)}
 					</View>
-				) : (
-					<SwipeListView
-						disableRightSwipe
-						data={chatRooms}
-						renderItem={({ item }) => <MessageChatListItem chatRoom={item} />}
-						renderHiddenItem={renderHiddenItem}
-						onSwipeValueChange={onSwipeValueChange}
-						useNativeDriver={false}
-						keyExtractor={(item) => item.id}
-						scrollEnabled={true}
-						rightOpenValue={-75}
-						previewRowKey={'0'}
-						previewOpenValue={-20}
-						previewOpenDelay={3000}
-					/>
-				)}
-			</View>
-			<NewMessageButton excludedUsers={excludedUsers} currentUser={userData} />
-		</Screen>
+				</Screen>
+			)}
+		</>
 	);
 }
