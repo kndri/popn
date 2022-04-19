@@ -14,7 +14,26 @@ type User @model {
 	chatRoomUser: [ChatRoomUser] @connection(keyName: "byUser", fields: ["id"])
 	donScore: DonScore @connection(fields: ["id"])
 	totalSold: TotalSoldSneaker @connection(fields: ["id"])
+	expoToken: String
 }
+
+type Mutation {
+	pinpoint(input: pinpointInput): pinpointResult
+		@function(name: "pinpoint-${env}")
+}
+type pinpointResult {
+	statusCode: Int
+	body: String
+}
+# change name to username
+input pinpointInput {
+	token: String!
+	name: String!
+	email: String!
+	message: String!
+	id: String!
+}
+
 # NOTE: will need to add user: User! @connection(fields: ["userID"])
 # I am leaving it out to show we can get by zip and sort scores
 # Will add it when we figure out when are we creating,updating scores
