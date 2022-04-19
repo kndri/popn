@@ -72,6 +72,7 @@ export default function ClaimScreen() {
 		const sneakersData = await getSneakersFromDB().catch((error) =>
 			console.error(error)
 		);
+
 		setSearchedArray(sneakersData);
 		setSneakerDb(sneakersData);
 		setCollection(sneakerlist);

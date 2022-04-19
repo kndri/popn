@@ -122,7 +122,9 @@ export type SneakerData = {
 export const getSneakersFromDB = async (): Promise<SneakerData> => {
 	let sneakerList: any;
 
-	const sneakersData = await API.graphql(graphqlOperation(listSneakerStores));
+	const sneakersData = await API.graphql(
+		graphqlOperation(listSneakerStores, { limit: 1000 })
+	);
 
 	sneakerList = sneakersData.data.listSneakerStores.items;
 
