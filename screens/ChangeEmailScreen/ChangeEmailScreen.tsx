@@ -1,9 +1,8 @@
-import React, { FC, useState } from 'react';
-import { View, ViewStyle, TextStyle } from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
 import { Screen, Text, TextField, Header, Button } from '../../components';
 
 import { useNavigation } from '@react-navigation/native';
-import { getUser } from '../../src/graphql/queries';
 import { updateUser } from '../../src/graphql/mutations';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { authService } from '../../services/auth-service';
