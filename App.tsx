@@ -6,13 +6,14 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { AuthProvider } from './contexts/auth';
 import { FormProvider } from './contexts/form-context';
-import Amplify, { API, Auth, graphqlOperation } from 'aws-amplify';
+import Amplify, { API, Auth, graphqlOperation, Analytics } from 'aws-amplify';
 import awsconfig from './src/aws-exports.js';
 import ToastContainer from './components/Toast';
 import { createUser } from './src/graphql/mutations';
 import { getUser } from './src/graphql/queries';
 
 Amplify.configure(awsconfig);
+Analytics.disable();
 
 export default function App() {
 	const isLoadingComplete = useCachedResources();
@@ -45,7 +46,7 @@ export default function App() {
 						avatarImageURL: userInfo.attributes['custom:blob'],
 					};
 					await saveUserToDB(user);
-				} 
+				}
 			}
 
 			// If it doesn't, create the user in the database

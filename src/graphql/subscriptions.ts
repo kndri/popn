@@ -97,6 +97,7 @@ export const onCreateUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      expoToken
       createdAt
       updatedAt
     }
@@ -197,6 +198,7 @@ export const onUpdateUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      expoToken
       createdAt
       updatedAt
     }
@@ -297,6 +299,7 @@ export const onDeleteUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      expoToken
       createdAt
       updatedAt
     }
@@ -422,6 +425,7 @@ export const onCreateFollowing = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -478,6 +482,7 @@ export const onUpdateFollowing = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -534,6 +539,7 @@ export const onDeleteFollowing = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -590,6 +596,7 @@ export const onCreateFollowers = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -646,6 +653,7 @@ export const onUpdateFollowers = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -702,6 +710,7 @@ export const onDeleteFollowers = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -758,6 +767,7 @@ export const onCreateChatRoomUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -835,6 +845,7 @@ export const onUpdateChatRoomUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -912,6 +923,7 @@ export const onDeleteChatRoomUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -982,6 +994,7 @@ export const onCreateChatRoom = /* GraphQL */ `
           avatarImageURL
           status
           zipCode
+          expoToken
           createdAt
           updatedAt
         }
@@ -1040,6 +1053,7 @@ export const onUpdateChatRoom = /* GraphQL */ `
           avatarImageURL
           status
           zipCode
+          expoToken
           createdAt
           updatedAt
         }
@@ -1098,6 +1112,7 @@ export const onDeleteChatRoom = /* GraphQL */ `
           avatarImageURL
           status
           zipCode
+          expoToken
           createdAt
           updatedAt
         }
@@ -1165,6 +1180,7 @@ export const onCreateMessage = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -1243,6 +1259,7 @@ export const onUpdateMessage = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -1321,6 +1338,7 @@ export const onDeleteMessage = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -1400,6 +1418,7 @@ export const onCreateSneaker = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -1472,6 +1491,7 @@ export const onUpdateSneaker = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -1544,6 +1564,7 @@ export const onDeleteSneaker = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -1616,6 +1637,7 @@ export const onCreateSoldSneaker = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -1675,6 +1697,7 @@ export const onUpdateSoldSneaker = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -1734,6 +1757,7 @@ export const onDeleteSoldSneaker = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -1790,6 +1814,7 @@ export const onCreateClaim = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -1808,6 +1833,7 @@ export const onCreateClaim = /* GraphQL */ `
           avatarImageURL
           status
           zipCode
+          expoToken
           createdAt
           updatedAt
         }
@@ -1873,6 +1899,7 @@ export const onUpdateClaim = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -1891,6 +1918,7 @@ export const onUpdateClaim = /* GraphQL */ `
           avatarImageURL
           status
           zipCode
+          expoToken
           createdAt
           updatedAt
         }
@@ -1956,6 +1984,7 @@ export const onDeleteClaim = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -1974,6 +2003,7 @@ export const onDeleteClaim = /* GraphQL */ `
           avatarImageURL
           status
           zipCode
+          expoToken
           createdAt
           updatedAt
         }
@@ -2011,6 +2041,7 @@ export const onCreateListedItem = /* GraphQL */ `
           avatarImageURL
           status
           zipCode
+          expoToken
           createdAt
           updatedAt
         }
@@ -2070,6 +2101,7 @@ export const onCreateListedItem = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -2099,6 +2131,7 @@ export const onUpdateListedItem = /* GraphQL */ `
           avatarImageURL
           status
           zipCode
+          expoToken
           createdAt
           updatedAt
         }
@@ -2158,6 +2191,7 @@ export const onUpdateListedItem = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -2187,6 +2221,7 @@ export const onDeleteListedItem = /* GraphQL */ `
           avatarImageURL
           status
           zipCode
+          expoToken
           createdAt
           updatedAt
         }
@@ -2246,6 +2281,7 @@ export const onDeleteListedItem = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        expoToken
         createdAt
         updatedAt
       }
@@ -2293,6 +2329,7 @@ export const onCreateOffer = /* GraphQL */ `
           avatarImageURL
           status
           zipCode
+          expoToken
           createdAt
           updatedAt
         }
@@ -2343,6 +2380,7 @@ export const onUpdateOffer = /* GraphQL */ `
           avatarImageURL
           status
           zipCode
+          expoToken
           createdAt
           updatedAt
         }
@@ -2393,6 +2431,7 @@ export const onDeleteOffer = /* GraphQL */ `
           avatarImageURL
           status
           zipCode
+          expoToken
           createdAt
           updatedAt
         }

@@ -84,7 +84,7 @@ export const deleteUserSneaker = async (id: string) => {
 	}
 };
 
-export const checkLoggedUser = async (): Promise<any> => {
+export const checkLoggedUser = async () => {
 	const data = await Auth.currentAuthenticatedUser({
 		bypassCache: true,
 	}).catch((error) => {
