@@ -67,7 +67,7 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
 
     return (
         <>
-            < Pressable style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, offerID: chatRoom.chatRoom.offerID}); }
+            < Pressable style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, offerID: chatRoom.chatRoom.offerID }); }
             }>
                 <View style={LEFT_SIDE}>
                     <Image
@@ -78,7 +78,6 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
                             width: 40,
                             marginRight: 5,
                             borderRadius: 360,
-
                         }}
                     />
                 </View>

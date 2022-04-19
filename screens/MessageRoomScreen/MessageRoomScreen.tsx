@@ -93,8 +93,8 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 
 		Promise.all([offer, listing]).then(() => {
 			setOffer(offer.data.getOffer),
-			setListing(listing.data.getListedItem),
-			setIsLoading(false);
+				setListing(listing.data.getListedItem),
+				setIsLoading(false);
 		});
 	};
 
@@ -202,6 +202,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 
 	return (
 		<>
+			{/* {console.log('offer data: ', offer)} */}
 			{isLoading && (
 				<View style={{ flex: 1, justifyContent: 'center' }}>
 					<ActivityIndicator size="large" color="black" />
@@ -218,78 +219,84 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 							onLeftPress={() => navigation.navigate('Message')}
 						/>
 					</View>
+
 					{/* view for offer data */}
-					<View
-						style={{
-							backgroundColor: 'black',
-							height: 62,
-							flexDirection: 'row',
-							alignItems: 'center',
-							marginBottom: 5,
-						}}
-					>
-						<View style={{ marginLeft: 17 }}>
-							<Image
-								source={{ uri: listing.sneakerData.image }}
-								style={{ width: 52, height: 38 }}
-							/>
-						</View>
-
-						<View style={{ marginLeft: 12 }}>
-							<Text preset="bold" style={{ color: 'white' }}>
-								{listing.sneakerData.primaryName}
-							</Text>
-							<Text preset="bold" style={{ color: 'white' }}>
-								{listing.sneakerData.secondaryName}
-							</Text>
-						</View>
-
-						<View style={{ position: 'absolute', left: 322 }}>
-							<Text preset="bold" style={{ color: 'white' }}>
-								${offer.offerAmount}
-							</Text>
-						</View>
-					</View>
-
-					{offer.status == 'pending' && (
+					{user.id == offer.sellingUserID && (
 						<>
 							<View
 								style={{
+									backgroundColor: 'black',
 									height: 62,
 									flexDirection: 'row',
 									alignItems: 'center',
-									justifyContent: 'space-around',
+									marginBottom: 5,
 								}}
 							>
-								<Button
-									style={{
-										borderRadius: 4,
-										width: '45%',
-										backgroundColor: 'black',
-										borderWidth: 2,
-									}}
-									text="Accept"
-									// onPress={() => {
-									// 	console.log('accepted')
-									// }}
-								/>
-								<Button
-									style={{
-										borderRadius: 4,
-										width: '45%',
-										backgroundColor: 'white',
-										borderWidth: 2,
-										borderColor: 'black',
-									}}
-									text="Decline"
-									textStyle={{ color: 'black' }}
-									// onPress={() => {
-									// 	console.log('declined')
-									// }}
-								/>
+								<View style={{ marginLeft: 17 }}>
+									<Image
+										source={{ uri: listing.sneakerData.image }}
+										style={{ width: 52, height: 38 }}
+									/>
+								</View>
+
+								<View style={{ marginLeft: 12 }}>
+									<Text preset="bold" style={{ color: 'white' }}>
+										{listing.sneakerData.primaryName}
+									</Text>
+									<Text preset="bold" style={{ color: 'white' }}>
+										{listing.sneakerData.secondaryName}
+									</Text>
+								</View>
+
+								<View style={{ position: 'absolute', left: 322 }}>
+									<Text preset="bold" style={{ color: 'white' }}>
+										${offer.offerAmount}
+									</Text>
+								</View>
 							</View>
+
+							{offer.status == 'pending' && (
+								<>
+									<View
+										style={{
+											height: 62,
+											flexDirection: 'row',
+											alignItems: 'center',
+											justifyContent: 'space-around',
+										}}
+									>
+										<Button
+											style={{
+												borderRadius: 4,
+												width: '45%',
+												backgroundColor: 'black',
+												borderWidth: 2,
+											}}
+											text="Accept"
+										// onPress={() => {
+										// 	console.log('accepted')
+										// }}
+										/>
+										<Button
+											style={{
+												borderRadius: 4,
+												width: '45%',
+												backgroundColor: 'white',
+												borderWidth: 2,
+												borderColor: 'black',
+											}}
+											text="Decline"
+											textStyle={{ color: 'black' }}
+										// onPress={() => {
+										// 	console.log('declined')
+										// }}
+										/>
+									</View>
+								</>
+							)}
 						</>
 					)}
+
 
 					{offer.status == 'accepted' && (
 						<View style={{ alignSelf: 'center', marginTop: 5 }}>
