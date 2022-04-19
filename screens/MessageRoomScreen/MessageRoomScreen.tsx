@@ -4,14 +4,13 @@ import { spacing } from '../../theme';
 
 import { API, graphqlOperation } from 'aws-amplify';
 
-import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
-
+import { createMessage, updateChatRoom, updateOffer } from '../../src/graphql/mutations';
 import {
 	messagesByChatRoom,
 	getOffer,
 	getListedItem,
 } from '../../src/graphql/queries';
-import { onCreateMessage } from '../../src/graphql/subscriptions';
+import { onCreateMessage, onUpdateOffer } from '../../src/graphql/subscriptions';
 
 import { Header, Text, Button } from '../../components';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -122,6 +121,23 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 		return () => subscription.unsubscribe();
 	}, []);
 
+	React.useEffect(() => {
+		const subscription = API.graphql(
+			graphqlOperation(onUpdateOffer)
+		).subscribe({
+			next: (data) => {
+				// console.log('data: ', data.value)
+				const updatedOffer = data.value.data.onUpdateOffer;
+
+				setOffer(updatedOffer)
+
+
+			},
+		});
+
+		return () => subscription.unsubscribe();
+	}, []);
+
 	const updateChatRoomLastMessage = async (messageId: string) => {
 		try {
 			await API.graphql(
@@ -200,9 +216,76 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 		></Send>
 	);
 
+	//perform mutation and update offer status to accepted
+	const acceptOFfer = async (offerID: string) => {
+		try {
+			await API.graphql(
+				graphqlOperation(updateOffer, {
+					input: {
+						id: offerID,
+						status: 'accepted',
+					},
+				})
+			);
+			//send automated message indicating the offer was accepted
+			const automatedAcceptedMessage = `${user?.username} has accepted your offer of $${offer.offerAmount} for the item: ${offer.listedItem.sneakerData.primaryName} ${offer.listedItem.sneakerData.secondaryName}.`;
+			try {
+				const acceptedMessageData = await API.graphql(
+					graphqlOperation(createMessage, {
+						input: {
+							text: automatedAcceptedMessage,
+							userID: user?.id,
+							chatRoomID: id,
+						},
+					})
+				);
+
+				await updateChatRoomLastMessage(acceptedMessageData.data.createMessage.id);
+			}
+			catch (error) {
+				console.log(error);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	//perform mutation and update offer status to accepted
+	const declineOFfer = async (offerID: string) => {
+		try {
+			await API.graphql(
+				graphqlOperation(updateOffer, {
+					input: {
+						id: offerID,
+						status: 'declined',
+					},
+				})
+			);
+			//send automated message indicating the offer was declined
+			const automatedDeclinedMessage = `${user?.username} has declined your offer of $${offer.offerAmount} for the item: ${offer.listedItem.sneakerData.primaryName} ${offer.listedItem.sneakerData.secondaryName}.`;
+			try {
+				const declinedMessageData = await API.graphql(
+					graphqlOperation(createMessage, {
+						input: {
+							text: automatedDeclinedMessage,
+							userID: user?.id,
+							chatRoomID: id,
+						},
+					})
+				);
+
+				await updateChatRoomLastMessage(declinedMessageData.data.createMessage.id);
+			}
+			catch (error) {
+				console.log(error);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<>
-			{/* {console.log('offer data: ', offer)} */}
 			{isLoading && (
 				<View style={{ flex: 1, justifyContent: 'center' }}>
 					<ActivityIndicator size="large" color="black" />
@@ -273,9 +356,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 												borderWidth: 2,
 											}}
 											text="Accept"
-										// onPress={() => {
-										// 	console.log('accepted')
-										// }}
+											onPress={() => { acceptOFfer(offer.id) }}
 										/>
 										<Button
 											style={{
@@ -287,9 +368,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 											}}
 											text="Decline"
 											textStyle={{ color: 'black' }}
-										// onPress={() => {
-										// 	console.log('declined')
-										// }}
+											onPress={() => { declineOFfer(offer.id) }}
 										/>
 									</View>
 								</>
@@ -307,7 +386,8 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 								}}
 								text="Confirm Transaction"
 								onPress={() => {
-									console.log('declined');
+									console.log('confirmed');
+
 								}}
 							/>
 						</View>
