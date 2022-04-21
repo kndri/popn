@@ -28,7 +28,7 @@ type pinpointResult {
 # change name to username
 input pinpointInput {
 	token: String!
-	name: String!
+	username: String!
 	email: String!
 	message: String!
 	id: String!

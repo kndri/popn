@@ -98,10 +98,10 @@ const ListingDetailsScreen = (props: any) => {
 
 	const createNotification = async (message: string) => {
 		const inputParams = {
-			message: message,
 			token: expoToken,
-			name: user?.username,
+			username: user?.username,
 			email: user?.email,
+			message: message,
 			id: user?.id,
 		};
 		try {

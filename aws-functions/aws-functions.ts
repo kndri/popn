@@ -25,6 +25,7 @@ import {
 	listedItemByZipCode,
 	getOffer,
 	offerByUser,
+	listListedItems,
 } from '../src/graphql/queries';
 
 export const getUserFromDb = async (userID: string) => {
@@ -324,13 +325,9 @@ export const addListedItem = async (verifiedSneaker: listedParams) => {
 
 export const getListingByZipCode = async (zipCode: string) => {
 	try {
-		const listings = await API.graphql(
-			graphqlOperation(listedItemByZipCode, {
-				zipCode: zipCode,
-			})
-		);
+		const listings = await API.graphql(graphqlOperation(listListedItems));
 
-		return listings.data.listedItemByZipCode.items;
+		return listings.data.listListedItems.items;
 	} catch (e) {
 		console.log('error: ', e);
 	}
