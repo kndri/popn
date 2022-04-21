@@ -141,6 +141,7 @@ type Sneaker
 	user: User @connection(fields: ["userID"])
 	claim: [Claim] @connection(keyName: "bySneaker", fields: ["id"])
 	createdAt: String
+	prevSellers: [String]
 }
 type SoldSneaker
 	@model
@@ -194,7 +195,6 @@ type ListedItem
 	description: String
 	sellerID: ID!
 	seller: User! @connection(fields: ["sellerID"])
-	prevSellers: [String]
 	createdAt: String
 }
 type Offer
@@ -213,6 +213,7 @@ enum OfferStatus {
 	accepted
 	pending
 	declined
+	completed
 }
 type SneakerStore @model {
 	id: ID!

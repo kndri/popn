@@ -1,25 +1,27 @@
 import * as React from 'react';
-import { View, ViewStyle, Image, ActivityIndicator } from 'react-native';
-import { spacing } from '../../theme';
+import { View, ViewStyle, Image, ActivityIndicator, Modal } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { GiftedChat, Bubble, Send, Composer } from 'react-native-gifted-chat';
+import { IMessage } from '../../types';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { API, graphqlOperation } from 'aws-amplify';
-
-import { createMessage, updateChatRoom, updateOffer } from '../../src/graphql/mutations';
+import { createMessage, updateChatRoom, updateOffer, updateSneaker } from '../../src/graphql/mutations';
 import {
 	messagesByChatRoom,
 	getOffer,
 	getListedItem,
 } from '../../src/graphql/queries';
 import { onCreateMessage, onUpdateOffer } from '../../src/graphql/subscriptions';
-
+import { spacing } from '../../theme';
 import { Header, Text, Button } from '../../components';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { GiftedChat, Bubble, Send, Composer } from 'react-native-gifted-chat';
-import { IMessage } from '../../types';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useToast } from '../../components/Toast';
+
+
 
 import styles from './Styles';
 import { useAuth } from '../../contexts/auth';
+import { ListedItem, Offer } from '../../src/API';
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -49,8 +51,12 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const insets = useSafeAreaInsets();
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [offer, setOffer] = React.useState<{}>({});
+	const [seller, setSeller] = React.useState('');
 	const [listing, setListing] = React.useState<{}>({});
 	const [messages, setMessages] = React.useState<IMessage[]>([]);
+	const [buyerModalVisible, setBuyerModalVisible] = React.useState(false);
+	const [sellerModalVisible, setSellerModalVisible] = React.useState(false);
+	const toast = useToast();
 
 	const fetchMessages = async () => {
 		const messagesData = await API.graphql(
@@ -126,15 +132,10 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			graphqlOperation(onUpdateOffer)
 		).subscribe({
 			next: (data) => {
-				// console.log('data: ', data.value)
 				const updatedOffer = data.value.data.onUpdateOffer;
-
 				setOffer(updatedOffer)
-
-
 			},
 		});
-
 		return () => subscription.unsubscribe();
 	}, []);
 
@@ -164,7 +165,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 					},
 				})
 			);
-
 			await updateChatRoomLastMessage(newMessageData.data.createMessage.id);
 		} catch (e) {
 			console.log(e);
@@ -273,8 +273,70 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 						},
 					})
 				);
-
 				await updateChatRoomLastMessage(declinedMessageData.data.createMessage.id);
+			}
+			catch (error) {
+				console.log(error);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	//switching owership of shoes to the buyer via seller confirmation
+	const sellerConfirmation = async (offer) => {
+
+		//updating offer status to completed
+		try {
+			await API.graphql(
+				graphqlOperation(updateOffer, {
+					input: {
+						id: offer.id,
+						status: 'completed',
+					},
+				})
+			);
+
+
+			//add the seller to prevSellers array
+			await API.graphql(
+				graphqlOperation(updateSneaker, {
+					input: {
+						id: offer.listedItem.sneakerData.id,
+						prevSellers: offer.listedItem.seller.username,
+					},
+				})
+			);
+
+			//make buyer the new owner of shoe 
+			await API.graphql(
+				graphqlOperation(updateSneaker, {
+					input: {
+						id: offer.listedItem.sneakerData.id,
+						userID: offer.buyingUserID,
+					},
+				})
+			);
+
+			//close modal 
+			setSellerModalVisible(!sellerModalVisible)
+
+			//send automated message indicating confirmation
+			const automatedConfirmationMessage = `${user?.username} has confirmed this transaction of $${offer.offerAmount} for the item: ${offer.listedItem.sneakerData.primaryName} ${offer.listedItem.sneakerData.secondaryName}.`;
+
+			try {
+				const confirmedMessageData = await API.graphql(
+					graphqlOperation(createMessage, {
+						input: {
+							text: automatedConfirmationMessage,
+							userID: user?.id,
+							chatRoomID: id,
+						},
+					})
+				);
+
+				await updateChatRoomLastMessage(confirmedMessageData.data.createMessage.id);
+				toast.show(`Successful Transfer.`);
 			}
 			catch (error) {
 				console.log(error);
@@ -294,6 +356,129 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 
 			{!isLoading && (
 				<View style={styles.CONTAINER}>
+					{console.log('offer data:', offer)}
+
+					{/* BUYER CONFIRMATION MODAL CODE*/}
+					<Modal
+						animationType="slide"
+						// transparent={true}
+						presentationStyle="pageSheet"
+						visible={buyerModalVisible}
+						onRequestClose={() => {
+							setBuyerModalVisible(!buyerModalVisible);
+						}}
+					>
+						<View style={styles.MODAL_CONTAINER}>
+							<Header
+								headerTx="BUYER MODAL"
+								rightIcon="close"
+								onRightPress={() => {
+									setBuyerModalVisible(!buyerModalVisible);
+								}}
+							/>
+
+							<View style={styles.MODAL_HEADING_TEXT}>
+								<Text preset="default">
+									Want to let people know your sneakers are legit? 🤔 {'\n'}
+									{'\n'}
+									The green verified badge on sneakers lets people know that your
+									sneaker were legit checked and are authentic.{'\n'}
+									{'\n'}
+									Example:
+								</Text>
+							</View>
+
+
+							<View style={styles.MODAL_PROCESS}>
+								<Text preset="bold">Are you ready to finalize the transaction?</Text>
+								<View style={{ marginTop: 30 }}>
+									<Text preset="default">
+										1. You've met with the seller{'\n'}
+										{'\n'}
+										2. You've paid the seller{'\n'}
+										{'\n'}
+										3. You've received your shoes{'\n'}
+										{'\n'}
+										4. You're satisfied{'\n'}
+										{'\n'}
+									</Text>
+								</View>
+							</View>
+
+							{/* <View style={{ alignSelf: 'center', marginTop: 5 }}> */}
+							<Button
+								style={{
+									borderRadius: 4,
+									width: "100%",
+								}}
+								text="Confirm Transaction"
+								onPress={() => { setBuyerModalVisible(!buyerModalVisible) }}
+							/>
+							{/* </View> */}
+						</View>
+					</Modal>
+					{/* END OF BUYER CONFIRMATION MODAL CODE*/}
+
+					{/* SELLER CONFIRMATION MODAL CODE*/}
+					<Modal
+						animationType="slide"
+						// transparent={true}
+						presentationStyle="pageSheet"
+						visible={sellerModalVisible}
+						onRequestClose={() => {
+							setSellerModalVisible(!sellerModalVisible);
+						}}
+					>
+						<View style={styles.MODAL_CONTAINER}>
+							<Header
+								headerTx="SELLER MODAL"
+								rightIcon="close"
+								onRightPress={() => {
+									setSellerModalVisible(!sellerModalVisible);
+								}}
+							/>
+
+							<View style={styles.MODAL_HEADING_TEXT}>
+								<Text preset="default">
+									Want to let people know your sneakers are legit? 🤔 {'\n'}
+									{'\n'}
+									The green verified badge on sneakers lets people know that your
+									sneaker were legit checked and are authentic.{'\n'}
+									{'\n'}
+									Example:
+								</Text>
+							</View>
+
+
+							<View style={styles.MODAL_PROCESS}>
+								<Text preset="bold">How to get your sneaker verified?</Text>
+								<View style={{ marginTop: 30 }}>
+									<Text preset="default">
+										1. You've met with the buyer{'\n'}
+										{'\n'}
+										2. You've received payment{'\n'}
+										{'\n'}
+										3. You've given the shoes to the buyer{'\n'}
+										{'\n'}
+										4. You're satisfied{'\n'}
+										{'\n'}
+									</Text>
+								</View>
+							</View>
+							<View style={{ alignSelf: 'center', marginTop: 5 }}>
+								<Button
+									style={{
+										borderRadius: 4,
+										width: 319,
+									}}
+									text="Confirm Transaction"
+									onPress={() => { sellerConfirmation(offer) }}
+								/>
+							</View>
+						</View>
+					</Modal>
+					{/* END OF SELLER CONFIRMATION MODAL CODE*/}
+
 					{/* header view */}
 					<View style={[styles.CENTER, { marginTop: insets.top }]}>
 						<Header
@@ -386,8 +571,11 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 								}}
 								text="Confirm Transaction"
 								onPress={() => {
-									console.log('confirmed');
-
+									if (user.id == offer.sellingUserID) {
+										setSellerModalVisible(!sellerModalVisible)
+									} else {
+										setBuyerModalVisible(!buyerModalVisible)
+									}
 								}}
 							/>
 						</View>

@@ -15,4 +15,17 @@ export default StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: "black",
   },
+  MODAL_CONTAINER: {
+    backgroundColor: "white",
+    paddingHorizontal: spacing[4],
+    flex: 1,
+    justifyContent: 'space-around'
+  },
+  MODAL_HEADING_TEXT: {
+    paddingHorizontal: spacing[4],
+  },
+  MODAL_PROCESS: {
+    paddingHorizontal: spacing[4],
+    // backgroundColor: 'yellow',
+  },
 });

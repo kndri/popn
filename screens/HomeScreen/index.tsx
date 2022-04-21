@@ -20,9 +20,11 @@ export default function Home() {
 
 	const getListing = async () => {
 		const data = await getListingByZipCode('56666');
-
 		setListingData(data);
 	};
+
+	console.log('listing data: ', listingData)
+
 	React.useEffect(() => {
 		getListing();
 	}, []);
