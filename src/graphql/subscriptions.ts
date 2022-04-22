@@ -42,6 +42,8 @@ export const onCreateUser = /* GraphQL */ `
           id
           offerAmount
           status
+          sellerConfirmed
+          buyerConfirmed
           buyingUserID
           sellingUserID
           listedItemID
@@ -144,6 +146,8 @@ export const onUpdateUser = /* GraphQL */ `
           id
           offerAmount
           status
+          sellerConfirmed
+          buyerConfirmed
           buyingUserID
           sellingUserID
           listedItemID
@@ -246,6 +250,8 @@ export const onDeleteUser = /* GraphQL */ `
           id
           offerAmount
           status
+          sellerConfirmed
+          buyerConfirmed
           buyingUserID
           sellingUserID
           listedItemID
@@ -2309,6 +2315,8 @@ export const onCreateOffer = /* GraphQL */ `
       id
       offerAmount
       status
+      sellerConfirmed
+      buyerConfirmed
       buyingUserID
       sellingUserID
       listedItemID
@@ -2361,6 +2369,8 @@ export const onUpdateOffer = /* GraphQL */ `
       id
       offerAmount
       status
+      sellerConfirmed
+      buyerConfirmed
       buyingUserID
       sellingUserID
       listedItemID
@@ -2413,6 +2423,8 @@ export const onDeleteOffer = /* GraphQL */ `
       id
       offerAmount
       status
+      sellerConfirmed
+      buyerConfirmed
       buyingUserID
       sellingUserID
       listedItemID

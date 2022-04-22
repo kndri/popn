@@ -24,8 +24,6 @@ export default function Home() {
 		setListingData(data);
 	};
 
-	console.log('listing data: ', listingData);
-
 	React.useEffect(() => {
 		getListing();
 	}, []);

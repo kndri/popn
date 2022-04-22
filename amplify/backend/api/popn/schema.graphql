@@ -209,6 +209,8 @@ type Offer
 	id: ID!
 	offerAmount: String!
 	status: OfferStatus!
+	sellerConfirmed: Boolean!
+	buyerConfirmed: Boolean!
 	buyingUserID: ID!
 	sellingUserID: ID!
 	listedItemID: ID!

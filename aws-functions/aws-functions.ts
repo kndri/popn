@@ -352,6 +352,8 @@ export const addOffer = async (offerData: Offer) => {
 		buyingUserID: offerData.buyingUserID,
 		sellingUserID: offerData.sellingUserID,
 		listedItemID: offerData.listedItemID,
+		sellerConfirmed: false,
+		buyerConfirmed: false,
 	};
 	const result = await API.graphql(
 		graphqlOperation(createOffer, { input: offer })
