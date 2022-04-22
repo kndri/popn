@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, Alert, FlatList, TouchableOpacity } from 'react-native';
+import { View, Image, Alert, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import {
 	useIsFocused,
 	useNavigation,
@@ -24,6 +24,7 @@ export default function ProfileScreen() {
 	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
 	const [following, setFollowing] = React.useState<number>(0);
 	const [followers, setFollowers] = React.useState<number>(0);
+	const [isLoading, setIsLoading] = React.useState(true);
 	const isFocused = useIsFocused();
 
 	/**
@@ -43,6 +44,7 @@ export default function ProfileScreen() {
 		setSneakerCollection(sneakerlist);
 		setFollowing(following.length);
 		setFollowers(followers.length);
+		setIsLoading(false);
 	};
 
 	React.useEffect(() => {
@@ -211,43 +213,53 @@ export default function ProfileScreen() {
 	};
 
 	return (
-		<Screen style={styles.CONTAINER}>
-			<View style={styles.PROFILE_HEADER}>
-				<Header
-					headerTx={`${user?.username}`}
-					rightIcon="settings"
-					onRightPress={() => navigation.navigate('Settings')}
-				/>
-			</View>
-			<View style={styles.PROFILE_DATA}>
-				<Image style={styles.PROFILE_IMAGE} source={{ uri: user?.image }} />
-				<View style={{ flexDirection: 'row', marginLeft: 20 }}>
-					<View style={styles.PROFILE_DETAILS}>
-						{sneakerCollection != undefined ? (
-							<Text preset="bold" text={`${sneakerCollection.length}`} />
-						) : (
-							<Text preset="bold" text="0" />
-						)}
-
-						<Text preset="default" text={'Collection'} />
-					</View>
-					<View style={styles.PROFILE_DETAILS}>
-						<Text preset="bold" text={`${following}`} />
-						<Text preset="default" text={'Following'} />
-					</View>
-					<View style={styles.PROFILE_DETAILS}>
-						<Text preset="bold" text={`${followers}`} />
-						<Text preset="default" text={'Followers'} />
-					</View>
+		<>
+			{isLoading && (
+				<View style={{ flex: 1, justifyContent: 'center' }}>
+					<ActivityIndicator size="large" color="black" />
 				</View>
-			</View>
-			<View
-				style={{ flexDirection: 'row', paddingHorizontal: spacing[3] }}
-			></View>
+			)}
 
-			<View style={styles.COLLECTION_CONTAINER}>
-				<View style={styles.DATA_CONTAINER}>{renderCollection()}</View>
-			</View>
-		</Screen>
+			{!isLoading && (
+				<Screen style={styles.CONTAINER}>
+					<View style={styles.PROFILE_HEADER}>
+						<Header
+							headerTx={`${user?.username}`}
+							rightIcon="settings"
+							onRightPress={() => navigation.navigate('Settings')}
+						/>
+					</View>
+					<View style={styles.PROFILE_DATA}>
+						<Image style={styles.PROFILE_IMAGE} source={{ uri: user?.image }} />
+						<View style={{ flexDirection: 'row', marginLeft: 20 }}>
+							<View style={styles.PROFILE_DETAILS}>
+								{sneakerCollection != undefined ? (
+									<Text preset="bold" text={`${sneakerCollection.length}`} />
+								) : (
+									<Text preset="bold" text="0" />
+								)}
+
+								<Text preset="default" text={'Collection'} />
+							</View>
+							<View style={styles.PROFILE_DETAILS}>
+								<Text preset="bold" text={`${following}`} />
+								<Text preset="default" text={'Following'} />
+							</View>
+							<View style={styles.PROFILE_DETAILS}>
+								<Text preset="bold" text={`${followers}`} />
+								<Text preset="default" text={'Followers'} />
+							</View>
+						</View>
+					</View>
+					<View
+						style={{ flexDirection: 'row', paddingHorizontal: spacing[3] }}
+					></View>
+
+					<View style={styles.COLLECTION_CONTAINER}>
+						<View style={styles.DATA_CONTAINER}>{renderCollection()}</View>
+					</View>
+				</Screen>
+			)}
+		</>
 	);
 }
