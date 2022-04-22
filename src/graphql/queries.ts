@@ -1510,6 +1510,14 @@ export const chatRoomUserByUser = /* GraphQL */ `
 					id
 					offerID
 					lastMessageID
+					chatRoomUsers {
+						items {
+							user {
+								avatarImageURL
+								username
+							}
+						}
+					}
 					lastMessage {
 						id
 						createdAt
