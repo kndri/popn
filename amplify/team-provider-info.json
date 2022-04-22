@@ -130,7 +130,7 @@
         },
         "pinpoint": {
           "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
-          "s3Key": "amplify-builds/pinpoint-47664d50366f65665644-build.zip"
+          "s3Key": "amplify-builds/pinpoint-6c556a466e7a58417758-build.zip"
         }
       },
       "auth": {

@@ -26,6 +26,7 @@ import {
 	getOffer,
 	offerByUser,
 	listListedItems,
+	listedItemByStatus,
 } from '../src/graphql/queries';
 
 export const getUserFromDb = async (userID: string) => {
@@ -313,6 +314,7 @@ export const addListedItem = async (verifiedSneaker: listedParams) => {
 			condition: verifiedSneaker.condition,
 			price: verifiedSneaker.price,
 			brand: verifiedSneaker.brand,
+			status: 'available',
 			description: verifiedSneaker.description,
 			sellerID: verifiedSneaker.sellerID,
 		};
@@ -323,13 +325,15 @@ export const addListedItem = async (verifiedSneaker: listedParams) => {
 	}
 };
 
-export const getListingByZipCode = async (zipCode: string) => {
+export const getListingByAvailablity = async () => {
 	try {
 		const listings = await API.graphql(
-			graphqlOperation(listListedItems)
+			graphqlOperation(listedItemByStatus, {
+				status: 'available',
+			})
 		);
 
-		return listings.data.listListedItems.items;
+		return listings.data.listedItemByStatus.items;
 	} catch (e) {
 		console.log('error: ', e);
 	}

@@ -28,7 +28,7 @@ type pinpointResult {
 # change name to username
 input pinpointInput {
 	token: String!
-	name: String!
+	username: String!
 	email: String!
 	message: String!
 	id: String!
@@ -182,6 +182,11 @@ type ListedItem
 		name: "byCondition"
 		fields: ["condition"]
 		queryField: "listedItemByCondition"
+	)
+	@key(
+		name: "byStatus"
+		fields: ["status", "createdAt"]
+		queryField: "listedItemByStatus"
 	) {
 	id: ID!
 	sneakerID: ID!
@@ -190,6 +195,7 @@ type ListedItem
 	images: [String]!
 	size: String!
 	condition: String!
+	status: LisitingStatus!
 	price: String!
 	brand: String!
 	description: String
@@ -226,4 +232,9 @@ enum ClaimStatus {
 	verified
 	pending
 	denied
+}
+
+enum LisitingStatus {
+	sold
+	available
 }

@@ -7,7 +7,7 @@ import Feed from '../../components/feed';
 import { useToast } from '../../components/Toast';
 
 import styles from './styles';
-import { getListingByZipCode } from '../../aws-functions/aws-functions';
+import { getListingByAvailablity } from '../../aws-functions/aws-functions';
 const search_icon = require('../../assets/images/searchIcon.png');
 const location_icon = require('../../assets/images/zipcode-icon.png');
 
@@ -19,11 +19,12 @@ export default function Home() {
 	const [query, setQuery] = React.useState('');
 
 	const getListing = async () => {
-		const data = await getListingByZipCode('56666');
+		const data = await getListingByAvailablity();
+
 		setListingData(data);
 	};
 
-	console.log('listing data: ', listingData)
+	console.log('listing data: ', listingData);
 
 	React.useEffect(() => {
 		getListing();

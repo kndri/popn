@@ -11,7 +11,9 @@ Amplify Params - DO NOT EDIT */
 const AWS = require('aws-sdk');
 AWS.config.region = 'us-east-1'; // fill in your right region ******
 const pinpoint = new AWS.Pinpoint();
+
 exports.handler = async (event, context) => {
+	console.log('Im here in the file');
 	try {
 		event = event.arguments.input;
 		// Create a AWS Pinpoint project
@@ -23,7 +25,7 @@ exports.handler = async (event, context) => {
 			appID,
 			event.id,
 			event.email,
-			event.name,
+			event.username,
 			event.token
 		);
 		// Create a segment where you want to filter the endpoint you want to send a message to
@@ -36,6 +38,7 @@ exports.handler = async (event, context) => {
 			hookLambda,
 			segmentID
 		);
+		console.log('Im here in the file', result);
 		return result;
 	} catch (error) {
 		console.log('Oops! An error happened.');
@@ -84,7 +87,7 @@ function enableChannels(appID, email) {
 /*
 An endpoint is an object which contains user data which you can use later in a segment to send messages
 */
-async function createEndPoints(appID, id, email, name, token) {
+async function createEndPoints(appID, id, email, username, token) {
 	let params = {
 		ApplicationId: appID /* required */,
 		EndpointId: id /* required */,
@@ -96,8 +99,8 @@ async function createEndPoints(appID, id, email, name, token) {
 			OptOut: 'NONE',
 			User: {
 				UserAttributes: {
-					name: [
-						name,
+					username: [
+						username,
 						/* more items */
 					],
 					expoToken: [
@@ -169,7 +172,7 @@ async function createCampaign(appID, message, env, segmentID) {
 				EmailMessage: {
 					Title: 'Test Email Message',
 					HtmlBody:
-						`<!DOCTYPE html>\n    <html lang="en">\n    <head>\n    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n</head>\n<body>\n<H2>Hallo {{User.UserAttributes.name}},</H2>\n\n <br />This is a Text Message from PinPoint. \n You have send this text: \n\n` +
+						`<!DOCTYPE html>\n    <html lang="en">\n    <head>\n    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n</head>\n<body>\n<H2>Hallo {{User.UserAttributes.username}},</H2>\n\n <br />This is a Text Message from PinPoint. \n You have send this text: \n\n` +
 						message +
 						`\n</body>\n</html>`,
 					FromAddress: 'admin@getpopn.app',

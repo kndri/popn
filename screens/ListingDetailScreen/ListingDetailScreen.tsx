@@ -66,11 +66,13 @@ const ListingDetailsScreen = (props: any) => {
 					alert('No notification permissions!');
 					return;
 				}
-				let token = (
-					await Notifications.getExpoPushTokenAsync({
-						experienceId: `${user?.username}/example`,
-					})
-				).data;
+				let token = (await Notifications.getExpoPushTokenAsync()).data;
+
+				// let token = (
+				// 	await Notifications.getExpoPushTokenAsync({
+				// 		experienceId: `${user?.username}/example`,
+				// 	})
+				// ).data;
 				console.log('token', token);
 
 				// Only update the profile with the expoToken if it not exists yet
@@ -97,11 +99,12 @@ const ListingDetailsScreen = (props: any) => {
 	}, []);
 
 	const createNotification = async (message: string) => {
+		console.log('expoToken', expoToken);
 		const inputParams = {
-			message: message,
 			token: expoToken,
-			name: user?.username,
+			username: user?.username,
 			email: user?.email,
+			message: message,
 			id: user?.id,
 		};
 		try {

@@ -2065,6 +2065,7 @@ export const onCreateListedItem = /* GraphQL */ `
       images
       size
       condition
+      status
       price
       brand
       description
@@ -2155,6 +2156,7 @@ export const onUpdateListedItem = /* GraphQL */ `
       images
       size
       condition
+      status
       price
       brand
       description
@@ -2245,6 +2247,7 @@ export const onDeleteListedItem = /* GraphQL */ `
       images
       size
       condition
+      status
       price
       brand
       description
@@ -2327,6 +2330,7 @@ export const onCreateOffer = /* GraphQL */ `
         images
         size
         condition
+        status
         price
         brand
         description
@@ -2378,6 +2382,7 @@ export const onUpdateOffer = /* GraphQL */ `
         images
         size
         condition
+        status
         price
         brand
         description
@@ -2429,6 +2434,7 @@ export const onDeleteOffer = /* GraphQL */ `
         images
         size
         condition
+        status
         price
         brand
         description
