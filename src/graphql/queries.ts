@@ -1316,6 +1316,8 @@ export const getSneakerStore = /* GraphQL */ `
 			primaryName
 			secondaryName
 			imageUrl
+			createdAt
+			updatedAt
 		}
 	}
 `;
@@ -1508,20 +1510,16 @@ export const chatRoomUserByUser = /* GraphQL */ `
 					id
 					offerID
 					lastMessageID
+					lastMessage {
+						id
+						createdAt
+						text
+						userID
+						chatRoomID
+						updatedAt
+					}
 					createdAt
 					updatedAt
-					chatRoomUsers {
-						items {
-							user {
-								username
-								avatarImageURL
-							}
-						}
-					}
-					lastMessage {
-						updatedAt
-						text
-					}
 				}
 				createdAt
 				updatedAt
