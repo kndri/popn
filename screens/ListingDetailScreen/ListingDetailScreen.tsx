@@ -66,11 +66,13 @@ const ListingDetailsScreen = (props: any) => {
 					alert('No notification permissions!');
 					return;
 				}
-				let token = (
-					await Notifications.getExpoPushTokenAsync({
-						experienceId: `${user?.username}/example`,
-					})
-				).data;
+				let token = (await Notifications.getExpoPushTokenAsync()).data;
+
+				// let token = (
+				// 	await Notifications.getExpoPushTokenAsync({
+				// 		experienceId: `${user?.username}/example`,
+				// 	})
+				// ).data;
 				console.log('token', token);
 
 				// Only update the profile with the expoToken if it not exists yet
@@ -97,6 +99,7 @@ const ListingDetailsScreen = (props: any) => {
 	}, []);
 
 	const createNotification = async (message: string) => {
+		console.log('expoToken', expoToken);
 		const inputParams = {
 			token: expoToken,
 			username: user?.username,
@@ -134,7 +137,7 @@ const ListingDetailsScreen = (props: any) => {
 
 			// 4. Add first automated message
 
-			const automatedMessage = `${user?.username} has offered ${offerAmount} for the item: ${sneakerData.primaryName} ${sneakerData.secondaryName}. Please accept or decline the offer.`;
+			const automatedMessage = `${user?.username} has offered $${offerAmount} for the item: ${sneakerData.primaryName} ${sneakerData.secondaryName}. Please accept or decline the offer.`;
 
 			const firstMessage = await API.graphql(
 				graphqlOperation(createMessage, {
@@ -296,8 +299,8 @@ const ListingDetailsScreen = (props: any) => {
 			{/* AUTHENTICATION PROCESS MODAL CODE*/}
 			<Modal
 				animationType="slide"
-				transparent={true}
-				presentationStyle="formSheet"
+				// transparent={true}
+				presentationStyle="pageSheet"
 				visible={authenticationModalVisible}
 				onRequestClose={() => {
 					setAuthenticationModalVisible(!authenticationModalVisible);

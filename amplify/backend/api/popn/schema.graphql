@@ -141,6 +141,7 @@ type Sneaker
 	user: User @connection(fields: ["userID"])
 	claim: [Claim] @connection(keyName: "bySneaker", fields: ["id"])
 	createdAt: String
+	prevSellers: [String]
 }
 type SoldSneaker
 	@model
@@ -181,6 +182,11 @@ type ListedItem
 		name: "byCondition"
 		fields: ["condition"]
 		queryField: "listedItemByCondition"
+	)
+	@key(
+		name: "byStatus"
+		fields: ["status", "createdAt"]
+		queryField: "listedItemByStatus"
 	) {
 	id: ID!
 	sneakerID: ID!
@@ -189,12 +195,12 @@ type ListedItem
 	images: [String]!
 	size: String!
 	condition: String!
+	status: LisitingStatus!
 	price: String!
 	brand: String!
 	description: String
 	sellerID: ID!
 	seller: User! @connection(fields: ["sellerID"])
-	prevSellers: [String]
 	createdAt: String
 }
 type Offer
@@ -213,6 +219,7 @@ enum OfferStatus {
 	accepted
 	pending
 	declined
+	completed
 }
 type SneakerStore @model {
 	id: ID!
@@ -225,4 +232,9 @@ enum ClaimStatus {
 	verified
 	pending
 	denied
+}
+
+enum LisitingStatus {
+	sold
+	available
 }

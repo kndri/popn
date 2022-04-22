@@ -11,7 +11,9 @@ Amplify Params - DO NOT EDIT */
 const AWS = require('aws-sdk');
 AWS.config.region = 'us-east-1'; // fill in your right region ******
 const pinpoint = new AWS.Pinpoint();
+
 exports.handler = async (event, context) => {
+	console.log('Im here in the file');
 	try {
 		event = event.arguments.input;
 		// Create a AWS Pinpoint project
@@ -36,6 +38,7 @@ exports.handler = async (event, context) => {
 			hookLambda,
 			segmentID
 		);
+		console.log('Im here in the file', result);
 		return result;
 	} catch (error) {
 		console.log('Oops! An error happened.');

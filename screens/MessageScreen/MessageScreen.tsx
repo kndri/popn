@@ -34,7 +34,7 @@ export default function MessageScreen() {
 
 			let chatRoomsArr = chatRoomsByUser.data.chatRoomUserByUser.items;
 
-			if (chatRoomsArr.length > 0) {
+			if (chatRoomsArr.length >= 0) {
 				chatRoomsArr.sort((a, b) => {
 					return b.chatRoom.lastMessage.updatedAt.localeCompare(
 						a.chatRoom.lastMessage.updatedAt

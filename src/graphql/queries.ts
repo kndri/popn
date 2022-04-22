@@ -19,6 +19,7 @@ export const getUser = /* GraphQL */ `
 					image
 					userID
 					createdAt
+					prevSellers
 					updatedAt
 				}
 				nextToken
@@ -804,6 +805,7 @@ export const getSneaker = /* GraphQL */ `
 				nextToken
 			}
 			createdAt
+			prevSellers
 			updatedAt
 		}
 	}
@@ -848,6 +850,7 @@ export const listSneakers = /* GraphQL */ `
 					nextToken
 				}
 				createdAt
+				prevSellers
 				updatedAt
 			}
 			nextToken
@@ -1022,6 +1025,7 @@ export const getClaim = /* GraphQL */ `
 					nextToken
 				}
 				createdAt
+				prevSellers
 				updatedAt
 			}
 			status
@@ -1063,6 +1067,7 @@ export const listClaims = /* GraphQL */ `
 					image
 					userID
 					createdAt
+					prevSellers
 					updatedAt
 				}
 				status
@@ -1103,12 +1108,14 @@ export const getListedItem = /* GraphQL */ `
 					nextToken
 				}
 				createdAt
+				prevSellers
 				updatedAt
 			}
 			zipCode
 			images
 			size
 			condition
+			status
 			price
 			brand
 			description
@@ -1159,7 +1166,6 @@ export const getListedItem = /* GraphQL */ `
 				createdAt
 				updatedAt
 			}
-			prevSellers
 			createdAt
 			updatedAt
 		}
@@ -1183,12 +1189,14 @@ export const listListedItems = /* GraphQL */ `
 					image
 					userID
 					createdAt
+					prevSellers
 					updatedAt
 				}
 				zipCode
 				images
 				size
 				condition
+				status
 				price
 				brand
 				description
@@ -1205,7 +1213,6 @@ export const listListedItems = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
-				prevSellers
 				createdAt
 				updatedAt
 			}
@@ -1233,12 +1240,14 @@ export const getOffer = /* GraphQL */ `
 					image
 					userID
 					createdAt
+					prevSellers
 					updatedAt
 				}
 				zipCode
 				images
 				size
 				condition
+				status
 				price
 				brand
 				description
@@ -1255,7 +1264,6 @@ export const getOffer = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
-				prevSellers
 				createdAt
 				updatedAt
 			}
@@ -1285,11 +1293,11 @@ export const listOffers = /* GraphQL */ `
 					images
 					size
 					condition
+					status
 					price
 					brand
 					description
 					sellerID
-					prevSellers
 					createdAt
 					updatedAt
 				}
@@ -1610,6 +1618,7 @@ export const sneakerByUser = /* GraphQL */ `
 					nextToken
 				}
 				createdAt
+				prevSellers
 				updatedAt
 			}
 			nextToken
@@ -1683,12 +1692,14 @@ export const listedItemByUser = /* GraphQL */ `
 					image
 					userID
 					createdAt
+					prevSellers
 					updatedAt
 				}
 				zipCode
 				images
 				size
 				condition
+				status
 				price
 				brand
 				description
@@ -1705,7 +1716,6 @@ export const listedItemByUser = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
-				prevSellers
 				createdAt
 				updatedAt
 			}
@@ -1739,12 +1749,14 @@ export const listedItemByZipCode = /* GraphQL */ `
 					image
 					userID
 					createdAt
+					prevSellers
 					updatedAt
 				}
 				zipCode
 				images
 				size
 				condition
+				status
 				price
 				brand
 				description
@@ -1761,7 +1773,6 @@ export const listedItemByZipCode = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
-				prevSellers
 				createdAt
 				updatedAt
 			}
@@ -1795,12 +1806,14 @@ export const listedItemByBrand = /* GraphQL */ `
 					image
 					userID
 					createdAt
+					prevSellers
 					updatedAt
 				}
 				zipCode
 				images
 				size
 				condition
+				status
 				price
 				brand
 				description
@@ -1817,7 +1830,6 @@ export const listedItemByBrand = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
-				prevSellers
 				createdAt
 				updatedAt
 			}
@@ -1851,12 +1863,14 @@ export const listedItemByPrice = /* GraphQL */ `
 					image
 					userID
 					createdAt
+					prevSellers
 					updatedAt
 				}
 				zipCode
 				images
 				size
 				condition
+				status
 				price
 				brand
 				description
@@ -1873,7 +1887,6 @@ export const listedItemByPrice = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
-				prevSellers
 				createdAt
 				updatedAt
 			}
@@ -1907,12 +1920,14 @@ export const listedItemBySize = /* GraphQL */ `
 					image
 					userID
 					createdAt
+					prevSellers
 					updatedAt
 				}
 				zipCode
 				images
 				size
 				condition
+				status
 				price
 				brand
 				description
@@ -1929,7 +1944,6 @@ export const listedItemBySize = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
-				prevSellers
 				createdAt
 				updatedAt
 			}
@@ -1963,12 +1977,14 @@ export const listedItemByCondition = /* GraphQL */ `
 					image
 					userID
 					createdAt
+					prevSellers
 					updatedAt
 				}
 				zipCode
 				images
 				size
 				condition
+				status
 				price
 				brand
 				description
@@ -1985,7 +2001,65 @@ export const listedItemByCondition = /* GraphQL */ `
 					createdAt
 					updatedAt
 				}
-				prevSellers
+				createdAt
+				updatedAt
+			}
+			nextToken
+		}
+	}
+`;
+export const listedItemByStatus = /* GraphQL */ `
+	query ListedItemByStatus(
+		$status: LisitingStatus
+		$createdAt: ModelStringKeyConditionInput
+		$sortDirection: ModelSortDirection
+		$filter: ModelListedItemFilterInput
+		$limit: Int
+		$nextToken: String
+	) {
+		listedItemByStatus(
+			status: $status
+			createdAt: $createdAt
+			sortDirection: $sortDirection
+			filter: $filter
+			limit: $limit
+			nextToken: $nextToken
+		) {
+			items {
+				id
+				sneakerID
+				sneakerData {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					userID
+					createdAt
+					prevSellers
+					updatedAt
+				}
+				zipCode
+				images
+				size
+				condition
+				status
+				price
+				brand
+				description
+				sellerID
+				seller {
+					id
+					age
+					username
+					email
+					avatarImageURL
+					status
+					zipCode
+					expoToken
+					createdAt
+					updatedAt
+				}
 				createdAt
 				updatedAt
 			}
@@ -2022,11 +2096,11 @@ export const offerByUser = /* GraphQL */ `
 					images
 					size
 					condition
+					status
 					price
 					brand
 					description
 					sellerID
-					prevSellers
 					createdAt
 					updatedAt
 				}

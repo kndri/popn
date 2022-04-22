@@ -19,6 +19,7 @@ export const onCreateUser = /* GraphQL */ `
           image
           userID
           createdAt
+          prevSellers
           updatedAt
         }
         nextToken
@@ -120,6 +121,7 @@ export const onUpdateUser = /* GraphQL */ `
           image
           userID
           createdAt
+          prevSellers
           updatedAt
         }
         nextToken
@@ -221,6 +223,7 @@ export const onDeleteUser = /* GraphQL */ `
           image
           userID
           createdAt
+          prevSellers
           updatedAt
         }
         nextToken
@@ -1436,6 +1439,7 @@ export const onCreateSneaker = /* GraphQL */ `
         nextToken
       }
       createdAt
+      prevSellers
       updatedAt
     }
   }
@@ -1509,6 +1513,7 @@ export const onUpdateSneaker = /* GraphQL */ `
         nextToken
       }
       createdAt
+      prevSellers
       updatedAt
     }
   }
@@ -1582,6 +1587,7 @@ export const onDeleteSneaker = /* GraphQL */ `
         nextToken
       }
       createdAt
+      prevSellers
       updatedAt
     }
   }
@@ -1841,6 +1847,7 @@ export const onCreateClaim = /* GraphQL */ `
           nextToken
         }
         createdAt
+        prevSellers
         updatedAt
       }
       status
@@ -1926,6 +1933,7 @@ export const onUpdateClaim = /* GraphQL */ `
           nextToken
         }
         createdAt
+        prevSellers
         updatedAt
       }
       status
@@ -2011,6 +2019,7 @@ export const onDeleteClaim = /* GraphQL */ `
           nextToken
         }
         createdAt
+        prevSellers
         updatedAt
       }
       status
@@ -2049,12 +2058,14 @@ export const onCreateListedItem = /* GraphQL */ `
           nextToken
         }
         createdAt
+        prevSellers
         updatedAt
       }
       zipCode
       images
       size
       condition
+      status
       price
       brand
       description
@@ -2105,7 +2116,6 @@ export const onCreateListedItem = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      prevSellers
       createdAt
       updatedAt
     }
@@ -2139,12 +2149,14 @@ export const onUpdateListedItem = /* GraphQL */ `
           nextToken
         }
         createdAt
+        prevSellers
         updatedAt
       }
       zipCode
       images
       size
       condition
+      status
       price
       brand
       description
@@ -2195,7 +2207,6 @@ export const onUpdateListedItem = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      prevSellers
       createdAt
       updatedAt
     }
@@ -2229,12 +2240,14 @@ export const onDeleteListedItem = /* GraphQL */ `
           nextToken
         }
         createdAt
+        prevSellers
         updatedAt
       }
       zipCode
       images
       size
       condition
+      status
       price
       brand
       description
@@ -2285,7 +2298,6 @@ export const onDeleteListedItem = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      prevSellers
       createdAt
       updatedAt
     }
@@ -2311,12 +2323,14 @@ export const onCreateOffer = /* GraphQL */ `
           image
           userID
           createdAt
+          prevSellers
           updatedAt
         }
         zipCode
         images
         size
         condition
+        status
         price
         brand
         description
@@ -2333,7 +2347,6 @@ export const onCreateOffer = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        prevSellers
         createdAt
         updatedAt
       }
@@ -2362,12 +2375,14 @@ export const onUpdateOffer = /* GraphQL */ `
           image
           userID
           createdAt
+          prevSellers
           updatedAt
         }
         zipCode
         images
         size
         condition
+        status
         price
         brand
         description
@@ -2384,7 +2399,6 @@ export const onUpdateOffer = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        prevSellers
         createdAt
         updatedAt
       }
@@ -2413,12 +2427,14 @@ export const onDeleteOffer = /* GraphQL */ `
           image
           userID
           createdAt
+          prevSellers
           updatedAt
         }
         zipCode
         images
         size
         condition
+        status
         price
         brand
         description
@@ -2435,7 +2451,6 @@ export const onDeleteOffer = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        prevSellers
         createdAt
         updatedAt
       }
