@@ -44,7 +44,7 @@ export const presets = {
   /**
    * Large headers.
    */
-  header: { ...BASE, fontSize: 45, fontFamily: typography.primaryBold, } as TextStyle,
+  header: { ...BASE, fontSize: 30, fontFamily: typography.primaryBold, } as TextStyle,
 
   h1: { ...BASE, fontSize: 28, fontFamily: typography.primaryBold } as TextStyle,
   h2: { ...BASE, fontSize: 24, fontFamily: typography.primaryBold } as TextStyle,
