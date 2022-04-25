@@ -36,6 +36,7 @@ import styles from './styles';
 const example = require('../../assets/images/verify_example.png');
 const verified = require('../../assets/images/verified_badge.png');
 const Seller = require('../../assets/images/UserImage.png');
+const logo = require('../../assets/images/app-logo.png');
 
 const ListingDetailsScreen = (props: any) => {
 	const listing = props.route.params;
@@ -48,13 +49,22 @@ const ListingDetailsScreen = (props: any) => {
 	const [offerAmount, setOfferAmount] = React.useState('');
 	const [offerMessage, setOfferMessage] = React.useState('');
 
-	const createNotification = async (message: string) => {
+	const createNotification = async (
+		message: string,
+		chatRoomID: string,
+		offerID: string
+	) => {
 		const messageNotifcation = {
 			to: seller.expoToken,
 			sound: 'default',
 			title: 'Offer Made!',
 			body: message,
-			data: { userData: { userId: user?.id, username: user?.username } },
+			data: {
+				userId: user?.id,
+				username: user?.username,
+				offerID: offerID,
+				chatRoomID: chatRoomID,
+			},
 		};
 
 		await fetch('https://exp.host/--/api/v2/push/send', {
@@ -133,7 +143,11 @@ const ListingDetailsScreen = (props: any) => {
 			}
 
 			//4 create Notification with message
-			await createNotification(automatedMessage);
+			await createNotification(
+				automatedMessage,
+				newChatRoom.id,
+				offer.createOffer.id
+			);
 
 			navigation.navigate('MessageRoom', {
 				id: newChatRoom.id,

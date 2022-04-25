@@ -64,6 +64,43 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const [buyerModalVisible, setBuyerModalVisible] = React.useState(false);
 	const [sellerModalVisible, setSellerModalVisible] = React.useState(false);
 	const toast = useToast();
+	console.log('offer', offer);
+	/**
+	 * createNotification will create a notification after a user accepts/declines/message a user
+	 * @param message
+	 * @param chatRoomID
+	 * @param offerID
+	 */
+	const createNotification = async (
+		message: string,
+		chatRoomID: string,
+		offerID: string,
+		title: string,
+		expoToken: string
+	) => {
+		const messageNotifcation = {
+			to: expoToken,
+			sound: 'default',
+			title: title,
+			body: message,
+			data: {
+				userId: user?.id,
+				username: user?.username,
+				offerID: offerID,
+				chatRoomID: chatRoomID,
+			},
+		};
+
+		await fetch('https://exp.host/--/api/v2/push/send', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Accept-encoding': 'gzip, deflate',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(messageNotifcation),
+		});
+	};
 
 	const fetchMessages = async () => {
 		const messagesData = await API.graphql(

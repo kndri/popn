@@ -213,6 +213,8 @@ type Offer
 	buyerConfirmed: Boolean!
 	buyingUserID: ID!
 	sellingUserID: ID!
+	seller: User! @connection(fields: ["sellingUserID"])
+	buyer: User! @connection(fields: ["buyingUserID"])
 	listedItemID: ID!
 	listedItem: ListedItem! @connection(fields: ["listedItemID"])
 	createdAt: String

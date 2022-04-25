@@ -3,11 +3,10 @@ import { View, TextInput, TouchableOpacity } from 'react-native';
 import { Screen, Text, AutoImage as Image } from '../../components';
 import { useNavigation } from '@react-navigation/native';
 import Feed from '../../components/feed';
-import Amplify, { API, Auth, graphqlOperation, } from 'aws-amplify';
+import Amplify, { API, Auth, graphqlOperation } from 'aws-amplify';
 import * as Notifications from 'expo-notifications';
 import { getUser } from '../../src/graphql/queries';
 import { updateUser } from '../../src/graphql/mutations';
-
 
 import { useToast } from '../../components/Toast';
 
@@ -22,6 +21,8 @@ export default function Home() {
 	const [listingData, setListingData] = React.useState([]);
 	const [distanceValue, setDistanceValue] = React.useState(30);
 	const [query, setQuery] = React.useState('');
+	const notificationListener: any = React.useRef();
+	const responseListener: any = React.useRef();
 
 	const getListing = async () => {
 		const data = await getListingByAvailablity();
@@ -71,6 +72,30 @@ export default function Home() {
 
 	React.useEffect(() => {
 		checkNotificationToken();
+	}, []);
+	React.useEffect(() => {
+		// This listener is fired whenever a notification is received while the app is foregrounded
+		notificationListener.current =
+			Notifications.addNotificationReceivedListener((notification) => {
+				console.log(notification);
+			});
+
+		// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+		responseListener.current =
+			Notifications.addNotificationResponseReceivedListener((response) => {
+				navigation.navigate('MessageRoom', {
+					id: response.notification.request.content.data.chatRoomID,
+					name: response.notification.request.content.data.username,
+					offerID: response.notification.request.content.data.offerID,
+				});
+			});
+
+		return () => {
+			Notifications.removeNotificationSubscription(
+				notificationListener.current
+			);
+			Notifications.removeNotificationSubscription(responseListener.current);
+		};
 	}, []);
 
 	React.useEffect(() => {

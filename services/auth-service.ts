@@ -72,6 +72,7 @@ const signUp = async (
 	let userId: any;
 	let new_image: any;
 	let token = (await Notifications.getExpoPushTokenAsync()).data;
+
 	if (image_url.includes('defaultUser') === false) {
 		new_image = await uploadImage(_username, image_url);
 		const image = await Storage.get(new_image.key, {

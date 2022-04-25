@@ -1222,6 +1222,30 @@ export const getOffer = /* GraphQL */ `
 			buyerConfirmed
 			buyingUserID
 			sellingUserID
+			seller {
+				id
+				age
+				username
+				email
+				avatarImageURL
+				status
+				zipCode
+				expoToken
+				createdAt
+				updatedAt
+			}
+			buyer {
+				id
+				age
+				username
+				email
+				avatarImageURL
+				status
+				zipCode
+				expoToken
+				createdAt
+				updatedAt
+			}
 			listedItemID
 			listedItem {
 				id
@@ -1281,6 +1305,30 @@ export const listOffers = /* GraphQL */ `
 				buyerConfirmed
 				buyingUserID
 				sellingUserID
+				seller {
+					id
+					age
+					username
+					email
+					avatarImageURL
+					status
+					zipCode
+					expoToken
+					createdAt
+					updatedAt
+				}
+				buyer {
+					id
+					age
+					username
+					email
+					avatarImageURL
+					status
+					zipCode
+					expoToken
+					createdAt
+					updatedAt
+				}
 				listedItemID
 				listedItem {
 					id
@@ -2092,6 +2140,30 @@ export const offerByUser = /* GraphQL */ `
 				buyerConfirmed
 				buyingUserID
 				sellingUserID
+				seller {
+					id
+					age
+					username
+					email
+					avatarImageURL
+					status
+					zipCode
+					expoToken
+					createdAt
+					updatedAt
+				}
+				buyer {
+					id
+					age
+					username
+					email
+					avatarImageURL
+					status
+					zipCode
+					expoToken
+					createdAt
+					updatedAt
+				}
 				listedItemID
 				listedItem {
 					id
