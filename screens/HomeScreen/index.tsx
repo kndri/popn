@@ -26,7 +26,7 @@ export default function Home() {
 
 	React.useEffect(() => {
 		getListing();
-	}, []);
+	}, [listingData]);
 
 	return (
 		<Screen style={styles.CONTAINER}>
