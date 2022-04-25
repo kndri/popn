@@ -51,53 +51,6 @@ const ListingDetailsScreen = (props: any) => {
 	const [offerMessage, setOfferMessage] = React.useState('');
 	const [expoToken, setExpoToken] = React.useState<any>();
 
-	React.useEffect(() => {
-		// There is no expoToken available yet, so we will request that and save it into the profile
-		const CheckNotificationToken = async () => {
-			const profile = await getUserFromDb(user?.id as string).catch((err) =>
-				console.log('error:', err)
-			);
-
-			if (profile.expoToken === null) {
-				const { status } = await Permissions.askAsync(
-					Permissions.NOTIFICATIONS
-				);
-				if (status !== 'granted') {
-					alert('No notification permissions!');
-					return;
-				}
-				let token = (await Notifications.getExpoPushTokenAsync()).data;
-
-				// let token = (
-				// 	await Notifications.getExpoPushTokenAsync({
-				// 		experienceId: `${user?.username}/example`,
-				// 	})
-				// ).data;
-				console.log('token', token);
-
-				// Only update the profile with the expoToken if it not exists yet
-				if (token !== undefined) {
-					const inputParams = {
-						id: user?.id,
-						expoToken: token,
-					};
-					setExpoToken(token);
-
-					try {
-						await API.graphql(
-							graphqlOperation(updateUser, { input: inputParams })
-						);
-					} catch (err) {
-						console.log('error:', err);
-					}
-				}
-			}
-
-			setExpoToken(profile.expoToken);
-		};
-		CheckNotificationToken();
-	}, []);
-
 	const createNotification = async (message: string) => {
 		console.log('expoToken', expoToken);
 		const inputParams = {

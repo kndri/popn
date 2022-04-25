@@ -9,11 +9,12 @@ import { FormProvider } from './contexts/form-context';
 import Amplify, { API, Auth, graphqlOperation, Analytics } from 'aws-amplify';
 import awsconfig from './src/aws-exports.js';
 import ToastContainer from './components/Toast';
-import { createUser } from './src/graphql/mutations';
+import { createUser, updateUser } from './src/graphql/mutations';
 import { getUser } from './src/graphql/queries';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import { useAuth } from './contexts/auth';
+import { getUserFromDb } from './aws-functions/aws-functions';
 
 Amplify.configure(awsconfig);
 Analytics.disable();
@@ -27,7 +28,7 @@ export default function App() {
 		await API.graphql(graphqlOperation(createUser, { input: user }));
 	};
 
-	const updateUser = async () => {
+	const checkCurrentUser = async () => {
 		// Get current authenticated user
 		const userInfo = await Auth.currentAuthenticatedUser({
 			bypassCache: true,
@@ -57,6 +58,7 @@ export default function App() {
 
 	const checkNotificationToken = async () => {
 		console.log('i am in checkNotificationToken');
+
 		// Get current authenticated user
 		const userInfo = await Auth.currentAuthenticatedUser({
 			bypassCache: true,
@@ -65,22 +67,16 @@ export default function App() {
 		});
 
 		const profile = await API.graphql(
-			graphqlOperation(getUser, { id: userInfo.attributes.sub})
+			graphqlOperation(getUser, { id: userInfo.attributes.sub })
 		);
 
-		console.log('profile: ', profile);
-
-		if (profile.expoToken === null) {
-			const { status } = await Permissions.askAsync(
-				Permissions.NOTIFICATIONS
-			);
+		if (profile.data.getUser.expoToken === null) {
+			const { status } = await Notifications.requestPermissionsAsync();
 			if (status !== 'granted') {
 				alert('No notification permissions!');
 				return;
 			}
 			let token = (await Notifications.getExpoPushTokenAsync()).data;
-
-			console.log('token: ', token);
 
 			// Only update the profile with the expoToken if it does not exists yet
 			if (token !== undefined) {
@@ -94,7 +90,7 @@ export default function App() {
 						graphqlOperation(updateUser, { input: inputParams })
 					);
 				} catch (err) {
-					console.log('error:', err);
+					console.log('errpor:', err);
 				}
 			}
 		}
@@ -103,9 +99,8 @@ export default function App() {
 	useEffect(() => {
 		console.log('App.tsx is running');
 
-		updateUser();
+		checkCurrentUser();
 		checkNotificationToken();
-
 	}, []);
 
 	if (!isLoadingComplete) {
