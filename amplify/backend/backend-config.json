@@ -96,31 +96,6 @@
       "providerPlugin": "awscloudformation",
       "build": true
     },
-    "popn95903adbCreateAuthChallenge": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "popn95903adbDefineAuthChallenge": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "popn95903adbPreSignup": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "popn95903adbVerifyAuthChallengeResponse": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "popn95903adbPreTokenGeneration": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "popn09CreateAuthChallenge": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -134,7 +109,8 @@
     "popn09PreSignup": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": []
     },
     "popn09VerifyAuthChallengeResponse": {
       "build": true,

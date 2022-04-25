@@ -346,6 +346,7 @@ interface Offer {
 	listedItemID: string;
 }
 export const addOffer = async (offerData: Offer) => {
+	console.log(offerData);
 	const offer = {
 		offerAmount: offerData.offerAmount,
 		status: 'pending',

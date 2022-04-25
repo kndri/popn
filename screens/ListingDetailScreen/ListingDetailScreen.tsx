@@ -284,10 +284,12 @@ const ListingDetailsScreen = (props: any) => {
 									buyingUserID: user?.id as string,
 									sellingUserID: seller.id,
 									listedItemID: listing.id,
-								}).then((offer) => {
-									onClick(offer);
-									setOfferModalVisible(!offerModalVisible);
-								});
+								})
+									.then((offer) => {
+										onClick(offer);
+										setOfferModalVisible(!offerModalVisible);
+									})
+									.catch((err) => console.log('error:', err));
 							}}
 							disabled={offerAmount ? false : true}
 						/>
