@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { View, TouchableOpacity, FlatList, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { Screen, Text, Header } from '../../components';
+import { Screen, Text, Header, Button } from '../../components';
 import { useAuth } from '../../contexts/auth';
 
 import styles from './Styles';
@@ -29,7 +29,7 @@ const settings = [
 	},
 	{
 		id: '4',
-		pageSrc: 'changeProfileImage',
+		pageSrc: 'ChangeProfileImage',
 		name: 'Profile Picture',
 	},
 	{
@@ -65,199 +65,133 @@ const actions = [
 	},
 ];
 
-interface SettingsProps {}
+interface SettingsProps { }
 const SettingsScreen: FC<SettingsProps> = () => {
 	const { signOut } = useAuth();
 	const navigation = useNavigation();
-	const handleClick = () => {
+	const onSignOutPress = () => {
 		signOut();
 	};
 
 	return (
 		<Screen style={styles.CONTAINER}>
 			<View style={styles.CENTER}>
-				<Header leftIcon="back" onLeftPress={() => navigation.goBack()} />
+				<Header leftIcon="back" onLeftPress={() => navigation.goBack()} headerTx={"Settings"} />
 			</View>
-
-			<Text style={styles.HEADING_TITLE} preset="h1" text="Settings" />
-			{/* flat list of settings options */}
-			<View style={styles.FLATLIST}>
-				<FlatList
-					scrollEnabled={false}
-					numColumns={1}
-					showsVerticalScrollIndicator={false}
-					data={settings}
-					renderItem={({ item }) => (
-						<View
-							style={{
-								backgroundColor: 'white',
-								paddingHorizontal: 20,
-								borderRadius: 4,
-							}}
-						>
-							<TouchableOpacity
-								onPress={() => navigation.navigate(item.pageSrc)}
-							>
-								<View
-									style={{
-										flex: 1,
-										flexDirection: 'row',
-										padding: 5,
-										backgroundColor: 'white',
-										alignItems: 'center',
-										alignContent: 'center',
-										borderRadius: 5,
-									}}
-								>
+			<View style={{ flex: 1, justifyContent: 'space-between', marginBottom: '30%' }}>
+				<View>
+					<View>
+						<Text style={styles.HEADING_TITLE} preset="h4" text="My Account" />
+						{/* flat list of settings options */}
+						<View style={styles.FLATLIST}>
+							<FlatList
+								scrollEnabled={false}
+								numColumns={1}
+								showsVerticalScrollIndicator={false}
+								data={settings}
+								renderItem={({ item }) => (
 									<View
-										style={{
-											flex: 1,
-											flexDirection: 'row',
-											height: 35,
-											alignItems: 'center',
-											justifyContent: 'space-between',
-										}}
 									>
-										{/* settings page name */}
-										<Text
-											style={styles.SETTINGS_NAME}
-											preset="bold"
-											text={item.name}
-										/>
-										{/* <Text style={SETTINGS_NAME}>{item.name}</Text> */}
-										<TouchableOpacity>
-											<Image source={arrow} style={styles.ARROW_ICON} />
-										</TouchableOpacity>
-									</View>
-								</View>
-							</TouchableOpacity>
-						</View>
-					)}
-				/>
-			</View>
-
-			<Text style={styles.HEADING_TITLE} preset="h1" text="About" />
-			{/* flat list of about section */}
-			<View style={styles.FLATLIST}>
-				<FlatList
-					scrollEnabled={false}
-					numColumns={1}
-					showsVerticalScrollIndicator={false}
-					// keyExtractor={(item, index) => index.toString()}
-					data={about}
-					renderItem={({ item }) => (
-						<View
-							style={{
-								backgroundColor: 'white',
-								paddingHorizontal: 20,
-								borderRadius: 4,
-							}}
-						>
-							<TouchableOpacity
-							// onPress={() => navigation.navigate(item.pageSrc)}
-							>
-								<View
-									style={{
-										flex: 1,
-										flexDirection: 'row',
-										padding: 5,
-										backgroundColor: 'white',
-										alignItems: 'center',
-										alignContent: 'center',
-										borderRadius: 20,
-									}}
-								>
-									<View
-										style={{
-											flex: 1,
-											flexDirection: 'row',
-											height: 35,
-											alignItems: 'center',
-											justifyContent: 'space-between',
-										}}
-									>
-										{/* settings page name */}
-										<Text
-											style={styles.SETTINGS_NAME}
-											preset="bold"
-											text={item.name}
-										/>
-										<TouchableOpacity>
-											<Image source={arrow} style={styles.ARROW_ICON} />
-										</TouchableOpacity>
-									</View>
-								</View>
-							</TouchableOpacity>
-						</View>
-					)}
-				/>
-			</View>
-
-			<Text style={styles.HEADING_TITLE} preset="h1" text="Actions" />
-			{/* flat list of Actions options */}
-			<View style={styles.FLATLIST}>
-				<FlatList
-					scrollEnabled={false}
-					numColumns={1}
-					showsVerticalScrollIndicator={false}
-					// keyExtractor={(item, index) => index.toString()}
-					data={actions}
-					renderItem={({ item }) => (
-						<View
-							style={{
-								backgroundColor: 'white',
-								paddingHorizontal: 20,
-								borderRadius: 4,
-							}}
-						>
-							<TouchableOpacity
-								onPress={() => {
-									if (item.name === 'Sign Out') {
-										handleClick();
-									}
-								}}
-							>
-								<View
-									style={{
-										flex: 1,
-										flexDirection: 'row',
-										padding: 5,
-										backgroundColor: 'white',
-										alignItems: 'center',
-										alignContent: 'center',
-										borderRadius: 20,
-									}}
-								>
-									<View
-										style={{
-											flex: 1,
-											flexDirection: 'row',
-											height: 35,
-											alignItems: 'center',
-											justifyContent: 'space-between',
-										}}
-									>
-										{/* settings page name */}
-										<Text
-											style={styles.SETTINGS_NAME}
-											preset="bold"
-											text={item.name}
-										/>
 										<TouchableOpacity
-											onPress={() => {
-												if (item.name === 'Sign Out') {
-													handleClick();
-												}
-											}}
+											onPress={() => navigation.navigate(item.pageSrc)}
 										>
-											<Image source={arrow} style={styles.ARROW_ICON} />
+											<View
+												style={{
+													flex: 1,
+													flexDirection: 'row',
+													padding: 5,
+													backgroundColor: 'white',
+													alignItems: 'center',
+													alignContent: 'center',
+													borderRadius: 5,
+												}}
+											>
+												<View
+													style={{
+														flex: 1,
+														flexDirection: 'row',
+														height: 35,
+														alignItems: 'center',
+														justifyContent: 'space-between',
+													}}
+												>
+													{/* settings page name */}
+													<Text
+														style={styles.SETTINGS_NAME}
+														preset="h3"
+														text={item.name}
+													/>
+													{/* <Text style={SETTINGS_NAME}>{item.name}</Text> */}
+													<TouchableOpacity>
+														<Image source={arrow} style={styles.ARROW_ICON} />
+													</TouchableOpacity>
+												</View>
+											</View>
 										</TouchableOpacity>
 									</View>
-								</View>
-							</TouchableOpacity>
+								)}
+							/>
 						</View>
-					)}
-				/>
+					</View>
+
+					<View>
+						<Text style={styles.HEADING_TITLE} preset="h4" text="About" />
+						{/* flat list of about section */}
+						<View style={styles.FLATLIST}>
+							<FlatList
+								scrollEnabled={false}
+								numColumns={1}
+								showsVerticalScrollIndicator={false}
+								// keyExtractor={(item, index) => index.toString()}
+								data={about}
+								renderItem={({ item }) => (
+									<View
+										style={{
+											backgroundColor: 'white',
+										}}
+									>
+										<TouchableOpacity
+										// onPress={() => navigation.navigate(item.pageSrc)}
+										>
+											<View
+												style={{
+													flex: 1,
+													flexDirection: 'row',
+													padding: 5,
+													backgroundColor: 'white',
+													alignItems: 'center',
+													alignContent: 'center',
+													borderRadius: 20,
+												}}
+											>
+												<View
+													style={{
+														flex: 1,
+														flexDirection: 'row',
+														height: 35,
+														alignItems: 'center',
+														justifyContent: 'space-between',
+													}}
+												>
+													{/* settings page name */}
+													<Text
+														style={styles.SETTINGS_NAME}
+														preset="h3"
+														text={item.name}
+													/>
+													<TouchableOpacity>
+														<Image source={arrow} style={styles.ARROW_ICON} />
+													</TouchableOpacity>
+												</View>
+											</View>
+										</TouchableOpacity>
+									</View>
+								)}
+							/>
+						</View>
+					</View>
+				</View>
+				<Button preset="link" text="Sign Out" textStyle={{ color: '#FF4C5E', fontSize: 22, fontWeight: 'bold' }} onPress={() => onSignOutPress()} />
 			</View>
 		</Screen>
 	);

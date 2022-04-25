@@ -255,6 +255,11 @@ function RootNavigator() {
 						options={{ headerShown: false }}
 					/>
 					<Stack.Screen
+						name="ChangeProfileImage"
+						component={ChangeProfileImageScreen}
+						options={{ headerShown: false }}
+					/>
+					<Stack.Screen
 						name="Location"
 						component={LocationScreen}
 						options={{ headerShown: false }}
