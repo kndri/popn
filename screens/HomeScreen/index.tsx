@@ -3,6 +3,11 @@ import { View, TextInput, TouchableOpacity } from 'react-native';
 import { Screen, Text, AutoImage as Image } from '../../components';
 import { useNavigation } from '@react-navigation/native';
 import Feed from '../../components/feed';
+import Amplify, { API, Auth, graphqlOperation, } from 'aws-amplify';
+import * as Notifications from 'expo-notifications';
+import { getUser } from '../../src/graphql/queries';
+import { updateUser } from '../../src/graphql/mutations';
+
 
 import { useToast } from '../../components/Toast';
 
@@ -23,6 +28,50 @@ export default function Home() {
 
 		setListingData(data);
 	};
+
+	const checkNotificationToken = async () => {
+		console.log('i am in checkNotificationToken');
+
+		// Get current authenticated user
+		const userInfo = await Auth.currentAuthenticatedUser({
+			bypassCache: true,
+		}).catch((error) => {
+			console.log('error', error);
+		});
+
+		const profile = await API.graphql(
+			graphqlOperation(getUser, { id: userInfo.attributes.sub })
+		);
+
+		if (profile.data.getUser.expoToken === null) {
+			const { status } = await Notifications.requestPermissionsAsync();
+			if (status !== 'granted') {
+				alert('No notification permissions!');
+				return;
+			}
+			let token = (await Notifications.getExpoPushTokenAsync()).data;
+
+			// Only update the profile with the expoToken if it does not exists yet
+			if (token !== undefined) {
+				const inputParams = {
+					id: userInfo.attributes.sub,
+					expoToken: token,
+				};
+
+				try {
+					await API.graphql(
+						graphqlOperation(updateUser, { input: inputParams })
+					);
+				} catch (err) {
+					console.log('errpor:', err);
+				}
+			}
+		}
+	};
+
+	React.useEffect(() => {
+		checkNotificationToken();
+	}, []);
 
 	React.useEffect(() => {
 		getListing();

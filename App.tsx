@@ -9,7 +9,7 @@ import { FormProvider } from './contexts/form-context';
 import Amplify, { API, Auth, graphqlOperation, Analytics } from 'aws-amplify';
 import awsconfig from './src/aws-exports.js';
 import ToastContainer from './components/Toast';
-import { createUser, updateUser } from './src/graphql/mutations';
+import { createUser } from './src/graphql/mutations';
 import { getUser } from './src/graphql/queries';
 import * as Notifications from 'expo-notifications';
 
@@ -83,51 +83,8 @@ export default function App() {
 		// If it doesn't, create the user in the database
 	};
 
-	const checkNotificationToken = async () => {
-		console.log('i am in checkNotificationToken');
-
-		// Get current authenticated user
-		const userInfo = await Auth.currentAuthenticatedUser({
-			bypassCache: true,
-		}).catch((error) => {
-			console.log('error', error);
-		});
-
-		const profile = await API.graphql(
-			graphqlOperation(getUser, { id: userInfo.attributes.sub })
-		);
-
-		if (profile.data.getUser.expoToken === null) {
-			const { status } = await Notifications.requestPermissionsAsync();
-			if (status !== 'granted') {
-				alert('No notification permissions!');
-				return;
-			}
-			let token = (await Notifications.getExpoPushTokenAsync()).data;
-
-			// Only update the profile with the expoToken if it does not exists yet
-			if (token !== undefined) {
-				const inputParams = {
-					id: userInfo.attributes.sub,
-					expoToken: token,
-				};
-
-				try {
-					await API.graphql(
-						graphqlOperation(updateUser, { input: inputParams })
-					);
-				} catch (err) {
-					console.log('errpor:', err);
-				}
-			}
-		}
-	};
-
 	useEffect(() => {
-		console.log('App.tsx is running');
-
 		checkCurrentUser();
-		checkNotificationToken();
 	}, []);
 
 	if (!isLoadingComplete) {
