@@ -10,6 +10,48 @@ export const getUser = /* GraphQL */ `
 			username
 			email
 			avatarImageURL
+			sneakers {
+				items {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					userID
+					createdAt
+					prevSellers
+					updatedAt
+				}
+				nextToken
+			}
+			soldSneakers {
+				items {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					userID
+					createdAt
+					updatedAt
+				}
+				nextToken
+			}
+			offers {
+				items {
+					id
+					offerAmount
+					status
+					sellerConfirmed
+					buyerConfirmed
+					buyingUserID
+					sellingUserID
+					listedItemID
+					createdAt
+					updatedAt
+				}
+				nextToken
+			}
 			following {
 				items {
 					id
@@ -32,7 +74,16 @@ export const getUser = /* GraphQL */ `
 			}
 			status
 			zipCode
-
+			chatRoomUser {
+				items {
+					id
+					userID
+					chatRoomID
+					createdAt
+					updatedAt
+				}
+				nextToken
+			}
 			donScore {
 				id
 				userID

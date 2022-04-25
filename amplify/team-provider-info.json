@@ -114,7 +114,7 @@
         },
         "popn09PreSignup": {
           "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
-          "s3Key": "amplify-builds/popn09PreSignup-70672f6c336e4f34754b-build.zip"
+          "s3Key": "amplify-builds/popn09PreSignup-494733456d7133517473-build.zip"
         },
         "popn09VerifyAuthChallengeResponse": {
           "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
@@ -130,7 +130,7 @@
         },
         "pinpoint": {
           "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
-          "s3Key": "amplify-builds/pinpoint-6c556a466e7a58417758-build.zip"
+          "s3Key": "amplify-builds/pinpoint-57444442557954796d6b-build.zip"
         }
       },
       "auth": {

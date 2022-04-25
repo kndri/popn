@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
@@ -12,17 +12,43 @@ import ToastContainer from './components/Toast';
 import { createUser, updateUser } from './src/graphql/mutations';
 import { getUser } from './src/graphql/queries';
 import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
-import { useAuth } from './contexts/auth';
-import { getUserFromDb } from './aws-functions/aws-functions';
 
 Amplify.configure(awsconfig);
 Analytics.disable();
+Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+		shouldShowAlert: true,
+		shouldPlaySound: false,
+		shouldSetBadge: false,
+	}),
+});
 
 export default function App() {
 	const isLoadingComplete = useCachedResources();
 	const colorScheme = useColorScheme();
-	const { authData: user } = useAuth();
+	const notificationListener: any = useRef();
+	const responseListener: any = useRef();
+
+	useEffect(() => {
+		// This listener is fired whenever a notification is received while the app is foregrounded
+		notificationListener.current =
+			Notifications.addNotificationReceivedListener((notification) => {
+				console.log(notification);
+			});
+
+		// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+		responseListener.current =
+			Notifications.addNotificationResponseReceivedListener((response) => {
+				console.log(response);
+			});
+
+		return () => {
+			Notifications.removeNotificationSubscription(
+				notificationListener.current
+			);
+			Notifications.removeNotificationSubscription(responseListener.current);
+		};
+	}, []);
 
 	const saveUserToDB = async (user) => {
 		await API.graphql(graphqlOperation(createUser, { input: user }));
@@ -48,6 +74,7 @@ export default function App() {
 					age: userInfo.attributes['custom:age'],
 					email: userInfo.attributes.email,
 					avatarImageURL: userInfo.attributes['custom:blob'],
+					zipCode: userInfo.attributes['custom:zipCode'],
 				};
 				await saveUserToDB(user);
 			}

@@ -5,8 +5,6 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { FontAwesome } from '@expo/vector-icons';
 import { SliderBox } from 'react-native-image-slider-box';
 import { useNavigation } from '@react-navigation/native';
-import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
 
 import {
 	AutoImage as Image,
@@ -49,25 +47,25 @@ const ListingDetailsScreen = (props: any) => {
 		React.useState(false);
 	const [offerAmount, setOfferAmount] = React.useState('');
 	const [offerMessage, setOfferMessage] = React.useState('');
-	const [expoToken, setExpoToken] = React.useState<any>();
 
 	const createNotification = async (message: string) => {
-		console.log('expoToken', expoToken);
-		const inputParams = {
-			token: expoToken,
-			username: user?.username,
-			email: user?.email,
-			message: message,
-			id: user?.id,
+		const messageNotifcation = {
+			to: seller.expoToken,
+			sound: 'default',
+			title: 'Offer Made!',
+			body: message,
+			data: { userData: { userId: user?.id, username: user?.username } },
 		};
-		try {
-			const respose = await API.graphql(
-				graphqlOperation(pinpoint, { input: inputParams })
-			);
-			console.log('response', respose);
-		} catch (err) {
-			console.log('error:', err);
-		}
+
+		await fetch('https://exp.host/--/api/v2/push/send', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Accept-encoding': 'gzip, deflate',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(messageNotifcation),
+		});
 	};
 
 	const onClick = async (offer: any) => {
