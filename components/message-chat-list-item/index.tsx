@@ -15,8 +15,8 @@ const CARD: ViewStyle = {
     borderBottomWidth: 0.5,
     borderBottomColor: '#7A7A7A',
     backgroundColor: 'white',
-    height: 80
-
+    height: 80,
+    paddingBottom: 20
 };
 const LEFT_SIDE: ViewStyle = {
     display: "flex",

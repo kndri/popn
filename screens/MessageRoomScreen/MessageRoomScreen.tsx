@@ -6,22 +6,29 @@ import { IMessage } from '../../types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { API, graphqlOperation } from 'aws-amplify';
-import { createMessage, updateChatRoom, updateOffer, updateSneaker } from '../../src/graphql/mutations';
+import {
+	createMessage,
+	updateChatRoom,
+	updateOffer,
+} from '../../src/graphql/mutations';
 import {
 	messagesByChatRoom,
 	getOffer,
 	getListedItem,
 } from '../../src/graphql/queries';
-import { onCreateMessage, onUpdateOffer } from '../../src/graphql/subscriptions';
+import {
+	onCreateMessage,
+	onUpdateOffer,
+} from '../../src/graphql/subscriptions';
 import { spacing } from '../../theme';
 import { Header, Text, Button } from '../../components';
 import { useToast } from '../../components/Toast';
 
-
-
-import styles from './Styles';
+import styles from './styles';
 import { useAuth } from '../../contexts/auth';
 import { ListedItem, Offer } from '../../src/API';
+
+import ConfirmationModal from './ConfirmationModal';
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -103,10 +110,54 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 		});
 	};
 
+	const completeOffer = async () => {
+		// Complete the offer.
+		try {
+			await API.graphql(
+				graphqlOperation(updateOffer, {
+					input: {
+						id: offer.id,
+						status: 'completed',
+					},
+				})
+			);
+		} catch (error) {
+			console.log(error);
+		}
+
+		//send automated message indicating confirmation
+		const automatedConfirmationMessage = `${user?.username} has confirmed this transaction of $${offer.offerAmount} for the item: ${offer.listedItem.sneakerData.primaryName} ${offer.listedItem.sneakerData.secondaryName}.`;
+
+		try {
+			const confirmedMessageData = await API.graphql(
+				graphqlOperation(createMessage, {
+					input: {
+						text: automatedConfirmationMessage,
+						userID: user?.id,
+						chatRoomID: id,
+					},
+				})
+			);
+
+			await updateChatRoomLastMessage(
+				confirmedMessageData.data.createMessage.id
+			);
+			toast.show(`Successful Transfer.`);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	React.useEffect(() => {
 		fetchMessages();
 		fetchOffer(offerID);
 	}, []);
+
+	React.useEffect(() => {
+		if (offer.sellerConfirmed && offer.buyerConfirmed) {
+			completeOffer();
+		}
+	}, [offer]);
 
 	React.useEffect(() => {
 		const subscription = API.graphql(
@@ -128,14 +179,14 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	}, []);
 
 	React.useEffect(() => {
-		const subscription = API.graphql(
-			graphqlOperation(onUpdateOffer)
-		).subscribe({
-			next: (data) => {
-				const updatedOffer = data.value.data.onUpdateOffer;
-				setOffer(updatedOffer)
-			},
-		});
+		const subscription = API.graphql(graphqlOperation(onUpdateOffer)).subscribe(
+			{
+				next: (data) => {
+					const updatedOffer = data.value.data.onUpdateOffer;
+					setOffer(updatedOffer);
+				},
+			}
+		);
 		return () => subscription.unsubscribe();
 	}, []);
 
@@ -240,9 +291,10 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 					})
 				);
 
-				await updateChatRoomLastMessage(acceptedMessageData.data.createMessage.id);
-			}
-			catch (error) {
+				await updateChatRoomLastMessage(
+					acceptedMessageData.data.createMessage.id
+				);
+			} catch (error) {
 				console.log(error);
 			}
 		} catch (error) {
@@ -273,9 +325,10 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 						},
 					})
 				);
-				await updateChatRoomLastMessage(declinedMessageData.data.createMessage.id);
-			}
-			catch (error) {
+				await updateChatRoomLastMessage(
+					declinedMessageData.data.createMessage.id
+				);
+			} catch (error) {
 				console.log(error);
 			}
 		} catch (error) {
@@ -283,64 +336,39 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 		}
 	};
 
-	//switching owership of shoes to the buyer via seller confirmation
-	const sellerConfirmation = async (offer) => {
-
-		//updating offer status to completed
+	const buyerConfirmation = async (offer) => {
 		try {
 			await API.graphql(
 				graphqlOperation(updateOffer, {
 					input: {
 						id: offer.id,
-						status: 'completed',
+						buyerConfirmed: true,
 					},
 				})
 			);
 
+			// Close buyer modal.
+			setBuyerModalVisible(!buyerModalVisible);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
-			//add the seller to prevSellers array
+	//switching owership of shoes to the buyer via seller confirmation
+	const sellerConfirmation = async (offer) => {
+		// set sellerConfirmed to true
+		try {
 			await API.graphql(
-				graphqlOperation(updateSneaker, {
+				graphqlOperation(updateOffer, {
 					input: {
-						id: offer.listedItem.sneakerData.id,
-						prevSellers: offer.listedItem.seller.username,
+						id: offer.id,
+						sellerConfirmed: true,
 					},
 				})
 			);
 
-			//make buyer the new owner of shoe 
-			await API.graphql(
-				graphqlOperation(updateSneaker, {
-					input: {
-						id: offer.listedItem.sneakerData.id,
-						userID: offer.buyingUserID,
-					},
-				})
-			);
-
-			//close modal 
-			setSellerModalVisible(!sellerModalVisible)
-
-			//send automated message indicating confirmation
-			const automatedConfirmationMessage = `${user?.username} has confirmed this transaction of $${offer.offerAmount} for the item: ${offer.listedItem.sneakerData.primaryName} ${offer.listedItem.sneakerData.secondaryName}.`;
-
-			try {
-				const confirmedMessageData = await API.graphql(
-					graphqlOperation(createMessage, {
-						input: {
-							text: automatedConfirmationMessage,
-							userID: user?.id,
-							chatRoomID: id,
-						},
-					})
-				);
-
-				await updateChatRoomLastMessage(confirmedMessageData.data.createMessage.id);
-				toast.show(`Successful Transfer.`);
-			}
-			catch (error) {
-				console.log(error);
-			}
+			//close modal
+			setSellerModalVisible(!sellerModalVisible);
 		} catch (error) {
 			console.log(error);
 		}
@@ -356,129 +384,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 
 			{!isLoading && (
 				<View style={styles.CONTAINER}>
-					{console.log('offer data:', offer)}
-
-					{/* BUYER CONFIRMATION MODAL CODE*/}
-					<Modal
-						animationType="slide"
-						// transparent={true}
-						presentationStyle="pageSheet"
-						visible={buyerModalVisible}
-						onRequestClose={() => {
-							setBuyerModalVisible(!buyerModalVisible);
-						}}
-					>
-						<View style={styles.MODAL_CONTAINER}>
-							<Header
-								headerTx="BUYER MODAL"
-								rightIcon="close"
-								onRightPress={() => {
-									setBuyerModalVisible(!buyerModalVisible);
-								}}
-							/>
-
-							<View style={styles.MODAL_HEADING_TEXT}>
-								<Text preset="default">
-									Want to let people know your sneakers are legit? 🤔 {'\n'}
-									{'\n'}
-									The green verified badge on sneakers lets people know that your
-									sneaker were legit checked and are authentic.{'\n'}
-									{'\n'}
-									Example:
-								</Text>
-							</View>
-
-
-							<View style={styles.MODAL_PROCESS}>
-								<Text preset="bold">Are you ready to finalize the transaction?</Text>
-								<View style={{ marginTop: 30 }}>
-									<Text preset="default">
-										1. You've met with the seller{'\n'}
-										{'\n'}
-										2. You've paid the seller{'\n'}
-										{'\n'}
-										3. You've received your shoes{'\n'}
-										{'\n'}
-										4. You're satisfied{'\n'}
-										{'\n'}
-									</Text>
-								</View>
-							</View>
-
-							{/* <View style={{ alignSelf: 'center', marginTop: 5 }}> */}
-							<Button
-								style={{
-									borderRadius: 4,
-									width: "100%",
-								}}
-								text="Confirm Transaction"
-								onPress={() => { setBuyerModalVisible(!buyerModalVisible) }}
-							/>
-							{/* </View> */}
-						</View>
-					</Modal>
-					{/* END OF BUYER CONFIRMATION MODAL CODE*/}
-
-					{/* SELLER CONFIRMATION MODAL CODE*/}
-					<Modal
-						animationType="slide"
-						// transparent={true}
-						presentationStyle="pageSheet"
-						visible={sellerModalVisible}
-						onRequestClose={() => {
-							setSellerModalVisible(!sellerModalVisible);
-						}}
-					>
-						<View style={styles.MODAL_CONTAINER}>
-							<Header
-								headerTx="SELLER MODAL"
-								rightIcon="close"
-								onRightPress={() => {
-									setSellerModalVisible(!sellerModalVisible);
-								}}
-							/>
-
-							<View style={styles.MODAL_HEADING_TEXT}>
-								<Text preset="default">
-									Want to let people know your sneakers are legit? 🤔 {'\n'}
-									{'\n'}
-									The green verified badge on sneakers lets people know that your
-									sneaker were legit checked and are authentic.{'\n'}
-									{'\n'}
-									Example:
-								</Text>
-							</View>
-
-
-							<View style={styles.MODAL_PROCESS}>
-								<Text preset="bold">How to get your sneaker verified?</Text>
-								<View style={{ marginTop: 30 }}>
-									<Text preset="default">
-										1. You've met with the buyer{'\n'}
-										{'\n'}
-										2. You've received payment{'\n'}
-										{'\n'}
-										3. You've given the shoes to the buyer{'\n'}
-										{'\n'}
-										4. You're satisfied{'\n'}
-										{'\n'}
-									</Text>
-								</View>
-							</View>
-							<View style={{ alignSelf: 'center', marginTop: 5 }}>
-								<Button
-									style={{
-										borderRadius: 4,
-										width: 319,
-									}}
-									text="Confirm Transaction"
-									onPress={() => { sellerConfirmation(offer) }}
-								/>
-							</View>
-						</View>
-					</Modal>
-					{/* END OF SELLER CONFIRMATION MODAL CODE*/}
-
 					{/* header view */}
 					<View style={[styles.CENTER, { marginTop: insets.top }]}>
 						<Header
@@ -487,42 +392,43 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 							onLeftPress={() => navigation.navigate('Message')}
 						/>
 					</View>
-
 					{/* view for offer data */}
+					<View
+						style={{
+							backgroundColor: 'black',
+							height: 62,
+							flexDirection: 'row',
+							alignItems: 'center',
+							marginBottom: 5,
+						}}
+					>
+						<View style={{ marginLeft: 17 }}>
+							<Image
+								source={{ uri: listing.sneakerData.image }}
+								style={{ width: 52, height: 38 }}
+							/>
+						</View>
+
+						<View style={{ marginLeft: 12 }}>
+							<Text preset="bold" style={{ color: 'white' }}>
+								{listing.sneakerData.primaryName}
+							</Text>
+							<Text preset="bold" style={{ color: 'white' }}>
+								{listing.sneakerData.secondaryName}
+							</Text>
+						</View>
+
+						<View style={{ position: 'absolute', left: 322 }}>
+							<Text preset="bold" style={{ color: 'white' }}>
+								${offer.offerAmount}
+							</Text>
+						</View>
+					</View>
+					{/* end view for offer data */}
+
+					{/* View for Offer CTAs */}
 					{user.id == offer.sellingUserID && (
 						<>
-							<View
-								style={{
-									backgroundColor: 'black',
-									height: 62,
-									flexDirection: 'row',
-									alignItems: 'center',
-									marginBottom: 5,
-								}}
-							>
-								<View style={{ marginLeft: 17 }}>
-									<Image
-										source={{ uri: listing.sneakerData.image }}
-										style={{ width: 52, height: 38 }}
-									/>
-								</View>
-
-								<View style={{ marginLeft: 12 }}>
-									<Text preset="bold" style={{ color: 'white' }}>
-										{listing.sneakerData.primaryName}
-									</Text>
-									<Text preset="bold" style={{ color: 'white' }}>
-										{listing.sneakerData.secondaryName}
-									</Text>
-								</View>
-
-								<View style={{ position: 'absolute', left: 322 }}>
-									<Text preset="bold" style={{ color: 'white' }}>
-										${offer.offerAmount}
-									</Text>
-								</View>
-							</View>
-
 							{offer.status == 'pending' && (
 								<>
 									<View
@@ -541,7 +447,9 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 												borderWidth: 2,
 											}}
 											text="Accept"
-											onPress={() => { acceptOFfer(offer.id) }}
+											onPress={() => {
+												acceptOFfer(offer.id);
+											}}
 										/>
 										<Button
 											style={{
@@ -553,14 +461,15 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 											}}
 											text="Decline"
 											textStyle={{ color: 'black' }}
-											onPress={() => { declineOFfer(offer.id) }}
+											onPress={() => {
+												declineOFfer(offer.id);
+											}}
 										/>
 									</View>
 								</>
 							)}
 						</>
 					)}
-
 
 					{offer.status == 'accepted' && (
 						<View style={{ alignSelf: 'center', marginTop: 5 }}>
@@ -572,15 +481,15 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 								text="Confirm Transaction"
 								onPress={() => {
 									if (user.id == offer.sellingUserID) {
-										setSellerModalVisible(!sellerModalVisible)
+										setSellerModalVisible(!sellerModalVisible);
 									} else {
-										setBuyerModalVisible(!buyerModalVisible)
+										setBuyerModalVisible(!buyerModalVisible);
 									}
 								}}
 							/>
 						</View>
 					)}
-					{/* end view for offer data */}
+					{/* End of View for Offer CTAs */}
 
 					<GiftedChat
 						isTyping={true}
@@ -605,6 +514,16 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 								onPress: (tag) => console.log(`Pressed on hashtag: ${tag}`),
 							},
 						]}
+					/>
+
+					<ConfirmationModal
+						offer={offer}
+						buyerModalVisible={buyerModalVisible}
+						setBuyerModalVisible={setBuyerModalVisible}
+						buyerConfirmation={buyerConfirmation}
+						sellerModalVisible={sellerModalVisible}
+						setSellerModalVisible={setSellerModalVisible}
+						sellerConfirmation={sellerConfirmation}
 					/>
 				</View>
 			)}
