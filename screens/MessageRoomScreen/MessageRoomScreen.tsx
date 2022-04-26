@@ -26,7 +26,6 @@ import { useToast } from '../../components/Toast';
 
 import styles from './styles';
 import { useAuth } from '../../contexts/auth';
-import { ListedItem, Offer } from '../../src/API';
 
 import ConfirmationModal from './ConfirmationModal';
 
@@ -254,6 +253,32 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			);
 			await updateChatRoomLastMessage(newMessageData.data.createMessage.id);
 
+			const title = 'New Message';
+			let expoToken: string;
+			let messageInfo = `${user?.username} replied: ${messages[0].text}`;
+
+			if (messages[0].user._id == offer.sellingUserID) {
+				console.log('seller', messages[0].user._id);
+
+				expoToken = offer.buyer.expoToken;
+				createNotification(
+					messageInfo,
+					id,
+					offerID,
+					title,
+					offer.buyer.expoToken
+				);
+			} else {
+				console.log('buyer', messages[0].user._id);
+				expoToken = offer.seller.expoToken;
+				createNotification(
+					messageInfo,
+					id,
+					offerID,
+					title,
+					offer.seller.expoToken
+				);
+			}
 		} catch (e) {
 			console.log(e);
 		}
@@ -582,37 +607,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 						renderSend={renderSend}
 						messages={messages}
 						onSend={(messages) => {
-							console.log("this user", user?.id)
-							onSend(messages)
-							const title = 'New Message';
-							let expoToken: string;
-							let messageInfo: string;
-
-							if (user?.id == offer.sellingUserID) {
-								console.log('here');
-								messageInfo = `${user?.username} replied: ${messages[0].text}`;
-								expoToken = offer.buyer.expoToken;
-								createNotification(
-									messageInfo,
-									id,
-									offerID,
-									title,
-									offer.buyer.expoToken
-								);
-							}
-							else {
-								console.log('hiiiii');
-								messageInfo = `${user?.username} replied: ${messages[0].text}`;
-								expoToken = offer.seller.expoToken;
-								createNotification(
-									messageInfo,
-									id,
-									offerID,
-									title,
-									offer.seller.expoToken
-								);
-							}
-
+							onSend(messages);
 						}}
 						user={{
 							// _id is of type string or number
