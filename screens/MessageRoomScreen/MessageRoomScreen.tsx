@@ -376,6 +376,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 
 	return (
 		<>
+			{console.log('offer data: ', offer)}
 			{isLoading && (
 				<View style={{ flex: 1, justifyContent: 'center' }}>
 					<ActivityIndicator size="large" color="black" />
@@ -383,6 +384,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			)}
 
 			{!isLoading && (
+
 				<View style={styles.CONTAINER}>
 					{/* header view */}
 					<View style={[styles.CENTER, { marginTop: insets.top }]}>
