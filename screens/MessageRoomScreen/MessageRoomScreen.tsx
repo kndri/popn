@@ -64,7 +64,8 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const [buyerModalVisible, setBuyerModalVisible] = React.useState(false);
 	const [sellerModalVisible, setSellerModalVisible] = React.useState(false);
 	const toast = useToast();
-	console.log('offer', offer);
+	console.log('offer', id);
+
 	/**
 	 * createNotification will create a notification after a user accepts/declines/message a user
 	 * @param message
@@ -105,7 +106,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const fetchMessages = async () => {
 		const messagesData = await API.graphql(
 			graphqlOperation(messagesByChatRoom, {
-				chatRoomID: route.params?.id,
+				chatRoomID: id,
 				sortDirection: 'DESC',
 			})
 		);
@@ -203,7 +204,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			next: (data) => {
 				const newMessage = data.value.data.onCreateMessage;
 
-				if (newMessage.chatRoomID !== route.params?.id) {
+				if (newMessage.chatRoomID !== id) {
 					console.log('Message is in another room!');
 					return;
 				}
@@ -254,6 +255,40 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 				})
 			);
 			await updateChatRoomLastMessage(newMessageData.data.createMessage.id);
+
+			const title = 'New Message';
+			let expoToken: string;
+			let messageInfo: string;
+
+			switch (user?.id) {
+				case offer.sellingUserID:
+					console.log('here');
+					messageInfo = `${user?.username} replied: ${messages[0].text}`;
+					expoToken = offer.buyer.expoToken;
+					createNotification(
+						messageInfo,
+						id,
+						offerID,
+						title,
+						offer.buyer.expoToken
+					);
+					break;
+
+				case offer.buyingUserID:
+					messageInfo = `${user?.username} replied: ${messages[0].text}`;
+					expoToken = offer.seller.expoToken;
+					createNotification(
+						messageInfo,
+						id,
+						offerID,
+						title,
+						offer.seller.expoToken
+					);
+					break;
+
+				default:
+					break;
+			}
 		} catch (e) {
 			console.log(e);
 		}
@@ -317,6 +352,17 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			);
 			//send automated message indicating the offer was accepted
 			const automatedAcceptedMessage = `${user?.username} has accepted your offer of $${offer.offerAmount} for the item: ${offer.listedItem.sneakerData.primaryName} ${offer.listedItem.sneakerData.secondaryName}.`;
+
+			//Create the notification after the offer has been updated
+			const title = 'Offer Accepted';
+			createNotification(
+				automatedAcceptedMessage,
+				id,
+				offerID,
+				title,
+				offer.buyer.expoToken
+			);
+
 			try {
 				const acceptedMessageData = await API.graphql(
 					graphqlOperation(createMessage, {
@@ -352,6 +398,17 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			);
 			//send automated message indicating the offer was declined
 			const automatedDeclinedMessage = `${user?.username} has declined your offer of $${offer.offerAmount} for the item: ${offer.listedItem.sneakerData.primaryName} ${offer.listedItem.sneakerData.secondaryName}.`;
+			const title = 'Offer Declined';
+
+			//Create the notification after the offer has been updated
+			createNotification(
+				automatedDeclinedMessage,
+				id,
+				offerID,
+				title,
+				offer.buyer.expoToken
+			);
+
 			try {
 				const declinedMessageData = await API.graphql(
 					graphqlOperation(createMessage, {
@@ -383,6 +440,17 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 					},
 				})
 			);
+			//Create the notification after the offer has been updated
+			const automatedConfirmedMessage = `${user?.username} has confirmed the item: ${offer.listedItem.sneakerData.primaryName} ${offer.listedItem.sneakerData.secondaryName}.`;
+
+			const title = 'Buyer Confirmed';
+			createNotification(
+				automatedConfirmedMessage,
+				id,
+				offerID,
+				title,
+				offer.seller.expoToken
+			);
 
 			// Close buyer modal.
 			setBuyerModalVisible(!buyerModalVisible);
@@ -402,6 +470,18 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 						sellerConfirmed: true,
 					},
 				})
+			);
+
+			//Create the notification after the offer has been updated
+			const automatedConfirmedMessage = `${user?.username} has confirmed the item: ${offer.listedItem.sneakerData.primaryName} ${offer.listedItem.sneakerData.secondaryName}.`;
+
+			const title = 'Seller Confirmed';
+			createNotification(
+				automatedConfirmedMessage,
+				id,
+				offerID,
+				title,
+				offer.buyer.expoToken
 			);
 
 			//close modal
