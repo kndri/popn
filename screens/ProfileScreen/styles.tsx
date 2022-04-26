@@ -79,6 +79,8 @@ export default StyleSheet.create({
 		width: '100%',
 		height: '100%',
 		paddingHorizontal: spacing[2],
-
 	},
+	SCENE: {
+		flex: 1
+	}
 });

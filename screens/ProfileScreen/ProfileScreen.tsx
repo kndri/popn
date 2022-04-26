@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { View, Image, Alert, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Image, Alert, FlatList, TouchableOpacity, ActivityIndicator, Dimensions, StatusBar, Platform } from 'react-native';
 import {
 	useIsFocused,
 	useNavigation,
 	CommonActions,
 } from '@react-navigation/native';
+import { TabView, SceneMap, TabBar, TabBarIndicator } from 'react-native-tab-view';
 
 import { spacing } from '../../theme';
 import { Button, Screen, Text, Header, SneakerCard } from '../../components';
@@ -18,6 +19,9 @@ import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';
 
+
+
+
 export default function ProfileScreen() {
 	const { authData: user } = useAuth();
 	const navigation = useNavigation();
@@ -26,6 +30,12 @@ export default function ProfileScreen() {
 	const [followers, setFollowers] = React.useState<number>(0);
 	const [isLoading, setIsLoading] = React.useState(true);
 	const isFocused = useIsFocused();
+	const [index, setIndex] = React.useState(0);
+	const [routes] = React.useState([
+		{ key: 'collection', title: 'Collection' },
+		{ key: 'listings', title: 'Listings' },
+	]);
+
 
 	/**
 	 * getUserData() will retrieve sneaker and following/followers data
@@ -75,89 +85,6 @@ export default function ProfileScreen() {
 				},
 			]
 		);
-
-	// refacter this code
-	const renderSneaker = ({ item }) => {
-		const { id, image, primaryName, secondaryName, claim } = item;
-
-		return (
-			<TouchableOpacity
-				onLongPress={() => {
-					createDeleteAlert(id);
-				}}
-				onPress={() => {
-					navigation.navigate('ShoeDetails', { shoeID: id });
-				}}
-			>
-				<View
-					style={{
-						justifyContent: 'space-evenly',
-						height: 150,
-						width: 150,
-						borderWidth: 1,
-						borderColor: '#EBEBEB',
-						borderRadius: 10,
-						marginBottom: 40,
-						marginHorizontal: 10,
-					}}
-				>
-					<View
-						style={{
-							justifyContent: 'flex-start',
-							alignItems: 'flex-start',
-							marginLeft: 10,
-							marginTop: 10,
-						}}
-					>
-						<Text
-							text={`${primaryName}`}
-							style={{ fontSize: 12, color: '#979797' }}
-						/>
-						<Text text={`${secondaryName}`} style={{ fontSize: 10 }} />
-						{claim.item != undefined && claim.items.length > 0 ? (
-							<>
-								{claim.items[0].status === 'verified' ? (
-									<Image
-										source={verified}
-										style={{ marginTop: 5, height: 20, width: 20 }}
-									/>
-								) : null}
-							</>
-						) : null}
-					</View>
-					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-						<Image
-							source={{ uri: image }}
-							style={{ height: 81, width: 100, resizeMode: 'contain' }}
-						/>
-					</View>
-					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-						<Button
-							preset="none"
-							style={{
-								justifyContent: 'center',
-								width: '70%',
-								height: 20,
-								paddingVertical: 2,
-								borderRadius: 10,
-								marginBottom: 15,
-							}}
-							onPress={() => {
-								navigation.navigate('ShoeDetails', { shoeID: id });
-							}}
-						>
-							<Text
-								preset="bold"
-								style={{ fontSize: 12, color: 'white', fontWeight: 'bold' }}
-							>
-								View
-							</Text>
-						</Button>
-					</View>
-				</View>
-			</TouchableOpacity>
-		);
-	};
 
 	const renderEmptyCollection = () => {
 		return (
@@ -212,6 +139,22 @@ export default function ProfileScreen() {
 		);
 	};
 
+	const CollectionRoute = () => (
+		<View style={styles.DATA_CONTAINER}>{renderCollection()}</View>
+		// <View style={[styles.SCENE, { backgroundColor: '#ff4081' }]} />
+	);
+
+	const ListingsRoute = () => (
+		<View style={[styles.SCENE, { backgroundColor: '#673ab7' }]} />
+	);
+
+	const initialLayout = { width: Dimensions.get('window').width };
+
+	const renderScene = SceneMap({
+		collection: CollectionRoute,
+		listings: ListingsRoute,
+	});
+
 	return (
 		<>
 			{isLoading && (
@@ -255,9 +198,24 @@ export default function ProfileScreen() {
 						style={{ flexDirection: 'row', paddingHorizontal: spacing[3] }}
 					></View>
 
-					<View style={styles.COLLECTION_CONTAINER}>
-						<View style={styles.DATA_CONTAINER}>{renderCollection()}</View>
-					</View>
+					{/* <View style={styles.COLLECTION_CONTAINER}> */}
+					<TabView
+						navigationState={{ index, routes }}
+						renderScene={renderScene}
+						onIndexChange={setIndex}
+						initialLayout={initialLayout}
+						renderTabBar={props =>
+							<TabBar {...props}
+								indicatorStyle={{ backgroundColor: 'black' }}
+								style={{ backgroundColor: 'white' }}
+								renderLabel={({ route, focused, color }) => (
+									<Text preset='bold' style={{ color: 'black', fontSize: 16 }}>
+										{route.title}
+									</Text>
+								)}
+							/>}
+					/>
+					{/* </View> */}
 				</Screen>
 			)}
 		</>
