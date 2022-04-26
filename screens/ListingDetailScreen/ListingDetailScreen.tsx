@@ -117,6 +117,7 @@ const ListingDetailsScreen = (props: any) => {
 							input: {
 								id: newChatRoom.id,
 								lastMessageID: messageId,
+								receiverHasRead: false,
 							},
 						})
 					);

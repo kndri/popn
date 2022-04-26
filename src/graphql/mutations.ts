@@ -854,6 +854,7 @@ export const createChatRoomUser = /* GraphQL */ `
           chatRoomID
           updatedAt
         }
+        receiverHasRead
         createdAt
         updatedAt
       }
@@ -935,6 +936,7 @@ export const updateChatRoomUser = /* GraphQL */ `
           chatRoomID
           updatedAt
         }
+        receiverHasRead
         createdAt
         updatedAt
       }
@@ -1016,6 +1018,7 @@ export const deleteChatRoomUser = /* GraphQL */ `
           chatRoomID
           updatedAt
         }
+        receiverHasRead
         createdAt
         updatedAt
       }
@@ -1076,11 +1079,13 @@ export const createChatRoom = /* GraphQL */ `
           id
           offerID
           lastMessageID
+          receiverHasRead
           createdAt
           updatedAt
         }
         updatedAt
       }
+      receiverHasRead
       createdAt
       updatedAt
     }
@@ -1138,11 +1143,13 @@ export const updateChatRoom = /* GraphQL */ `
           id
           offerID
           lastMessageID
+          receiverHasRead
           createdAt
           updatedAt
         }
         updatedAt
       }
+      receiverHasRead
       createdAt
       updatedAt
     }
@@ -1200,11 +1207,13 @@ export const deleteChatRoom = /* GraphQL */ `
           id
           offerID
           lastMessageID
+          receiverHasRead
           createdAt
           updatedAt
         }
         updatedAt
       }
+      receiverHasRead
       createdAt
       updatedAt
     }
@@ -1285,6 +1294,7 @@ export const createMessage = /* GraphQL */ `
           chatRoomID
           updatedAt
         }
+        receiverHasRead
         createdAt
         updatedAt
       }
@@ -1367,6 +1377,7 @@ export const updateMessage = /* GraphQL */ `
           chatRoomID
           updatedAt
         }
+        receiverHasRead
         createdAt
         updatedAt
       }
@@ -1449,6 +1460,7 @@ export const deleteMessage = /* GraphQL */ `
           chatRoomID
           updatedAt
         }
+        receiverHasRead
         createdAt
         updatedAt
       }

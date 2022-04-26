@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { View, ViewStyle, Image, ActivityIndicator, Modal } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {
+	useIsFocused,
+	useNavigation,
+	useRoute,
+} from '@react-navigation/native';
 import { GiftedChat, Bubble, Send, Composer } from 'react-native-gifted-chat';
 import { IMessage } from '../../types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -53,10 +57,11 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const { authData: user } = useAuth();
 	const navigation = useNavigation();
 	const route = useRoute();
+	const isFocused = useIsFocused();
 	const { offerID, id, name } = route.params;
 	const insets = useSafeAreaInsets();
 	const [isLoading, setIsLoading] = React.useState(true);
-	const [offer, setOffer] = React.useState<{}>({});
+	const [offer, setOffer] = React.useState({});
 	const [seller, setSeller] = React.useState('');
 	const [listing, setListing] = React.useState<{}>({});
 	const [messages, setMessages] = React.useState<IMessage[]>([]);
@@ -187,7 +192,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	React.useEffect(() => {
 		fetchMessages();
 		fetchOffer(offerID);
-	}, []);
+	}, [isFocused]);
 
 	React.useEffect(() => {
 		if (offer.sellerConfirmed && offer.buyerConfirmed) {
@@ -233,6 +238,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 					input: {
 						id: id,
 						lastMessageID: messageId,
+						receiverHasRead: false,
 					},
 				})
 			);
@@ -240,8 +246,10 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			console.log(e);
 		}
 	};
-	const onSend = React.useCallback(async (messages = []) => {
+
+	const onSend = React.useCallback(async (messages = [], offer) => {
 		try {
+			console.log('offer', offer);
 			const newMessageData = await API.graphql(
 				graphqlOperation(createMessage, {
 					input: {
@@ -270,6 +278,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 				);
 			} else {
 				console.log('buyer', messages[0].user._id);
+
 				expoToken = offer.seller.expoToken;
 				createNotification(
 					messageInfo,
@@ -607,7 +616,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 						renderSend={renderSend}
 						messages={messages}
 						onSend={(messages) => {
-							onSend(messages);
+							onSend(messages, offer);
 						}}
 						user={{
 							// _id is of type string or number

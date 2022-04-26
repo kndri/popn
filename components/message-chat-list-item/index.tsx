@@ -3,9 +3,12 @@ import { ViewStyle, View, Pressable } from 'react-native';
 import { Text } from '../text/text';
 import { AutoImage as Image } from '../auto-image/auto-image';
 import { useNavigation } from '@react-navigation/native';
-import { Auth } from 'aws-amplify';
+import { API, Auth, graphqlOperation } from 'aws-amplify';
 import moment from 'moment';
 import { useAuth } from '../../contexts/auth';
+import { updateChatRoom } from '../../src/graphql/mutations';
+
+const newMessage = require('../../assets/images/verified_badge.png');
 
 const CARD: ViewStyle = {
 	width: '100%',
@@ -36,27 +39,19 @@ export type MessageChatListItemProps = {
 
 export default function MessageChatListItem(props: MessageChatListItemProps) {
 	const { chatRoom } = props;
-	const { authData: userData } = useAuth();
+	const { authData: user } = useAuth();
 	const [otherUser, setOtherUser] = React.useState<any>({});
-	const [user, setUser] = React.useState<any>({});
+
 	const navigation = useNavigation();
 	const [otherProfilePic, setOtherProfilePic] = React.useState('');
-
 	React.useEffect(() => {
 		getOtherUser();
 	}, []);
 
 	const getOtherUser = async () => {
-		const userInfo = await Auth.currentAuthenticatedUser();
-		setUser(userInfo);
 		if (
-			chatRoom.chatRoom.chatRoomUsers.items[0].user.username ===
-			userData?.username
+			chatRoom.chatRoom.chatRoomUsers.items[0].user.username === user?.username
 		) {
-			console.log(
-				'user1',
-				chatRoom.chatRoom.chatRoomUsers.items[1].user.username
-			);
 			setOtherUser(chatRoom.chatRoom.chatRoomUsers.items[1].user);
 			if (
 				chatRoom.chatRoom.chatRoomUsers.items[1].user.avatarImageURL ===
@@ -96,12 +91,38 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
 			}
 		}
 	};
+	/**
+	 * When message room clicked change receiverHasRead to true
+	 */
+	const newChatBtnClicked = async () => {
+		// if user is not the owner of the last message sent then change receiverHasRead to true
+		if (user?.id != chatRoom.chatRoom.lastMessage.userID) {
+			try {
+				await API.graphql(
+					graphqlOperation(updateChatRoom, {
+						input: {
+							id: chatRoom.id,
+							receiverHasRead: true,
+						},
+					})
+				);
+
+				console.log('recevieer has read the message');
+			} catch (e) {
+				console.log(e);
+			}
+		}
+
+		return;
+	};
 
 	return (
 		<>
 			<Pressable
 				style={CARD}
 				onPress={() => {
+					newChatBtnClicked();
+
 					navigation.navigate('MessageRoom', {
 						id: chatRoom.chatRoomID,
 						name: otherUser.username,
@@ -123,6 +144,7 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
 				</View>
 				<View style={CARD_DATA}>
 					<Text preset="bold">{otherUser.username}</Text>
+
 					{chatRoom.chatRoom.lastMessage.text != null && (
 						<Text style={{ marginTop: 3 }} preset="secondary">
 							{chatRoom.chatRoom.lastMessage.text}
@@ -133,6 +155,19 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
 					<Text style={{ marginTop: 3 }} preset="secondary">
 						{moment(chatRoom.updatedAt).format('MM/DD/YYYY')}
 					</Text>
+					{user?.id != chatRoom.chatRoom.lastMessage.userID &&
+						chatRoom.chatRoom.receiverHasRead == false && (
+							<Image
+								style={{
+									resizeMode: 'contain',
+									height: 10,
+									width: 10,
+									marginRight: 5,
+									borderRadius: 360,
+								}}
+								source={newMessage}
+							/>
+						)}
 				</View>
 			</Pressable>
 		</>

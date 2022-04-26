@@ -19,7 +19,6 @@ export default function MessageScreen() {
 	const [chatRooms, setChatRooms] = React.useState<any>([]);
 	const [isLoading, setIsLoading] = React.useState(true);
 	const isFocused = useIsFocused();
-
 	React.useEffect(() => {
 		fetchChatRooms();
 	}, [isFocused]);
@@ -128,6 +127,7 @@ export default function MessageScreen() {
 							style={{ paddingHorizontal: spacing[3] }}
 							headerTx="Messages"
 						/>
+
 						{chatRooms.length === 0 ? (
 							<View style={{ height: '100%', justifyContent: 'center' }}>
 								<Text
