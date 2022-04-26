@@ -1516,15 +1516,17 @@ export const chatRoomUserByUser = /* GraphQL */ `
               }
             }
           }
-		  lastMessage {
-          id
-          createdAt
-          text
-          userID
-          chatRoomID
-          updatedAt
+          lastMessageID
+          lastMessage {
+            id
+            createdAt
+            text
+            userID
+            chatRoomID
+            updatedAt
         }
-
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt
