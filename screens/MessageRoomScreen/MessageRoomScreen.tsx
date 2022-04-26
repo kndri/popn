@@ -64,7 +64,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const [buyerModalVisible, setBuyerModalVisible] = React.useState(false);
 	const [sellerModalVisible, setSellerModalVisible] = React.useState(false);
 	const toast = useToast();
-	console.log('offer', id);
 
 	/**
 	 * createNotification will create a notification after a user accepts/declines/message a user
@@ -242,7 +241,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			console.log(e);
 		}
 	};
-
 	const onSend = React.useCallback(async (messages = []) => {
 		try {
 			const newMessageData = await API.graphql(
@@ -256,39 +254,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			);
 			await updateChatRoomLastMessage(newMessageData.data.createMessage.id);
 
-			const title = 'New Message';
-			let expoToken: string;
-			let messageInfo: string;
-
-			switch (user?.id) {
-				case offer.sellingUserID:
-					console.log('here');
-					messageInfo = `${user?.username} replied: ${messages[0].text}`;
-					expoToken = offer.buyer.expoToken;
-					createNotification(
-						messageInfo,
-						id,
-						offerID,
-						title,
-						offer.buyer.expoToken
-					);
-					break;
-
-				case offer.buyingUserID:
-					messageInfo = `${user?.username} replied: ${messages[0].text}`;
-					expoToken = offer.seller.expoToken;
-					createNotification(
-						messageInfo,
-						id,
-						offerID,
-						title,
-						offer.seller.expoToken
-					);
-					break;
-
-				default:
-					break;
-			}
 		} catch (e) {
 			console.log(e);
 		}
@@ -616,7 +581,39 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 						renderComposer={renderComposer}
 						renderSend={renderSend}
 						messages={messages}
-						onSend={(messages) => onSend(messages)}
+						onSend={(messages) => {
+							console.log("this user", user?.id)
+							onSend(messages)
+							const title = 'New Message';
+							let expoToken: string;
+							let messageInfo: string;
+
+							if (user?.id == offer.sellingUserID) {
+								console.log('here');
+								messageInfo = `${user?.username} replied: ${messages[0].text}`;
+								expoToken = offer.buyer.expoToken;
+								createNotification(
+									messageInfo,
+									id,
+									offerID,
+									title,
+									offer.buyer.expoToken
+								);
+							}
+							else {
+								console.log('hiiiii');
+								messageInfo = `${user?.username} replied: ${messages[0].text}`;
+								expoToken = offer.seller.expoToken;
+								createNotification(
+									messageInfo,
+									id,
+									offerID,
+									title,
+									offer.seller.expoToken
+								);
+							}
+
+						}}
 						user={{
 							// _id is of type string or number
 							// name is of type string or undefined
