@@ -96,12 +96,15 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
 	 */
 	const newChatBtnClicked = async () => {
 		// if user is not the owner of the last message sent then change receiverHasRead to true
-		if (user?.id != chatRoom.chatRoom.lastMessage.userID) {
+		if (
+			user?.id != chatRoom.chatRoom.lastMessage.userID &&
+			chatRoom.chatRoom.receiverHasRead == false
+		) {
 			try {
 				await API.graphql(
 					graphqlOperation(updateChatRoom, {
 						input: {
-							id: chatRoom.id,
+							id: chatRoom.chatRoom.id,
 							receiverHasRead: true,
 						},
 					})

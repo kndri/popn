@@ -11,14 +11,17 @@ import { Screen, Text, Header } from '../../components';
 import { deleteChatRoomUser } from '../../src/graphql/mutations';
 import { spacing } from '../../theme';
 import { useAuth } from '../../contexts/auth';
+import { useApp } from '../../contexts/app-context';
 
 import styles from './styles';
 
 export default function MessageScreen() {
 	const { authData: user } = useAuth();
+	const { updateUnreadCount } = useApp();
 	const [chatRooms, setChatRooms] = React.useState<any>([]);
 	const [isLoading, setIsLoading] = React.useState(true);
 	const isFocused = useIsFocused();
+
 	React.useEffect(() => {
 		fetchChatRooms();
 	}, [isFocused]);
@@ -40,6 +43,16 @@ export default function MessageScreen() {
 					);
 				});
 
+				let unreadCount = 0;
+				chatRoomsArr.map((item: any) => {
+					if (
+						user?.id != item.chatRoom.lastMessage.userID &&
+						item.chatRoom.receiverHasRead == false
+					) {
+						unreadCount = unreadCount + 1;
+					}
+				});
+				updateUnreadCount(unreadCount);
 				setChatRooms(chatRoomsArr);
 				setIsLoading(false);
 			}

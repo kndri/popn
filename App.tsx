@@ -6,6 +6,7 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { AuthProvider } from './contexts/auth';
 import { FormProvider } from './contexts/form-context';
+import { AppProvider } from './contexts/app-context';
 import Amplify, { API, Auth, graphqlOperation, Analytics } from 'aws-amplify';
 import awsconfig from './src/aws-exports.js';
 import ToastContainer from './components/Toast';
@@ -93,11 +94,13 @@ export default function App() {
 		return (
 			<AuthProvider>
 				<FormProvider>
-					<SafeAreaProvider>
-						<Navigation colorScheme={colorScheme} />
-						<StatusBar />
-						<ToastContainer />
-					</SafeAreaProvider>
+					<AppProvider>
+						<SafeAreaProvider>
+							<Navigation colorScheme={colorScheme} />
+							<StatusBar />
+							<ToastContainer />
+						</SafeAreaProvider>
+					</AppProvider>
 				</FormProvider>
 			</AuthProvider>
 		);
