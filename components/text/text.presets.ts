@@ -8,6 +8,7 @@ const BASE: TextStyle = {
   fontFamily: typography.primary,
   color: color.text,
   fontSize: 15,
+  letterSpacing: -0.5
 }
 
 /**
@@ -31,10 +32,31 @@ export const presets = {
    */
   bold: { ...BASE, fontFamily: typography.primaryBold, } as TextStyle,
 
+  extraBold: { ...BASE, fontFamily: typography.primaryExtraBold, } as TextStyle,
+
+
+  largeTitle: {...BASE, fontSize: 34} as TextStyle,
+
+  title: {...BASE, fontSize: 28} as TextStyle,
+
+  headline: {...BASE, fontSize: 17, fontFamily: typography.primarySemiBold} as TextStyle,
+
   /**
    * Large headers.
    */
-  header: { ...BASE, fontSize: 24, fontFamily: typography.primaryBold, } as TextStyle,
+  header: { ...BASE, fontSize: 30, fontFamily: typography.primaryBold, } as TextStyle,
+
+  h1: { ...BASE, fontSize: 28, fontFamily: typography.primaryBold } as TextStyle,
+  h2: { ...BASE, fontSize: 24, fontFamily: typography.primaryBold } as TextStyle,
+  h3: { ...BASE, fontSize: 22, fontFamily: typography.primaryBold } as TextStyle,
+  h4: { ...BASE, fontSize: 16, fontFamily: typography.primarySemiBold } as TextStyle,
+  h5: { ...BASE, fontSize: 14, fontFamily: typography.primaryBold } as TextStyle,
+
+  body: { ...BASE, fontSize: 12} as TextStyle,
+
+  caption: { ...BASE, fontSize: 12, fontFamily: typography.primaryBold, textTransform: "uppercase"} as TextStyle,
+
+  primaryProduct: { ...BASE,fontFamily: typography.primaryMedium},
 
   /**
    * Field labels that appear on forms above the inputs.
@@ -44,7 +66,7 @@ export const presets = {
   /**
    * A smaller piece of secondard information.
    */
-  secondary: { ...BASE, fontSize: 12, color: color.dim } as TextStyle,
+  secondary: { ...BASE, fontSize: 12, fontFamily: typography.primaryLight } as TextStyle,
 }
 
 /**

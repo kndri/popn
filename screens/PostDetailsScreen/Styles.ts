@@ -31,6 +31,7 @@ export default StyleSheet.create({
     height: 40,
     alignItems: "center",
     paddingLeft: 20,
+
   },
   INTERACTIONS_BUTTONS: {
     display: "flex",

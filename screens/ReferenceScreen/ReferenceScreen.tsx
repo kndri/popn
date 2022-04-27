@@ -1,7 +1,7 @@
 import React from "react";
 import { View, ViewStyle, TextStyle } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Button, Screen, Text, TextField } from "../../components";
+import { Button, Screen, Text, TextField, Header } from "../../components";
 import { color, spacing, typography } from "../../theme";
 import { addClaim } from "../../aws-functions/aws-functions";
 
@@ -14,34 +14,48 @@ const ReferenceScreen = (props: any) => {
 
   return (
     <Screen style={styles.CONTAINER}>
-      <View style={styles.CENTER}>
+      <Header leftIcon="back" onLeftPress={() => navigation.goBack()}
+      />
+
+      <View style={{ flexDirection: 'column', backgroundColor: 'white' }}>
         <Text
-          style={styles.HEADER}
+          style={styles.HEADER_TITLE}
           preset="header"
           text="Enter your reference number"
         />
-      </View>
 
-      <View style={styles.CENTER}>
+
         <TextField
+          style={styles.INPUTSTYLE_CONTAINER}
           inputStyle={styles.INPUT}
-          placeholder="#reference"
+          placeholder="#123456"
+          keyboardType="default"
+          value={refNumber}
           onChangeText={(value) => setRefNumber(value)}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
-      </View>
 
-      <View style={styles.CENTER}>
-        <Button
-          //   disabled={!isValid}
-          style={{ width: "100%" }}
-          text="Submit Claim"
-          preset="primary"
-          onPress={() => {
-            addClaim(shoeID, refNumber).then(() =>
-              navigation.navigate("ShoeDetails", { shoeID: shoeID })
-            );
+
+
+        <View
+          style={{
+            flexDirection: 'column',
+            alignContent: 'center',
+            justifyContent: 'center',
+            marginTop: 150,
           }}
-        />
+        >
+          <Button
+            text="Submit Claim"
+            preset="primary"
+            onPress={() => {
+              addClaim(shoeID, refNumber).then(() =>
+                navigation.navigate("ShoeDetails", { shoeID: shoeID })
+              );
+            }}
+          />
+        </View>
       </View>
     </Screen>
   );

@@ -1,5 +1,5 @@
 import React from "react"
-import { View, ViewStyle, ImageStyle} from "react-native"
+import { View, ViewStyle, ImageStyle } from "react-native"
 import { HeaderProps } from "./header.props"
 import { Button } from "../button/button"
 import { Text } from "../text/text"
@@ -43,7 +43,7 @@ export function Header(props: HeaderProps) {
         <View style={LEFT} />
       )}
       {headerTx && (
-        <Text preset="header" text={`${headerTx}`} />
+        <Text preset="h3" text={`${headerTx}`} />
       )}
       {rightIcon ? (
         <Button preset="link" onPress={onRightPress}>

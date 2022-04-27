@@ -1,34 +1,31 @@
 import { StyleSheet } from "react-native";
 
-import { color, spacing, typography } from "../../theme";
+import { spacing, typography } from "../../theme";
 
 export default StyleSheet.create({
-  CONTAINER: {
-    backgroundColor: color.transparent,
-    paddingHorizontal: spacing[7],
+  FULL: {
     flex: 1,
-    justifyContent: "space-between",
-    marginTop: 50,
-    paddingBottom: 90,
   },
-
-  HEADER: {
+  CONTAINER: {
+    backgroundColor: "white",
+    paddingHorizontal: spacing[6],
+    height: "100%",
+  },
+  HEADER_TITLE: {
     textAlign: "center",
-    marginBottom: 10,
+    top: 45,
+    marginBottom: 90,
   },
-
-  CENTER: {
-    alignItems: "center",
-    justifyContent: "center",
-    margin: "auto",
-  },
-
-  TEXTCENTER: {
-    textAlign: "center",
+  INPUTSTYLE_CONTAINER: {
+    height: 20,
+    width: "100%",
+    marginTop: 100,
+    marginBottom: 90,
     alignItems: "center",
   },
-
   INPUT: {
     fontFamily: typography.primaryBold,
+    borderBottomWidth: 2,
+    borderColor: "black",
   },
 });

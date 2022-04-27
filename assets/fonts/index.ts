@@ -2,17 +2,12 @@ import * as Font from "expo-font"
 
 export const initFonts = async () => {
   await Font.loadAsync({
-    SFProDisplay: require("./SFProDisplay-Regular.ttf"),
-    "SFProDisplay-Regular": require("./SFProDisplay-Regular.ttf"),
-    "SFProDisplay-Medium": require("./SFProDisplay-Medium.ttf"),
-    "SFProDisplay-SemiBold": require("./SFProDisplay-Semibold.ttf"),
-    "SFProDisplay-Bold": require("./SFProDisplay-Bold.ttf"),
-    "SFProDisplay-Heavy": require("./SFProDisplay-Heavy.ttf"),
-    ReadexPro: require("./ReadexPro-Regular.ttf"),
-    "ReadexPro-Light": require("./ReadexPro-Light.ttf"),
-    "ReadexPro-Regular": require("./ReadexPro-Regular.ttf"),
-    "ReadexPro-Medium": require("./ReadexPro-Medium.ttf"),
-    "ReadexPro-SemiBold": require("./ReadexPro-SemiBold.ttf"),
-    "ReadexPro-Bold": require("./ReadexPro-Bold.ttf")
+    Inter: require("./inter/Inter-Regular.ttf"),
+    "Inter-Regular": require("./inter/Inter-Regular.ttf"),
+    "Inter-Light": require("./inter/Inter-Light.ttf"),
+    "Inter-Medium": require("./inter/Inter-Medium.ttf"),
+    "Inter-SemiBold": require("./inter/Inter-SemiBold.ttf"),
+    "Inter-Bold": require("./inter/Inter-Bold.ttf"),
+    "Inter-ExtraBold": require("./inter/Inter-ExtraBold.ttf")
   })
 }

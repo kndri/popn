@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, ViewStyle, View, Pressable } from 'react-native'
+import { ViewStyle, View, Pressable } from 'react-native'
 import { Text } from "../text/text";
 import { AutoImage as Image } from '../auto-image/auto-image';
 import { useNavigation } from "@react-navigation/native";
@@ -15,8 +15,8 @@ const CARD: ViewStyle = {
     borderBottomWidth: 0.5,
     borderBottomColor: '#7A7A7A',
     backgroundColor: 'white',
-    height: 80
-
+    height: 80,
+    paddingBottom: 20
 };
 const LEFT_SIDE: ViewStyle = {
     display: "flex",
@@ -67,7 +67,7 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
 
     return (
         <>
-            < Pressable style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, currentUser: user }); }
+            < Pressable style={CARD} onPress={() => { navigation.navigate('MessageRoom', { id: chatRoom.chatRoomID, name: otherUser.username, offerID: chatRoom.chatRoom.offerID }); }
             }>
                 <View style={LEFT_SIDE}>
                     <Image
@@ -78,7 +78,6 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
                             width: 40,
                             marginRight: 5,
                             borderRadius: 360,
-
                         }}
                     />
                 </View>

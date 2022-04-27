@@ -13,5 +13,6 @@
   "triggerEventPath": "PreSignup.event.json",
   "roleName": "popn09PreSignup",
   "skipEdit": true,
-  "enableCors": false
+  "enableCors": false,
+  "lambdaLayers": []
 }

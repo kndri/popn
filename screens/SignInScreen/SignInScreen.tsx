@@ -55,7 +55,7 @@ export default function SignInScreen() {
       <Header leftIcon="back" onLeftPress={() => navigation.goBack()} />
 
       <View style={styles.HEADER}>
-        <Text preset="header" text="Sign in to POPN" />
+        <Text preset="h1" text="Sign in to POPN" />
         <Text style={{ color: color.dim }} text="display the hype." />
       </View>
 

@@ -72,7 +72,7 @@ export default function MessageContactsScreen() {
     }
   }, [query]);
 
-  React.useEffect(() => {}, [users]);
+
 
   return (
     <Screen style={styles.container}>
@@ -109,6 +109,7 @@ export default function MessageContactsScreen() {
           data={searchedContacts}
           renderItem={({ item }) => <MessageContactListItem user={item} />}
           keyExtractor={(item) => String(item.id)}
+
         />
       )}
     </Screen>
