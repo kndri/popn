@@ -28,6 +28,7 @@ export const createUser = /* GraphQL */ `
           primaryName
           secondaryName
           image
+          sneakerStoreID
           userID
           createdAt
           prevSellers
@@ -135,6 +136,7 @@ export const updateUser = /* GraphQL */ `
           primaryName
           secondaryName
           image
+          sneakerStoreID
           userID
           createdAt
           prevSellers
@@ -242,6 +244,7 @@ export const deleteUser = /* GraphQL */ `
           primaryName
           secondaryName
           image
+          sneakerStoreID
           userID
           createdAt
           prevSellers
@@ -1479,6 +1482,17 @@ export const createSneaker = /* GraphQL */ `
       primaryName
       secondaryName
       image
+      sneakerStoreID
+      sneaker {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        points
+        createdAt
+        updatedAt
+      }
       userID
       user {
         id
@@ -1556,6 +1570,17 @@ export const updateSneaker = /* GraphQL */ `
       primaryName
       secondaryName
       image
+      sneakerStoreID
+      sneaker {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        points
+        createdAt
+        updatedAt
+      }
       userID
       user {
         id
@@ -1633,6 +1658,17 @@ export const deleteSneaker = /* GraphQL */ `
       primaryName
       secondaryName
       image
+      sneakerStoreID
+      sneaker {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        points
+        createdAt
+        updatedAt
+      }
       userID
       user {
         id
@@ -1949,6 +1985,17 @@ export const createClaim = /* GraphQL */ `
         primaryName
         secondaryName
         image
+        sneakerStoreID
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          points
+          createdAt
+          updatedAt
+        }
         userID
         user {
           id
@@ -2038,6 +2085,17 @@ export const updateClaim = /* GraphQL */ `
         primaryName
         secondaryName
         image
+        sneakerStoreID
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          points
+          createdAt
+          updatedAt
+        }
         userID
         user {
           id
@@ -2127,6 +2185,17 @@ export const deleteClaim = /* GraphQL */ `
         primaryName
         secondaryName
         image
+        sneakerStoreID
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          points
+          createdAt
+          updatedAt
+        }
         userID
         user {
           id
@@ -2169,6 +2238,17 @@ export const createListedItem = /* GraphQL */ `
         primaryName
         secondaryName
         image
+        sneakerStoreID
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          points
+          createdAt
+          updatedAt
+        }
         userID
         user {
           id
@@ -2263,6 +2343,17 @@ export const updateListedItem = /* GraphQL */ `
         primaryName
         secondaryName
         image
+        sneakerStoreID
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          points
+          createdAt
+          updatedAt
+        }
         userID
         user {
           id
@@ -2357,6 +2448,17 @@ export const deleteListedItem = /* GraphQL */ `
         primaryName
         secondaryName
         image
+        sneakerStoreID
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          points
+          createdAt
+          updatedAt
+        }
         userID
         user {
           id
@@ -2552,6 +2654,7 @@ export const createOffer = /* GraphQL */ `
           primaryName
           secondaryName
           image
+          sneakerStoreID
           userID
           createdAt
           prevSellers
@@ -2701,6 +2804,7 @@ export const updateOffer = /* GraphQL */ `
           primaryName
           secondaryName
           image
+          sneakerStoreID
           userID
           createdAt
           prevSellers
@@ -2850,6 +2954,7 @@ export const deleteOffer = /* GraphQL */ `
           primaryName
           secondaryName
           image
+          sneakerStoreID
           userID
           createdAt
           prevSellers
@@ -2894,7 +2999,8 @@ export const createSneakerStore = /* GraphQL */ `
       brand
       primaryName
       secondaryName
-      imageUrl
+      image
+      points
       createdAt
       updatedAt
     }
@@ -2910,7 +3016,8 @@ export const updateSneakerStore = /* GraphQL */ `
       brand
       primaryName
       secondaryName
-      imageUrl
+      image
+      points
       createdAt
       updatedAt
     }
@@ -2926,7 +3033,8 @@ export const deleteSneakerStore = /* GraphQL */ `
       brand
       primaryName
       secondaryName
-      imageUrl
+      image
+      points
       createdAt
       updatedAt
     }
