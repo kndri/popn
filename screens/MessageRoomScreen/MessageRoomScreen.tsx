@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ViewStyle, Image, ActivityIndicator, Modal } from 'react-native';
+import { View, ViewStyle, Image, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { GiftedChat, Bubble, Send, Composer } from 'react-native-gifted-chat';
 import { IMessage } from '../../types';

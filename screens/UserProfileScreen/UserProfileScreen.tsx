@@ -1,28 +1,41 @@
 import * as React from 'react';
-import { View, Image, Alert, FlatList, TouchableOpacity } from 'react-native';
-import { spacing } from '../../theme';
-import { Button, Screen, Text, Header } from '../../components';
+import { View, Image, Alert, FlatList, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { getUserFromDb } from '../../aws-functions/aws-functions';
+import { TabView, SceneMap, TabBar, } from 'react-native-tab-view';
+
+import { Button, Screen, Text, Header } from '../../components';
+import { getUserFromDb, getFollowersFromUser } from '../../aws-functions/aws-functions';
+//required images
+const verified = require('../../assets/images/verified_badge.png');
+const location_icon = require("../../assets/images/zipcode-icon.png");
 
 // NOTE: This should be refactored
 import styles from './Styles';
-
-//required images
-const verified = require('../../assets/images/verified_badge.png');
 
 export default function UserProfileScreen(props?: any) {
 	const userID = props.route.params;
 	const navigation = useNavigation();
 	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
+	const [followers, setFollowers] = React.useState<number>(0);
+	const [transactions, setTransactions] = React.useState<number>(0);
 	const [user, setUser] = React.useState<any>();
-	const [selection, setSelection] = React.useState(1);
+	const [isLoading, setIsLoading] = React.useState(true);
 	const isFocused = useIsFocused();
+	const [index, setIndex] = React.useState(0);
+	const [routes] = React.useState([
+		{ key: 'collection', title: 'Collection' },
+		{ key: 'listings', title: 'Listings' },
+	]);
 
 	const getUserData = async () => {
 		const user = await getUserFromDb(userID);
 		setUser(user);
+		const followers = await getFollowersFromUser(user!.id).catch((error) =>
+			console.log('error', error)
+		);
+		setFollowers(followers.length)
 		setSneakerCollection(user.sneakers.items);
+		setIsLoading(false);
 	};
 
 	React.useEffect(() => {
@@ -104,11 +117,34 @@ export default function UserProfileScreen(props?: any) {
 		</TouchableOpacity>
 	);
 
-	const renderPosts = () => {
+
+	const renderListings = () => {
 		return (
-			<View style={styles.CENTER}>
-				<Text>You have no posts!</Text>
+			<View style={{ flex: 1, justifyContent: 'center' }}>
+				{sneakerCollection.length == 0 ? (
+					renderEmptyListings()
+				) : (
+					//needs to be refactored to a flatlist that shwos all listings of this user
+					<Text
+						style={styles.TEXTCENTER}
+						preset="bold"
+						text="Available Listings."
+					/>
+				)}
 			</View>
+		);
+	};
+
+	const renderEmptyListings = () => {
+		return (
+			<View style={{ flex: 1, justifyContent: 'center' }}>
+				<Text
+					style={styles.TEXTCENTER}
+					preset="bold"
+					text="No Listings Available."
+				/>
+			</View>
+
 		);
 	};
 
@@ -131,7 +167,6 @@ export default function UserProfileScreen(props?: any) {
 					renderEmptyCollection()
 				) : (
 					<View style={styles.DATA_CONTAINER}>
-						{console.log('collection: ', sneakerCollection)}
 						<FlatList
 							data={sneakerCollection}
 							renderItem={renderSneaker}
@@ -148,113 +183,93 @@ export default function UserProfileScreen(props?: any) {
 		);
 	};
 
+	const CollectionRoute = () => (
+		<View style={styles.DATA_CONTAINER}>{renderCollection()}</View>
+	);
+
+	const ListingsRoute = () => (
+		<View style={styles.DATA_CONTAINER}>{renderEmptyListings()}</View>
+	);
+
+	const initialLayout = { width: Dimensions.get('window').width };
+
+	const renderScene = SceneMap({
+		collection: CollectionRoute,
+		listings: ListingsRoute,
+	});
+
 	return (
-		<Screen style={styles.CONTAINER}>
-			<View style={styles.PROFILE_HEADER}>
-				<Header
-					headerTx="Profile"
-					leftIcon="back"
-					onLeftPress={() => navigation.goBack()}
-				/>
-			</View>
-			{user ? (
-				<View style={styles.PROFILE_DATA}>
-					<Image
-						style={styles.PROFILE_IMAGE}
-						source={{ uri: user.avatarImageURL }}
-					/>
-					<View style={{}}>
-						<Text preset="header" text={`${user.username}`} />
-					</View>
-				</View>
-			) : (
-				<View style={styles.PROFILE_DATA}>
-					<Image
-						style={styles.PROFILE_IMAGE}
-						source={{ uri: `${user.avatarImageURL}` }}
-					/>
-					<View style={{}}>
-						<Text preset="header" text={`${user.username}`} />
-					</View>
+		<>
+			{isLoading && (
+				<View style={{ flex: 1, justifyContent: 'center' }}>
+					<ActivityIndicator size="large" color="black" />
 				</View>
 			)}
 
-			<View style={{ flexDirection: 'row', paddingHorizontal: spacing[3] }}>
-				<Button
-					style={{ width: '100%', height: 50, borderRadius: 4, marginLeft: 10 }}
-					text="Follow"
-					preset="primary"
-				/>
-			</View>
+			{!isLoading && (
+				<Screen style={styles.CONTAINER}>
+					<View style={styles.PROFILE_HEADER}>
+						<Header
+							leftIcon="back"
+							onLeftPress={() => navigation.goBack()}
+						/>
+					</View>
 
-			<View style={styles.COLLECTION_CONTAINER}>
-				<View style={styles.BUTTON_VIEW}>
-					<Button
-						onPress={() => setSelection(1)}
-						style={[
-							selection === 1
-								? {
-									borderRadius: 34,
-									width: 101,
-									margin: 2,
-								}
-								: {
-									backgroundColor: 'white',
-									borderRadius: 34,
-									width: 101,
-									borderColor: '#E8EDF2',
-									borderWidth: 1,
-									margin: 2,
-								},
-						]}
-					>
-						<Text
-							preset="bold"
-							style={[
-								selection === 1 ? { color: 'white' } : { color: 'black' },
-							]}
-						>
-							Collection
-						</Text>
-					</Button>
-					<Button
-						onPress={() => setSelection(2)}
-						style={[
-							selection === 2
-								? {
-									borderRadius: 34,
-									width: 101,
-									margin: 2,
-								}
-								: {
-									backgroundColor: 'white',
-									borderRadius: 34,
-									width: 101,
-									borderColor: '#E8EDF2',
-									borderWidth: 1,
-									margin: 2,
-								},
-						]}
-					>
-						<Text
-							preset="bold"
-							style={[
-								selection === 2 ? { color: 'white' } : { color: 'black' },
-							]}
-						>
-							Posts
-						</Text>
-					</Button>
-				</View>
+					<View style={styles.PROFILE_DATA}>
+						<View style={styles.IMAGE_AND_FOllOW_BUTTON_VIEW}>
+							<Image
+								style={styles.PROFILE_IMAGE}
+								source={{ uri: user.avatarImageURL }}
+							/>
+							<Button
+								preset='primary'
+								style={styles.FOLLOW_BUTTON}
+								text="Follow"
+							// onPress={() => { }}
+							/>
+						</View>
 
-				<View style={styles.DATA_CONTAINER}>
-					{selection === 1
-						? renderCollection()
-						: selection === 2
-							? renderPosts()
-							: null}
-				</View>
-			</View>
-		</Screen>
+
+						<View style={{ alignSelf: 'flex-start', marginTop: 6 }}>
+							<Text preset="h1" text={`${user.username}`} />
+							<View style={{ flexDirection: "row", alignItems: 'center', marginTop: 10 }}>
+								<Image source={location_icon} style={{ width: 16, height: 16, marginRight: 5 }} />
+								<Text>Charlotte, NC</Text>
+								<Text style={{ marginLeft: 10 }}>Joined in 2022</Text>
+							</View>
+
+							<View style={{ flexDirection: 'row', marginTop: 10 }}>
+								<View style={styles.PROFILE_DETAILS}>
+									<Text preset="bold" text={'267'} />
+									<Text preset="default" style={{ marginLeft: 6 }} text={'Transactions'} />
+								</View>
+
+								<View style={styles.PROFILE_DETAILS}>
+									<Text preset="bold" text={`${followers}`} />
+									<Text preset="default" style={{ marginLeft: 6 }} text={'Followers'} />
+								</View>
+							</View>
+						</View>
+					</View>
+
+					<TabView
+						navigationState={{ index, routes }}
+						renderScene={renderScene}
+						onIndexChange={setIndex}
+						initialLayout={initialLayout}
+						renderTabBar={props =>
+							<TabBar {...props}
+								indicatorStyle={{ backgroundColor: 'black' }}
+								style={{ backgroundColor: 'white' }}
+								renderLabel={({ route, focused, color }) => (
+									<Text preset='bold' style={{ color: 'black', fontSize: 16 }}>
+										{route.title}
+									</Text>
+								)}
+							/>}
+					/>
+				</Screen>
+			)}
+		</>
 	);
 }

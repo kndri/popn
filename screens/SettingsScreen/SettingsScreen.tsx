@@ -22,31 +22,16 @@ const settings = [
 		pageSrc: 'changePassword',
 		name: 'Password',
 	},
-	{
-		id: '3',
-		pageSrc: 'changeUsername',
-		name: 'Username',
-	},
-	{
-		id: '4',
-		pageSrc: 'changeProfileImage',
-		name: 'Profile Picture',
-	},
-	{
-		id: '5',
-		pageSrc: 'changeZipCode',
-		name: 'Zip Code',
-	},
 ];
 
 const about = [
 	{
-		id: '4',
+		id: '6',
 		pageSrc: 'privacyPolicy',
 		name: 'Privacy Policy',
 	},
 	{
-		id: '5',
+		id: '7',
 		pageSrc: 'termsOfUse',
 		name: 'Terms of Use',
 	},
@@ -55,17 +40,12 @@ const about = [
 const actions = [
 	{
 		id: '8',
-		pageSrc: 'rating',
-		name: 'Rate POPN',
-	},
-	{
-		id: '9',
 		pageSrc: 'signOut',
 		name: 'Sign Out',
 	},
 ];
 
-interface SettingsProps {}
+interface SettingsProps { }
 const SettingsScreen: FC<SettingsProps> = () => {
 	const { signOut } = useAuth();
 	const navigation = useNavigation();

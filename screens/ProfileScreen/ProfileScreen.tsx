@@ -1,14 +1,22 @@
 import * as React from 'react';
-import { View, Image, Alert, FlatList, TouchableOpacity, ActivityIndicator, Dimensions, StatusBar, Platform } from 'react-native';
+import {
+	View,
+	Alert,
+	FlatList,
+	TouchableOpacity,
+	ActivityIndicator,
+	Dimensions,
+} from 'react-native';
 import {
 	useIsFocused,
 	useNavigation,
 	CommonActions,
 } from '@react-navigation/native';
-import { TabView, SceneMap, TabBar, TabBarIndicator } from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar, } from 'react-native-tab-view';
 
 import { spacing } from '../../theme';
-import { Button, Screen, Text, Header, SneakerCard } from '../../components';
+import { Button, Screen, Text, Header, SneakerCard, AutoImage as Image, } from '../../components';
+import EditProfileModal from './EditProfileModal';
 import {
 	getSneakersFromUser,
 	deleteUserSneaker,
@@ -18,17 +26,16 @@ import {
 import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';
-
-
-
+const location_icon = require("../../assets/images/zipcode-icon.png");
 
 export default function ProfileScreen() {
 	const { authData: user } = useAuth();
 	const navigation = useNavigation();
 	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
-	const [following, setFollowing] = React.useState<number>(0);
 	const [followers, setFollowers] = React.useState<number>(0);
+	const [transactions, setTransactions] = React.useState<number>(0);
 	const [isLoading, setIsLoading] = React.useState(true);
+	const [editProfileModalVisible, setEditProfileModalVisible] = React.useState(false);
 	const isFocused = useIsFocused();
 	const [index, setIndex] = React.useState(0);
 	const [routes] = React.useState([
@@ -44,15 +51,11 @@ export default function ProfileScreen() {
 		const sneakerlist = await getSneakersFromUser(user!.id).catch((error) =>
 			console.log('error', error)
 		);
-		const following = await getFollowingFromUser(user!.id).catch((error) =>
-			console.log('error', error)
-		);
 		const followers = await getFollowersFromUser(user!.id).catch((error) =>
 			console.log('error', error)
 		);
 
 		setSneakerCollection(sneakerlist);
-		setFollowing(following.length);
 		setFollowers(followers.length);
 		setIsLoading(false);
 	};
@@ -65,26 +68,6 @@ export default function ProfileScreen() {
 			});
 		};
 	}, [isFocused]);
-
-	// Alerts when long pressed on shoe items
-	const createDeleteAlert = (shoeID) =>
-		Alert.alert(
-			'Delete Shoe',
-			'Are you sure you want to delete this Shoe? If this is a verified shoe you will need to reverify the shoe through check check',
-			[
-				{
-					text: 'Cancel',
-					onPress: () => console.log('Cancel Pressed'),
-					style: 'cancel',
-				},
-				{
-					text: 'OK',
-					onPress: () => {
-						deleteUserSneaker(shoeID).then(() => getUserData());
-					},
-				},
-			]
-		);
 
 	const renderEmptyCollection = () => {
 		return (
@@ -139,13 +122,42 @@ export default function ProfileScreen() {
 		);
 	};
 
+	const renderListings = () => {
+		return (
+			<View style={{ flex: 1, justifyContent: 'center' }}>
+				{sneakerCollection.length == 0 ? (
+					renderEmptyListings()
+				) : (
+					//needs to be refactored to a flatlist that shwos all listings of this user
+					<Text
+						style={styles.TEXTCENTER}
+						preset="bold"
+						text="Available Listings."
+					/>
+				)}
+			</View>
+		);
+	};
+
+	const renderEmptyListings = () => {
+		return (
+			<View style={{ flex: 1, justifyContent: 'center' }}>
+				<Text
+					style={styles.TEXTCENTER}
+					preset="bold"
+					text="No Listings Available."
+				/>
+			</View>
+
+		);
+	};
+
 	const CollectionRoute = () => (
 		<View style={styles.DATA_CONTAINER}>{renderCollection()}</View>
-		// <View style={[styles.SCENE, { backgroundColor: '#ff4081' }]} />
 	);
 
 	const ListingsRoute = () => (
-		<View style={[styles.SCENE, { backgroundColor: '#673ab7' }]} />
+		<View style={styles.DATA_CONTAINER}>{renderListings()}</View>
 	);
 
 	const initialLayout = { width: Dimensions.get('window').width };
@@ -167,38 +179,45 @@ export default function ProfileScreen() {
 				<Screen style={styles.CONTAINER}>
 					<View style={styles.PROFILE_HEADER}>
 						<Header
-							headerTx={`${user?.username}`}
 							rightIcon="settings"
 							onRightPress={() => navigation.navigate('Settings')}
 						/>
 					</View>
-					<View style={styles.PROFILE_DATA}>
-						<Image style={styles.PROFILE_IMAGE} source={{ uri: user?.image }} />
-						<View style={{ flexDirection: 'row', marginLeft: 20 }}>
-							<View style={styles.PROFILE_DETAILS}>
-								{sneakerCollection != undefined ? (
-									<Text preset="bold" text={`${sneakerCollection.length}`} />
-								) : (
-									<Text preset="bold" text="0" />
-								)}
 
-								<Text preset="default" text={'Collection'} />
+					<View style={styles.PROFILE_DATA}>
+						<View style={styles.IMAGE_AND_BUTTON_VIEW}>
+							<Image style={styles.PROFILE_IMAGE} source={{ uri: user?.image }} />
+							<Button
+								preset='primary'
+								style={styles.EDIT_PROFILE_BUTTON}
+								text="Edit Profile"
+								onPress={() => { setEditProfileModalVisible(!editProfileModalVisible) }}
+							/>
+						</View>
+
+						<View style={{ alignSelf: 'flex-start', marginTop: 6 }}>
+							<Text preset='h1'>{user?.username}</Text>
+							<View style={{ flexDirection: "row", alignItems: 'center', marginTop: 10 }}>
+								<Image source={location_icon} style={{ width: 16, height: 16, marginRight: 5 }} />
+								<Text>Charlotte, NC</Text>
+								<Text style={{ marginLeft: 10 }}>Joined in 2022</Text>
 							</View>
-							<View style={styles.PROFILE_DETAILS}>
-								<Text preset="bold" text={`${following}`} />
-								<Text preset="default" text={'Following'} />
-							</View>
-							<View style={styles.PROFILE_DETAILS}>
-								<Text preset="bold" text={`${followers}`} />
-								<Text preset="default" text={'Followers'} />
+
+							<View style={{ flexDirection: 'row', marginTop: 10 }}>
+								<View style={styles.PROFILE_DETAILS}>
+									<Text preset="bold" text={`${transactions}`} />
+									<Text preset="default" style={{ marginLeft: 6 }} text={'Transactions'} />
+								</View>
+
+								<View style={styles.PROFILE_DETAILS}>
+									<Text preset="bold" text={`${followers}`} />
+									<Text preset="default" style={{ marginLeft: 6 }} text={'Followers'} />
+								</View>
 							</View>
 						</View>
-					</View>
-					<View
-						style={{ flexDirection: 'row', paddingHorizontal: spacing[3] }}
-					></View>
 
-					{/* <View style={styles.COLLECTION_CONTAINER}> */}
+					</View>
+
 					<TabView
 						navigationState={{ index, routes }}
 						renderScene={renderScene}
@@ -208,14 +227,18 @@ export default function ProfileScreen() {
 							<TabBar {...props}
 								indicatorStyle={{ backgroundColor: 'black' }}
 								style={{ backgroundColor: 'white' }}
-								renderLabel={({ route, focused, color }) => (
+								renderLabel={({ route }) => (
 									<Text preset='bold' style={{ color: 'black', fontSize: 16 }}>
 										{route.title}
 									</Text>
 								)}
 							/>}
 					/>
-					{/* </View> */}
+					<EditProfileModal
+						editProfileModalVisible={editProfileModalVisible}
+						setEditProfileModalVisible={setEditProfileModalVisible}
+
+					/>
 				</Screen>
 			)}
 		</>

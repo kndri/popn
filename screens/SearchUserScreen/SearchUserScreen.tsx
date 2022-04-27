@@ -107,11 +107,11 @@ export default function SearchUserScreen() {
 				/>
 			</View>
 			{query.length === 0 ||
-			(searchedContacts.length === 0 && searchedSneakers.length === 0) ? (
+				(searchedContacts.length === 0 && searchedSneakers.length === 0) ? (
 				<View style={{ alignItems: 'center', backgroundColor: 'transparent' }}>
 					{searchedContacts.length < 1 &&
-					searchedSneakers.length < 1 &&
-					query.length > 0 ? (
+						searchedSneakers.length < 1 &&
+						query.length > 0 ? (
 						<Text>Results Not Found</Text>
 					) : (
 						<Text>Search Something</Text>
