@@ -109,6 +109,7 @@ type ChatRoom @model {
 	messages: [Message] @connection(keyName: "byChatRoom", fields: ["id"])
 	lastMessageID: ID!
 	lastMessage: Message @connection(fields: ["lastMessageID"])
+	receiverHasRead: Boolean
 }
 type Message
 	@model
@@ -213,6 +214,8 @@ type Offer
 	buyerConfirmed: Boolean!
 	buyingUserID: ID!
 	sellingUserID: ID!
+	seller: User! @connection(fields: ["sellingUserID"])
+	buyer: User! @connection(fields: ["buyingUserID"])
 	listedItemID: ID!
 	listedItem: ListedItem! @connection(fields: ["listedItemID"])
 	createdAt: String

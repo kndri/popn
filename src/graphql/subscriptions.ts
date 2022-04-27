@@ -798,6 +798,7 @@ export const onCreateChatRoomUser = /* GraphQL */ `
           chatRoomID
           updatedAt
         }
+        receiverHasRead
         createdAt
         updatedAt
       }
@@ -876,6 +877,7 @@ export const onUpdateChatRoomUser = /* GraphQL */ `
           chatRoomID
           updatedAt
         }
+        receiverHasRead
         createdAt
         updatedAt
       }
@@ -954,6 +956,7 @@ export const onDeleteChatRoomUser = /* GraphQL */ `
           chatRoomID
           updatedAt
         }
+        receiverHasRead
         createdAt
         updatedAt
       }
@@ -1011,11 +1014,13 @@ export const onCreateChatRoom = /* GraphQL */ `
           id
           offerID
           lastMessageID
+          receiverHasRead
           createdAt
           updatedAt
         }
         updatedAt
       }
+      receiverHasRead
       createdAt
       updatedAt
     }
@@ -1070,11 +1075,13 @@ export const onUpdateChatRoom = /* GraphQL */ `
           id
           offerID
           lastMessageID
+          receiverHasRead
           createdAt
           updatedAt
         }
         updatedAt
       }
+      receiverHasRead
       createdAt
       updatedAt
     }
@@ -1129,11 +1136,13 @@ export const onDeleteChatRoom = /* GraphQL */ `
           id
           offerID
           lastMessageID
+          receiverHasRead
           createdAt
           updatedAt
         }
         updatedAt
       }
+      receiverHasRead
       createdAt
       updatedAt
     }
@@ -1211,6 +1220,7 @@ export const onCreateMessage = /* GraphQL */ `
           chatRoomID
           updatedAt
         }
+        receiverHasRead
         createdAt
         updatedAt
       }
@@ -1290,6 +1300,7 @@ export const onUpdateMessage = /* GraphQL */ `
           chatRoomID
           updatedAt
         }
+        receiverHasRead
         createdAt
         updatedAt
       }
@@ -1369,6 +1380,7 @@ export const onDeleteMessage = /* GraphQL */ `
           chatRoomID
           updatedAt
         }
+        receiverHasRead
         createdAt
         updatedAt
       }
@@ -2319,6 +2331,98 @@ export const onCreateOffer = /* GraphQL */ `
       buyerConfirmed
       buyingUserID
       sellingUserID
+      seller {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        soldSneakers {
+          nextToken
+        }
+        offers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        zipCode
+        chatRoomUser {
+          nextToken
+        }
+        donScore {
+          id
+          userID
+          zipCode
+          score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
+        expoToken
+        createdAt
+        updatedAt
+      }
+      buyer {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        soldSneakers {
+          nextToken
+        }
+        offers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        zipCode
+        chatRoomUser {
+          nextToken
+        }
+        donScore {
+          id
+          userID
+          zipCode
+          score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
+        expoToken
+        createdAt
+        updatedAt
+      }
       listedItemID
       listedItem {
         id
@@ -2373,6 +2477,98 @@ export const onUpdateOffer = /* GraphQL */ `
       buyerConfirmed
       buyingUserID
       sellingUserID
+      seller {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        soldSneakers {
+          nextToken
+        }
+        offers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        zipCode
+        chatRoomUser {
+          nextToken
+        }
+        donScore {
+          id
+          userID
+          zipCode
+          score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
+        expoToken
+        createdAt
+        updatedAt
+      }
+      buyer {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        soldSneakers {
+          nextToken
+        }
+        offers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        zipCode
+        chatRoomUser {
+          nextToken
+        }
+        donScore {
+          id
+          userID
+          zipCode
+          score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
+        expoToken
+        createdAt
+        updatedAt
+      }
       listedItemID
       listedItem {
         id
@@ -2427,6 +2623,98 @@ export const onDeleteOffer = /* GraphQL */ `
       buyerConfirmed
       buyingUserID
       sellingUserID
+      seller {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        soldSneakers {
+          nextToken
+        }
+        offers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        zipCode
+        chatRoomUser {
+          nextToken
+        }
+        donScore {
+          id
+          userID
+          zipCode
+          score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
+        expoToken
+        createdAt
+        updatedAt
+      }
+      buyer {
+        id
+        age
+        username
+        email
+        avatarImageURL
+        sneakers {
+          nextToken
+        }
+        soldSneakers {
+          nextToken
+        }
+        offers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        follower {
+          nextToken
+        }
+        status
+        zipCode
+        chatRoomUser {
+          nextToken
+        }
+        donScore {
+          id
+          userID
+          zipCode
+          score
+          createdAt
+          updatedAt
+        }
+        totalSold {
+          id
+          userID
+          zipCode
+          total
+          createdAt
+          updatedAt
+        }
+        expoToken
+        createdAt
+        updatedAt
+      }
       listedItemID
       listedItem {
         id

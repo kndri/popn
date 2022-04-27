@@ -10,7 +10,7 @@ import * as React from 'react';
 import { ColorSchemeName, Image } from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
 import ClaimScreen from '../screens/ClaimScreen/ClaimScreen';
-import MessageScreen from '../screens/MessageScreen/MessageScreen';
+import MessageScreen from '../screens/MessageScreen';
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
 import AgeScreen from '../screens/AgeScreen/AgeScreen';
 import ProfilePicScreen from '../screens/ProfilePicScreen/ProfilePicScreen';
@@ -28,7 +28,7 @@ import ChangeUsernameScreen from '../screens/ChangeUsernameScreen/ChangeUsername
 import ChangeProfileImageScreen from '../screens/ChangeProfileImageScreen/ChangeProfileImageScreen';
 import EmailVerificationCodeScreen from '../screens/EmailVerificationCodeScreen/EmailVerificationCodeScreen';
 import ChangePasswordScreen from '../screens/ChangePasswordScreen/ChangePasswordScreen';
-import MessageRoomScreen from '../screens/MessageRoomScreen/MessageRoomScreen';
+import MessageRoomScreen from '../screens/MessageRoomScreen';
 import NewMessageRoomScreen from '../screens/NewMessageRoomScreen/NewMessageRoomScreen';
 import LocationScreen from '../screens/LocationScreen';
 import ZipCodeScreen from '../screens/ZipCodeScreen';
@@ -53,6 +53,8 @@ import SearchUserScreen from '../screens/SearchUserScreen/SearchUserScreen';
 import { Auth } from 'aws-amplify';
 import ZipScreen from '../screens/AuthZipScreen';
 import ChangeZipCode from '../screens/ChangeZipCodeScreen';
+import { useApp } from '../contexts/app-context';
+import { View } from '../components/Themed';
 
 export default function Navigation({
 	colorScheme,
@@ -310,6 +312,8 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
+	const { unreadCount } = useApp();
+
 	return (
 		<BottomTab.Navigator
 			initialRouteName="Home"
@@ -346,19 +350,23 @@ function BottomTabNavigator() {
 				options={{
 					title: 'Messages',
 					tabBarIcon: ({ focused }) => (
-						<Image
-							source={
-								focused
-									? require('../assets/images/messages-focused.png')
-									: require('../assets/images/messages.png')
-							}
-							style={{
-								width: 25,
-								height: 25,
-								borderRadius: 0,
-							}}
-						/>
+						<View>
+							<Image
+								source={
+									focused
+										? require('../assets/images/messages-focused.png')
+										: require('../assets/images/messages.png')
+								}
+								style={{
+									width: 25,
+									height: 25,
+									borderRadius: 0,
+									backgroundColor: 'white',
+								}}
+							/>
+						</View>
 					),
+					tabBarBadge: unreadCount ? unreadCount : undefined,
 				}}
 			/>
 			<BottomTab.Screen

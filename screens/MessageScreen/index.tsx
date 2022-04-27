@@ -1,24 +1,29 @@
 import * as React from 'react';
-import { API, graphqlOperation } from 'aws-amplify';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import { API, graphqlOperation } from 'aws-amplify';
 
 import { getChatRoom, chatRoomUserByUser } from '../../src/graphql/queries';
+import { deleteChatRoomUser } from '../../src/graphql/mutations';
+
+import { useAuth } from '../../contexts/auth';
+import { useApp } from '../../contexts/app-context';
 
 import MessageChatListItem from '../../components/message-chat-list-item';
 import { Screen, Text, Header } from '../../components';
-import { deleteChatRoomUser } from '../../src/graphql/mutations';
 import { spacing } from '../../theme';
-import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';
 
 export default function MessageScreen() {
+	// auth and app context
 	const { authData: user } = useAuth();
+	const { updateUnreadCount } = useApp();
+
+	const isFocused = useIsFocused();
 	const [chatRooms, setChatRooms] = React.useState<any>([]);
 	const [isLoading, setIsLoading] = React.useState(true);
-	const isFocused = useIsFocused();
 
 	React.useEffect(() => {
 		fetchChatRooms();
@@ -40,6 +45,20 @@ export default function MessageScreen() {
 						a.chatRoom.lastMessage.updatedAt
 					);
 				});
+
+				// Counting unread messages
+				let unreadCount = 0;
+				chatRoomsArr.map((item: any) => {
+					if (
+						user?.id != item.chatRoom.lastMessage.userID &&
+						item.chatRoom.receiverHasRead == false
+					) {
+						unreadCount = unreadCount + 1;
+					}
+				});
+
+				// updating unread counter globally
+				updateUnreadCount(unreadCount);
 
 				setChatRooms(chatRoomsArr);
 				setIsLoading(false);
@@ -128,6 +147,7 @@ export default function MessageScreen() {
 							style={{ paddingHorizontal: spacing[3] }}
 							headerTx="Messages"
 						/>
+
 						{chatRooms.length === 0 ? (
 							<View style={{ height: '100%', justifyContent: 'center' }}>
 								<Text
