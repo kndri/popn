@@ -183,6 +183,22 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			await updateChatRoomLastMessage(
 				confirmedMessageData.data.createMessage.id
 			);
+
+			// send notification to receiver
+			let expoToken: string;
+			const title = 'Offer Confirmed';
+			if (user?.id == offer.sellingUserID) {
+				expoToken = offer.buyer.expoToken;
+			} else {
+				expoToken = offer.seller.expoToken;
+			}
+			createNotification(
+				automatedConfirmationMessage,
+				id,
+				offerID,
+				title,
+				expoToken
+			);
 			toast.show(`Successful Transfer.`);
 		} catch (error) {
 			console.log(error);
@@ -208,7 +224,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 				const newMessage = data.value.data.onCreateMessage;
 
 				if (newMessage.chatRoomID !== id) {
-					console.log('Message is in another room!');
 					return;
 				}
 
@@ -249,7 +264,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 
 	const onSend = React.useCallback(async (messages = [], offer) => {
 		try {
-			console.log('offer', offer);
 			const newMessageData = await API.graphql(
 				graphqlOperation(createMessage, {
 					input: {
@@ -261,33 +275,17 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			);
 			await updateChatRoomLastMessage(newMessageData.data.createMessage.id);
 
+			// send notification to the receiver
 			const title = 'New Message';
 			let expoToken: string;
 			let messageInfo = `${user?.username} replied: ${messages[0].text}`;
 
 			if (messages[0].user._id == offer.sellingUserID) {
-				console.log('seller', messages[0].user._id);
-
 				expoToken = offer.buyer.expoToken;
-				createNotification(
-					messageInfo,
-					id,
-					offerID,
-					title,
-					offer.buyer.expoToken
-				);
 			} else {
-				console.log('buyer', messages[0].user._id);
-
 				expoToken = offer.seller.expoToken;
-				createNotification(
-					messageInfo,
-					id,
-					offerID,
-					title,
-					offer.seller.expoToken
-				);
 			}
+			createNotification(messageInfo, id, offerID, title, expoToken);
 		} catch (e) {
 			console.log(e);
 		}

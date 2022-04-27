@@ -1,10 +1,13 @@
 import React from 'react';
 import { ViewStyle, View, Pressable } from 'react-native';
+import { API, graphqlOperation } from 'aws-amplify';
+import Svg, { Circle } from 'react-native-svg';
+import moment from 'moment';
+import { useNavigation } from '@react-navigation/native';
+
 import { Text } from '../text/text';
 import { AutoImage as Image } from '../auto-image/auto-image';
-import { useNavigation } from '@react-navigation/native';
-import { API, Auth, graphqlOperation } from 'aws-amplify';
-import moment from 'moment';
+
 import { useAuth } from '../../contexts/auth';
 import { updateChatRoom } from '../../src/graphql/mutations';
 
@@ -92,9 +95,9 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
 		}
 	};
 	/**
-	 * When message room clicked change receiverHasRead to true
+	 * When message room is clicked change receiverHasRead to true
 	 */
-	const newChatBtnClicked = async () => {
+	const chatRoomPressed = async () => {
 		// if user is not the owner of the last message sent then change receiverHasRead to true
 		if (
 			user?.id != chatRoom.chatRoom.lastMessage.userID &&
@@ -109,23 +112,37 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
 						},
 					})
 				);
-
-				console.log('recevieer has read the message');
 			} catch (e) {
-				console.log(e);
+				console.log('Error', e);
 			}
 		}
 
 		return;
 	};
 
+	/**
+	 * The purpose of this stateless function is to conditionally render a preset
+	 * for the text when there is a unread message
+	 * @returns JSX Element
+	 */
+	const ChangeToBold = () =>
+		user?.id != chatRoom.chatRoom.lastMessage.userID &&
+		chatRoom.chatRoom.receiverHasRead == false ? (
+			<Text style={{ marginTop: 3 }} preset="bold">
+				{chatRoom.chatRoom.lastMessage.text}
+			</Text>
+		) : (
+			<Text style={{ marginTop: 3 }} preset="secondary">
+				{chatRoom.chatRoom.lastMessage.text}
+			</Text>
+		);
+
 	return (
 		<>
 			<Pressable
 				style={CARD}
 				onPress={() => {
-					newChatBtnClicked();
-
+					chatRoomPressed();
 					navigation.navigate('MessageRoom', {
 						id: chatRoom.chatRoomID,
 						name: otherUser.username,
@@ -144,33 +161,34 @@ export default function MessageChatListItem(props: MessageChatListItemProps) {
 							borderRadius: 360,
 						}}
 					/>
+					{user?.id != chatRoom.chatRoom.lastMessage.userID &&
+						chatRoom.chatRoom.receiverHasRead == false && (
+							<Svg height="10px" width="10px" viewBox="0 0 100 100">
+								<Circle
+									cx="50"
+									cy="50"
+									r="50"
+									stroke="black"
+									strokeWidth=".5"
+									fill="black"
+								/>
+							</Svg>
+						)}
 				</View>
 				<View style={CARD_DATA}>
-					<Text preset="bold">{otherUser.username}</Text>
-
-					{chatRoom.chatRoom.lastMessage.text != null && (
-						<Text style={{ marginTop: 3 }} preset="secondary">
-							{chatRoom.chatRoom.lastMessage.text}
-						</Text>
+					{user?.id != chatRoom.chatRoom.lastMessage.userID &&
+					chatRoom.chatRoom.receiverHasRead == false ? (
+						<Text preset="bold">{otherUser.username}</Text>
+					) : (
+						<Text preset="default">{otherUser.username}</Text>
 					)}
+
+					{chatRoom.chatRoom.lastMessage.text != null && <ChangeToBold />}
 				</View>
 				<View>
 					<Text style={{ marginTop: 3 }} preset="secondary">
 						{moment(chatRoom.updatedAt).format('MM/DD/YYYY')}
 					</Text>
-					{user?.id != chatRoom.chatRoom.lastMessage.userID &&
-						chatRoom.chatRoom.receiverHasRead == false && (
-							<Image
-								style={{
-									resizeMode: 'contain',
-									height: 10,
-									width: 10,
-									marginRight: 5,
-									borderRadius: 360,
-								}}
-								source={newMessage}
-							/>
-						)}
 				</View>
 			</Pressable>
 		</>
