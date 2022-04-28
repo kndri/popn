@@ -490,7 +490,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 
 	return (
 		<>
-			{console.log('offer data: ', offer)}
 			{isLoading && (
 				<View style={{ flex: 1, justifyContent: 'center' }}>
 					<ActivityIndicator size="large" color="black" />

@@ -35,7 +35,7 @@ import styles from './styles';
 const location_icon = require('../../assets/images/zipcode-icon.png');
 
 export default function ProfileScreen() {
-	const { authData: user } = useAuth();
+	const { authData: user, updateAuth } = useAuth();
 	const navigation = useNavigation();
 	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
 	const [followers, setFollowers] = React.useState<number>(0);
@@ -67,13 +67,11 @@ export default function ProfileScreen() {
 	};
 
 	React.useEffect(() => {
+		updateAuth()
 		getUserData();
-		return () => {
-			navigation.dispatch({
-				...CommonActions.setParams({}),
-			});
-		};
-	}, [isFocused]);
+
+
+	}, [isFocused,]);
 
 	const renderEmptyCollection = () => {
 		return (

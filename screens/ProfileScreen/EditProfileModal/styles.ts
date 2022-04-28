@@ -1,3 +1,4 @@
+import { RFC_2822 } from "moment";
 import { StyleSheet } from "react-native";
 
 import { spacing, typography } from "../../../theme";
@@ -13,12 +14,20 @@ export default StyleSheet.create({
         paddingHorizontal: spacing[4],
     },
     INPUTSTYLE_CONTAINER: {
-        alignItems: "center",
+        alignItems: "flex-start",
+        justifyContent: 'center',
+        borderBottomWidth: 2,
+        borderColor: "black",
+        width: '100%',
+        marginBottom: 20,
+        paddingBottom: 0,
+
+
     },
     INPUT: {
         fontFamily: typography.primaryBold,
-        borderBottomWidth: 2,
-        borderColor: "black",
+        marginBottom: 0,
+        paddingBottom: 0
     },
 
 });

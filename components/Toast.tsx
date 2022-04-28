@@ -68,7 +68,7 @@ export default function ToastContainer() {
 
   return (
     <Animated.View style={styles.container}>
-      <Text style={{color: "white"}}>{toast.message}</Text>
+      <Text style={{ color: "white" }}>{toast.message}</Text>
     </Animated.View>
   );
 }
