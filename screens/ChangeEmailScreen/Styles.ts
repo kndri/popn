@@ -1,31 +1,31 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
-import { spacing, typography } from "../../theme";
+import { spacing, typography } from '../../theme';
 
 export default StyleSheet.create({
-  FULL: {
-    flex: 1,
-  },
-  CONTAINER: {
-    backgroundColor: "white",
-    paddingHorizontal: spacing[6],
-    height: "100%",
-  },
-  HEADER_TITLE: {
-    textAlign: "center",
-    top: 45,
-    marginBottom: 90,
-  },
-  INPUTSTYLE_CONTAINER: {
-    height: 20,
-    width: "100%",
-    marginTop: 100,
-    marginBottom: 90,
-    alignItems: "center",
-  },
-  INPUT: {
-    fontFamily: typography.primaryBold,
-    borderBottomWidth: 2,
-    borderColor: "black",
-  },
+	FULL: {
+		flex: 1,
+	},
+	CONTAINER: {
+		backgroundColor: 'white',
+		height: '100%',
+		paddingHorizontal: spacing[6],
+	},
+	HEADER_TITLE: {
+		marginBottom: 90,
+		textAlign: 'center',
+		top: 45,
+	},
+	INPUTSTYLE_CONTAINER: {
+		alignItems: 'center',
+		height: 20,
+		marginBottom: 90,
+		marginTop: 100,
+		width: '100%',
+	},
+	INPUT: {
+		borderBottomWidth: 2,
+		borderColor: 'black',
+		fontFamily: typography.primaryBold,
+	},
 });
