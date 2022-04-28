@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
-import { API, graphqlOperation } from 'aws-amplify';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import * as Notifications from 'expo-notifications';
 
+import { API, graphqlOperation } from 'aws-amplify';
 import { getChatRoom, chatRoomUserByUser } from '../../src/graphql/queries';
-import { deleteChatRoomUser } from '../../src/graphql/mutations';
+import {
+	deleteChatRoomUser,
+	updateChatRoom,
+} from '../../src/graphql/mutations';
 
 import { useAuth } from '../../contexts/auth';
 import { useApp } from '../../contexts/app-context';
@@ -20,7 +24,9 @@ export default function MessageScreen() {
 	// auth and app context
 	const { authData: user } = useAuth();
 	const { updateUnreadCount } = useApp();
-
+	const notificationListener: any = React.useRef();
+	const responseListener: any = React.useRef();
+	const navigation = useNavigation();
 	const isFocused = useIsFocused();
 	const [chatRooms, setChatRooms] = React.useState<any>([]);
 	const [isLoading, setIsLoading] = React.useState(true);
@@ -28,6 +34,52 @@ export default function MessageScreen() {
 	React.useEffect(() => {
 		fetchChatRooms();
 	}, [isFocused]);
+
+	React.useEffect(() => {
+		// This listener is fired whenever a notification is received while the app is foregrounded
+		notificationListener.current =
+			Notifications.addNotificationReceivedListener((notification) => {
+				console.log('Notification Received', notification);
+				if (
+					notification.request.content.title == 'New Message' ||
+					notification.request.content.title == 'Offer Made!'
+				) {
+					fetchChatRooms();
+				}
+			});
+
+		// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+		responseListener.current =
+			Notifications.addNotificationResponseReceivedListener(
+				async (response) => {
+					try {
+						await API.graphql(
+							graphqlOperation(updateChatRoom, {
+								input: {
+									id: response.notification.request.content.data.chatRoomID,
+									receiverHasRead: true,
+								},
+							})
+						);
+						navigation.navigate('MessageRoom', {
+							id: response.notification.request.content.data.chatRoomID,
+							name: response.notification.request.content.data.username,
+							offerID: response.notification.request.content.data.offerID,
+						});
+						fetchChatRooms();
+					} catch (err) {
+						console.log('error:', err);
+					}
+				}
+			);
+
+		return () => {
+			Notifications.removeNotificationSubscription(
+				notificationListener.current
+			);
+			Notifications.removeNotificationSubscription(responseListener.current);
+		};
+	}, []);
 
 	const fetchChatRooms = async () => {
 		try {

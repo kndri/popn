@@ -9,7 +9,7 @@ import { useAuth } from '../../contexts/auth';
 import { authService } from '../../services/auth-service';
 import { updateUser } from '../../src/graphql/mutations';
 
-import styles from './Styles';
+import styles from './styles';
 
 export default function ChangeUsernameScreen() {
 	const { authData: user, updateAuth } = useAuth();

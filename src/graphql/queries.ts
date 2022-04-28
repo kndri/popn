@@ -17,6 +17,7 @@ export const getUser = /* GraphQL */ `
 					primaryName
 					secondaryName
 					image
+					sneakerStoreID
 					userID
 					createdAt
 					prevSellers
@@ -753,6 +754,15 @@ export const getSneaker = /* GraphQL */ `
 			primaryName
 			secondaryName
 			image
+			sneakerStoreID
+			sneaker {
+				id
+				brand
+				primaryName
+				secondaryName
+				image
+				points
+			}
 			userID
 			user {
 				id
@@ -832,6 +842,15 @@ export const listSneakers = /* GraphQL */ `
 				primaryName
 				secondaryName
 				image
+				sneakerStoreID
+				sneaker {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					points
+				}
 				userID
 				user {
 					id
@@ -846,6 +865,16 @@ export const listSneakers = /* GraphQL */ `
 					updatedAt
 				}
 				claim {
+					items {
+						id
+						userID
+						sneakerID
+						status
+						refNumber
+						claimMessage
+						createdAt
+						updatedAt
+					}
 					nextToken
 				}
 				createdAt
@@ -1007,6 +1036,15 @@ export const getClaim = /* GraphQL */ `
 				primaryName
 				secondaryName
 				image
+				sneakerStoreID
+				sneaker {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					points
+				}
 				userID
 				user {
 					id
@@ -1064,6 +1102,7 @@ export const listClaims = /* GraphQL */ `
 					primaryName
 					secondaryName
 					image
+					sneakerStoreID
 					userID
 					createdAt
 					prevSellers
@@ -1090,6 +1129,15 @@ export const getListedItem = /* GraphQL */ `
 				primaryName
 				secondaryName
 				image
+				sneakerStoreID
+				sneaker {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					points
+				}
 				userID
 				user {
 					id
@@ -1186,6 +1234,7 @@ export const listListedItems = /* GraphQL */ `
 					primaryName
 					secondaryName
 					image
+					sneakerStoreID
 					userID
 					createdAt
 					prevSellers
@@ -1235,8 +1284,42 @@ export const getOffer = /* GraphQL */ `
 				username
 				email
 				avatarImageURL
+				sneakers {
+					nextToken
+				}
+				soldSneakers {
+					nextToken
+				}
+				offers {
+					nextToken
+				}
+				following {
+					nextToken
+				}
+				follower {
+					nextToken
+				}
 				status
 				zipCode
+				chatRoomUser {
+					nextToken
+				}
+				donScore {
+					id
+					userID
+					zipCode
+					score
+					createdAt
+					updatedAt
+				}
+				totalSold {
+					id
+					userID
+					zipCode
+					total
+					createdAt
+					updatedAt
+				}
 				expoToken
 				createdAt
 				updatedAt
@@ -1247,8 +1330,42 @@ export const getOffer = /* GraphQL */ `
 				username
 				email
 				avatarImageURL
+				sneakers {
+					nextToken
+				}
+				soldSneakers {
+					nextToken
+				}
+				offers {
+					nextToken
+				}
+				following {
+					nextToken
+				}
+				follower {
+					nextToken
+				}
 				status
 				zipCode
+				chatRoomUser {
+					nextToken
+				}
+				donScore {
+					id
+					userID
+					zipCode
+					score
+					createdAt
+					updatedAt
+				}
+				totalSold {
+					id
+					userID
+					zipCode
+					total
+					createdAt
+					updatedAt
+				}
 				expoToken
 				createdAt
 				updatedAt
@@ -1263,6 +1380,7 @@ export const getOffer = /* GraphQL */ `
 					primaryName
 					secondaryName
 					image
+					sneakerStoreID
 					userID
 					createdAt
 					prevSellers
@@ -1366,9 +1484,8 @@ export const getSneakerStore = /* GraphQL */ `
 			brand
 			primaryName
 			secondaryName
-			imageUrl
-			createdAt
-			updatedAt
+			image
+			points
 		}
 	}
 `;
@@ -1384,7 +1501,8 @@ export const listSneakerStores = /* GraphQL */ `
 				brand
 				primaryName
 				secondaryName
-				imageUrl
+				image
+				points
 			}
 			nextToken
 		}
@@ -1660,6 +1778,15 @@ export const sneakerByUser = /* GraphQL */ `
 				primaryName
 				secondaryName
 				image
+				sneakerStoreID
+				sneaker {
+					id
+					brand
+					primaryName
+					secondaryName
+					image
+					points
+				}
 				userID
 				user {
 					id
@@ -1749,6 +1876,7 @@ export const listedItemByUser = /* GraphQL */ `
 					primaryName
 					secondaryName
 					image
+					sneakerStoreID
 					userID
 					createdAt
 					prevSellers
@@ -1806,6 +1934,7 @@ export const listedItemByZipCode = /* GraphQL */ `
 					primaryName
 					secondaryName
 					image
+					sneakerStoreID
 					userID
 					createdAt
 					prevSellers
@@ -1863,6 +1992,7 @@ export const listedItemByBrand = /* GraphQL */ `
 					primaryName
 					secondaryName
 					image
+					sneakerStoreID
 					userID
 					createdAt
 					prevSellers
@@ -1920,6 +2050,7 @@ export const listedItemByPrice = /* GraphQL */ `
 					primaryName
 					secondaryName
 					image
+					sneakerStoreID
 					userID
 					createdAt
 					prevSellers
@@ -1977,6 +2108,7 @@ export const listedItemBySize = /* GraphQL */ `
 					primaryName
 					secondaryName
 					image
+					sneakerStoreID
 					userID
 					createdAt
 					prevSellers
@@ -2034,6 +2166,7 @@ export const listedItemByCondition = /* GraphQL */ `
 					primaryName
 					secondaryName
 					image
+					sneakerStoreID
 					userID
 					createdAt
 					prevSellers
@@ -2093,6 +2226,7 @@ export const listedItemByStatus = /* GraphQL */ `
 					primaryName
 					secondaryName
 					image
+					sneakerStoreID
 					userID
 					createdAt
 					prevSellers

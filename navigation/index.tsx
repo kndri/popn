@@ -309,6 +309,8 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 function BottomTabNavigator() {
 	const { unreadCount } = useApp();
 
+	// React.useEffect(() => {}, [unreadCount]);
+
 	return (
 		<BottomTab.Navigator
 			initialRouteName="Home"

@@ -6,18 +6,20 @@ import Feed from '../../components/feed';
 import Amplify, { API, Auth, graphqlOperation } from 'aws-amplify';
 import * as Notifications from 'expo-notifications';
 import { getUser } from '../../src/graphql/queries';
-import { updateUser } from '../../src/graphql/mutations';
+import { updateChatRoom, updateUser } from '../../src/graphql/mutations';
 
 import { useToast } from '../../components/Toast';
 
 import styles from './styles';
 import { getListingByAvailablity } from '../../aws-functions/aws-functions';
+import { useApp } from '../../contexts/app-context';
 const search_icon = require('../../assets/images/searchIcon.png');
 const location_icon = require('../../assets/images/zipcode-icon.png');
 
 export default function Home() {
 	const navigation = useNavigation();
 	const toast = useToast();
+	const { updateUnreadCount, unreadCount } = useApp();
 	const [listingData, setListingData] = React.useState([]);
 	const [distanceValue, setDistanceValue] = React.useState(30);
 	const [query, setQuery] = React.useState('');
@@ -73,30 +75,47 @@ export default function Home() {
 	React.useEffect(() => {
 		checkNotificationToken();
 	}, []);
-	React.useEffect(() => {
-		// This listener is fired whenever a notification is received while the app is foregrounded
-		notificationListener.current =
-			Notifications.addNotificationReceivedListener((notification) => {
-				console.log('Notification Received', notification);
-			});
+	// React.useEffect(() => {
+	// 	// This listener is fired whenever a notification is received while the app is foregrounded
+	// 	notificationListener.current =
+	// 		Notifications.addNotificationReceivedListener((notification) => {
+	// 			console.log('Notification Received', notification);
+	// 			if (notification.request.content.title == 'New Message') {
+	// 				updateUnreadCount(unreadCount + 1);
+	// 			}
+	// 		});
 
-		// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-		responseListener.current =
-			Notifications.addNotificationResponseReceivedListener((response) => {
-				navigation.navigate('MessageRoom', {
-					id: response.notification.request.content.data.chatRoomID,
-					name: response.notification.request.content.data.username,
-					offerID: response.notification.request.content.data.offerID,
-				});
-			});
+	// 	// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+	// 	responseListener.current =
+	// 		Notifications.addNotificationResponseReceivedListener(
+	// 			async (response) => {
+	// 				try {
+	// 					await API.graphql(
+	// 						graphqlOperation(updateChatRoom, {
+	// 							input: {
+	// 								id: response.notification.request.content.data.chatRoomID,
+	// 								receiverHasRead: true,
+	// 							},
+	// 						})
+	// 					);
+	// 					navigation.navigate('MessageRoom', {
+	// 						id: response.notification.request.content.data.chatRoomID,
+	// 						name: response.notification.request.content.data.username,
+	// 						offerID: response.notification.request.content.data.offerID,
+	// 					});
+	// 				} catch (err) {
+	// 					console.log('error:', err);
+	// 				}
+	// 			}
+	// 		);
 
-		return () => {
-			Notifications.removeNotificationSubscription(
-				notificationListener.current
-			);
-			Notifications.removeNotificationSubscription(responseListener.current);
-		};
-	}, []);
+	// 	return () => {
+	// 		Notifications.removeNotificationSubscription(
+	// 			notificationListener.current
+	// 		);
+	// 		Notifications.removeNotificationSubscription(responseListener.current);
+	// 	};
+	// }, []);
 
 	React.useEffect(() => {
 		getListing();
