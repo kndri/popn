@@ -35,7 +35,7 @@ export type RootStackParamList = {
 	ShoeDetails: undefined | any;
 	ListingDetails: undefined | any;
 	Verify: undefined | any;
-	UserProfile: undefined;
+	UserProfile: undefined | any;
 	MessageRoom: any;
 	NewMessageRoom: any;
 	NewPost: undefined | any;
