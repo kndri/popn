@@ -1,46 +1,37 @@
+import * as Notifications from 'expo-notifications';
 import * as React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { Screen, Text, AutoImage as Image } from '../../components';
 import { useNavigation } from '@react-navigation/native';
-import Feed from '../../components/feed';
-import Amplify, { API, Auth, graphqlOperation } from 'aws-amplify';
-import * as Notifications from 'expo-notifications';
-import { getUser } from '../../src/graphql/queries';
-import { updateChatRoom, updateUser } from '../../src/graphql/mutations';
 
-import { useToast } from '../../components/Toast';
+import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { getListingByAvailablity } from '../../aws-functions/aws-functions';
+import { getUser } from '../../src/graphql/queries';
+import { updateUser } from '../../src/graphql/mutations';
+
+import Feed from '../../components/feed';
+import { Screen, Text, AutoImage as Image } from '../../components';
 
 import styles from './styles';
-import { getListingByAvailablity } from '../../aws-functions/aws-functions';
-import { useApp } from '../../contexts/app-context';
+
 const search_icon = require('../../assets/images/searchIcon.png');
 
 export default function Home() {
 	const navigation = useNavigation();
-	const toast = useToast();
-	const { updateUnreadCount, unreadCount } = useApp();
 	const [listingData, setListingData] = React.useState([]);
-	const [distanceValue, setDistanceValue] = React.useState(30);
-	const [query, setQuery] = React.useState('');
-	const notificationListener: any = React.useRef();
-	const responseListener: any = React.useRef();
 
 	const getListing = async () => {
-		const data = await getListingByAvailablity();
+		const dataAvailable = await getListingByAvailablity();
 
-		setListingData(data);
+		setListingData(dataAvailable);
 	};
 
 	const checkNotificationToken = async () => {
-		console.log('i am in checkNotificationToken');
-
 		// Get current authenticated user
 		const userInfo = await Auth.currentAuthenticatedUser({
 			bypassCache: true,
 		}).catch((error) => {
 			console.log('error', error);
 		});
-
 		const profile = await API.graphql(
 			graphqlOperation(getUser, { id: userInfo.attributes.sub })
 		);

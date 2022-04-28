@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { FlatList, StyleSheet, TextInput } from 'react-native';
-import { API, graphqlOperation, Storage } from 'aws-amplify';
-import { View } from '../../components/Themed';
+import { FlatList, TextInput, View, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import SearchedUserListItem from '../../components/searched-users-list-item';
 import {
 	Text,
@@ -10,13 +10,12 @@ import {
 	ProductCard,
 	AutoImage as Image,
 } from '../../components';
-import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+
+import { API, graphqlOperation } from 'aws-amplify';
+import { getListingByAvailablity } from '../../aws-functions/aws-functions';
 import { listUsers } from '../../src/graphql/queries';
 
 import styles from './Styles';
-import { getListingByAvailablity } from '../../aws-functions/aws-functions';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const search_icon = require('../../assets/images/searchIcon.png');
 
@@ -26,7 +25,7 @@ export default function SearchUserScreen() {
 	const [searchedContacts, setSearchedContacts] = React.useState<any>([]);
 	const [searchedSneakers, setSearchedSneakers] = React.useState<any>([]);
 	const [listingData, setListingData] = React.useState<any>([]);
-	const [users, setUsers] = useState<any>([]);
+	const [users, setUsers] = React.useState<any>([]);
 
 	const fetchUsers = async () => {
 		let setUniqueUsers: any;
