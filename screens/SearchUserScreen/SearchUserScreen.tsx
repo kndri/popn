@@ -3,13 +3,22 @@ import { FlatList, StyleSheet, TextInput } from 'react-native';
 import { API, graphqlOperation, Storage } from 'aws-amplify';
 import { View } from '../../components/Themed';
 import SearchedUserListItem from '../../components/searched-users-list-item';
-import { Text, Screen, Header, ProductCard } from '../../components';
+import {
+	Text,
+	Screen,
+	Header,
+	ProductCard,
+	AutoImage as Image,
+} from '../../components';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { listUsers } from '../../src/graphql/queries';
 
 import styles from './Styles';
-import { getListingByZipCode } from '../../aws-functions/aws-functions';
+import { getListingByAvailablity } from '../../aws-functions/aws-functions';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+const search_icon = require('../../assets/images/searchIcon.png');
 
 export default function SearchUserScreen() {
 	const navigation = useNavigation();
@@ -35,7 +44,7 @@ export default function SearchUserScreen() {
 	 * This fuction will fetch the sneakers by zip code
 	 */
 	const fetchSneakersByZipCode = async () => {
-		const listings = await getListingByZipCode('56666');
+		const listings = await getListingByAvailablity();
 		setListingData(listings);
 	};
 
@@ -82,48 +91,36 @@ export default function SearchUserScreen() {
 	return (
 		<Screen style={styles.CONTAINER}>
 			<View style={styles.HEADER}>
-				<Header
-					headerTx="Search"
-					leftIcon="back"
-					onLeftPress={() => navigation.goBack()}
-				/>
+				<Header leftIcon="back" onLeftPress={() => navigation.goBack()} />
 			</View>
-			<View style={styles.SEARCH}>
+			<View style={styles.CLAIM_SEARCH}>
+				<Image source={search_icon} style={{ width: 16, height: 16 }} />
 				<TextInput
-					style={{
-						width: '100%',
-						height: 48,
-						borderWidth: 1,
-						paddingLeft: 20,
-						borderRadius: 32,
-						borderColor: '#F4F6F9',
-						backgroundColor: '#F4F6F9',
-					}}
+					style={styles.TEXTFIELD_STYLE}
 					value={query}
 					autoCorrect={false}
 					onChangeText={(text) => setQuery(text)}
 					placeholder="Search"
 					placeholderTextColor={'#878C90'}
+					onPressIn={() => navigation.navigate('UserSearch')}
+					keyboardAppearance="default"
+					autoFocus
 				/>
 			</View>
 			{query.length === 0 ||
 			(searchedContacts.length === 0 && searchedSneakers.length === 0) ? (
 				<View style={{ alignItems: 'center', backgroundColor: 'transparent' }}>
 					{searchedContacts.length < 1 &&
-					searchedSneakers.length < 1 &&
-					query.length > 0 ? (
-						<Text>Results Not Found</Text>
-					) : (
-						<Text>Search Something</Text>
-					)}
+						searchedSneakers.length < 1 &&
+						query.length > 0 && <Text>Results Not Found</Text>}
 				</View>
 			) : (
-				<View>
-					<View>
+				<View style={{ backgroundColor: 'white' }}>
+					<View style={{ backgroundColor: 'white' }}>
 						<FlatList
 							style={{
 								width: '100%',
-								backgroundColor: 'transparent',
+								backgroundColor: 'white',
 								marginHorizontal: 20,
 							}}
 							contentContainerStyle={{
@@ -132,7 +129,13 @@ export default function SearchUserScreen() {
 							horizontal
 							data={searchedSneakers}
 							renderItem={({ item }) => (
-								<ProductCard product={item} screenName={'ListingDetails'} />
+								<TouchableOpacity
+									onPress={() => {
+										navigation.navigate('ListingDetails', item);
+									}}
+								>
+									<ProductCard product={item} />
+								</TouchableOpacity>
 							)}
 							keyExtractor={(item) => String(item.id)}
 						/>
@@ -141,7 +144,7 @@ export default function SearchUserScreen() {
 					<FlatList
 						style={{
 							width: '100%',
-							backgroundColor: 'transparent',
+							backgroundColor: 'white',
 							height: '100%',
 							marginTop: 20,
 							borderTopColor: 'black',

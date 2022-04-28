@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TextInput, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { Screen, Text, AutoImage as Image } from '../../components';
 import { useNavigation } from '@react-navigation/native';
 import Feed from '../../components/feed';
@@ -14,7 +14,6 @@ import styles from './styles';
 import { getListingByAvailablity } from '../../aws-functions/aws-functions';
 import { useApp } from '../../contexts/app-context';
 const search_icon = require('../../assets/images/searchIcon.png');
-const location_icon = require('../../assets/images/zipcode-icon.png');
 
 export default function Home() {
 	const navigation = useNavigation();
@@ -66,7 +65,7 @@ export default function Home() {
 						graphqlOperation(updateUser, { input: inputParams })
 					);
 				} catch (err) {
-					console.log('errpor:', err);
+					console.log('error:', err);
 				}
 			}
 		}
@@ -82,18 +81,15 @@ export default function Home() {
 
 	return (
 		<Screen style={styles.CONTAINER}>
-			<View style={styles.CLAIM_SEARCH}>
+			<TouchableOpacity
+				style={styles.CLAIM_SEARCH}
+				onPress={() => navigation.navigate('UserSearch')}
+			>
 				<Image source={search_icon} style={{ width: 16, height: 16 }} />
-				<TextInput
-					style={styles.TEXTFIELD_STYLE}
-					value={query}
-					autoCorrect={false}
-					onChangeText={(text) => setQuery(text)}
-					placeholder="Search"
-					placeholderTextColor={'#878C90'}
-					onPressIn={() => navigation.navigate('UserSearch')}
-				/>
-			</View>
+				<View style={styles.TEXTFIELD_STYLE}>
+					<Text style={styles.TEXT_STYLE}> Search</Text>
+				</View>
+			</TouchableOpacity>
 			<View>{<Feed productData={listingData} />}</View>
 		</Screen>
 	);
