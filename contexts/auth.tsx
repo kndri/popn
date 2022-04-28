@@ -127,8 +127,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 		// update auth data when ever a email, username, zipcode has been changed
 		const _authData = await authService.retrieveUser();
 
-		console.log('auth data', _authData);
-
 		if (_authData.error) {
 			toast.show(`${_authData.error}`, { color: 'red' });
 		} else {

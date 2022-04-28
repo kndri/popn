@@ -60,8 +60,9 @@ export const addUserSneaker = async (sneakerObject: Object) => {
 			brand: sneakerObject.brand,
 			primaryName: sneakerObject.primaryName,
 			secondaryName: sneakerObject.secondaryName,
-			image: sneakerObject.imageUrl,
+			image: sneakerObject.image,
 			userID: currentUser.attributes.sub,
+			sneakerStoreID: sneakerObject.id,
 		};
 		await API.graphql(graphqlOperation(createSneaker, { input: newSneaker }));
 	} catch (e) {
@@ -335,7 +336,7 @@ export const getListingByAvailablity = async () => {
 
 		return listings.data.listedItemByStatus.items;
 	} catch (e) {
-		console.log('error: ', e);
+		console.log('errorsss: ', e);
 	}
 };
 

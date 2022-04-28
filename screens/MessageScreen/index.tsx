@@ -39,7 +39,6 @@ export default function MessageScreen() {
 		// This listener is fired whenever a notification is received while the app is foregrounded
 		notificationListener.current =
 			Notifications.addNotificationReceivedListener((notification) => {
-				console.log('Notification Received', notification);
 				if (
 					notification.request.content.title == 'New Message' ||
 					notification.request.content.title == 'Offer Made!'

@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { View, Image, Alert, FlatList, TouchableOpacity } from 'react-native';
-import { spacing } from '../../theme';
-import { Button, Screen, Text, Header } from '../../components';
+import { View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
+
+import { Button, Screen, Text, Header } from '../../components';
+
 import { getUserFromDb } from '../../aws-functions/aws-functions';
 
-// NOTE: This should be refactored
 import styles from './Styles';
+import { spacing } from '../../theme';
 
 //required images
 const verified = require('../../assets/images/verified_badge.png');
@@ -131,7 +132,6 @@ export default function UserProfileScreen(props?: any) {
 					renderEmptyCollection()
 				) : (
 					<View style={styles.DATA_CONTAINER}>
-						{console.log('collection: ', sneakerCollection)}
 						<FlatList
 							data={sneakerCollection}
 							renderItem={renderSneaker}
@@ -194,18 +194,18 @@ export default function UserProfileScreen(props?: any) {
 						style={[
 							selection === 1
 								? {
-									borderRadius: 34,
-									width: 101,
-									margin: 2,
-								}
+										borderRadius: 34,
+										width: 101,
+										margin: 2,
+								  }
 								: {
-									backgroundColor: 'white',
-									borderRadius: 34,
-									width: 101,
-									borderColor: '#E8EDF2',
-									borderWidth: 1,
-									margin: 2,
-								},
+										backgroundColor: 'white',
+										borderRadius: 34,
+										width: 101,
+										borderColor: '#E8EDF2',
+										borderWidth: 1,
+										margin: 2,
+								  },
 						]}
 					>
 						<Text
@@ -222,18 +222,18 @@ export default function UserProfileScreen(props?: any) {
 						style={[
 							selection === 2
 								? {
-									borderRadius: 34,
-									width: 101,
-									margin: 2,
-								}
+										borderRadius: 34,
+										width: 101,
+										margin: 2,
+								  }
 								: {
-									backgroundColor: 'white',
-									borderRadius: 34,
-									width: 101,
-									borderColor: '#E8EDF2',
-									borderWidth: 1,
-									margin: 2,
-								},
+										backgroundColor: 'white',
+										borderRadius: 34,
+										width: 101,
+										borderColor: '#E8EDF2',
+										borderWidth: 1,
+										margin: 2,
+								  },
 						]}
 					>
 						<Text
@@ -251,8 +251,8 @@ export default function UserProfileScreen(props?: any) {
 					{selection === 1
 						? renderCollection()
 						: selection === 2
-							? renderPosts()
-							: null}
+						? renderPosts()
+						: null}
 				</View>
 			</View>
 		</Screen>

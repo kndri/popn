@@ -27,29 +27,6 @@ Notifications.setNotificationHandler({
 export default function App() {
 	const isLoadingComplete = useCachedResources();
 	const colorScheme = useColorScheme();
-	const notificationListener: any = useRef();
-	const responseListener: any = useRef();
-
-	useEffect(() => {
-		// This listener is fired whenever a notification is received while the app is foregrounded
-		notificationListener.current =
-			Notifications.addNotificationReceivedListener((notification) => {
-				console.log(notification);
-			});
-
-		// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-		// responseListener.current =
-		// 	Notifications.addNotificationResponseReceivedListener((response) => {
-
-		// 	});
-
-		return () => {
-			Notifications.removeNotificationSubscription(
-				notificationListener.current
-			);
-			// Notifications.removeNotificationSubscription(responseListener.current);
-		};
-	}, []);
 
 	const saveUserToDB = async (user) => {
 		await API.graphql(graphqlOperation(createUser, { input: user }));
