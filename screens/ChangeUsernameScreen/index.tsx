@@ -1,90 +1,87 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Screen, Text, TextField, Header, Button } from '../../components';
-
 import { useNavigation } from '@react-navigation/native';
-import { updateUser } from '../../src/graphql/mutations';
+
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { authService } from '../../services/auth-service';
-import { useToast } from '../../components/Toast';
+import { updateUser } from '../../src/graphql/mutations';
+
+import { Screen, Text, TextField, Header, Button } from '../../components';
 import { useAuth } from '../../contexts/auth';
+import { useToast } from '../../components/Toast';
 
-import styles from './Styles';
+import styles from './styles';
 
-export default function ChangeEmailScreen() {
-	const { authData: user } = useAuth();
+export default function ChangeUsernameScreen() {
+	const { authData: user, updateAuth } = useAuth();
 	const toast = useToast();
 	const navigation = useNavigation();
-
-	const [newEmail, setNewEmail] = useState('');
+	const [newUsername, setNewUsername] = useState('');
 	const goBack = () => navigation.goBack();
 
-	//2. perform mutation and show toast
-	const updateEmail = async (userID: any) => {
+	// 2. perform mutation and show toast
+	const updateUsername = async (userID: any) => {
 		try {
 			await API.graphql(
 				graphqlOperation(updateUser, {
 					input: {
 						id: userID,
-						email: newEmail,
+						username: newUsername,
 					},
 				})
 			);
 			const user = await Auth.currentAuthenticatedUser();
 			await Auth.updateUserAttributes(user, {
-				email: newEmail,
+				preferred_username: newUsername,
 			});
-			await Auth.confirmSignUp(newEmail, '420690');
+			updateAuth();
+			navigation.navigate('Profile');
+			toast.show(`Your username has been changed!`);
 		} catch (error) {
 			console.log(error);
 		}
-		navigation.navigate('verifyEmail');
 	};
 
-	const validateEmailFormat = async () => {
-		if (
-			/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(
-				newEmail
-			)
-		) {
-			const available = await authService.emailAvailable(newEmail);
+	const validateUsernameFormat = async () => {
+		if (newUsername.length > 4) {
+			const available = await authService.usernameAvailable(newUsername);
 			if (!available) {
-				toast.show(`This email is being used by another account.`, {
+				toast.show(`This username is being used by another account.`, {
 					color: 'red',
 				});
 			} else {
-				updateEmail(user?.id);
+				updateUsername(user?.id);
 			}
 		} else {
-			toast.show(`You have entered an invalid email address!`, {
+			toast.show(`username must have at least 4 characters!`, {
 				color: 'red',
 			});
 		}
 	};
 
 	return (
-		<View testID="ChangeEmailScreen" style={styles.FULL}>
+		<View testID="ChangeUsernameScreen" style={styles.FULL}>
 			<Screen style={styles.CONTAINER}>
 				<Header leftIcon="back" onLeftPress={goBack} />
 				<View style={{ flexDirection: 'column', backgroundColor: 'white' }}>
 					<Text
 						style={styles.HEADER_TITLE}
 						preset="header"
-						text="Change Email Address"
+						text="Change Username"
 					/>
 					<Text
 						style={{ textAlign: 'center', bottom: 40 }}
 						preset="secondary"
-						text="We'll send you a verification code."
+						text="Enter your new Username below."
 					/>
 
 					<TextField
 						style={styles.INPUTSTYLE_CONTAINER}
 						inputStyle={styles.INPUT}
-						placeholder="Enter New Email Address"
+						placeholder="new username"
 						keyboardType="default"
-						value={newEmail}
-						onChangeText={(value) => setNewEmail(value)}
+						value={newUsername}
+						onChangeText={(value) => setNewUsername(value)}
 						autoCapitalize="none"
 						autoCorrect={false}
 					/>
@@ -101,7 +98,7 @@ export default function ChangeEmailScreen() {
 							text="Confirm Changes"
 							preset="primary"
 							onPress={() => {
-								validateEmailFormat();
+								validateUsernameFormat();
 							}}
 						/>
 					</View>

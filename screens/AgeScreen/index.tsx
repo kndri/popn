@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { View } from 'react-native';
-import { Button, Screen, Text, TextField, Header } from '../../components';
-import { useNavigation } from '@react-navigation/native';
-import { Formik } from 'formik';
 import * as yup from 'yup';
+import { Formik } from 'formik';
+import { View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+import { Button, Screen, Text, TextField, Header } from '../../components';
 import { useFormState, useFormDispatch } from '../../contexts/form-context';
 import { useToast } from '../../components/Toast';
 
-import styles from './Styles';
+import styles from './styles';
 
 //age validation schema
 const ageValidationSchema = yup.object().shape({

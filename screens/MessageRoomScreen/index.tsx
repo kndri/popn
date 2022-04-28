@@ -1,6 +1,10 @@
 import * as React from 'react';
-import { View, ViewStyle, Image, ActivityIndicator } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { View, ViewStyle, Image, ActivityIndicator, Modal } from 'react-native';
+import {
+	useIsFocused,
+	useNavigation,
+	useRoute,
+} from '@react-navigation/native';
 import { GiftedChat, Bubble, Send, Composer } from 'react-native-gifted-chat';
 import { IMessage } from '../../types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -26,7 +30,6 @@ import { useToast } from '../../components/Toast';
 
 import styles from './styles';
 import { useAuth } from '../../contexts/auth';
-import { ListedItem, Offer } from '../../src/API';
 
 import ConfirmationModal from './ConfirmationModal';
 
@@ -54,10 +57,11 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const { authData: user } = useAuth();
 	const navigation = useNavigation();
 	const route = useRoute();
+	const isFocused = useIsFocused();
 	const { offerID, id, name } = route.params;
 	const insets = useSafeAreaInsets();
 	const [isLoading, setIsLoading] = React.useState(true);
-	const [offer, setOffer] = React.useState<{}>({});
+	const [offer, setOffer] = React.useState({});
 	const [seller, setSeller] = React.useState('');
 	const [listing, setListing] = React.useState<{}>({});
 	const [messages, setMessages] = React.useState<IMessage[]>([]);
@@ -65,10 +69,47 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const [sellerModalVisible, setSellerModalVisible] = React.useState(false);
 	const toast = useToast();
 
+	/**
+	 * createNotification will create a notification after a user accepts/declines/message a user
+	 * @param message
+	 * @param chatRoomID
+	 * @param offerID
+	 */
+	const createNotification = async (
+		message: string,
+		chatRoomID: string,
+		offerID: string,
+		title: string,
+		expoToken: string
+	) => {
+		const messageNotifcation = {
+			to: expoToken,
+			sound: 'default',
+			title: title,
+			body: message,
+			data: {
+				userId: user?.id,
+				username: user?.username,
+				offerID: offerID,
+				chatRoomID: chatRoomID,
+			},
+		};
+
+		await fetch('https://exp.host/--/api/v2/push/send', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Accept-encoding': 'gzip, deflate',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(messageNotifcation),
+		});
+	};
+
 	const fetchMessages = async () => {
 		const messagesData = await API.graphql(
 			graphqlOperation(messagesByChatRoom, {
-				chatRoomID: route.params?.id,
+				chatRoomID: id,
 				sortDirection: 'DESC',
 			})
 		);
@@ -142,6 +183,22 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			await updateChatRoomLastMessage(
 				confirmedMessageData.data.createMessage.id
 			);
+
+			// send notification to receiver
+			let expoToken: string;
+			const title = 'Offer Confirmed';
+			if (user?.id == offer.sellingUserID) {
+				expoToken = offer.buyer.expoToken;
+			} else {
+				expoToken = offer.seller.expoToken;
+			}
+			createNotification(
+				automatedConfirmationMessage,
+				id,
+				offerID,
+				title,
+				expoToken
+			);
 			toast.show(`Successful Transfer.`);
 		} catch (error) {
 			console.log(error);
@@ -151,7 +208,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	React.useEffect(() => {
 		fetchMessages();
 		fetchOffer(offerID);
-	}, []);
+	}, [isFocused]);
 
 	React.useEffect(() => {
 		if (offer.sellerConfirmed && offer.buyerConfirmed) {
@@ -166,8 +223,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			next: (data) => {
 				const newMessage = data.value.data.onCreateMessage;
 
-				if (newMessage.chatRoomID !== route.params?.id) {
-					console.log('Message is in another room!');
+				if (newMessage.chatRoomID !== id) {
 					return;
 				}
 
@@ -197,6 +253,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 					input: {
 						id: id,
 						lastMessageID: messageId,
+						receiverHasRead: false,
 					},
 				})
 			);
@@ -205,7 +262,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 		}
 	};
 
-	const onSend = React.useCallback(async (messages = []) => {
+	const onSend = React.useCallback(async (messages = [], offer) => {
 		try {
 			const newMessageData = await API.graphql(
 				graphqlOperation(createMessage, {
@@ -217,6 +274,18 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 				})
 			);
 			await updateChatRoomLastMessage(newMessageData.data.createMessage.id);
+
+			// send notification to the receiver
+			const title = 'New Message';
+			let expoToken: string;
+			let messageInfo = `${user?.username} replied: ${messages[0].text}`;
+
+			if (messages[0].user._id == offer.sellingUserID) {
+				expoToken = offer.buyer.expoToken;
+			} else {
+				expoToken = offer.seller.expoToken;
+			}
+			createNotification(messageInfo, id, offerID, title, expoToken);
 		} catch (e) {
 			console.log(e);
 		}
@@ -280,6 +349,17 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			);
 			//send automated message indicating the offer was accepted
 			const automatedAcceptedMessage = `${user?.username} has accepted your offer of $${offer.offerAmount} for the item: ${offer.listedItem.sneakerData.primaryName} ${offer.listedItem.sneakerData.secondaryName}.`;
+
+			//Create the notification after the offer has been updated
+			const title = 'Offer Accepted';
+			createNotification(
+				automatedAcceptedMessage,
+				id,
+				offerID,
+				title,
+				offer.buyer.expoToken
+			);
+
 			try {
 				const acceptedMessageData = await API.graphql(
 					graphqlOperation(createMessage, {
@@ -315,6 +395,17 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			);
 			//send automated message indicating the offer was declined
 			const automatedDeclinedMessage = `${user?.username} has declined your offer of $${offer.offerAmount} for the item: ${offer.listedItem.sneakerData.primaryName} ${offer.listedItem.sneakerData.secondaryName}.`;
+			const title = 'Offer Declined';
+
+			//Create the notification after the offer has been updated
+			createNotification(
+				automatedDeclinedMessage,
+				id,
+				offerID,
+				title,
+				offer.buyer.expoToken
+			);
+
 			try {
 				const declinedMessageData = await API.graphql(
 					graphqlOperation(createMessage, {
@@ -346,6 +437,17 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 					},
 				})
 			);
+			//Create the notification after the offer has been updated
+			const automatedConfirmedMessage = `${user?.username} has confirmed the item: ${offer.listedItem.sneakerData.primaryName} ${offer.listedItem.sneakerData.secondaryName}.`;
+
+			const title = 'Buyer Confirmed';
+			createNotification(
+				automatedConfirmedMessage,
+				id,
+				offerID,
+				title,
+				offer.seller.expoToken
+			);
 
 			// Close buyer modal.
 			setBuyerModalVisible(!buyerModalVisible);
@@ -367,6 +469,18 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 				})
 			);
 
+			//Create the notification after the offer has been updated
+			const automatedConfirmedMessage = `${user?.username} has confirmed the item: ${offer.listedItem.sneakerData.primaryName} ${offer.listedItem.sneakerData.secondaryName}.`;
+
+			const title = 'Seller Confirmed';
+			createNotification(
+				automatedConfirmedMessage,
+				id,
+				offerID,
+				title,
+				offer.buyer.expoToken
+			);
+
 			//close modal
 			setSellerModalVisible(!sellerModalVisible);
 		} catch (error) {
@@ -384,7 +498,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			)}
 
 			{!isLoading && (
-
 				<View style={styles.CONTAINER}>
 					{/* header view */}
 					<View style={[styles.CENTER, { marginTop: insets.top }]}>
@@ -501,7 +614,9 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 						renderComposer={renderComposer}
 						renderSend={renderSend}
 						messages={messages}
-						onSend={(messages) => onSend(messages)}
+						onSend={(messages) => {
+							onSend(messages, offer);
+						}}
 						user={{
 							// _id is of type string or number
 							// name is of type string or undefined

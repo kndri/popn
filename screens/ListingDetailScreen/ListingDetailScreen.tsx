@@ -5,8 +5,6 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { FontAwesome } from '@expo/vector-icons';
 import { SliderBox } from 'react-native-image-slider-box';
 import { useNavigation } from '@react-navigation/native';
-import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
 
 import {
 	AutoImage as Image,
@@ -38,6 +36,7 @@ import styles from './styles';
 const example = require('../../assets/images/verify_example.png');
 const verified = require('../../assets/images/verified_badge.png');
 const Seller = require('../../assets/images/UserImage.png');
+const logo = require('../../assets/images/app-logo.png');
 
 const ListingDetailsScreen = (props: any) => {
 	const listing = props.route.params;
@@ -49,72 +48,34 @@ const ListingDetailsScreen = (props: any) => {
 		React.useState(false);
 	const [offerAmount, setOfferAmount] = React.useState('');
 	const [offerMessage, setOfferMessage] = React.useState('');
-	const [expoToken, setExpoToken] = React.useState<any>();
 
-	React.useEffect(() => {
-		// There is no expoToken available yet, so we will request that and save it into the profile
-		const CheckNotificationToken = async () => {
-			const profile = await getUserFromDb(user?.id as string).catch((err) =>
-				console.log('error:', err)
-			);
-
-			if (profile.expoToken === null) {
-				const { status } = await Permissions.askAsync(
-					Permissions.NOTIFICATIONS
-				);
-				if (status !== 'granted') {
-					alert('No notification permissions!');
-					return;
-				}
-				let token = (await Notifications.getExpoPushTokenAsync()).data;
-
-				// let token = (
-				// 	await Notifications.getExpoPushTokenAsync({
-				// 		experienceId: `${user?.username}/example`,
-				// 	})
-				// ).data;
-				console.log('token', token);
-
-				// Only update the profile with the expoToken if it not exists yet
-				if (token !== undefined) {
-					const inputParams = {
-						id: user?.id,
-						expoToken: token,
-					};
-					setExpoToken(token);
-
-					try {
-						await API.graphql(
-							graphqlOperation(updateUser, { input: inputParams })
-						);
-					} catch (err) {
-						console.log('error:', err);
-					}
-				}
-			}
-
-			setExpoToken(profile.expoToken);
+	const createNotification = async (
+		message: string,
+		chatRoomID: string,
+		offerID: string
+	) => {
+		const messageNotifcation = {
+			to: seller.expoToken,
+			sound: 'default',
+			title: 'Offer Made!',
+			body: message,
+			data: {
+				userId: user?.id,
+				username: user?.username,
+				offerID: offerID,
+				chatRoomID: chatRoomID,
+			},
 		};
-		CheckNotificationToken();
-	}, []);
 
-	const createNotification = async (message: string) => {
-		console.log('expoToken', expoToken);
-		const inputParams = {
-			token: expoToken,
-			username: user?.username,
-			email: user?.email,
-			message: message,
-			id: user?.id,
-		};
-		try {
-			const respose = await API.graphql(
-				graphqlOperation(pinpoint, { input: inputParams })
-			);
-			console.log('response', respose);
-		} catch (err) {
-			console.log('error:', err);
-		}
+		await fetch('https://exp.host/--/api/v2/push/send', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Accept-encoding': 'gzip, deflate',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(messageNotifcation),
+		});
 	};
 
 	const onClick = async (offer: any) => {
@@ -156,6 +117,7 @@ const ListingDetailsScreen = (props: any) => {
 							input: {
 								id: newChatRoom.id,
 								lastMessageID: messageId,
+								receiverHasRead: false,
 							},
 						})
 					);
@@ -182,7 +144,11 @@ const ListingDetailsScreen = (props: any) => {
 			}
 
 			//4 create Notification with message
-			await createNotification(automatedMessage);
+			await createNotification(
+				automatedMessage,
+				newChatRoom.id,
+				offer.createOffer.id
+			);
 
 			navigation.navigate('MessageRoom', {
 				id: newChatRoom.id,

@@ -109,6 +109,7 @@ type ChatRoom @model {
 	messages: [Message] @connection(keyName: "byChatRoom", fields: ["id"])
 	lastMessageID: ID!
 	lastMessage: Message @connection(fields: ["lastMessageID"])
+	receiverHasRead: Boolean
 }
 type Message
 	@model
@@ -137,6 +138,8 @@ type Sneaker
 	primaryName: String!
 	secondaryName: String!
 	image: String!
+	sneakerStoreID: ID!
+	sneaker: SneakerStore @connection(fields: ["sneakerStoreID"])
 	userID: ID!
 	user: User @connection(fields: ["userID"])
 	claim: [Claim] @connection(keyName: "bySneaker", fields: ["id"])
@@ -230,7 +233,8 @@ type SneakerStore @model {
 	brand: String!
 	primaryName: String!
 	secondaryName: String!
-	imageUrl: String!
+	image: String!
+	points: Int!
 }
 enum ClaimStatus {
 	verified

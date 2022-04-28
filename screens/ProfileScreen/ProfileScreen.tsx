@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
 	View,
+	Image,
 	Alert,
 	FlatList,
 	TouchableOpacity,
@@ -12,10 +13,17 @@ import {
 	useNavigation,
 	CommonActions,
 } from '@react-navigation/native';
-import { TabView, SceneMap, TabBar, } from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
 import { spacing } from '../../theme';
-import { Button, Screen, Text, Header, SneakerCard, AutoImage as Image, } from '../../components';
+import {
+	Button,
+	Screen,
+	Text,
+	Header,
+	SneakerCard,
+	AutoImage as Image,
+} from '../../components';
 import EditProfileModal from './EditProfileModal';
 import {
 	getSneakersFromUser,
@@ -26,7 +34,7 @@ import {
 import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';
-const location_icon = require("../../assets/images/zipcode-icon.png");
+const location_icon = require('../../assets/images/zipcode-icon.png');
 
 export default function ProfileScreen() {
 	const { authData: user } = useAuth();
@@ -35,14 +43,14 @@ export default function ProfileScreen() {
 	const [followers, setFollowers] = React.useState<number>(0);
 	const [transactions, setTransactions] = React.useState<number>(0);
 	const [isLoading, setIsLoading] = React.useState(true);
-	const [editProfileModalVisible, setEditProfileModalVisible] = React.useState(false);
+	const [editProfileModalVisible, setEditProfileModalVisible] =
+		React.useState(false);
 	const isFocused = useIsFocused();
 	const [index, setIndex] = React.useState(0);
 	const [routes] = React.useState([
 		{ key: 'collection', title: 'Collection' },
 		{ key: 'listings', title: 'Listings' },
 	]);
-
 
 	/**
 	 * getUserData() will retrieve sneaker and following/followers data
@@ -105,7 +113,7 @@ export default function ProfileScreen() {
 									<SneakerCard
 										sneaker={item}
 										showVerificationBage
-										sneakerPoint={100}
+										sneakerPoint={item.sneaker.points}
 									/>
 								</TouchableOpacity>
 							)}
@@ -148,7 +156,6 @@ export default function ProfileScreen() {
 					text="No Listings Available."
 				/>
 			</View>
-
 		);
 	};
 
@@ -186,19 +193,33 @@ export default function ProfileScreen() {
 
 					<View style={styles.PROFILE_DATA}>
 						<View style={styles.IMAGE_AND_BUTTON_VIEW}>
-							<Image style={styles.PROFILE_IMAGE} source={{ uri: user?.image }} />
+							<Image
+								style={styles.PROFILE_IMAGE}
+								source={{ uri: user?.image }}
+							/>
 							<Button
-								preset='primary'
+								preset="primary"
 								style={styles.EDIT_PROFILE_BUTTON}
 								text="Edit Profile"
-								onPress={() => { setEditProfileModalVisible(!editProfileModalVisible) }}
+								onPress={() => {
+									setEditProfileModalVisible(!editProfileModalVisible);
+								}}
 							/>
 						</View>
 
 						<View style={{ alignSelf: 'flex-start', marginTop: 6 }}>
-							<Text preset='h1'>{user?.username}</Text>
-							<View style={{ flexDirection: "row", alignItems: 'center', marginTop: 10 }}>
-								<Image source={location_icon} style={{ width: 16, height: 16, marginRight: 5 }} />
+							<Text preset="h1">{user?.username}</Text>
+							<View
+								style={{
+									flexDirection: 'row',
+									alignItems: 'center',
+									marginTop: 10,
+								}}
+							>
+								<Image
+									source={location_icon}
+									style={{ width: 16, height: 16, marginRight: 5 }}
+								/>
 								<Text>Charlotte, NC</Text>
 								<Text style={{ marginLeft: 10 }}>Joined in 2022</Text>
 							</View>
@@ -206,16 +227,23 @@ export default function ProfileScreen() {
 							<View style={{ flexDirection: 'row', marginTop: 10 }}>
 								<View style={styles.PROFILE_DETAILS}>
 									<Text preset="bold" text={`${transactions}`} />
-									<Text preset="default" style={{ marginLeft: 6 }} text={'Transactions'} />
+									<Text
+										preset="default"
+										style={{ marginLeft: 6 }}
+										text={'Transactions'}
+									/>
 								</View>
 
 								<View style={styles.PROFILE_DETAILS}>
 									<Text preset="bold" text={`${followers}`} />
-									<Text preset="default" style={{ marginLeft: 6 }} text={'Followers'} />
+									<Text
+										preset="default"
+										style={{ marginLeft: 6 }}
+										text={'Followers'}
+									/>
 								</View>
 							</View>
 						</View>
-
 					</View>
 
 					<TabView
@@ -223,21 +251,22 @@ export default function ProfileScreen() {
 						renderScene={renderScene}
 						onIndexChange={setIndex}
 						initialLayout={initialLayout}
-						renderTabBar={props =>
-							<TabBar {...props}
+						renderTabBar={(props) => (
+							<TabBar
+								{...props}
 								indicatorStyle={{ backgroundColor: 'black' }}
 								style={{ backgroundColor: 'white' }}
 								renderLabel={({ route }) => (
-									<Text preset='bold' style={{ color: 'black', fontSize: 16 }}>
+									<Text preset="bold" style={{ color: 'black', fontSize: 16 }}>
 										{route.title}
 									</Text>
 								)}
-							/>}
+							/>
+						)}
 					/>
 					<EditProfileModal
 						editProfileModalVisible={editProfileModalVisible}
 						setEditProfileModalVisible={setEditProfileModalVisible}
-
 					/>
 				</Screen>
 			)}

@@ -2,6 +2,7 @@
 import { API, Auth, graphqlOperation, Storage } from 'aws-amplify';
 import { listUsers } from '../src/graphql/queries';
 import { createUser } from '../src/graphql/mutations';
+import * as Notifications from 'expo-notifications';
 
 export type AuthData = {
 	error: any;
@@ -70,6 +71,7 @@ const signUp = async (
 	// variable to store user id
 	let userId: any;
 	let new_image: any;
+	let token = (await Notifications.getExpoPushTokenAsync()).data;
 
 	if (image_url.includes('defaultUser') === false) {
 		new_image = await uploadImage(_username, image_url);
@@ -103,11 +105,11 @@ const signUp = async (
 				avatarImageURL: image_url,
 				email: email,
 				zipCode: zipCode,
+				expoToken: token,
 			};
 			try {
-				await Auth.signIn(email, _password).then(() => {
-					API.graphql(graphqlOperation(createUser, { input: user }));
-				});
+				await Auth.signIn(email, _password);
+				await API.graphql(graphqlOperation(createUser, { input: user }));
 			} catch (error) {
 				console.log('error', error);
 				throw error;
