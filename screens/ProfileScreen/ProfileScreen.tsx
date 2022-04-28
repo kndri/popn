@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {
 	View,
-	Image,
-	Alert,
 	FlatList,
 	TouchableOpacity,
 	ActivityIndicator,

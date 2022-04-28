@@ -865,6 +865,16 @@ export const listSneakers = /* GraphQL */ `
 					updatedAt
 				}
 				claim {
+					items {
+						id
+						userID
+						sneakerID
+						status
+						refNumber
+						claimMessage
+						createdAt
+						updatedAt
+					}
 					nextToken
 				}
 				createdAt

@@ -1,13 +1,24 @@
 import * as React from 'react';
-import { View, Image, Alert, FlatList, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native';
+import {
+	View,
+	Image,
+	Alert,
+	FlatList,
+	TouchableOpacity,
+	ActivityIndicator,
+	Dimensions,
+} from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { TabView, SceneMap, TabBar, } from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
 import { Button, Screen, Text, Header } from '../../components';
-import { getUserFromDb, getFollowersFromUser } from '../../aws-functions/aws-functions';
+import {
+	getUserFromDb,
+	getFollowersFromUser,
+} from '../../aws-functions/aws-functions';
 //required images
 const verified = require('../../assets/images/verified_badge.png');
-const location_icon = require("../../assets/images/zipcode-icon.png");
+const location_icon = require('../../assets/images/zipcode-icon.png');
 
 // NOTE: This should be refactored
 import styles from './Styles';
@@ -33,7 +44,7 @@ export default function UserProfileScreen(props?: any) {
 		const followers = await getFollowersFromUser(user!.id).catch((error) =>
 			console.log('error', error)
 		);
-		setFollowers(followers.length)
+		setFollowers(followers.length);
 		setSneakerCollection(user.sneakers.items);
 		setIsLoading(false);
 	};
@@ -117,7 +128,6 @@ export default function UserProfileScreen(props?: any) {
 		</TouchableOpacity>
 	);
 
-
 	const renderListings = () => {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center' }}>
@@ -144,7 +154,6 @@ export default function UserProfileScreen(props?: any) {
 					text="No Listings Available."
 				/>
 			</View>
-
 		);
 	};
 
@@ -209,10 +218,7 @@ export default function UserProfileScreen(props?: any) {
 			{!isLoading && (
 				<Screen style={styles.CONTAINER}>
 					<View style={styles.PROFILE_HEADER}>
-						<Header
-							leftIcon="back"
-							onLeftPress={() => navigation.goBack()}
-						/>
+						<Header leftIcon="back" onLeftPress={() => navigation.goBack()} />
 					</View>
 
 					<View style={styles.PROFILE_DATA}>
@@ -222,18 +228,26 @@ export default function UserProfileScreen(props?: any) {
 								source={{ uri: user.avatarImageURL }}
 							/>
 							<Button
-								preset='primary'
+								preset="primary"
 								style={styles.FOLLOW_BUTTON}
 								text="Follow"
-							// onPress={() => { }}
+								// onPress={() => { }}
 							/>
 						</View>
 
-
 						<View style={{ alignSelf: 'flex-start', marginTop: 6 }}>
 							<Text preset="h1" text={`${user.username}`} />
-							<View style={{ flexDirection: "row", alignItems: 'center', marginTop: 10 }}>
-								<Image source={location_icon} style={{ width: 16, height: 16, marginRight: 5 }} />
+							<View
+								style={{
+									flexDirection: 'row',
+									alignItems: 'center',
+									marginTop: 10,
+								}}
+							>
+								<Image
+									source={location_icon}
+									style={{ width: 16, height: 16, marginRight: 5 }}
+								/>
 								<Text>Charlotte, NC</Text>
 								<Text style={{ marginLeft: 10 }}>Joined in 2022</Text>
 							</View>
@@ -241,12 +255,20 @@ export default function UserProfileScreen(props?: any) {
 							<View style={{ flexDirection: 'row', marginTop: 10 }}>
 								<View style={styles.PROFILE_DETAILS}>
 									<Text preset="bold" text={'267'} />
-									<Text preset="default" style={{ marginLeft: 6 }} text={'Transactions'} />
+									<Text
+										preset="default"
+										style={{ marginLeft: 6 }}
+										text={'Transactions'}
+									/>
 								</View>
 
 								<View style={styles.PROFILE_DETAILS}>
 									<Text preset="bold" text={`${followers}`} />
-									<Text preset="default" style={{ marginLeft: 6 }} text={'Followers'} />
+									<Text
+										preset="default"
+										style={{ marginLeft: 6 }}
+										text={'Followers'}
+									/>
 								</View>
 							</View>
 						</View>
@@ -257,16 +279,18 @@ export default function UserProfileScreen(props?: any) {
 						renderScene={renderScene}
 						onIndexChange={setIndex}
 						initialLayout={initialLayout}
-						renderTabBar={props =>
-							<TabBar {...props}
+						renderTabBar={(props) => (
+							<TabBar
+								{...props}
 								indicatorStyle={{ backgroundColor: 'black' }}
 								style={{ backgroundColor: 'white' }}
 								renderLabel={({ route, focused, color }) => (
-									<Text preset='bold' style={{ color: 'black', fontSize: 16 }}>
+									<Text preset="bold" style={{ color: 'black', fontSize: 16 }}>
 										{route.title}
 									</Text>
 								)}
-							/>}
+							/>
+						)}
 					/>
 				</Screen>
 			)}
