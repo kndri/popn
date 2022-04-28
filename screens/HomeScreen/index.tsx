@@ -75,47 +75,6 @@ export default function Home() {
 	React.useEffect(() => {
 		checkNotificationToken();
 	}, []);
-	// React.useEffect(() => {
-	// 	// This listener is fired whenever a notification is received while the app is foregrounded
-	// 	notificationListener.current =
-	// 		Notifications.addNotificationReceivedListener((notification) => {
-	// 			console.log('Notification Received', notification);
-	// 			if (notification.request.content.title == 'New Message') {
-	// 				updateUnreadCount(unreadCount + 1);
-	// 			}
-	// 		});
-
-	// 	// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-	// 	responseListener.current =
-	// 		Notifications.addNotificationResponseReceivedListener(
-	// 			async (response) => {
-	// 				try {
-	// 					await API.graphql(
-	// 						graphqlOperation(updateChatRoom, {
-	// 							input: {
-	// 								id: response.notification.request.content.data.chatRoomID,
-	// 								receiverHasRead: true,
-	// 							},
-	// 						})
-	// 					);
-	// 					navigation.navigate('MessageRoom', {
-	// 						id: response.notification.request.content.data.chatRoomID,
-	// 						name: response.notification.request.content.data.username,
-	// 						offerID: response.notification.request.content.data.offerID,
-	// 					});
-	// 				} catch (err) {
-	// 					console.log('error:', err);
-	// 				}
-	// 			}
-	// 		);
-
-	// 	return () => {
-	// 		Notifications.removeNotificationSubscription(
-	// 			notificationListener.current
-	// 		);
-	// 		Notifications.removeNotificationSubscription(responseListener.current);
-	// 	};
-	// }, []);
 
 	React.useEffect(() => {
 		getListing();
