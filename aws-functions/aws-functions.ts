@@ -11,6 +11,7 @@ import {
 	createOffer,
 	createChatRoom,
 	createChatRoomUser,
+	deleteListedItem,
 } from '../src/graphql/mutations';
 import {
 	listSneakerStores,
@@ -82,6 +83,20 @@ export const deleteUserSneaker = async (id: string) => {
 			id: id,
 		};
 		await API.graphql(graphqlOperation(deleteSneaker, { input: newSneaker }));
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+//deletes shoe from user
+export const deleteUserListing = async (id: string) => {
+	try {
+		const newSneaker = {
+			id: id,
+		};
+		await API.graphql(
+			graphqlOperation(deleteListedItem, { input: newSneaker })
+		);
 	} catch (e) {
 		console.log(e);
 	}

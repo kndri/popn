@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Modal, TouchableOpacity, TextInput } from 'react-native';
+import {
+	View,
+	Modal,
+	TouchableOpacity,
+	TextInput,
+	ActionSheetIOS,
+} from 'react-native';
 
 import { API, graphqlOperation } from 'aws-amplify';
 import { FontAwesome } from '@expo/vector-icons';
@@ -20,6 +26,7 @@ import {
 	addChatRoom,
 	addChatRoomUser,
 	addOffer,
+	deleteUserListing,
 } from '../../aws-functions/aws-functions';
 import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
 import { offerByUser } from '../../src/graphql/queries';
@@ -74,6 +81,23 @@ const ListingDetailsScreen = (props: any) => {
 			body: JSON.stringify(messageNotifcation),
 		});
 	};
+
+	const handleAction = () =>
+		ActionSheetIOS.showActionSheetWithOptions(
+			{
+				options: ['Cancel', 'Delete Listing'],
+				destructiveButtonIndex: 1,
+				cancelButtonIndex: 0,
+			},
+			(buttonIndex) => {
+				if (buttonIndex === 1) {
+					//TO-DO: Change this function to update the status of listing to unavailable. Requires to updated the Schema.
+					deleteUserListing(listing.id).then(() => {
+						navigation.goBack();
+					});
+				}
+			}
+		);
 
 	const onClick = async (offer: any) => {
 		try {
@@ -348,7 +372,9 @@ const ListingDetailsScreen = (props: any) => {
 			<Header
 				style={styles.BACK_BUTTON}
 				leftIcon="back"
+				rightIcon={user?.id == seller.id ? 'more' : undefined}
 				onLeftPress={() => navigation.goBack()}
+				onRightPress={() => handleAction()}
 			/>
 
 			{/* authenticated box heading */}
