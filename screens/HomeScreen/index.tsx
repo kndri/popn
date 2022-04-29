@@ -31,7 +31,7 @@ export default function Home() {
 	};
 
 	const checkNotificationToken = async () => {
-		console.log('i am in checkNotificationToken');
+
 
 		// Get current authenticated user
 		const userInfo = await Auth.currentAuthenticatedUser({

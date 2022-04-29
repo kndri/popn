@@ -9,7 +9,6 @@ import {
 import {
 	useIsFocused,
 	useNavigation,
-	CommonActions,
 } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
