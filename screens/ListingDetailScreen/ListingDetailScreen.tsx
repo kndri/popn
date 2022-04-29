@@ -14,20 +14,16 @@ import {
 	Text,
 	VerificationBage,
 } from '../../components';
+import { useToast } from '../../components/Toast';
 
 import {
 	addChatRoom,
 	addChatRoomUser,
 	addOffer,
-	getUserFromDb,
 } from '../../aws-functions/aws-functions';
+import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
+import { offerByUser } from '../../src/graphql/queries';
 
-import {
-	createMessage,
-	pinpoint,
-	updateChatRoom,
-	updateUser,
-} from '../../src/graphql/mutations';
 import { spacing } from '../../theme';
 import { useAuth } from '../../contexts/auth';
 
@@ -42,6 +38,7 @@ const ListingDetailsScreen = (props: any) => {
 	const listing = props.route.params;
 	const { sneakerData, seller } = listing;
 	const { authData: user } = useAuth();
+	const toast = useToast();
 	const navigation = useNavigation();
 	const [offerModalVisible, setOfferModalVisible] = React.useState(false);
 	const [authenticationModalVisible, setAuthenticationModalVisible] =
@@ -157,6 +154,43 @@ const ListingDetailsScreen = (props: any) => {
 			});
 		} catch (e) {
 			console.log(e);
+		}
+	};
+
+	const doesOfferExist = async () => {
+		try {
+			let offerList: any;
+			let offerExist = false;
+
+			if (seller.id == user?.id) {
+				return toast.show(`Cannot Make Yourself An Offer.`, {
+					color: 'red',
+				});
+			}
+
+			const offersMade = await API.graphql(
+				graphqlOperation(offerByUser, {
+					buyingUserID: user?.id,
+				})
+			);
+
+			offerList = offersMade.data.offerByUser.items;
+
+			offerList.map((item) => {
+				if (item.listedItemID == listing.id) {
+					return (offerExist = true);
+				}
+			});
+
+			if (offerExist) {
+				return toast.show(`Offer Already In Progress. Go To Messages.`, {
+					color: 'red',
+				});
+			}
+
+			setOfferModalVisible(!offerModalVisible);
+		} catch (err) {
+			console.log('error:', err);
 		}
 	};
 
@@ -473,7 +507,7 @@ const ListingDetailsScreen = (props: any) => {
 					}}
 					text="Offer"
 					onPress={() => {
-						setOfferModalVisible(!offerModalVisible);
+						doesOfferExist();
 					}}
 				/>
 			</View>
