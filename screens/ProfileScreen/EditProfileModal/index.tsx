@@ -4,8 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import { Feather } from '@expo/vector-icons';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Header, AutoImage as Image, TextField } from '../../../components';
-import { useToast } from '../../../components/Toast';
+import { Header, AutoImage as Image, TextField, Text } from '../../../components';
 
 import { API, graphqlOperation, Auth, Storage } from 'aws-amplify';
 import { useAuth } from '../../../contexts/auth';
@@ -21,11 +20,12 @@ interface EditProfileModalProps {
 
 const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ editProfileModalVisible, setEditProfileModalVisible, }) => {
     const { authData: user, updateAuth } = useAuth();
-    const toast = useToast();
     const [profilePic, setProfilePic] = React.useState('');
     const [newProfilePic, setNewProfilePic] = React.useState('');
     const [newUsername, setNewUsername] = React.useState('');
     const [newLocation, setNewLocation] = React.useState('');
+    const [usernameError, setUsernameError] = React.useState('');
+    const [locationError, setLocationError] = React.useState('');
     const [isLoading, setIsLoading] = React.useState(false);
 
     //useEffect to setUserImage
@@ -62,7 +62,7 @@ const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ edit
     //perfom mutation to update their image
     const uploadImage = async () => {
         //s3 bucket
-        const response = await fetch(profilePic);
+        const response = await fetch(newProfilePic);
         const blob = await response.blob();
         const fileName = `${user?.username + uuidv4()}ProfileImage.jpeg`;
         const data = await Storage.put(fileName, blob, {
@@ -108,7 +108,6 @@ const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ edit
                 }
             }
         }
-
     }
 
     //1. used to validate the length & availability of username
@@ -121,16 +120,13 @@ const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ edit
                 setIsLoading(true)
                 const available = await authService.usernameAvailable(newUsername);
                 if (!available) {
-                    toast.show(`This username is being used by another user.`, {
-                        color: 'red',
-                    });
+                    setUsernameError("This username is already taken")
                 } else {
                     updateUsername(user?.id);
+                    setUsernameError("")
                 }
             } else {
-                toast.show(`username must have at least 4 characters!`, {
-                    color: 'red',
-                });
+                setUsernameError("Username must have at least 4 characters")
             }
         }
     };
@@ -166,10 +162,9 @@ const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ edit
             if (/^[0-9]{5,5}$/.test(newLocation)) {
                 setIsLoading(true)
                 updateLocation();
+                setLocationError("")
             } else {
-                toast.show(`You have entered an invalid zip code!`, {
-                    color: 'red',
-                });
+                setLocationError('You have entered an invalid zip code')
             }
         }
 
@@ -208,7 +203,7 @@ const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ edit
             {editProfileModalVisible && (
                 <Modal
                     animationType="slide"
-                    // transparent={true}
+                    transparent={false}
                     presentationStyle="pageSheet"
                     visible={editProfileModalVisible}
                     onRequestClose={() => {
@@ -225,6 +220,11 @@ const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ edit
                                 headerTx="Edit Profile"
                                 leftIcon="close"
                                 onLeftPress={() => {
+                                    setNewProfilePic('')
+                                    setUsernameError('')
+                                    setLocationError('')
+                                    setNewUsername('')
+                                    setNewLocation('')
                                     setEditProfileModalVisible(!editProfileModalVisible);
                                 }}
 
@@ -232,24 +232,31 @@ const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ edit
                                 onRightPress={async () => {
                                     await Promise.all([submitImage(), validateUsername(), validateZip()]).then(() => {
                                         setIsLoading(false)
-                                        setEditProfileModalVisible(!editProfileModalVisible);
                                     })
                                 }}
                             />
 
                             <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
                                 <TouchableOpacity style={{ width: 100, height: 100 }} onPress={() => { pickImage() }}>
-                                    <Image
-                                        resizeMode='contain'
-                                        source={{ uri: profilePic }}
-                                        style={{ borderRadius: 100, alignSelf: 'center', opacity: 0.8, width: '100%', height: '100%' }}
-                                    />
+                                    {newProfilePic ? (
+                                        <Image
+                                            resizeMode='contain'
+                                            source={{ uri: newProfilePic }}
+                                            style={{ borderRadius: 100, alignSelf: 'center', opacity: 0.8, width: '100%', height: '100%' }}
+                                        />
+                                    ) : (
+                                        <Image
+                                            resizeMode='contain'
+                                            source={{ uri: profilePic }}
+                                            style={{ borderRadius: 100, alignSelf: 'center', opacity: 0.8, width: '100%', height: '100%' }}
+                                        />
+                                    )}
                                     <Feather name="camera" size={48} color="white" style={{ alignSelf: 'center', position: 'absolute', top: '22%' }} />
                                 </TouchableOpacity>
                             </View>
 
 
-                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                            <View style={{ alignItems: 'center', }}>
                                 <TextField
                                     style={styles.INPUTSTYLE_CONTAINER}
                                     inputStyle={styles.INPUT}
@@ -261,9 +268,12 @@ const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ edit
                                     autoCorrect={false}
                                     label="Username"
                                 />
+                                {usernameError.length > 0 &&
+                                    <Text preset='bold' style={{ color: 'red' }}>{usernameError}</Text>
+                                }
                             </View>
 
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ alignItems: 'center' }}>
                                 <TextField
                                     style={styles.INPUTSTYLE_CONTAINER}
                                     inputStyle={styles.INPUT}
@@ -276,6 +286,9 @@ const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ edit
                                     label="Location"
                                     maxLength={5}
                                 />
+                                {locationError.length > 0 &&
+                                    <Text preset='bold' style={{ color: 'red' }}>{locationError}</Text>
+                                }
                             </View>
                         </View>
                     )}

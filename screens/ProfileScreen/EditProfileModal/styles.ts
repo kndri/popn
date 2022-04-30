@@ -1,4 +1,3 @@
-import { RFC_2822 } from "moment";
 import { StyleSheet } from "react-native";
 
 import { spacing, typography } from "../../../theme";
