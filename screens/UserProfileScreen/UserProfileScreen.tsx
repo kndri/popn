@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import moment from 'moment';
 
 import { Button, Screen, Text, Header } from '../../components';
 import {
@@ -231,7 +232,7 @@ export default function UserProfileScreen(props?: any) {
 								preset="primary"
 								style={styles.FOLLOW_BUTTON}
 								text="Follow"
-								// onPress={() => { }}
+							// onPress={() => { }}
 							/>
 						</View>
 
@@ -244,17 +245,17 @@ export default function UserProfileScreen(props?: any) {
 									marginTop: 10,
 								}}
 							>
-								<Image
+								{/* <Image
 									source={location_icon}
 									style={{ width: 16, height: 16, marginRight: 5 }}
 								/>
-								<Text>Charlotte, NC</Text>
-								<Text style={{ marginLeft: 10 }}>Joined in 2022</Text>
+								<Text>Charlotte, NC</Text> */}
+								<Text>Joined in {moment(user.createdAt).format('YYYY')} </Text>
 							</View>
 
 							<View style={{ flexDirection: 'row', marginTop: 10 }}>
 								<View style={styles.PROFILE_DETAILS}>
-									<Text preset="bold" text={'267'} />
+									<Text preset="bold" text={'0'} />
 									<Text
 										preset="default"
 										style={{ marginLeft: 6 }}

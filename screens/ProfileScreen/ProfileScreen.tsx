@@ -24,26 +24,26 @@ import {
 import EditProfileModal from './EditProfileModal';
 import {
 	getSneakersFromUser,
-	deleteUserSneaker,
-	getFollowingFromUser,
 	getFollowersFromUser,
+	getUserFromDb,
 } from '../../aws-functions/aws-functions';
 import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';
+import moment from 'moment';
 const location_icon = require('../../assets/images/zipcode-icon.png');
 
 export default function ProfileScreen() {
-	const { authData: user, updateAuth } = useAuth();
-	const navigation = useNavigation();
-	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
+	const [editProfileModalVisible, setEditProfileModalVisible] = React.useState(false);
 	const [followers, setFollowers] = React.useState<number>(0);
-	const [transactions, setTransactions] = React.useState<number>(0);
-	const [isLoading, setIsLoading] = React.useState(true);
-	const [editProfileModalVisible, setEditProfileModalVisible] =
-		React.useState(false);
-	const isFocused = useIsFocused();
 	const [index, setIndex] = React.useState(0);
+	const [isLoading, setIsLoading] = React.useState(true);
+	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
+	const [userData, setUserData] = React.useState<any>();
+	const [transactions, setTransactions] = React.useState<number>(0);
+	const isFocused = useIsFocused();
+	const navigation = useNavigation();
+	const { authData: user, updateAuth } = useAuth();
 	const [routes] = React.useState([
 		{ key: 'collection', title: 'Collection' },
 		{ key: 'listings', title: 'Listings' },
@@ -53,6 +53,8 @@ export default function ProfileScreen() {
 	 * getUserData() will retrieve sneaker and following/followers data
 	 */
 	const getUserData = async () => {
+		const loggedUser = await getUserFromDb(user.id);
+		setUserData(loggedUser);
 		const sneakerlist = await getSneakersFromUser(user!.id).catch((error) =>
 			console.log('error', error)
 		);
@@ -68,8 +70,6 @@ export default function ProfileScreen() {
 	React.useEffect(() => {
 		updateAuth()
 		getUserData();
-
-
 	}, [isFocused,]);
 
 	const renderEmptyCollection = () => {
@@ -171,6 +171,7 @@ export default function ProfileScreen() {
 
 	return (
 		<>
+			{console.log('user: ', user)}
 			{isLoading && (
 				<View style={{ flex: 1, justifyContent: 'center' }}>
 					<ActivityIndicator size="large" color="black" />
@@ -211,12 +212,12 @@ export default function ProfileScreen() {
 									marginTop: 10,
 								}}
 							>
-								<Image
+								{/* <Image
 									source={location_icon}
 									style={{ width: 16, height: 16, marginRight: 5 }}
-								/>
-								<Text>Charlotte, NC</Text>
-								<Text style={{ marginLeft: 10 }}>Joined in 2022</Text>
+								/> */}
+								{/* <Text>Charlotte, NC</Text> */}
+								<Text>Joined in {moment(userData.createdAt).format('YYYY')}</Text>
 							</View>
 
 							<View style={{ flexDirection: 'row', marginTop: 10 }}>
