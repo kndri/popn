@@ -17,6 +17,7 @@ export const onCreateUser = /* GraphQL */ `
           primaryName
           secondaryName
           image
+          sneakerStoreID
           userID
           createdAt
           prevSellers
@@ -121,6 +122,7 @@ export const onUpdateUser = /* GraphQL */ `
           primaryName
           secondaryName
           image
+          sneakerStoreID
           userID
           createdAt
           prevSellers
@@ -225,6 +227,7 @@ export const onDeleteUser = /* GraphQL */ `
           primaryName
           secondaryName
           image
+          sneakerStoreID
           userID
           createdAt
           prevSellers
@@ -799,6 +802,7 @@ export const onCreateChatRoomUser = /* GraphQL */ `
           updatedAt
         }
         receiverHasRead
+        roomStatus
         createdAt
         updatedAt
       }
@@ -878,6 +882,7 @@ export const onUpdateChatRoomUser = /* GraphQL */ `
           updatedAt
         }
         receiverHasRead
+        roomStatus
         createdAt
         updatedAt
       }
@@ -957,6 +962,7 @@ export const onDeleteChatRoomUser = /* GraphQL */ `
           updatedAt
         }
         receiverHasRead
+        roomStatus
         createdAt
         updatedAt
       }
@@ -1015,12 +1021,14 @@ export const onCreateChatRoom = /* GraphQL */ `
           offerID
           lastMessageID
           receiverHasRead
+          roomStatus
           createdAt
           updatedAt
         }
         updatedAt
       }
       receiverHasRead
+      roomStatus
       createdAt
       updatedAt
     }
@@ -1076,12 +1084,14 @@ export const onUpdateChatRoom = /* GraphQL */ `
           offerID
           lastMessageID
           receiverHasRead
+          roomStatus
           createdAt
           updatedAt
         }
         updatedAt
       }
       receiverHasRead
+      roomStatus
       createdAt
       updatedAt
     }
@@ -1137,12 +1147,14 @@ export const onDeleteChatRoom = /* GraphQL */ `
           offerID
           lastMessageID
           receiverHasRead
+          roomStatus
           createdAt
           updatedAt
         }
         updatedAt
       }
       receiverHasRead
+      roomStatus
       createdAt
       updatedAt
     }
@@ -1221,6 +1233,7 @@ export const onCreateMessage = /* GraphQL */ `
           updatedAt
         }
         receiverHasRead
+        roomStatus
         createdAt
         updatedAt
       }
@@ -1301,6 +1314,7 @@ export const onUpdateMessage = /* GraphQL */ `
           updatedAt
         }
         receiverHasRead
+        roomStatus
         createdAt
         updatedAt
       }
@@ -1381,6 +1395,7 @@ export const onDeleteMessage = /* GraphQL */ `
           updatedAt
         }
         receiverHasRead
+        roomStatus
         createdAt
         updatedAt
       }
@@ -1396,6 +1411,17 @@ export const onCreateSneaker = /* GraphQL */ `
       primaryName
       secondaryName
       image
+      sneakerStoreID
+      sneaker {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        points
+        createdAt
+        updatedAt
+      }
       userID
       user {
         id
@@ -1470,6 +1496,17 @@ export const onUpdateSneaker = /* GraphQL */ `
       primaryName
       secondaryName
       image
+      sneakerStoreID
+      sneaker {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        points
+        createdAt
+        updatedAt
+      }
       userID
       user {
         id
@@ -1544,6 +1581,17 @@ export const onDeleteSneaker = /* GraphQL */ `
       primaryName
       secondaryName
       image
+      sneakerStoreID
+      sneaker {
+        id
+        brand
+        primaryName
+        secondaryName
+        image
+        points
+        createdAt
+        updatedAt
+      }
       userID
       user {
         id
@@ -1848,6 +1896,17 @@ export const onCreateClaim = /* GraphQL */ `
         primaryName
         secondaryName
         image
+        sneakerStoreID
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          points
+          createdAt
+          updatedAt
+        }
         userID
         user {
           id
@@ -1934,6 +1993,17 @@ export const onUpdateClaim = /* GraphQL */ `
         primaryName
         secondaryName
         image
+        sneakerStoreID
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          points
+          createdAt
+          updatedAt
+        }
         userID
         user {
           id
@@ -2020,6 +2090,17 @@ export const onDeleteClaim = /* GraphQL */ `
         primaryName
         secondaryName
         image
+        sneakerStoreID
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          points
+          createdAt
+          updatedAt
+        }
         userID
         user {
           id
@@ -2059,6 +2140,17 @@ export const onCreateListedItem = /* GraphQL */ `
         primaryName
         secondaryName
         image
+        sneakerStoreID
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          points
+          createdAt
+          updatedAt
+        }
         userID
         user {
           id
@@ -2150,6 +2242,17 @@ export const onUpdateListedItem = /* GraphQL */ `
         primaryName
         secondaryName
         image
+        sneakerStoreID
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          points
+          createdAt
+          updatedAt
+        }
         userID
         user {
           id
@@ -2241,6 +2344,17 @@ export const onDeleteListedItem = /* GraphQL */ `
         primaryName
         secondaryName
         image
+        sneakerStoreID
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          points
+          createdAt
+          updatedAt
+        }
         userID
         user {
           id
@@ -2433,6 +2547,7 @@ export const onCreateOffer = /* GraphQL */ `
           primaryName
           secondaryName
           image
+          sneakerStoreID
           userID
           createdAt
           prevSellers
@@ -2579,6 +2694,7 @@ export const onUpdateOffer = /* GraphQL */ `
           primaryName
           secondaryName
           image
+          sneakerStoreID
           userID
           createdAt
           prevSellers
@@ -2725,6 +2841,7 @@ export const onDeleteOffer = /* GraphQL */ `
           primaryName
           secondaryName
           image
+          sneakerStoreID
           userID
           createdAt
           prevSellers
@@ -2766,7 +2883,8 @@ export const onCreateSneakerStore = /* GraphQL */ `
       brand
       primaryName
       secondaryName
-      imageUrl
+      image
+      points
       createdAt
       updatedAt
     }
@@ -2779,7 +2897,8 @@ export const onUpdateSneakerStore = /* GraphQL */ `
       brand
       primaryName
       secondaryName
-      imageUrl
+      image
+      points
       createdAt
       updatedAt
     }
@@ -2792,7 +2911,8 @@ export const onDeleteSneakerStore = /* GraphQL */ `
       brand
       primaryName
       secondaryName
-      imageUrl
+      image
+      points
       createdAt
       updatedAt
     }

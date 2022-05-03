@@ -199,10 +199,13 @@ const ListingDetailsScreen = (props: any) => {
 			);
 
 			offerList = offersMade.data.offerByUser.items;
+			console.log(offerList);
 
 			offerList.map((item) => {
 				if (item.listedItemID == listing.id) {
-					return (offerExist = true);
+					if (item.status == 'pending') {
+						return (offerExist = true);
+					}
 				}
 			});
 

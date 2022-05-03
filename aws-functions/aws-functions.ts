@@ -397,6 +397,7 @@ export const addChatRoom = async (offerID: string) => {
 			input: {
 				offerID: offerID,
 				lastMessageID: Math.round(Math.random() * 1000000),
+				roomStatus: 'active',
 			},
 		})
 	);

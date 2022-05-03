@@ -162,6 +162,14 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 					},
 				})
 			);
+			await API.graphql(
+				graphqlOperation(updateChatRoom, {
+					input: {
+						id: id,
+						roomStatus: 'archive',
+					},
+				})
+			);
 		} catch (error) {
 			console.log(error);
 		}
@@ -418,6 +426,16 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 				);
 				await updateChatRoomLastMessage(
 					declinedMessageData.data.createMessage.id
+				);
+
+				// change the status to archived
+				await API.graphql(
+					graphqlOperation(updateChatRoom, {
+						input: {
+							id: id,
+							roomStatus: 'archive',
+						},
+					})
 				);
 			} catch (error) {
 				console.log(error);

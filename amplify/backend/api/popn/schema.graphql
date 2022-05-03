@@ -110,6 +110,7 @@ type ChatRoom @model {
 	lastMessageID: ID!
 	lastMessage: Message @connection(fields: ["lastMessageID"])
 	receiverHasRead: Boolean
+	roomStatus: ChatRoomStatus!
 }
 type Message
 	@model
@@ -245,4 +246,9 @@ enum ClaimStatus {
 enum LisitingStatus {
 	sold
 	available
+}
+
+enum ChatRoomStatus {
+	active
+	archive
 }

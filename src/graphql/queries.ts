@@ -487,6 +487,7 @@ export const getChatRoomUser = /* GraphQL */ `
 					updatedAt
 				}
 				receiverHasRead
+				roomStatus
 				createdAt
 				updatedAt
 			}
@@ -523,6 +524,7 @@ export const listChatRoomUsers = /* GraphQL */ `
 					offerID
 					lastMessageID
 					receiverHasRead
+					roomStatus
 					createdAt
 					updatedAt
 				}
@@ -583,12 +585,14 @@ export const getChatRoom = /* GraphQL */ `
 					offerID
 					lastMessageID
 					receiverHasRead
+					roomStatus
 					createdAt
 					updatedAt
 				}
 				updatedAt
 			}
 			receiverHasRead
+			roomStatus
 			createdAt
 			updatedAt
 		}
@@ -620,6 +624,7 @@ export const listChatRooms = /* GraphQL */ `
 					updatedAt
 				}
 				receiverHasRead
+				roomStatus
 				createdAt
 				updatedAt
 			}
@@ -700,6 +705,7 @@ export const getMessage = /* GraphQL */ `
 					updatedAt
 				}
 				receiverHasRead
+				roomStatus
 				createdAt
 				updatedAt
 			}
@@ -737,6 +743,7 @@ export const listMessages = /* GraphQL */ `
 					offerID
 					lastMessageID
 					receiverHasRead
+					roomStatus
 					createdAt
 					updatedAt
 				}
@@ -1688,6 +1695,7 @@ export const chatRoomUserByUser = /* GraphQL */ `
 					}
 					lastMessageID
 					receiverHasRead
+					roomStatus
 					lastMessage {
 						id
 						createdAt
@@ -1746,6 +1754,7 @@ export const messagesByChatRoom = /* GraphQL */ `
 					offerID
 					lastMessageID
 					receiverHasRead
+					roomStatus
 					createdAt
 					updatedAt
 				}
