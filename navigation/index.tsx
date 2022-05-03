@@ -365,27 +365,6 @@ function BottomTabNavigator() {
 				}}
 			/>
 			<BottomTab.Screen
-				name="Sell"
-				component={ClaimScreen}
-				options={{
-					title: 'Sell',
-					tabBarIcon: ({ focused }) => (
-						<Image
-							source={
-								focused
-									? require('../assets/images/plus-focused.png')
-									: require('../assets/images/plus.png')
-							}
-							style={{
-								width: 25,
-								height: 25,
-								borderRadius: 0,
-							}}
-						/>
-					),
-				}}
-			/>
-			<BottomTab.Screen
 				name="Profile"
 				component={ProfileScreen}
 				options={{
