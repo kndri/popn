@@ -1,18 +1,22 @@
 import * as React from 'react';
-import { View, TextInput, FlatList, ActivityIndicator } from 'react-native';
+import { View, TextInput, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+
 import {
+	AutoImage as Image,
 	Button,
+	Header,
+	ProductCard,
 	Screen,
 	Text,
-	AutoImage as Image,
-	Header,
 } from '../../components';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+
 import {
 	addUserSneaker,
-	getSneakersFromUser,
 	getSneakersFromDB,
+	getSneakersFromUser,
 } from '../../aws-functions/aws-functions';
+
 import { useToast } from '../../components/Toast';
 import { useAuth } from '../../contexts/auth';
 
@@ -75,7 +79,6 @@ export default function ClaimScreen() {
 
 		setSearchedArray(sneakersData);
 		setSneakerDb(sneakersData);
-		console.log('data: ', sneakerDb)
 		setCollection(sneakerlist);
 		setIsLoading(false)
 	};
