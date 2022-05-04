@@ -111,9 +111,6 @@ export const listUsers = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
 				offers {
 					nextToken
 				}
@@ -145,6 +142,7 @@ export const listUsers = /* GraphQL */ `
 					updatedAt
 				}
 				expoToken
+				transactions
 				createdAt
 				updatedAt
 			}
