@@ -549,6 +549,71 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 			console.log(error);
 		}
 	};
+	const checkButtonStatus = () => {
+		switch (user?.id) {
+			case offer.sellingUserID:
+				if (offer.sellerConfirmed) {
+					return (
+						<View style={{ alignSelf: 'center', marginTop: 5 }}>
+							<Button
+								style={{
+									borderRadius: 4,
+									width: 319,
+								}}
+								text="Pending Buyer Confirmation"
+								disabled
+							/>
+						</View>
+					);
+				} else {
+					return (
+						<View style={{ alignSelf: 'center', marginTop: 5 }}>
+							<Button
+								style={{
+									borderRadius: 4,
+									width: 319,
+								}}
+								text="Confirm Transaction"
+								onPress={() => {
+									setSellerModalVisible(!sellerModalVisible);
+								}}
+							/>
+						</View>
+					);
+				}
+
+			case offer.buyingUserID:
+				if (offer.buyerConfirmed) {
+					return (
+						<View style={{ alignSelf: 'center', marginTop: 5 }}>
+							<Button
+								style={{
+									borderRadius: 4,
+									width: 319,
+								}}
+								text="Pending Seller Confirmation"
+								disabled
+							/>
+						</View>
+					);
+				} else {
+					return (
+						<View style={{ alignSelf: 'center', marginTop: 5 }}>
+							<Button
+								style={{
+									borderRadius: 4,
+									width: 319,
+								}}
+								text="Confirm Transaction"
+								onPress={() => {
+									setBuyerModalVisible(!buyerModalVisible);
+								}}
+							/>
+						</View>
+					);
+				}
+		}
+	};
 
 	return (
 		<>
@@ -647,24 +712,24 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 						</>
 					)}
 
-					{offer.status == 'accepted' && (
-						<View style={{ alignSelf: 'center', marginTop: 5 }}>
-							<Button
-								style={{
-									borderRadius: 4,
-									width: 319,
-								}}
-								text="Confirm Transaction"
-								onPress={() => {
-									if (user.id == offer.sellingUserID) {
-										setSellerModalVisible(!sellerModalVisible);
-									} else {
-										setBuyerModalVisible(!buyerModalVisible);
-									}
-								}}
-							/>
-						</View>
-					)}
+					{offer.status == 'accepted' &&
+						// <View style={{ alignSelf: 'center', marginTop: 5 }}>
+						// 	<Button
+						// 		style={{
+						// 			borderRadius: 4,
+						// 			width: 319,
+						// 		}}
+						// 		text="Confirm Transaction"
+						// 		onPress={() => {
+						// 			if (user.id == offer.sellingUserID) {
+						// 				setSellerModalVisible(!sellerModalVisible);
+						// 			} else {
+						// 				setBuyerModalVisible(!buyerModalVisible);
+						// 			}
+						// 		}}
+						// 	/>
+						// </View>
+						checkButtonStatus()}
 					{/* End of View for Offer CTAs */}
 
 					<GiftedChat
