@@ -20,7 +20,7 @@ import {
 	getCurrentSneaker,
 } from '../../aws-functions/aws-functions';
 
-import styles from './Styles';
+import styles from './styles';
 import { useAuth } from '../../contexts/auth';
 
 const example = require('../../assets/images/verify_example.png');
@@ -59,7 +59,6 @@ const ShoeDetailsScreen = () => {
 		}
 		setSneaker(shoe);
 	};
-
 	const handleAction = () =>
 		ActionSheetIOS.showActionSheetWithOptions(
 			{
@@ -245,7 +244,7 @@ const ShoeDetailsScreen = () => {
 					</>
 				) : null}
 			</View>
-			{isSignedinUser ? (
+			{isSignedinUser && (
 				<>
 					{claim.id ? (
 						<>
@@ -273,12 +272,6 @@ const ShoeDetailsScreen = () => {
 						/>
 					)}
 				</>
-			) : (
-				<Button
-					text="Contact User"
-					preset="primary"
-					// onPress={() => setModalVisible(true)}
-				/>
 			)}
 		</Screen>
 	);

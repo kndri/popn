@@ -1,10 +1,16 @@
 import React from 'react';
 import { View, Modal, TouchableOpacity, TextInput } from 'react-native';
-
-import { API, graphqlOperation } from 'aws-amplify';
 import { FontAwesome } from '@expo/vector-icons';
 import { SliderBox } from 'react-native-image-slider-box';
 import { useNavigation } from '@react-navigation/native';
+
+import { API, graphqlOperation } from 'aws-amplify';
+import {
+	addChatRoom,
+	addChatRoomUser,
+	addOffer,
+} from '../../aws-functions/aws-functions';
+import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
 
 import {
 	AutoImage as Image,
@@ -15,28 +21,13 @@ import {
 	VerificationBage,
 } from '../../components';
 
-import {
-	addChatRoom,
-	addChatRoomUser,
-	addOffer,
-	getUserFromDb,
-} from '../../aws-functions/aws-functions';
-
-import {
-	createMessage,
-	pinpoint,
-	updateChatRoom,
-	updateUser,
-} from '../../src/graphql/mutations';
-import { spacing } from '../../theme';
 import { useAuth } from '../../contexts/auth';
 
+import { spacing } from '../../theme';
 import styles from './styles';
 
 const example = require('../../assets/images/verify_example.png');
 const verified = require('../../assets/images/verified_badge.png');
-const Seller = require('../../assets/images/UserImage.png');
-const logo = require('../../assets/images/app-logo.png');
 
 const ListingDetailsScreen = (props: any) => {
 	const listing = props.route.params;
@@ -447,7 +438,15 @@ const ListingDetailsScreen = (props: any) => {
 					/>
 					<View style={{ marginLeft: 5 }}>
 						<Text preset="bold">{seller.username}</Text>
-						<TouchableOpacity>
+						<TouchableOpacity
+							onPress={() => {
+								if (user?.id != seller.id) {
+									navigation.navigate('UserProfile', { userID: user?.id });
+								} else {
+									navigation.navigate('Profile');
+								}
+							}}
+						>
 							<Text
 								preset="default"
 								style={{ textDecorationLine: 'underline' }}

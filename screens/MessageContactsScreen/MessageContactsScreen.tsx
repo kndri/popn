@@ -15,7 +15,7 @@ import { useRoute } from "@react-navigation/native";
 import { useState } from "react";
 import { listUsers } from "../../src/graphql/queries";
 
-import styles from "./Styles";
+import styles from "./styles";
 
 export default function MessageContactsScreen() {
   const navigation = useNavigation();

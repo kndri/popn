@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Screen, Text, Header, Button } from '../../components';
 import { useAuth } from '../../contexts/auth';
 
-import styles from './Styles';
+import styles from './styles';
 
 const arrow = require('../../assets/images/arrow-ios-forward-outline.png');
 
@@ -24,16 +24,6 @@ const settings = [
 	},
 	{
 		id: '3',
-		pageSrc: 'changeUsername',
-		name: 'Username',
-	},
-	{
-		id: '4',
-		pageSrc: 'ChangeProfileImage',
-		name: 'Profile Picture',
-	},
-	{
-		id: '5',
 		pageSrc: 'changeZipCode',
 		name: 'Zip Code',
 	},
@@ -54,12 +44,7 @@ const about = [
 
 const actions = [
 	{
-		id: '8',
-		pageSrc: 'rating',
-		name: 'Rate POPN',
-	},
-	{
-		id: '9',
+		id: '6',
 		pageSrc: 'signOut',
 		name: 'Sign Out',
 	},

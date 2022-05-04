@@ -1,17 +1,19 @@
-import React, { FC, useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
+import React from 'react';
 import { View, Platform } from 'react-native';
-import { Screen, Text, TextField, Header, Button } from '../../components';
-
 import { useNavigation } from '@react-navigation/native';
-import { getUser } from '../../src/graphql/queries';
-import { updateUser } from '../../src/graphql/mutations';
-import { API, graphqlOperation, Auth } from 'aws-amplify';
-import { authService } from '../../services/auth-service';
+
+import { Screen, Text, Header, Button } from '../../components';
+
 import { useToast } from '../../components/Toast';
 import { useAuth } from '../../contexts/auth';
 
-import * as ImagePicker from 'expo-image-picker';
-import styles from './Styles';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
+import { authService } from '../../services/auth-service';
+import { getUser } from '../../src/graphql/queries';
+import { updateUser } from '../../src/graphql/mutations';
+
+import styles from './styles';
 
 export default function ChangeProfileImageScreen() {
 	// Please use user from useAuth() to access user data

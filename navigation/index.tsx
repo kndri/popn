@@ -12,7 +12,7 @@ import HomeScreen from '../screens/HomeScreen';
 import ClaimScreen from '../screens/ClaimScreen/ClaimScreen';
 import MessageScreen from '../screens/MessageScreen';
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
-import AgeScreen from '../screens/AgeScreen/AgeScreen';
+import AgeScreen from '../screens/AgeScreen';
 import ProfilePicScreen from '../screens/ProfilePicScreen/ProfilePicScreen';
 import UserNameScreen from '../screens/UsernameScreen/UsernameScreen';
 import EmailScreen from '../screens/EmailScreen/EmailScreen';
@@ -23,11 +23,11 @@ import ForgotPasswordScreen from '../screens/ForgotPasswordScreen/ForgotPassword
 import SettingsScreen from '../screens/SettingsScreen/SettingsScreen';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 import UserProfileScreen from '../screens/UserProfileScreen/UserProfileScreen';
-import ChangeEmailScreen from '../screens/ChangeEmailScreen/ChangeEmailScreen';
-import ChangeUsernameScreen from '../screens/ChangeUsernameScreen/ChangeUsernameScreen';
-import ChangeProfileImageScreen from '../screens/ChangeProfileImageScreen/ChangeProfileImageScreen';
+import ChangeEmailScreen from '../screens/ChangeEmailScreen';
+import ChangeUsernameScreen from '../screens/ChangeUsernameScreen';
+import ChangeProfileImageScreen from '../screens/ChangeProfileImageScreen';
 import EmailVerificationCodeScreen from '../screens/EmailVerificationCodeScreen/EmailVerificationCodeScreen';
-import ChangePasswordScreen from '../screens/ChangePasswordScreen/ChangePasswordScreen';
+import ChangePasswordScreen from '../screens/ChangePasswordScreen';
 import MessageRoomScreen from '../screens/MessageRoomScreen';
 import NewMessageRoomScreen from '../screens/NewMessageRoomScreen/NewMessageRoomScreen';
 import LocationScreen from '../screens/LocationScreen';
@@ -44,7 +44,7 @@ import {
 import ResetPasswordScreen from '../screens/ResetPasswordScreen/ResetPasswordScreen';
 import { useAuth } from '../contexts/auth';
 import ShoeDetailsScreen from '../screens/ShoeDetailsScreen/ShoeDetailsScreen';
-import ListingDetailsScreen from '../screens/ListingDetailScreen/ListingDetailScreen';
+import ListingDetailsScreen from '../screens/ListingDetailScreen';
 import ReferenceScreen from '../screens/ReferenceScreen/ReferenceScreen';
 import NewPostScreen from '../screens/NewPostScreen/NewPostScreen';
 import PostDetailsScreen from '../screens/PostDetailsScreen/PostDetailsScreen';
@@ -367,27 +367,6 @@ function BottomTabNavigator() {
 						</View>
 					),
 					tabBarBadge: unreadCount ? unreadCount : undefined,
-				}}
-			/>
-			<BottomTab.Screen
-				name="Sell"
-				component={ClaimScreen}
-				options={{
-					title: 'Sell',
-					tabBarIcon: ({ focused }) => (
-						<Image
-							source={
-								focused
-									? require('../assets/images/plus-focused.png')
-									: require('../assets/images/plus.png')
-							}
-							style={{
-								width: 25,
-								height: 25,
-								borderRadius: 0,
-							}}
-						/>
-					),
 				}}
 			/>
 			<BottomTab.Screen

@@ -5,7 +5,7 @@ import { Button, Screen, Text, AutoImage as Image } from "../../components";
 
 import { useNavigation } from "@react-navigation/native";
 
-import styles from "./Styles";
+import styles from "./styles";
 
 const logo = require("../../assets/images/logo.png");
 

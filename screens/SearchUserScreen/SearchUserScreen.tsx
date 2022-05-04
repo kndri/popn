@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { listUsers } from '../../src/graphql/queries';
 
-import styles from './Styles';
+import styles from './styles';
 import { getListingByZipCode } from '../../aws-functions/aws-functions';
 
 export default function SearchUserScreen() {
@@ -107,23 +107,23 @@ export default function SearchUserScreen() {
 				/>
 			</View>
 			{query.length === 0 ||
-			(searchedContacts.length === 0 && searchedSneakers.length === 0) ? (
+				(searchedContacts.length === 0 && searchedSneakers.length === 0) ? (
 				<View style={{ alignItems: 'center', backgroundColor: 'transparent' }}>
 					{searchedContacts.length < 1 &&
-					searchedSneakers.length < 1 &&
-					query.length > 0 ? (
+						searchedSneakers.length < 1 &&
+						query.length > 0 ? (
 						<Text>Results Not Found</Text>
 					) : (
 						<Text>Search Something</Text>
 					)}
 				</View>
 			) : (
-				<View>
+				<View style={{ backgroundColor: 'white', }}>
 					<View>
 						<FlatList
 							style={{
 								width: '100%',
-								backgroundColor: 'transparent',
+								backgroundColor: 'white',
 								marginHorizontal: 20,
 							}}
 							contentContainerStyle={{
@@ -141,7 +141,7 @@ export default function SearchUserScreen() {
 					<FlatList
 						style={{
 							width: '100%',
-							backgroundColor: 'transparent',
+							backgroundColor: 'white',
 							height: '100%',
 							marginTop: 20,
 							borderTopColor: 'black',

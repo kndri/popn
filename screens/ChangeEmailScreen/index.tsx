@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Screen, Text, TextField, Header, Button } from '../../components';
-
 import { useNavigation } from '@react-navigation/native';
-import { updateUser } from '../../src/graphql/mutations';
+
+import { Screen, Text, TextField, Header, Button } from '../../components';
+import { useAuth } from '../../contexts/auth';
+import { useToast } from '../../components/Toast';
+
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { authService } from '../../services/auth-service';
-import { useToast } from '../../components/Toast';
-import { useAuth } from '../../contexts/auth';
+import { updateUser } from '../../src/graphql/mutations';
 
-import styles from './Styles';
+import styles from './styles';
 
 export default function ChangeEmailScreen() {
-	const { authData: user } = useAuth();
-	const toast = useToast();
 	const navigation = useNavigation();
-
+	const toast = useToast();
+	const { authData: user } = useAuth();
 	const [newEmail, setNewEmail] = useState('');
 	const goBack = () => navigation.goBack();
 
-	//2. perform mutation and show toast
 	const updateEmail = async (userID: any) => {
 		try {
+			// 1. Update users email on dynomodb.
 			await API.graphql(
 				graphqlOperation(updateUser, {
 					input: {
@@ -30,23 +30,36 @@ export default function ChangeEmailScreen() {
 					},
 				})
 			);
+
+			// 2. Get current authenticated user.
 			const user = await Auth.currentAuthenticatedUser();
+
+			// 3. Update the user's email in cognito.
 			await Auth.updateUserAttributes(user, {
 				email: newEmail,
 			});
+
+			// 4. Confirm the user's email.
 			await Auth.confirmSignUp(newEmail, '420690');
+
+			// 5. Navigate to verify email screen
+			navigation.navigate('verifyEmail');
 		} catch (error) {
 			console.log(error);
 		}
-		navigation.navigate('verifyEmail');
 	};
 
+	/**
+	 * validateEmailFormat: Checks if the email is in the correct format
+	 * and if the email is available.
+	 */
 	const validateEmailFormat = async () => {
 		if (
 			/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(
 				newEmail
 			)
 		) {
+			// Check if email exist in Cognito
 			const available = await authService.emailAvailable(newEmail);
 			if (!available) {
 				toast.show(`This email is being used by another account.`, {

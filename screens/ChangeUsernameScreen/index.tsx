@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { API, graphqlOperation, Auth } from 'aws-amplify';
 
-import { Screen, Text, TextField, Header, Button } from '../../components';
-import { useToast } from '../../components/Toast';
-import { useAuth } from '../../contexts/auth';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { authService } from '../../services/auth-service';
 import { updateUser } from '../../src/graphql/mutations';
+
+import { Screen, Text, TextField, Header, Button } from '../../components';
+import { useAuth } from '../../contexts/auth';
+import { useToast } from '../../components/Toast';
 
 import styles from './styles';
 

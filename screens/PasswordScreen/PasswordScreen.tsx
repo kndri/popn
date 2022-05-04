@@ -22,7 +22,7 @@ import { useFormState, useFormDispatch } from '../../contexts/form-context';
 import { useAuth } from '../../contexts/auth';
 import { useToast } from '../../components/Toast';
 
-import styles from './Styles';
+import styles from './styles';
 
 const eye = require('../../assets/images/reveal.png');
 

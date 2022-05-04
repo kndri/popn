@@ -1,170 +1,74 @@
 import * as React from 'react';
 import {
 	View,
-	Image,
-	Alert,
 	FlatList,
 	TouchableOpacity,
 	ActivityIndicator,
+	Dimensions,
 } from 'react-native';
 import {
 	useIsFocused,
 	useNavigation,
-	CommonActions,
 } from '@react-navigation/native';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
 import { spacing } from '../../theme';
-import { Button, Screen, Text, Header, SneakerCard } from '../../components';
+import {
+	Button,
+	Screen,
+	Text,
+	Header,
+	SneakerCard,
+	AutoImage as Image,
+} from '../../components';
+import EditProfileModal from './EditProfileModal';
 import {
 	getSneakersFromUser,
-	deleteUserSneaker,
-	getFollowingFromUser,
 	getFollowersFromUser,
+	getUserFromDb,
 } from '../../aws-functions/aws-functions';
 import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';
+import moment from 'moment';
+const location_icon = require('../../assets/images/zipcode-icon.png');
 
 export default function ProfileScreen() {
-	const { authData: user } = useAuth();
-	const navigation = useNavigation();
-	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
-	const [following, setFollowing] = React.useState<number>(0);
+	const [editProfileModalVisible, setEditProfileModalVisible] = React.useState(false);
 	const [followers, setFollowers] = React.useState<number>(0);
+	const [index, setIndex] = React.useState(0);
 	const [isLoading, setIsLoading] = React.useState(true);
+	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
+	const [userData, setUserData] = React.useState<any>();
 	const isFocused = useIsFocused();
+	const navigation = useNavigation();
+	const { authData: user, updateAuth } = useAuth();
+	const [routes] = React.useState([
+		{ key: 'collection', title: 'Collection' },
+		{ key: 'listings', title: 'Listings' },
+	]);
 
 	/**
 	 * getUserData() will retrieve sneaker and following/followers data
 	 */
 	const getUserData = async () => {
-		const sneakerlist = await getSneakersFromUser(user!.id).catch((error) =>
+		const loggedUser = await getUserFromDb(user?.id);
+		setUserData(loggedUser);
+		const sneakerlist = await getSneakersFromUser(user?.id).catch((error) =>
 			console.log('error', error)
 		);
-		const following = await getFollowingFromUser(user!.id).catch((error) =>
+		const followers = await getFollowersFromUser(user?.id).catch((error) =>
 			console.log('error', error)
 		);
-		const followers = await getFollowersFromUser(user!.id).catch((error) =>
-			console.log('error', error)
-		);
-
 		setSneakerCollection(sneakerlist);
-		setFollowing(following.length);
 		setFollowers(followers.length);
 		setIsLoading(false);
 	};
 
 	React.useEffect(() => {
 		getUserData();
-		return () => {
-			navigation.dispatch({
-				...CommonActions.setParams({}),
-			});
-		};
+		updateAuth()
 	}, [isFocused]);
-
-	// Alerts when long pressed on shoe items
-	const createDeleteAlert = (shoeID) =>
-		Alert.alert(
-			'Delete Shoe',
-			'Are you sure you want to delete this Shoe? If this is a verified shoe you will need to reverify the shoe through check check',
-			[
-				{
-					text: 'Cancel',
-					onPress: () => console.log('Cancel Pressed'),
-					style: 'cancel',
-				},
-				{
-					text: 'OK',
-					onPress: () => {
-						deleteUserSneaker(shoeID).then(() => getUserData());
-					},
-				},
-			]
-		);
-
-	// refacter this code
-	const renderSneaker = ({ item }) => {
-		const { id, image, primaryName, secondaryName, claim } = item;
-
-		return (
-			<TouchableOpacity
-				onLongPress={() => {
-					createDeleteAlert(id);
-				}}
-				onPress={() => {
-					navigation.navigate('ShoeDetails', { shoeID: id });
-				}}
-			>
-				<View
-					style={{
-						justifyContent: 'space-evenly',
-						height: 150,
-						width: 150,
-						borderWidth: 1,
-						borderColor: '#EBEBEB',
-						borderRadius: 10,
-						marginBottom: 40,
-						marginHorizontal: 10,
-					}}
-				>
-					<View
-						style={{
-							justifyContent: 'flex-start',
-							alignItems: 'flex-start',
-							marginLeft: 10,
-							marginTop: 10,
-						}}
-					>
-						<Text
-							text={`${primaryName}`}
-							style={{ fontSize: 12, color: '#979797' }}
-						/>
-						<Text text={`${secondaryName}`} style={{ fontSize: 10 }} />
-						{claim.item != undefined && claim.items.length > 0 ? (
-							<>
-								{claim.items[0].status === 'verified' ? (
-									<Image
-										source={verified}
-										style={{ marginTop: 5, height: 20, width: 20 }}
-									/>
-								) : null}
-							</>
-						) : null}
-					</View>
-					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-						<Image
-							source={{ uri: image }}
-							style={{ height: 81, width: 100, resizeMode: 'contain' }}
-						/>
-					</View>
-					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-						<Button
-							preset="none"
-							style={{
-								justifyContent: 'center',
-								width: '70%',
-								height: 20,
-								paddingVertical: 2,
-								borderRadius: 10,
-								marginBottom: 15,
-							}}
-							onPress={() => {
-								navigation.navigate('ShoeDetails', { shoeID: id });
-							}}
-						>
-							<Text
-								preset="bold"
-								style={{ fontSize: 12, color: 'white', fontWeight: 'bold' }}
-							>
-								View
-							</Text>
-						</Button>
-					</View>
-				</View>
-			</TouchableOpacity>
-		);
-	};
 
 	const renderEmptyCollection = () => {
 		return (
@@ -219,6 +123,50 @@ export default function ProfileScreen() {
 		);
 	};
 
+	const renderListings = () => {
+		return (
+			<View style={{ flex: 1, justifyContent: 'center' }}>
+				{sneakerCollection.length == 0 ? (
+					renderEmptyListings()
+				) : (
+					//needs to be refactored to a flatlist that shwos all listings of this user
+					<Text
+						style={styles.TEXTCENTER}
+						preset="bold"
+						text="Available Listings."
+					/>
+				)}
+			</View>
+		);
+	};
+
+	const renderEmptyListings = () => {
+		return (
+			<View style={{ flex: 1, justifyContent: 'center' }}>
+				<Text
+					style={styles.TEXTCENTER}
+					preset="bold"
+					text="No Listings Available."
+				/>
+			</View>
+		);
+	};
+
+	const CollectionRoute = () => (
+		<View style={styles.DATA_CONTAINER}>{renderCollection()}</View>
+	);
+
+	const ListingsRoute = () => (
+		<View style={styles.DATA_CONTAINER}>{renderListings()}</View>
+	);
+
+	const initialLayout = { width: Dimensions.get('window').width };
+
+	const renderScene = SceneMap({
+		collection: CollectionRoute,
+		listings: ListingsRoute,
+	});
+
 	return (
 		<>
 			{isLoading && (
@@ -231,40 +179,85 @@ export default function ProfileScreen() {
 				<Screen style={styles.CONTAINER}>
 					<View style={styles.PROFILE_HEADER}>
 						<Header
-							headerTx={`${user?.username}`}
 							rightIcon="settings"
 							onRightPress={() => navigation.navigate('Settings')}
+							leftIcon='plus'
+							onLeftPress={() => navigation.navigate('Claim')}
 						/>
 					</View>
-					<View style={styles.PROFILE_DATA}>
-						<Image style={styles.PROFILE_IMAGE} source={{ uri: user?.image }} />
-						<View style={{ flexDirection: 'row', marginLeft: 20 }}>
-							<View style={styles.PROFILE_DETAILS}>
-								{sneakerCollection != undefined ? (
-									<Text preset="bold" text={`${sneakerCollection.length}`} />
-								) : (
-									<Text preset="bold" text="0" />
-								)}
 
-								<Text preset="default" text={'Collection'} />
+					<View style={styles.PROFILE_DATA}>
+						<View style={styles.IMAGE_AND_BUTTON_VIEW}>
+							<Image
+								style={styles.PROFILE_IMAGE}
+								source={{ uri: user?.image }}
+							/>
+							<Button
+								preset="primary"
+								style={styles.EDIT_PROFILE_BUTTON}
+								text="Edit Profile"
+								onPress={() => {
+									setEditProfileModalVisible(!editProfileModalVisible);
+								}}
+							/>
+						</View>
+
+						<View style={{ alignSelf: 'flex-start', marginTop: 6 }}>
+							<Text preset="h1">{user?.username}</Text>
+							<View
+								style={{
+									flexDirection: 'row',
+									alignItems: 'center',
+									marginTop: 10,
+								}}
+							>
+								<Text>Joined in {moment(userData.createdAt).format('YYYY')}</Text>
 							</View>
-							<View style={styles.PROFILE_DETAILS}>
-								<Text preset="bold" text={`${following}`} />
-								<Text preset="default" text={'Following'} />
-							</View>
-							<View style={styles.PROFILE_DETAILS}>
-								<Text preset="bold" text={`${followers}`} />
-								<Text preset="default" text={'Followers'} />
+
+							<View style={{ flexDirection: 'row', marginTop: 10 }}>
+								<View style={styles.PROFILE_DETAILS}>
+									<Text preset="bold" text={`${userData.transactions}`} />
+									<Text
+										preset="default"
+										style={{ marginLeft: 6 }}
+										text={'Transactions'}
+									/>
+								</View>
+
+								<View style={styles.PROFILE_DETAILS}>
+									<Text preset="bold" text={`${followers}`} />
+									<Text
+										preset="default"
+										style={{ marginLeft: 6 }}
+										text={'Followers'}
+									/>
+								</View>
 							</View>
 						</View>
 					</View>
-					<View
-						style={{ flexDirection: 'row', paddingHorizontal: spacing[3] }}
-					></View>
 
-					<View style={styles.COLLECTION_CONTAINER}>
-						<View style={styles.DATA_CONTAINER}>{renderCollection()}</View>
-					</View>
+					<TabView
+						navigationState={{ index, routes }}
+						renderScene={renderScene}
+						onIndexChange={setIndex}
+						initialLayout={initialLayout}
+						renderTabBar={(props) => (
+							<TabBar
+								{...props}
+								indicatorStyle={{ backgroundColor: 'black' }}
+								style={{ backgroundColor: 'white' }}
+								renderLabel={({ route }) => (
+									<Text preset="bold" style={{ color: 'black', fontSize: 16 }}>
+										{route.title}
+									</Text>
+								)}
+							/>
+						)}
+					/>
+					<EditProfileModal
+						editProfileModalVisible={editProfileModalVisible}
+						setEditProfileModalVisible={setEditProfileModalVisible}
+					/>
 				</Screen>
 			)}
 		</>

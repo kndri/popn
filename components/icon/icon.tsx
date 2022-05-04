@@ -5,8 +5,8 @@ import { IconProps } from "./icon.props"
 import { icons } from "./icons"
 
 const ROOT: ImageStyle = {
-  width: 40,
-  height: 40
+  width: 140,
+  height: 140
 }
 
 export function Icon(props: IconProps) {

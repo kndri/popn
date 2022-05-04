@@ -34,7 +34,7 @@ export default function ToastContainer() {
       top: 0,
       left: 0,
       right: 0,
-      zIndex: 100,
+      zIndex: 200,
       position: "absolute",
       paddingTop: 10,
       alignItems: "center",
@@ -68,7 +68,7 @@ export default function ToastContainer() {
 
   return (
     <Animated.View style={styles.container}>
-      <Text style={{color: "white"}}>{toast.message}</Text>
+      <Text style={{ color: "white" }}>{toast.message}</Text>
     </Animated.View>
   );
 }
