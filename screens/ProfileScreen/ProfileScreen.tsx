@@ -94,7 +94,8 @@ export default function ProfileScreen() {
 	const renderCollection = () => {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center' }}>
-				{sneakerCollection != undefined ? (
+				{console.log('sneakerCollection: ', sneakerCollection)}
+				{sneakerCollection == undefined ? (
 					renderEmptyCollection()
 				) : (
 					<View style={styles.DATA_CONTAINER}>
