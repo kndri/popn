@@ -59,7 +59,6 @@ const ShoeDetailsScreen = () => {
 		}
 		setSneaker(shoe);
 	};
-	console.log('shoe data: ', sneaker)
 	const handleAction = () =>
 		ActionSheetIOS.showActionSheetWithOptions(
 			{
