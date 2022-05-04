@@ -59,7 +59,7 @@ const ShoeDetailsScreen = () => {
 		}
 		setSneaker(shoe);
 	};
-
+	console.log('shoe data: ', sneaker)
 	const handleAction = () =>
 		ActionSheetIOS.showActionSheetWithOptions(
 			{
@@ -245,7 +245,7 @@ const ShoeDetailsScreen = () => {
 					</>
 				) : null}
 			</View>
-			{isSignedinUser ? (
+			{isSignedinUser && (
 				<>
 					{claim.id ? (
 						<>
@@ -273,12 +273,6 @@ const ShoeDetailsScreen = () => {
 						/>
 					)}
 				</>
-			) : (
-				<Button
-					text="Contact User"
-					preset="primary"
-					// onPress={() => setModalVisible(true)}
-				/>
 			)}
 		</Screen>
 	);

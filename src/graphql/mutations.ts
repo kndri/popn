@@ -36,19 +36,7 @@ export const createUser = /* GraphQL */ `
 				}
 				nextToken
 			}
-			soldSneakers {
-				items {
-					id
-					brand
-					primaryName
-					secondaryName
-					image
-					userID
-					createdAt
-					updatedAt
-				}
-				nextToken
-			}
+		
 			offers {
 				items {
 					id
@@ -144,19 +132,7 @@ export const updateUser = /* GraphQL */ `
 				}
 				nextToken
 			}
-			soldSneakers {
-				items {
-					id
-					brand
-					primaryName
-					secondaryName
-					image
-					userID
-					createdAt
-					updatedAt
-				}
-				nextToken
-			}
+		
 			offers {
 				items {
 					id
@@ -252,19 +228,7 @@ export const deleteUser = /* GraphQL */ `
 				}
 				nextToken
 			}
-			soldSneakers {
-				items {
-					id
-					brand
-					primaryName
-					secondaryName
-					image
-					userID
-					createdAt
-					updatedAt
-				}
-				nextToken
-			}
+		
 			offers {
 				items {
 					id
@@ -442,9 +406,7 @@ export const createFollowing = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+			
 				offers {
 					nextToken
 				}
@@ -502,9 +464,7 @@ export const updateFollowing = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+			
 				offers {
 					nextToken
 				}
@@ -562,9 +522,7 @@ export const deleteFollowing = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+			
 				offers {
 					nextToken
 				}
@@ -622,9 +580,7 @@ export const createFollowers = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+			
 				offers {
 					nextToken
 				}
@@ -682,9 +638,7 @@ export const updateFollowers = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+			
 				offers {
 					nextToken
 				}
@@ -742,9 +696,7 @@ export const deleteFollowers = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+			
 				offers {
 					nextToken
 				}
@@ -802,9 +754,7 @@ export const createChatRoomUser = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+			
 				offers {
 					nextToken
 				}
@@ -884,9 +834,7 @@ export const updateChatRoomUser = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				
 				offers {
 					nextToken
 				}
@@ -966,9 +914,7 @@ export const deleteChatRoomUser = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+			
 				offers {
 					nextToken
 				}
@@ -1242,9 +1188,7 @@ export const createMessage = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+			
 				offers {
 					nextToken
 				}
@@ -1325,9 +1269,7 @@ export const updateMessage = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				
 				offers {
 					nextToken
 				}
@@ -1408,9 +1350,7 @@ export const deleteMessage = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				
 				offers {
 					nextToken
 				}
@@ -1501,9 +1441,7 @@ export const createSneaker = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				
 				offers {
 					nextToken
 				}
@@ -1589,9 +1527,7 @@ export const updateSneaker = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				
 				offers {
 					nextToken
 				}
@@ -1677,9 +1613,7 @@ export const deleteSneaker = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+			
 				offers {
 					nextToken
 				}

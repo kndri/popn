@@ -23,14 +23,12 @@ const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ edit
     const [profilePic, setProfilePic] = React.useState('');
     const [newProfilePic, setNewProfilePic] = React.useState('');
     const [newUsername, setNewUsername] = React.useState('');
-    const [newLocation, setNewLocation] = React.useState('');
     const [usernameError, setUsernameError] = React.useState('');
-    const [locationError, setLocationError] = React.useState('');
     const [isLoading, setIsLoading] = React.useState(false);
 
     //useEffect to setUserImage
     React.useEffect(() => {
-        setProfilePic(user.image)
+        setProfilePic(user?.image)
     }, [user])
 
     //ask for user image permission
@@ -153,50 +151,6 @@ const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ edit
         }
     };
 
-    //1 validate zipcode
-    const validateZip = async () => {
-        if (newLocation == '') {
-            return
-        }
-        else {
-            if (/^[0-9]{5,5}$/.test(newLocation)) {
-                setIsLoading(true)
-                updateLocation();
-                setLocationError("")
-            } else {
-                setLocationError('You have entered an invalid zip code')
-            }
-        }
-
-    };
-
-    //2. perform mutation and show toast
-    const updateLocation = async () => {
-        try {
-            // changes in Dynomo DB
-            await API.graphql(
-                graphqlOperation(updateUser, {
-                    input: {
-                        id: user?.id,
-                        zipCode: newLocation,
-                    },
-                })
-            );
-            // Changes attribute on Cognito
-            await Auth.currentAuthenticatedUser().then(async (response) => {
-                await Auth.updateUserAttributes(response, {
-                    'custom:zipCode': newLocation,
-                }).catch((error) => {
-                    console.log('error: ', error);
-                });
-            });
-            updateAuth();
-            setNewLocation('')
-        } catch (error) {
-            console.log('error:', error);
-        }
-    };
-
     return (
         <>
             {/* EDIT PROFILE MODAL CODE*/}
@@ -222,15 +176,13 @@ const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ edit
                                 onLeftPress={() => {
                                     setNewProfilePic('')
                                     setUsernameError('')
-                                    setLocationError('')
                                     setNewUsername('')
-                                    setNewLocation('')
                                     setEditProfileModalVisible(!editProfileModalVisible);
                                 }}
 
                                 rightIcon="save"
                                 onRightPress={async () => {
-                                    await Promise.all([submitImage(), validateUsername(), validateZip()]).then(() => {
+                                    await Promise.all([submitImage(), validateUsername()]).then(() => {
                                         setIsLoading(false)
                                     })
                                 }}
@@ -270,24 +222,6 @@ const EditProfileModal: React.FunctionComponent<EditProfileModalProps> = ({ edit
                                 />
                                 {usernameError.length > 0 &&
                                     <Text preset='bold' style={{ color: 'red' }}>{usernameError}</Text>
-                                }
-                            </View>
-
-                            <View style={{ alignItems: 'center' }}>
-                                <TextField
-                                    style={styles.INPUTSTYLE_CONTAINER}
-                                    inputStyle={styles.INPUT}
-                                    placeholder={`${user?.zipCode}`}
-                                    keyboardType="numeric"
-                                    value={newLocation}
-                                    onChangeText={(value) => setNewLocation(value)}
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                    label="Location"
-                                    maxLength={5}
-                                />
-                                {locationError.length > 0 &&
-                                    <Text preset='bold' style={{ color: 'red' }}>{locationError}</Text>
                                 }
                             </View>
                         </View>

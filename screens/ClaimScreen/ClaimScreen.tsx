@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TextInput, FlatList } from 'react-native';
+import { View, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import {
 	Button,
 	Screen,
@@ -23,7 +23,7 @@ const search_icon = require('../../assets/images/searchIcon.png');
 export default function ClaimScreen() {
 	const navigation = useNavigation();
 	const { authData: user } = useAuth();
-
+	const [isLoading, setIsLoading] = React.useState(true);
 	const toast = useToast();
 	const [query, setQuery] = React.useState('');
 	const [searchedArray, setSearchedArray] = React.useState<any>([]);
@@ -75,7 +75,9 @@ export default function ClaimScreen() {
 
 		setSearchedArray(sneakersData);
 		setSneakerDb(sneakersData);
+		console.log('data: ', sneakerDb)
 		setCollection(sneakerlist);
+		setIsLoading(false)
 	};
 
 	/**
@@ -150,10 +152,10 @@ export default function ClaimScreen() {
 								paddingVertical: 2,
 								borderRadius: 10,
 								marginBottom: 15,
+								backgroundColor: '#00A542'
 							}}
 							onPress={() => {
 								addUserSneaker(item);
-
 								// then grey out the sneaker card
 							}}
 						>
@@ -171,14 +173,15 @@ export default function ClaimScreen() {
 			return (
 				<View
 					style={{
-						justifyContent: 'space-evenly',
-						height: 150,
-						width: 150,
-						borderWidth: 1,
+						backgroundColor: '#E7E7E7',
 						borderColor: '#EBEBEB',
 						borderRadius: 10,
+						borderWidth: 1,
+						height: 150,
+						justifyContent: 'space-evenly',
 						marginBottom: 40,
 						marginHorizontal: 10,
+						width: 150,
 					}}
 				>
 					<View
@@ -235,40 +238,52 @@ export default function ClaimScreen() {
 	};
 
 	return (
-		<Screen style={styles.CONTAINER}>
-			<Header
-				headerTx="Claim"
-				leftIcon={'back'}
-				onLeftPress={() => navigation.goBack()}
-			/>
+		<>
+			{isLoading && (
+				<View style={{ flex: 1, justifyContent: 'center' }}>
+					<ActivityIndicator size="large" color="black" />
+				</View>
+			)}
 
-			<View style={styles.CLAIM_SEARCH}>
-				<Image
-					source={search_icon}
-					style={{ marginLeft: 17, width: 16, height: 16 }}
-				/>
-				<TextInput
-					style={styles.TEXTFIELD_STYLE}
-					value={query}
-					autoCorrect={false}
-					onChangeText={(text) => setQuery(text)}
-					placeholder="Search"
-					placeholderTextColor={'#878C90'}
-				/>
-			</View>
+			{!isLoading && (
+				<Screen style={styles.CONTAINER}>
+					<Header
+						headerTx="Claim"
+						leftIcon={'back'}
+						onLeftPress={() => navigation.goBack()}
+					/>
 
-			<View style={styles.COLLECTION_CONTAINER}>
-				<FlatList
-					data={searchedArray}
-					renderItem={renderSneaker}
-					keyExtractor={(sneaker) => String(sneaker.id)}
-					numColumns={2}
-					contentContainerStyle={{
-						justifyContent: 'space-between',
-						alignItems: 'center',
-					}}
-				/>
-			</View>
-		</Screen>
+					<View style={styles.CLAIM_SEARCH}>
+						<Image
+							source={search_icon}
+							style={{ marginLeft: 17, width: 16, height: 16 }}
+						/>
+						<TextInput
+							style={styles.TEXTFIELD_STYLE}
+							value={query}
+							autoCorrect={false}
+							onChangeText={(text) => setQuery(text)}
+							placeholder="Search"
+							placeholderTextColor={'#878C90'}
+						/>
+					</View>
+
+					<View style={styles.COLLECTION_CONTAINER}>
+						<FlatList
+							data={searchedArray}
+							renderItem={renderSneaker}
+							keyExtractor={(sneaker) => String(sneaker.id)}
+							numColumns={2}
+							contentContainerStyle={{
+								justifyContent: 'space-between',
+								alignItems: 'center',
+							}}
+						/>
+					</View>
+				</Screen>
+			)}
+
+		</>
+
 	);
 }

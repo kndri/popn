@@ -106,6 +106,7 @@ const signUp = async (
 				email: email,
 				zipCode: zipCode,
 				expoToken: token,
+				transactions: 0
 			};
 			try {
 				await Auth.signIn(email, _password);

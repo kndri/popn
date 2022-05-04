@@ -25,19 +25,6 @@ export const getUser = /* GraphQL */ `
 				}
 				nextToken
 			}
-			soldSneakers {
-				items {
-					id
-					brand
-					primaryName
-					secondaryName
-					image
-					userID
-					createdAt
-					updatedAt
-				}
-				nextToken
-			}
 			offers {
 				items {
 					id
@@ -75,6 +62,7 @@ export const getUser = /* GraphQL */ `
 			}
 			status
 			zipCode
+			transactions
 			chatRoomUser {
 				items {
 					id
@@ -773,9 +761,7 @@ export const getSneaker = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				
 				offers {
 					nextToken
 				}

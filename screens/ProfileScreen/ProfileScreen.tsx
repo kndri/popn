@@ -40,7 +40,6 @@ export default function ProfileScreen() {
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
 	const [userData, setUserData] = React.useState<any>();
-	const [transactions, setTransactions] = React.useState<number>(0);
 	const isFocused = useIsFocused();
 	const navigation = useNavigation();
 	const { authData: user, updateAuth } = useAuth();
@@ -53,24 +52,23 @@ export default function ProfileScreen() {
 	 * getUserData() will retrieve sneaker and following/followers data
 	 */
 	const getUserData = async () => {
-		const loggedUser = await getUserFromDb(user.id);
+		const loggedUser = await getUserFromDb(user?.id);
 		setUserData(loggedUser);
-		const sneakerlist = await getSneakersFromUser(user!.id).catch((error) =>
+		const sneakerlist = await getSneakersFromUser(user?.id).catch((error) =>
 			console.log('error', error)
 		);
-		const followers = await getFollowersFromUser(user!.id).catch((error) =>
+		const followers = await getFollowersFromUser(user?.id).catch((error) =>
 			console.log('error', error)
 		);
-
 		setSneakerCollection(sneakerlist);
 		setFollowers(followers.length);
 		setIsLoading(false);
 	};
 
 	React.useEffect(() => {
-		updateAuth()
 		getUserData();
-	}, [isFocused,]);
+		updateAuth()
+	}, [isFocused]);
 
 	const renderEmptyCollection = () => {
 		return (
@@ -218,7 +216,7 @@ export default function ProfileScreen() {
 
 							<View style={{ flexDirection: 'row', marginTop: 10 }}>
 								<View style={styles.PROFILE_DETAILS}>
-									<Text preset="bold" text={`${transactions}`} />
+									<Text preset="bold" text={`${userData.transactions}`} />
 									<Text
 										preset="default"
 										style={{ marginLeft: 6 }}
