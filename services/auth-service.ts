@@ -45,7 +45,6 @@ const signIn = (email: string, _password: string): Promise<AuthData> => {
 	});
 };
 const uploadImage = async (username: string, imageUrl: string) => {
-	console.log('imageUrl: ', imageUrl);
 
 	const response = await fetch(imageUrl);
 	const blob = await response.blob();

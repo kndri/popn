@@ -21,7 +21,7 @@ import {
 } from '../../aws-functions/aws-functions';
 import Tooltip from 'react-native-walkthrough-tooltip';
 
-import styles from './Styles';
+import styles from './styles';
 
 const liked = require('../../assets/images/Liked.png');
 const unliked = require('../../assets/images/Unliked.png');

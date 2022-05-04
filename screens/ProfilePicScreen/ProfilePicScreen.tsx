@@ -13,7 +13,7 @@ import { Formik } from "formik";
 import { useFormState, useFormDispatch } from "../../contexts/form-context";
 import * as ImagePicker from "expo-image-picker";
 
-import styles from "./Styles";
+import styles from "./styles";
 
 const defaultImg = require("../../assets/images/defaultUser.png");
 

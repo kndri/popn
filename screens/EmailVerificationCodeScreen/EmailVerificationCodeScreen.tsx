@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Auth } from "aws-amplify";
 import { useToast } from "../../components/Toast";
 
-import styles from "./Styles";
+import styles from "./styles";
 
 export default function EmailVerificationCodeScreen() {
   const toast = useToast();

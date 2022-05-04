@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
 	View,
 	Modal,
@@ -7,10 +8,10 @@ import {
 	ActionSheetIOS,
 } from 'react-native';
 
-import { API, graphqlOperation } from 'aws-amplify';
 import { FontAwesome } from '@expo/vector-icons';
 import { SliderBox } from 'react-native-image-slider-box';
 import { useNavigation } from '@react-navigation/native';
+import { API, graphqlOperation } from 'aws-amplify';
 
 import {
 	AutoImage as Image,
@@ -20,6 +21,7 @@ import {
 	Text,
 	VerificationBage,
 } from '../../components';
+
 import { useToast } from '../../components/Toast';
 
 import {
@@ -28,9 +30,9 @@ import {
 	addOffer,
 	deleteUserListing,
 } from '../../aws-functions/aws-functions';
+
 import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
 import { offerByUser } from '../../src/graphql/queries';
-
 import { spacing } from '../../theme';
 import { useAuth } from '../../contexts/auth';
 
@@ -38,8 +40,6 @@ import styles from './styles';
 
 const example = require('../../assets/images/verify_example.png');
 const verified = require('../../assets/images/verified_badge.png');
-const Seller = require('../../assets/images/UserImage.png');
-const logo = require('../../assets/images/app-logo.png');
 
 const ListingDetailsScreen = (props: any) => {
 	const listing = props.route.params;
@@ -309,10 +309,12 @@ const ListingDetailsScreen = (props: any) => {
 									buyingUserID: user?.id as string,
 									sellingUserID: seller.id,
 									listedItemID: listing.id,
-								}).then((offer) => {
-									onClick(offer);
-									setOfferModalVisible(!offerModalVisible);
-								});
+								})
+									.then((offer) => {
+										onClick(offer);
+										setOfferModalVisible(!offerModalVisible);
+									})
+									.catch((err) => console.log('error:', err));
 							}}
 							disabled={offerAmount ? false : true}
 						/>
@@ -506,7 +508,15 @@ const ListingDetailsScreen = (props: any) => {
 					/>
 					<View style={{ marginLeft: 5 }}>
 						<Text preset="bold">{seller.username}</Text>
-						<TouchableOpacity>
+						<TouchableOpacity
+							onPress={() => {
+								if (user?.id != seller.id) {
+									navigation.navigate('UserProfile', { userID: user?.id });
+								} else {
+									navigation.navigate('Profile');
+								}
+							}}
+						>
 							<Text
 								preset="default"
 								style={{ textDecorationLine: 'underline' }}

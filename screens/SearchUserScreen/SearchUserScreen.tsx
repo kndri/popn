@@ -15,7 +15,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { getListingByAvailablity } from '../../aws-functions/aws-functions';
 import { listUsers } from '../../src/graphql/queries';
 
-import styles from './Styles';
+import styles from './styles';
 
 const search_icon = require('../../assets/images/searchIcon.png');
 
@@ -107,7 +107,7 @@ export default function SearchUserScreen() {
 				/>
 			</View>
 			{query.length === 0 ||
-			(searchedContacts.length === 0 && searchedSneakers.length === 0) ? (
+				(searchedContacts.length === 0 && searchedSneakers.length === 0) ? (
 				<View style={{ alignItems: 'center', backgroundColor: 'transparent' }}>
 					{searchedContacts.length < 1 &&
 						searchedSneakers.length < 1 &&

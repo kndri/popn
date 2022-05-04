@@ -13,7 +13,7 @@ import { Auth } from "aws-amplify";
 import { useNavigation } from "@react-navigation/native";
 import { forgotPassword } from "../../aws-functions/aws-functions";
 
-import styles from "./Styles";
+import styles from "./styles";
 
 export default function ForgotPasswordScreen() {
   const navigation = useNavigation();

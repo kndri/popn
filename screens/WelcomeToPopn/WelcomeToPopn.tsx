@@ -10,7 +10,7 @@ import { color, spacing, typography } from "../../theme";
 import { Button, Screen, Text, TextField } from "../../components";
 import { useNavigation } from "@react-navigation/native";
 
-import styles from "./Styles";
+import styles from "./styles";
 
 // Styles
 const CONTAINER: ViewStyle = {

@@ -20,7 +20,7 @@ import { GiftedChat, Bubble, Send, Composer } from 'react-native-gifted-chat';
 import { IMessage } from '../../types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import styles from './Styles';
+import styles from './styles';
 // Styles
 const CONTAINER: ViewStyle = {
 	backgroundColor: 'white',

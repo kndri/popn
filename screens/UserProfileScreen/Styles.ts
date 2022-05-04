@@ -27,7 +27,6 @@ export default StyleSheet.create({
     paddingHorizontal: spacing[3],
   },
   PROFILE_DATA: {
-    flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
     paddingHorizontal: spacing[3],
@@ -74,5 +73,23 @@ export default StyleSheet.create({
     backgroundColor: "white",
     width: "100%",
     height: "100%",
+  },
+  FOLLOW_BUTTON: {
+    borderRadius: 4,
+  }
+  ,
+  IMAGE_AND_FOllOW_BUTTON_VIEW: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%'
+  },
+  PROFILE_DETAILS: {
+    alignItems: 'center',
+    marginRight: 15,
+    flexDirection: 'row'
+  },
+  SCENE: {
+    flex: 1
   },
 });

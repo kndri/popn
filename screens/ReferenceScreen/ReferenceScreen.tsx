@@ -5,7 +5,7 @@ import { Button, Screen, Text, TextField, Header } from "../../components";
 import { color, spacing, typography } from "../../theme";
 import { addClaim } from "../../aws-functions/aws-functions";
 
-import styles from "./Styles";
+import styles from "./styles";
 
 const ReferenceScreen = (props: any) => {
   const { shoeID } = props.route.params;
