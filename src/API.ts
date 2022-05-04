@@ -147,8 +147,6 @@ export type SneakerStore = {
   secondaryName: string,
   image: string,
   points: number,
-  createdAt: string,
-  updatedAt: string,
 };
 
 export type ModelClaimConnection = {
@@ -290,8 +288,8 @@ export type ChatRoom = {
   chatRoomUsers?: ModelChatRoomUserConnection | null,
   messages?: ModelMessageConnection | null,
   lastMessageID: string,
-  lastMessage?: Message | null,
-  receiverHasRead?: boolean | null,
+  lastMessage: Message,
+  receiverHasRead: boolean,
   roomStatus: ChatRoomStatus,
   createdAt: string,
   updatedAt: string,
@@ -501,7 +499,7 @@ export type CreateChatRoomInput = {
   id?: string | null,
   offerID: string,
   lastMessageID: string,
-  receiverHasRead?: boolean | null,
+  receiverHasRead: boolean,
   roomStatus: ChatRoomStatus,
 };
 
@@ -2012,7 +2010,7 @@ export type CreateChatRoomUserMutation = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -2020,8 +2018,8 @@ export type CreateChatRoomUserMutation = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -2107,7 +2105,7 @@ export type UpdateChatRoomUserMutation = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -2115,8 +2113,8 @@ export type UpdateChatRoomUserMutation = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -2202,7 +2200,7 @@ export type DeleteChatRoomUserMutation = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -2210,8 +2208,8 @@ export type DeleteChatRoomUserMutation = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -2257,7 +2255,7 @@ export type CreateChatRoomMutation = {
       nextToken?: string | null,
     } | null,
     lastMessageID: string,
-    lastMessage?:  {
+    lastMessage:  {
       __typename: "Message",
       id: string,
       createdAt?: string | null,
@@ -2283,14 +2281,14 @@ export type CreateChatRoomMutation = {
         id: string,
         offerID: string,
         lastMessageID: string,
-        receiverHasRead?: boolean | null,
+        receiverHasRead: boolean,
         roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
-    } | null,
-    receiverHasRead?: boolean | null,
+    },
+    receiverHasRead: boolean,
     roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
@@ -2333,7 +2331,7 @@ export type UpdateChatRoomMutation = {
       nextToken?: string | null,
     } | null,
     lastMessageID: string,
-    lastMessage?:  {
+    lastMessage:  {
       __typename: "Message",
       id: string,
       createdAt?: string | null,
@@ -2359,14 +2357,14 @@ export type UpdateChatRoomMutation = {
         id: string,
         offerID: string,
         lastMessageID: string,
-        receiverHasRead?: boolean | null,
+        receiverHasRead: boolean,
         roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
-    } | null,
-    receiverHasRead?: boolean | null,
+    },
+    receiverHasRead: boolean,
     roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
@@ -2409,7 +2407,7 @@ export type DeleteChatRoomMutation = {
       nextToken?: string | null,
     } | null,
     lastMessageID: string,
-    lastMessage?:  {
+    lastMessage:  {
       __typename: "Message",
       id: string,
       createdAt?: string | null,
@@ -2435,14 +2433,14 @@ export type DeleteChatRoomMutation = {
         id: string,
         offerID: string,
         lastMessageID: string,
-        receiverHasRead?: boolean | null,
+        receiverHasRead: boolean,
         roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
-    } | null,
-    receiverHasRead?: boolean | null,
+    },
+    receiverHasRead: boolean,
     roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
@@ -2527,7 +2525,7 @@ export type CreateMessageMutation = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -2535,8 +2533,8 @@ export type CreateMessageMutation = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -2623,7 +2621,7 @@ export type UpdateMessageMutation = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -2631,8 +2629,8 @@ export type UpdateMessageMutation = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -2719,7 +2717,7 @@ export type DeleteMessageMutation = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -2727,8 +2725,8 @@ export type DeleteMessageMutation = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -2759,8 +2757,6 @@ export type CreateSneakerMutation = {
       secondaryName: string,
       image: string,
       points: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     userID: string,
     user?:  {
@@ -2858,8 +2854,6 @@ export type UpdateSneakerMutation = {
       secondaryName: string,
       image: string,
       points: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     userID: string,
     user?:  {
@@ -2957,8 +2951,6 @@ export type DeleteSneakerMutation = {
       secondaryName: string,
       image: string,
       points: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     userID: string,
     user?:  {
@@ -3326,8 +3318,6 @@ export type CreateClaimMutation = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -3439,8 +3429,6 @@ export type UpdateClaimMutation = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -3552,8 +3540,6 @@ export type DeleteClaimMutation = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -3612,8 +3598,6 @@ export type CreateListedItemMutation = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -3730,8 +3714,6 @@ export type UpdateListedItemMutation = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -3848,8 +3830,6 @@ export type DeleteListedItemMutation = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -4458,8 +4438,6 @@ export type CreateSneakerStoreMutation = {
     secondaryName: string,
     image: string,
     points: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -4477,8 +4455,6 @@ export type UpdateSneakerStoreMutation = {
     secondaryName: string,
     image: string,
     points: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -4496,8 +4472,6 @@ export type DeleteSneakerStoreMutation = {
     secondaryName: string,
     image: string,
     points: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -5034,7 +5008,7 @@ export type GetChatRoomUserQuery = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -5042,8 +5016,8 @@ export type GetChatRoomUserQuery = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -5086,7 +5060,7 @@ export type ListChatRoomUsersQuery = {
         id: string,
         offerID: string,
         lastMessageID: string,
-        receiverHasRead?: boolean | null,
+        receiverHasRead: boolean,
         roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
@@ -5133,7 +5107,7 @@ export type GetChatRoomQuery = {
       nextToken?: string | null,
     } | null,
     lastMessageID: string,
-    lastMessage?:  {
+    lastMessage:  {
       __typename: "Message",
       id: string,
       createdAt?: string | null,
@@ -5159,14 +5133,14 @@ export type GetChatRoomQuery = {
         id: string,
         offerID: string,
         lastMessageID: string,
-        receiverHasRead?: boolean | null,
+        receiverHasRead: boolean,
         roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
-    } | null,
-    receiverHasRead?: boolean | null,
+    },
+    receiverHasRead: boolean,
     roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
@@ -5195,7 +5169,7 @@ export type ListChatRoomsQuery = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -5203,8 +5177,8 @@ export type ListChatRoomsQuery = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -5290,7 +5264,7 @@ export type GetMessageQuery = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -5298,8 +5272,8 @@ export type GetMessageQuery = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -5343,7 +5317,7 @@ export type ListMessagesQuery = {
         id: string,
         offerID: string,
         lastMessageID: string,
-        receiverHasRead?: boolean | null,
+        receiverHasRead: boolean,
         roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
@@ -5375,8 +5349,6 @@ export type GetSneakerQuery = {
       secondaryName: string,
       image: string,
       points: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     userID: string,
     user?:  {
@@ -5477,8 +5449,6 @@ export type ListSneakersQuery = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -5693,8 +5663,6 @@ export type GetClaimQuery = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -5803,8 +5771,6 @@ export type GetListedItemQuery = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -6201,8 +6167,6 @@ export type GetSneakerStoreQuery = {
     secondaryName: string,
     image: string,
     points: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -6223,8 +6187,6 @@ export type ListSneakerStoresQuery = {
       secondaryName: string,
       image: string,
       points: number,
-      createdAt: string,
-      updatedAt: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -6390,7 +6352,7 @@ export type ChatRoomUserByUserQuery = {
         id: string,
         offerID: string,
         lastMessageID: string,
-        receiverHasRead?: boolean | null,
+        receiverHasRead: boolean,
         roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
@@ -6440,7 +6402,7 @@ export type MessagesByChatRoomQuery = {
         id: string,
         offerID: string,
         lastMessageID: string,
-        receiverHasRead?: boolean | null,
+        receiverHasRead: boolean,
         roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
@@ -6479,8 +6441,6 @@ export type SneakerByUserQuery = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -7864,7 +7824,7 @@ export type OnCreateChatRoomUserSubscription = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -7872,8 +7832,8 @@ export type OnCreateChatRoomUserSubscription = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -7954,7 +7914,7 @@ export type OnUpdateChatRoomUserSubscription = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -7962,8 +7922,8 @@ export type OnUpdateChatRoomUserSubscription = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -8044,7 +8004,7 @@ export type OnDeleteChatRoomUserSubscription = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -8052,8 +8012,8 @@ export type OnDeleteChatRoomUserSubscription = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -8094,7 +8054,7 @@ export type OnCreateChatRoomSubscription = {
       nextToken?: string | null,
     } | null,
     lastMessageID: string,
-    lastMessage?:  {
+    lastMessage:  {
       __typename: "Message",
       id: string,
       createdAt?: string | null,
@@ -8120,14 +8080,14 @@ export type OnCreateChatRoomSubscription = {
         id: string,
         offerID: string,
         lastMessageID: string,
-        receiverHasRead?: boolean | null,
+        receiverHasRead: boolean,
         roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
-    } | null,
-    receiverHasRead?: boolean | null,
+    },
+    receiverHasRead: boolean,
     roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
@@ -8165,7 +8125,7 @@ export type OnUpdateChatRoomSubscription = {
       nextToken?: string | null,
     } | null,
     lastMessageID: string,
-    lastMessage?:  {
+    lastMessage:  {
       __typename: "Message",
       id: string,
       createdAt?: string | null,
@@ -8191,14 +8151,14 @@ export type OnUpdateChatRoomSubscription = {
         id: string,
         offerID: string,
         lastMessageID: string,
-        receiverHasRead?: boolean | null,
+        receiverHasRead: boolean,
         roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
-    } | null,
-    receiverHasRead?: boolean | null,
+    },
+    receiverHasRead: boolean,
     roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
@@ -8236,7 +8196,7 @@ export type OnDeleteChatRoomSubscription = {
       nextToken?: string | null,
     } | null,
     lastMessageID: string,
-    lastMessage?:  {
+    lastMessage:  {
       __typename: "Message",
       id: string,
       createdAt?: string | null,
@@ -8262,14 +8222,14 @@ export type OnDeleteChatRoomSubscription = {
         id: string,
         offerID: string,
         lastMessageID: string,
-        receiverHasRead?: boolean | null,
+        receiverHasRead: boolean,
         roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
-    } | null,
-    receiverHasRead?: boolean | null,
+    },
+    receiverHasRead: boolean,
     roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
@@ -8349,7 +8309,7 @@ export type OnCreateMessageSubscription = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -8357,8 +8317,8 @@ export type OnCreateMessageSubscription = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -8440,7 +8400,7 @@ export type OnUpdateMessageSubscription = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -8448,8 +8408,8 @@ export type OnUpdateMessageSubscription = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -8531,7 +8491,7 @@ export type OnDeleteMessageSubscription = {
         nextToken?: string | null,
       } | null,
       lastMessageID: string,
-      lastMessage?:  {
+      lastMessage:  {
         __typename: "Message",
         id: string,
         createdAt?: string | null,
@@ -8539,8 +8499,8 @@ export type OnDeleteMessageSubscription = {
         userID: string,
         chatRoomID: string,
         updatedAt: string,
-      } | null,
-      receiverHasRead?: boolean | null,
+      },
+      receiverHasRead: boolean,
       roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
@@ -8566,8 +8526,6 @@ export type OnCreateSneakerSubscription = {
       secondaryName: string,
       image: string,
       points: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     userID: string,
     user?:  {
@@ -8660,8 +8618,6 @@ export type OnUpdateSneakerSubscription = {
       secondaryName: string,
       image: string,
       points: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     userID: string,
     user?:  {
@@ -8754,8 +8710,6 @@ export type OnDeleteSneakerSubscription = {
       secondaryName: string,
       image: string,
       points: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     userID: string,
     user?:  {
@@ -9103,8 +9057,6 @@ export type OnCreateClaimSubscription = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -9211,8 +9163,6 @@ export type OnUpdateClaimSubscription = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -9319,8 +9269,6 @@ export type OnDeleteClaimSubscription = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -9374,8 +9322,6 @@ export type OnCreateListedItemSubscription = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -9487,8 +9433,6 @@ export type OnUpdateListedItemSubscription = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -9600,8 +9544,6 @@ export type OnDeleteListedItemSubscription = {
         secondaryName: string,
         image: string,
         points: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
       userID: string,
       user?:  {
@@ -10190,8 +10132,6 @@ export type OnCreateSneakerStoreSubscription = {
     secondaryName: string,
     image: string,
     points: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -10204,8 +10144,6 @@ export type OnUpdateSneakerStoreSubscription = {
     secondaryName: string,
     image: string,
     points: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -10218,7 +10156,5 @@ export type OnDeleteSneakerStoreSubscription = {
     secondaryName: string,
     image: string,
     points: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };

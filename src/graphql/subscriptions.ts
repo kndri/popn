@@ -1362,8 +1362,6 @@ export const onCreateSneaker = /* GraphQL */ `
         secondaryName
         image
         points
-        createdAt
-        updatedAt
       }
       userID
       user {
@@ -1445,8 +1443,6 @@ export const onUpdateSneaker = /* GraphQL */ `
         secondaryName
         image
         points
-        createdAt
-        updatedAt
       }
       userID
       user {
@@ -1528,8 +1524,6 @@ export const onDeleteSneaker = /* GraphQL */ `
         secondaryName
         image
         points
-        createdAt
-        updatedAt
       }
       userID
       user {
@@ -1833,8 +1827,6 @@ export const onCreateClaim = /* GraphQL */ `
           secondaryName
           image
           points
-          createdAt
-          updatedAt
         }
         userID
         user {
@@ -1929,8 +1921,6 @@ export const onUpdateClaim = /* GraphQL */ `
           secondaryName
           image
           points
-          createdAt
-          updatedAt
         }
         userID
         user {
@@ -2025,8 +2015,6 @@ export const onDeleteClaim = /* GraphQL */ `
           secondaryName
           image
           points
-          createdAt
-          updatedAt
         }
         userID
         user {
@@ -2076,8 +2064,6 @@ export const onCreateListedItem = /* GraphQL */ `
           secondaryName
           image
           points
-          createdAt
-          updatedAt
         }
         userID
         user {
@@ -2177,8 +2163,6 @@ export const onUpdateListedItem = /* GraphQL */ `
           secondaryName
           image
           points
-          createdAt
-          updatedAt
         }
         userID
         user {
@@ -2278,8 +2262,6 @@ export const onDeleteListedItem = /* GraphQL */ `
           secondaryName
           image
           points
-          createdAt
-          updatedAt
         }
         userID
         user {
@@ -2801,8 +2783,6 @@ export const onCreateSneakerStore = /* GraphQL */ `
       secondaryName
       image
       points
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -2815,8 +2795,6 @@ export const onUpdateSneakerStore = /* GraphQL */ `
       secondaryName
       image
       points
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -2829,8 +2807,6 @@ export const onDeleteSneakerStore = /* GraphQL */ `
       secondaryName
       image
       points
-      createdAt
-      updatedAt
     }
   }
 `;

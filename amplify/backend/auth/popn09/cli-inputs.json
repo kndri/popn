@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "popn09_identityPool",
-    "allowUnauthenticatedIdentities": true,
+    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "popn48ee3cd1",
     "userPoolName": "popn09_userpool",
     "autoVerifiedAttributes": [
@@ -35,7 +35,7 @@
       "preferred_username"
     ],
     "userpoolClientLambdaRole": "popn0948ee3cd1_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": true,
+    "userpoolClientSetAttributes": false,
     "authSelections": "identityPoolAndUserPool",
     "resourceName": "popn09",
     "serviceName": "Cognito",
@@ -50,19 +50,7 @@
     "adminQueries": false,
     "hostedUI": false,
     "triggers": {
-      "CreateAuthChallenge": [
-        "custom"
-      ],
-      "DefineAuthChallenge": [
-        "custom"
-      ],
       "PreSignup": [
-        "custom"
-      ],
-      "VerifyAuthChallengeResponse": [
-        "custom"
-      ],
-      "PreTokenGeneration": [
         "custom"
       ]
     },
@@ -83,43 +71,7 @@
     "dependsOn": [
       {
         "category": "function",
-        "resourceName": "popn09CreateAuthChallenge",
-        "triggerProvider": "Cognito",
-        "attributes": [
-          "Arn",
-          "Name"
-        ]
-      },
-      {
-        "category": "function",
-        "resourceName": "popn09DefineAuthChallenge",
-        "triggerProvider": "Cognito",
-        "attributes": [
-          "Arn",
-          "Name"
-        ]
-      },
-      {
-        "category": "function",
         "resourceName": "popn09PreSignup",
-        "triggerProvider": "Cognito",
-        "attributes": [
-          "Arn",
-          "Name"
-        ]
-      },
-      {
-        "category": "function",
-        "resourceName": "popn09VerifyAuthChallengeResponse",
-        "triggerProvider": "Cognito",
-        "attributes": [
-          "Arn",
-          "Name"
-        ]
-      },
-      {
-        "category": "function",
-        "resourceName": "popn09PreTokenGeneration",
         "triggerProvider": "Cognito",
         "attributes": [
           "Arn",
@@ -128,7 +80,7 @@
       }
     ],
     "permissions": [],
-    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"CreateAuthChallenge\",\n    \"lambdaFunctionName\": \"popn09CreateAuthChallenge\"\n  },\n  {\n    \"triggerType\": \"DefineAuthChallenge\",\n    \"lambdaFunctionName\": \"popn09DefineAuthChallenge\"\n  },\n  {\n    \"triggerType\": \"PreSignUp\",\n    \"lambdaFunctionName\": \"popn09PreSignup\"\n  },\n  {\n    \"triggerType\": \"VerifyAuthChallengeResponse\",\n    \"lambdaFunctionName\": \"popn09VerifyAuthChallengeResponse\"\n  },\n  {\n    \"triggerType\": \"PreTokenGeneration\",\n    \"lambdaFunctionName\": \"popn09PreTokenGeneration\"\n  }\n]",
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PreSignUp\",\n    \"lambdaFunctionName\": \"popn09PreSignup\"\n  }\n]",
     "thirdPartyAuth": false,
     "authProviders": [],
     "parentStack": {

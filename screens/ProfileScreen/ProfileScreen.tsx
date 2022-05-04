@@ -6,10 +6,7 @@ import {
 	ActivityIndicator,
 	Dimensions,
 } from 'react-native';
-import {
-	useIsFocused,
-	useNavigation,
-} from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
 import { spacing } from '../../theme';
@@ -35,7 +32,8 @@ import moment from 'moment';
 const location_icon = require('../../assets/images/zipcode-icon.png');
 
 export default function ProfileScreen() {
-	const [editProfileModalVisible, setEditProfileModalVisible] = React.useState(false);
+	const [editProfileModalVisible, setEditProfileModalVisible] =
+		React.useState(false);
 	const [followers, setFollowers] = React.useState<number>(0);
 	const [index, setIndex] = React.useState(0);
 	const [isLoading, setIsLoading] = React.useState(true);
@@ -61,14 +59,18 @@ export default function ProfileScreen() {
 		const followers = await getFollowersFromUser(user?.id).catch((error) =>
 			console.log('error', error)
 		);
-		setSneakerCollection(sneakerlist);
+
+		if (sneakerlist !== undefined) {
+			setSneakerCollection(sneakerlist);
+		}
+
 		setFollowers(followers.length);
 		setIsLoading(false);
 	};
 
 	React.useEffect(() => {
 		getUserData();
-		updateAuth()
+		updateAuth();
 	}, [isFocused]);
 
 	const renderEmptyCollection = () => {
@@ -92,7 +94,7 @@ export default function ProfileScreen() {
 	const renderCollection = () => {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center' }}>
-				{sneakerCollection != undefined && sneakerCollection.length == 0 ? (
+				{sneakerCollection != undefined ? (
 					renderEmptyCollection()
 				) : (
 					<View style={styles.DATA_CONTAINER}>
@@ -182,7 +184,7 @@ export default function ProfileScreen() {
 						<Header
 							rightIcon="settings"
 							onRightPress={() => navigation.navigate('Settings')}
-							leftIcon='plus'
+							leftIcon="plus"
 							onLeftPress={() => navigation.navigate('Claim')}
 						/>
 					</View>
@@ -212,7 +214,9 @@ export default function ProfileScreen() {
 									marginTop: 10,
 								}}
 							>
-								<Text>Joined in {moment(userData.createdAt).format('YYYY')}</Text>
+								<Text>
+									Joined in {moment(userData.createdAt).format('YYYY')}
+								</Text>
 							</View>
 
 							<View style={{ flexDirection: 'row', marginTop: 10 }}>

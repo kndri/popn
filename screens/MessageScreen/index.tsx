@@ -11,7 +11,7 @@ import * as Notifications from 'expo-notifications';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
 import { API, graphqlOperation } from 'aws-amplify';
-import { getChatRoom, chatRoomUserByUser } from '../../src/graphql/queries';
+import { getChatRoom } from '../../src/graphql/queries';
 import {
 	deleteChatRoomUser,
 	updateChatRoom,
@@ -96,9 +96,40 @@ export default function MessageScreen() {
 	const fetchChatRooms = async () => {
 		try {
 			const chatRoomsByUser = await API.graphql(
-				graphqlOperation(chatRoomUserByUser, {
-					userID: user?.id,
-				})
+				graphqlOperation(`
+			query GetChatRoomUserByUser {
+				chatRoomUserByUser(userID: "${user?.id}") {
+					items {
+						chatRoom {
+							lastMessageID
+							lastMessage {
+								updatedAt
+								createdAt
+								text
+								id
+								chatRoomID
+								userID
+							}
+							roomStatus
+							receiverHasRead
+							updatedAt
+							offerID
+							chatRoomUsers {
+								items {
+									user {
+										avatarImageURL
+										username
+									}
+								}
+							}
+						}
+						chatRoomID
+						userID
+					}
+				}
+			}
+			
+				`)
 			);
 
 			let chatRoomsArr = chatRoomsByUser.data.chatRoomUserByUser.items;

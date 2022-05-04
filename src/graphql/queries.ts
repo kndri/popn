@@ -752,8 +752,6 @@ export const getSneaker = /* GraphQL */ `
         secondaryName
         image
         points
-        createdAt
-        updatedAt
       }
       userID
       user {
@@ -840,8 +838,6 @@ export const listSneakers = /* GraphQL */ `
           secondaryName
           image
           points
-          createdAt
-          updatedAt
         }
         userID
         user {
@@ -1024,8 +1020,6 @@ export const getClaim = /* GraphQL */ `
           secondaryName
           image
           points
-          createdAt
-          updatedAt
         }
         userID
         user {
@@ -1121,8 +1115,6 @@ export const getListedItem = /* GraphQL */ `
           secondaryName
           image
           points
-          createdAt
-          updatedAt
         }
         userID
         user {
@@ -1471,8 +1463,6 @@ export const getSneakerStore = /* GraphQL */ `
       secondaryName
       image
       points
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -1490,8 +1480,6 @@ export const listSneakerStores = /* GraphQL */ `
         secondaryName
         image
         points
-        createdAt
-        updatedAt
       }
       nextToken
     }
@@ -1765,8 +1753,6 @@ export const sneakerByUser = /* GraphQL */ `
           secondaryName
           image
           points
-          createdAt
-          updatedAt
         }
         userID
         user {
