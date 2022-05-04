@@ -1,11 +1,21 @@
 import * as React from 'react';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
-import { API, graphqlOperation } from 'aws-amplify';
+import {
+	View,
+	TouchableOpacity,
+	ActivityIndicator,
+	Dimensions,
+} from 'react-native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import * as Notifications from 'expo-notifications';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
+import { API, graphqlOperation } from 'aws-amplify';
 import { getChatRoom, chatRoomUserByUser } from '../../src/graphql/queries';
-import { deleteChatRoomUser } from '../../src/graphql/mutations';
+import {
+	deleteChatRoomUser,
+	updateChatRoom,
+} from '../../src/graphql/mutations';
 
 import { useAuth } from '../../contexts/auth';
 import { useApp } from '../../contexts/app-context';
@@ -20,14 +30,68 @@ export default function MessageScreen() {
 	// auth and app context
 	const { authData: user } = useAuth();
 	const { updateUnreadCount } = useApp();
-
+	const notificationListener: any = React.useRef();
+	const responseListener: any = React.useRef();
+	const navigation = useNavigation();
 	const isFocused = useIsFocused();
-	const [chatRooms, setChatRooms] = React.useState<any>([]);
+	const [activeChatRooms, setActiveChatRooms] = React.useState<any>([]);
+	const [archiveChatRooms, setArchiveChatRooms] = React.useState<any>([]);
+
 	const [isLoading, setIsLoading] = React.useState(true);
+	const [index, setIndex] = React.useState(0);
+	const [routes] = React.useState([
+		{ key: 'active', title: 'Active' },
+		{ key: 'archive', title: 'Archive' },
+	]);
 
 	React.useEffect(() => {
 		fetchChatRooms();
 	}, [isFocused]);
+
+	React.useEffect(() => {
+		// This listener is fired whenever a notification is received while the app is foregrounded
+		notificationListener.current =
+			Notifications.addNotificationReceivedListener((notification) => {
+				if (
+					notification.request.content.title == 'New Message' ||
+					notification.request.content.title == 'Offer Made!'
+				) {
+					fetchChatRooms();
+				}
+			});
+
+		// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+		responseListener.current =
+			Notifications.addNotificationResponseReceivedListener(
+				async (response) => {
+					try {
+						await API.graphql(
+							graphqlOperation(updateChatRoom, {
+								input: {
+									id: response.notification.request.content.data.chatRoomID,
+									receiverHasRead: true,
+								},
+							})
+						);
+						navigation.navigate('MessageRoom', {
+							id: response.notification.request.content.data.chatRoomID,
+							name: response.notification.request.content.data.username,
+							offerID: response.notification.request.content.data.offerID,
+						});
+						fetchChatRooms();
+					} catch (err) {
+						console.log('error:', err);
+					}
+				}
+			);
+
+		return () => {
+			Notifications.removeNotificationSubscription(
+				notificationListener.current
+			);
+			Notifications.removeNotificationSubscription(responseListener.current);
+		};
+	}, []);
 
 	const fetchChatRooms = async () => {
 		try {
@@ -39,6 +103,9 @@ export default function MessageScreen() {
 
 			let chatRoomsArr = chatRoomsByUser.data.chatRoomUserByUser.items;
 
+			let archiveChatRoomsArr: any;
+			let activeChatRoomsArr: any;
+
 			if (chatRoomsArr.length >= 0) {
 				chatRoomsArr.sort((a, b) => {
 					return b.chatRoom.lastMessage.updatedAt.localeCompare(
@@ -46,9 +113,19 @@ export default function MessageScreen() {
 					);
 				});
 
+				// filter by active status
+				activeChatRoomsArr = chatRoomsArr.filter((chat) => {
+					return chat.chatRoom.roomStatus == 'active';
+				});
+
+				// filter by archive status
+				archiveChatRoomsArr = chatRoomsArr.filter((chat) => {
+					return chat.chatRoom.roomStatus == 'archive';
+				});
+
 				// Counting unread messages
 				let unreadCount = 0;
-				chatRoomsArr.map((item: any) => {
+				activeChatRoomsArr.map((item: any) => {
 					if (
 						user?.id != item.chatRoom.lastMessage.userID &&
 						item.chatRoom.receiverHasRead == false
@@ -59,8 +136,8 @@ export default function MessageScreen() {
 
 				// updating unread counter globally
 				updateUnreadCount(unreadCount);
-
-				setChatRooms(chatRoomsArr);
+				setArchiveChatRooms(archiveChatRoomsArr);
+				setActiveChatRooms(activeChatRoomsArr);
 				setIsLoading(false);
 			}
 		} catch (e) {
@@ -68,7 +145,7 @@ export default function MessageScreen() {
 		}
 	};
 
-	Array(chatRooms.length)
+	Array(activeChatRooms.length)
 		.fill('')
 		.map((_, i) => ({ key: `${i}` }));
 
@@ -127,11 +204,86 @@ export default function MessageScreen() {
 					},
 				})
 			);
+
+			await API.graphql(
+				graphqlOperation(updateChatRoom, {
+					input: {
+						id: chatRoomID,
+						roomStatus: 'archive',
+					},
+				})
+			);
 		} catch (error) {
 			console.log(error);
 		}
 		fetchChatRooms();
 	};
+
+	const ActiveRoute = () => (
+		<>
+			{activeChatRooms.length === 0 ? (
+				<View style={{ height: '100%', justifyContent: 'center' }}>
+					<Text
+						style={styles.TEXTCENTER}
+						preset="bold"
+						text="No Messages Found."
+					/>
+				</View>
+			) : (
+				<SwipeListView
+					disableRightSwipe
+					data={activeChatRooms}
+					renderItem={({ item }) => <MessageChatListItem chatRoom={item} />}
+					renderHiddenItem={renderHiddenItem}
+					onSwipeValueChange={onSwipeValueChange}
+					useNativeDriver={false}
+					keyExtractor={(item) => item.id}
+					scrollEnabled={true}
+					rightOpenValue={-75}
+					previewRowKey={'0'}
+					previewOpenValue={-20}
+					previewOpenDelay={3000}
+				/>
+			)}
+		</>
+	);
+
+	const ArchiveRoute = () => (
+		// pass in the messages that are labeled as archived
+		<>
+			{archiveChatRooms.length === 0 ? (
+				<View style={{ height: '100%', justifyContent: 'center' }}>
+					<Text
+						style={styles.TEXTCENTER}
+						preset="bold"
+						text="No Archive Messages Found."
+					/>
+				</View>
+			) : (
+				<SwipeListView
+					disableRightSwipe
+					data={archiveChatRooms}
+					renderItem={({ item }) => <MessageChatListItem chatRoom={item} />}
+					renderHiddenItem={renderHiddenItem}
+					onSwipeValueChange={onSwipeValueChange}
+					useNativeDriver={false}
+					keyExtractor={(item) => item.id}
+					scrollEnabled={true}
+					rightOpenValue={-75}
+					previewRowKey={'0'}
+					previewOpenValue={-20}
+					previewOpenDelay={3000}
+				/>
+			)}
+		</>
+	);
+
+	const initialLayout = { width: Dimensions.get('window').width };
+
+	const renderScene = SceneMap({
+		active: ActiveRoute,
+		archive: ArchiveRoute,
+	});
 
 	return (
 		<>
@@ -147,33 +299,27 @@ export default function MessageScreen() {
 							style={{ paddingHorizontal: spacing[3] }}
 							headerTx="Messages"
 						/>
-
-						{chatRooms.length === 0 ? (
-							<View style={{ height: '100%', justifyContent: 'center' }}>
-								<Text
-									style={styles.TEXTCENTER}
-									preset="bold"
-									text="No Messages Found."
+						<TabView
+							navigationState={{ index, routes }}
+							renderScene={renderScene}
+							onIndexChange={setIndex}
+							initialLayout={initialLayout}
+							renderTabBar={(props) => (
+								<TabBar
+									{...props}
+									indicatorStyle={{ backgroundColor: 'black' }}
+									style={{ backgroundColor: 'white' }}
+									renderLabel={({ route }) => (
+										<Text
+											preset="bold"
+											style={{ color: 'black', fontSize: 16 }}
+										>
+											{route.title}
+										</Text>
+									)}
 								/>
-							</View>
-						) : (
-							<SwipeListView
-								disableRightSwipe
-								data={chatRooms}
-								renderItem={({ item }) => (
-									<MessageChatListItem chatRoom={item} />
-								)}
-								renderHiddenItem={renderHiddenItem}
-								onSwipeValueChange={onSwipeValueChange}
-								useNativeDriver={false}
-								keyExtractor={(item) => item.id}
-								scrollEnabled={true}
-								rightOpenValue={-75}
-								previewRowKey={'0'}
-								previewOpenValue={-20}
-								previewOpenDelay={3000}
-							/>
-						)}
+							)}
+						/>
 					</View>
 				</Screen>
 			)}

@@ -157,10 +157,6 @@ export default function ClaimScreen() {
 								marginBottom: 15,
 								backgroundColor: '#00A542'
 							}}
-							onPress={() => {
-								addUserSneaker(item);
-								// then grey out the sneaker card
-							}}
 						>
 							<Text
 								preset="bold"

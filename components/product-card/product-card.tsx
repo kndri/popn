@@ -20,19 +20,21 @@ export const ProductCard: React.FC<ProductCardProps> = (props): JSX.Element => {
 					{props.showVerificationBage && <VerificationBage type="icon" />}
 				</View>
 				{/* <Image source={{ uri: product.images[0] }} style={styles.PRODUCT} /> */}
-				<Image source={{ uri: product.images[0] }} style={styles.PRODUCT} />
+				<Image
+					source={{ uri: product.sneakerData.image }}
+					style={styles.PRODUCT}
+				/>
 			</View>
 			<View style={styles.CONTENT_CONTAINER}>
 				<Text preset="secondary">{product.sneakerData.primaryName} </Text>
-				<Text preset="primaryProduct">
-					{product.sneakerData.secondaryName}{' '}
-				</Text>
-				{props.showPrice &&
+				<Text preset="primaryProduct">{product.sneakerData.secondaryName}</Text>
+				<Text preset="secondary">{product.condition}</Text>
+				{props.showPrice && (
 					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<FontAwesome name="dollar" size={13} color="black" />
 						<Text preset="extraBold">{product.price}</Text>
 					</View>
-				}
+				)}
 				{props.sneakerPoint && (
 					<View style={{ flexDirection: 'row' }}>
 						<Image

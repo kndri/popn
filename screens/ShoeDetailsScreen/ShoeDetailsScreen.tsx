@@ -44,9 +44,9 @@ const ShoeDetailsScreen = () => {
 	 * Else it is another user
 	 */
 	const getShoe = async () => {
-		const shoe = await getCurrentSneaker(shoeID);
+		const sneaker = await getCurrentSneaker(shoeID);
 
-		switch (shoe.userID) {
+		switch (sneaker.userID) {
 			case user?.id:
 				setIsSignedinUser(true);
 				break;
@@ -54,24 +54,32 @@ const ShoeDetailsScreen = () => {
 				setIsSignedinUser(false);
 		}
 
-		if (shoe.claim.items.length > 0) {
-			setClaim(shoe.claim.items[0]);
+		if (sneaker.claim.items.length > 0) {
+			setClaim(sneaker.claim.items[0]);
 		}
-		setSneaker(shoe);
+		setSneaker(sneaker);
 	};
 	const handleAction = () =>
 		ActionSheetIOS.showActionSheetWithOptions(
 			{
-				options: ['Cancel', 'Create a Listing', 'Delete Sneaker'],
+				options:
+					claim.status == 'verified'
+						? ['Cancel', 'Create a Listing', 'Delete Sneaker']
+						: ['Cancel', 'Delete Sneaker'],
 				destructiveButtonIndex: 1,
 				cancelButtonIndex: 0,
-				// userInterfaceStyle: 'dark',
 			},
 			(buttonIndex) => {
-				if (buttonIndex === 1) {
-					navigation.navigate('NewListing', { sneakerData: sneaker });
-				} else if (buttonIndex === 2) {
-					deleteUserSneaker(shoeID).then(() => navigation.goBack());
+				if (claim.status == 'verified') {
+					if (buttonIndex === 1) {
+						navigation.navigate('NewListing', { sneakerData: sneaker });
+					} else if (buttonIndex === 2) {
+						deleteUserSneaker(shoeID).then(() => navigation.goBack());
+					}
+				} else {
+					if (buttonIndex === 1) {
+						deleteUserSneaker(shoeID).then(() => navigation.goBack());
+					}
 				}
 			}
 		);
@@ -118,9 +126,7 @@ const ShoeDetailsScreen = () => {
 						</Text>
 					</View>
 					<View style={styles.MODAL_EXAMPLE}>
-						{/* <View style={styles.MODAL_IMAGE_CONTAINER}> */}
 						<Image style={styles.MODAL_SHOE_IMAGE} source={example} />
-						{/* </View> */}
 					</View>
 					<View style={styles.MODAL_PROCESS}>
 						<Text preset="bold" style={{ color: 'black', fontSize: 15 }}>
@@ -191,28 +197,6 @@ const ShoeDetailsScreen = () => {
 
 			<View style={styles.SHOE_DATA}>
 				<Text preset="bold" text="SNEAKER DETAILS" style={{ fontSize: 20 }} />
-				<View
-					style={{
-						display: 'flex',
-						flexDirection: 'row',
-						justifyContent: 'space-between',
-						paddingTop: 20,
-					}}
-				>
-					<Text text="Retail Price" />
-					<Text text="$225" />
-				</View>
-				<View
-					style={{
-						display: 'flex',
-						flexDirection: 'row',
-						justifyContent: 'space-between',
-						paddingTop: 10,
-					}}
-				>
-					<Text text="Release Date" />
-					<Text text="12/11/2021" />
-				</View>
 
 				{isSignedinUser ? (
 					<>

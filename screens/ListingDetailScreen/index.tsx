@@ -1,16 +1,17 @@
 import React from 'react';
-import { View, Modal, TouchableOpacity, TextInput } from 'react-native';
+
+import {
+	View,
+	Modal,
+	TouchableOpacity,
+	TextInput,
+	ActionSheetIOS,
+} from 'react-native';
+
 import { FontAwesome } from '@expo/vector-icons';
 import { SliderBox } from 'react-native-image-slider-box';
 import { useNavigation } from '@react-navigation/native';
-
 import { API, graphqlOperation } from 'aws-amplify';
-import {
-	addChatRoom,
-	addChatRoomUser,
-	addOffer,
-} from '../../aws-functions/aws-functions';
-import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
 
 import {
 	AutoImage as Image,
@@ -21,9 +22,20 @@ import {
 	VerificationBage,
 } from '../../components';
 
+import { useToast } from '../../components/Toast';
+
+import {
+	addChatRoom,
+	addChatRoomUser,
+	addOffer,
+	deleteUserListing,
+} from '../../aws-functions/aws-functions';
+
+import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
+import { offerByUser } from '../../src/graphql/queries';
+import { spacing } from '../../theme';
 import { useAuth } from '../../contexts/auth';
 
-import { spacing } from '../../theme';
 import styles from './styles';
 
 const example = require('../../assets/images/verify_example.png');
@@ -33,6 +45,7 @@ const ListingDetailsScreen = (props: any) => {
 	const listing = props.route.params;
 	const { sneakerData, seller } = listing;
 	const { authData: user } = useAuth();
+	const toast = useToast();
 	const navigation = useNavigation();
 	const [offerModalVisible, setOfferModalVisible] = React.useState(false);
 	const [authenticationModalVisible, setAuthenticationModalVisible] =
@@ -68,6 +81,23 @@ const ListingDetailsScreen = (props: any) => {
 			body: JSON.stringify(messageNotifcation),
 		});
 	};
+
+	const handleAction = () =>
+		ActionSheetIOS.showActionSheetWithOptions(
+			{
+				options: ['Cancel', 'Delete Listing'],
+				destructiveButtonIndex: 1,
+				cancelButtonIndex: 0,
+			},
+			(buttonIndex) => {
+				if (buttonIndex === 1) {
+					//TO-DO: Change this function to update the status of listing to unavailable. Requires to updated the Schema.
+					deleteUserListing(listing.id).then(() => {
+						navigation.goBack();
+					});
+				}
+			}
+		);
 
 	const onClick = async (offer: any) => {
 		try {
@@ -148,6 +178,44 @@ const ListingDetailsScreen = (props: any) => {
 			});
 		} catch (e) {
 			console.log(e);
+		}
+	};
+
+	const doesOfferExist = async () => {
+		try {
+			let offerList: any;
+			let offerExist = false;
+
+			if (seller.id == user?.id) {
+				return toast.show(`Cannot Make Yourself An Offer.`, {
+					color: 'red',
+				});
+			}
+
+			const offersMade = await API.graphql(
+				graphqlOperation(offerByUser, {
+					buyingUserID: user?.id,
+				})
+			);
+
+			offerList = offersMade.data.offerByUser.items;
+			offerList.map((item) => {
+				if (item.listedItemID == listing.id) {
+					if (item.status == 'pending') {
+						return (offerExist = true);
+					}
+				}
+			});
+
+			if (offerExist) {
+				return toast.show(`Offer Already In Progress. Go To Messages.`, {
+					color: 'red',
+				});
+			}
+
+			setOfferModalVisible(!offerModalVisible);
+		} catch (err) {
+			console.log('error:', err);
 		}
 	};
 
@@ -307,7 +375,9 @@ const ListingDetailsScreen = (props: any) => {
 			<Header
 				style={styles.BACK_BUTTON}
 				leftIcon="back"
+				rightIcon={user?.id == seller.id ? 'more' : undefined}
 				onLeftPress={() => navigation.goBack()}
+				onRightPress={() => handleAction()}
 			/>
 
 			{/* authenticated box heading */}
@@ -474,7 +544,7 @@ const ListingDetailsScreen = (props: any) => {
 					}}
 					text="Offer"
 					onPress={() => {
-						setOfferModalVisible(!offerModalVisible);
+						doesOfferExist();
 					}}
 				/>
 			</View>

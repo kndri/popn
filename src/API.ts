@@ -22,6 +22,7 @@ export type CreateUserInput = {
   username: string,
   email: string,
   avatarImageURL: string,
+  transactions: number,
   status?: string | null,
   zipCode: string,
   expoToken?: string | null,
@@ -32,6 +33,7 @@ export type ModelUserConditionInput = {
   username?: ModelStringInput | null,
   email?: ModelStringInput | null,
   avatarImageURL?: ModelStringInput | null,
+  transactions?: ModelIntInput | null,
   status?: ModelStringInput | null,
   zipCode?: ModelStringInput | null,
   expoToken?: ModelStringInput | null,
@@ -80,6 +82,18 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type User = {
   __typename: "User",
   id: string,
@@ -88,7 +102,7 @@ export type User = {
   email: string,
   avatarImageURL: string,
   sneakers?: ModelSneakerConnection | null,
-  soldSneakers?: ModelSoldSneakerConnection | null,
+  transactions: number,
   offers?: ModelOfferConnection | null,
   following?: ModelFollowingConnection | null,
   follower?: ModelFollowersConnection | null,
@@ -163,25 +177,6 @@ export enum ClaimStatus {
   denied = "denied",
 }
 
-
-export type ModelSoldSneakerConnection = {
-  __typename: "ModelSoldSneakerConnection",
-  items:  Array<SoldSneaker | null >,
-  nextToken?: string | null,
-};
-
-export type SoldSneaker = {
-  __typename: "SoldSneaker",
-  id: string,
-  brand: string,
-  primaryName: string,
-  secondaryName: string,
-  image: string,
-  userID: string,
-  user?: User | null,
-  createdAt?: string | null,
-  updatedAt: string,
-};
 
 export type ModelOfferConnection = {
   __typename: "ModelOfferConnection",
@@ -297,6 +292,7 @@ export type ChatRoom = {
   lastMessageID: string,
   lastMessage?: Message | null,
   receiverHasRead?: boolean | null,
+  roomStatus: ChatRoomStatus,
   createdAt: string,
   updatedAt: string,
 };
@@ -318,6 +314,12 @@ export type Message = {
   chatRoom?: ChatRoom | null,
   updatedAt: string,
 };
+
+export enum ChatRoomStatus {
+  active = "active",
+  archive = "archive",
+}
+
 
 export type DonScore = {
   __typename: "DonScore",
@@ -345,6 +347,7 @@ export type UpdateUserInput = {
   username?: string | null,
   email?: string | null,
   avatarImageURL?: string | null,
+  transactions?: number | null,
   status?: string | null,
   zipCode?: string | null,
   expoToken?: string | null,
@@ -367,18 +370,6 @@ export type ModelDonScoreConditionInput = {
   and?: Array< ModelDonScoreConditionInput | null > | null,
   or?: Array< ModelDonScoreConditionInput | null > | null,
   not?: ModelDonScoreConditionInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export type UpdateDonScoreInput = {
@@ -511,12 +502,14 @@ export type CreateChatRoomInput = {
   offerID: string,
   lastMessageID: string,
   receiverHasRead?: boolean | null,
+  roomStatus: ChatRoomStatus,
 };
 
 export type ModelChatRoomConditionInput = {
   offerID?: ModelIDInput | null,
   lastMessageID?: ModelIDInput | null,
   receiverHasRead?: ModelBooleanInput | null,
+  roomStatus?: ModelChatRoomStatusInput | null,
   and?: Array< ModelChatRoomConditionInput | null > | null,
   or?: Array< ModelChatRoomConditionInput | null > | null,
   not?: ModelChatRoomConditionInput | null,
@@ -529,11 +522,17 @@ export type ModelBooleanInput = {
   attributeType?: ModelAttributeTypes | null,
 };
 
+export type ModelChatRoomStatusInput = {
+  eq?: ChatRoomStatus | null,
+  ne?: ChatRoomStatus | null,
+};
+
 export type UpdateChatRoomInput = {
   id: string,
   offerID?: string | null,
   lastMessageID?: string | null,
   receiverHasRead?: boolean | null,
+  roomStatus?: ChatRoomStatus | null,
 };
 
 export type DeleteChatRoomInput = {
@@ -632,6 +631,19 @@ export type ModelSoldSneakerConditionInput = {
   and?: Array< ModelSoldSneakerConditionInput | null > | null,
   or?: Array< ModelSoldSneakerConditionInput | null > | null,
   not?: ModelSoldSneakerConditionInput | null,
+};
+
+export type SoldSneaker = {
+  __typename: "SoldSneaker",
+  id: string,
+  brand: string,
+  primaryName: string,
+  secondaryName: string,
+  image: string,
+  userID: string,
+  user?: User | null,
+  createdAt?: string | null,
+  updatedAt: string,
 };
 
 export type UpdateSoldSneakerInput = {
@@ -831,6 +843,7 @@ export type ModelUserFilterInput = {
   username?: ModelStringInput | null,
   email?: ModelStringInput | null,
   avatarImageURL?: ModelStringInput | null,
+  transactions?: ModelIntInput | null,
   status?: ModelStringInput | null,
   zipCode?: ModelStringInput | null,
   expoToken?: ModelStringInput | null,
@@ -915,6 +928,7 @@ export type ModelChatRoomFilterInput = {
   offerID?: ModelIDInput | null,
   lastMessageID?: ModelIDInput | null,
   receiverHasRead?: ModelBooleanInput | null,
+  roomStatus?: ModelChatRoomStatusInput | null,
   and?: Array< ModelChatRoomFilterInput | null > | null,
   or?: Array< ModelChatRoomFilterInput | null > | null,
   not?: ModelChatRoomFilterInput | null,
@@ -963,6 +977,12 @@ export type ModelSoldSneakerFilterInput = {
   and?: Array< ModelSoldSneakerFilterInput | null > | null,
   or?: Array< ModelSoldSneakerFilterInput | null > | null,
   not?: ModelSoldSneakerFilterInput | null,
+};
+
+export type ModelSoldSneakerConnection = {
+  __typename: "ModelSoldSneakerConnection",
+  items:  Array<SoldSneaker | null >,
+  nextToken?: string | null,
 };
 
 export type ModelClaimFilterInput = {
@@ -1106,21 +1126,7 @@ export type CreateUserMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    soldSneakers?:  {
-      __typename: "ModelSoldSneakerConnection",
-      items:  Array< {
-        __typename: "SoldSneaker",
-        id: string,
-        brand: string,
-        primaryName: string,
-        secondaryName: string,
-        image: string,
-        userID: string,
-        createdAt?: string | null,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    transactions: number,
     offers?:  {
       __typename: "ModelOfferConnection",
       items:  Array< {
@@ -1230,21 +1236,7 @@ export type UpdateUserMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    soldSneakers?:  {
-      __typename: "ModelSoldSneakerConnection",
-      items:  Array< {
-        __typename: "SoldSneaker",
-        id: string,
-        brand: string,
-        primaryName: string,
-        secondaryName: string,
-        image: string,
-        userID: string,
-        createdAt?: string | null,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    transactions: number,
     offers?:  {
       __typename: "ModelOfferConnection",
       items:  Array< {
@@ -1354,21 +1346,7 @@ export type DeleteUserMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    soldSneakers?:  {
-      __typename: "ModelSoldSneakerConnection",
-      items:  Array< {
-        __typename: "SoldSneaker",
-        id: string,
-        brand: string,
-        primaryName: string,
-        secondaryName: string,
-        image: string,
-        userID: string,
-        createdAt?: string | null,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    transactions: number,
     offers?:  {
       __typename: "ModelOfferConnection",
       items:  Array< {
@@ -1572,10 +1550,7 @@ export type CreateFollowingMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -1643,10 +1618,7 @@ export type UpdateFollowingMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -1714,10 +1686,7 @@ export type DeleteFollowingMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -1785,10 +1754,7 @@ export type CreateFollowersMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -1856,10 +1822,7 @@ export type UpdateFollowersMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -1927,10 +1890,7 @@ export type DeleteFollowersMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -1998,10 +1958,7 @@ export type CreateChatRoomUserMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -2065,6 +2022,7 @@ export type CreateChatRoomUserMutation = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -2095,10 +2053,7 @@ export type UpdateChatRoomUserMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -2162,6 +2117,7 @@ export type UpdateChatRoomUserMutation = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -2192,10 +2148,7 @@ export type DeleteChatRoomUserMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -2259,6 +2212,7 @@ export type DeleteChatRoomUserMutation = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -2317,6 +2271,7 @@ export type CreateChatRoomMutation = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -2329,12 +2284,14 @@ export type CreateChatRoomMutation = {
         offerID: string,
         lastMessageID: string,
         receiverHasRead?: boolean | null,
+        roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
     } | null,
     receiverHasRead?: boolean | null,
+    roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2390,6 +2347,7 @@ export type UpdateChatRoomMutation = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -2402,12 +2360,14 @@ export type UpdateChatRoomMutation = {
         offerID: string,
         lastMessageID: string,
         receiverHasRead?: boolean | null,
+        roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
     } | null,
     receiverHasRead?: boolean | null,
+    roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2463,6 +2423,7 @@ export type DeleteChatRoomMutation = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -2475,12 +2436,14 @@ export type DeleteChatRoomMutation = {
         offerID: string,
         lastMessageID: string,
         receiverHasRead?: boolean | null,
+        roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
     } | null,
     receiverHasRead?: boolean | null,
+    roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2510,10 +2473,7 @@ export type CreateMessageMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -2577,6 +2537,7 @@ export type CreateMessageMutation = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -2608,10 +2569,7 @@ export type UpdateMessageMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -2675,6 +2633,7 @@ export type UpdateMessageMutation = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -2706,10 +2665,7 @@ export type DeleteMessageMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -2773,6 +2729,7 @@ export type DeleteMessageMutation = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -2817,10 +2774,7 @@ export type CreateSneakerMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -2919,10 +2873,7 @@ export type UpdateSneakerMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -3021,10 +2972,7 @@ export type DeleteSneakerMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -3111,10 +3059,7 @@ export type CreateSoldSneakerMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -3185,10 +3130,7 @@ export type UpdateSoldSneakerMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -3259,10 +3201,7 @@ export type DeleteSoldSneakerMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -3330,10 +3269,7 @@ export type CreateClaimMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -3401,6 +3337,7 @@ export type CreateClaimMutation = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -3445,10 +3382,7 @@ export type UpdateClaimMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -3516,6 +3450,7 @@ export type UpdateClaimMutation = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -3560,10 +3495,7 @@ export type DeleteClaimMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -3631,6 +3563,7 @@ export type DeleteClaimMutation = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -3690,6 +3623,7 @@ export type CreateListedItemMutation = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -3724,10 +3658,7 @@ export type CreateListedItemMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -3810,6 +3741,7 @@ export type UpdateListedItemMutation = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -3844,10 +3776,7 @@ export type UpdateListedItemMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -3930,6 +3859,7 @@ export type DeleteListedItemMutation = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -3964,10 +3894,7 @@ export type DeleteListedItemMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -4039,10 +3966,7 @@ export type CreateOfferMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -4094,10 +4018,7 @@ export type CreateOfferMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -4172,6 +4093,7 @@ export type CreateOfferMutation = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -4212,10 +4134,7 @@ export type UpdateOfferMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -4267,10 +4186,7 @@ export type UpdateOfferMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -4345,6 +4261,7 @@ export type UpdateOfferMutation = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -4385,10 +4302,7 @@ export type DeleteOfferMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -4440,10 +4354,7 @@ export type DeleteOfferMutation = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -4518,6 +4429,7 @@ export type DeleteOfferMutation = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -4618,21 +4530,7 @@ export type GetUserQuery = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    soldSneakers?:  {
-      __typename: "ModelSoldSneakerConnection",
-      items:  Array< {
-        __typename: "SoldSneaker",
-        id: string,
-        brand: string,
-        primaryName: string,
-        secondaryName: string,
-        image: string,
-        userID: string,
-        createdAt?: string | null,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    transactions: number,
     offers?:  {
       __typename: "ModelOfferConnection",
       items:  Array< {
@@ -4732,10 +4630,7 @@ export type ListUsersQuery = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -4881,10 +4776,7 @@ export type GetFollowingQuery = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -4951,6 +4843,7 @@ export type ListFollowingsQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -4985,10 +4878,7 @@ export type GetFollowersQuery = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -5055,6 +4945,7 @@ export type ListFollowerssQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -5089,10 +4980,7 @@ export type GetChatRoomUserQuery = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -5156,6 +5044,7 @@ export type GetChatRoomUserQuery = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -5185,6 +5074,7 @@ export type ListChatRoomUsersQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -5197,6 +5087,7 @@ export type ListChatRoomUsersQuery = {
         offerID: string,
         lastMessageID: string,
         receiverHasRead?: boolean | null,
+        roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -5256,6 +5147,7 @@ export type GetChatRoomQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -5268,12 +5160,14 @@ export type GetChatRoomQuery = {
         offerID: string,
         lastMessageID: string,
         receiverHasRead?: boolean | null,
+        roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
     } | null,
     receiverHasRead?: boolean | null,
+    roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -5311,6 +5205,7 @@ export type ListChatRoomsQuery = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -5341,10 +5236,7 @@ export type GetMessageQuery = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -5408,6 +5300,7 @@ export type GetMessageQuery = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -5438,6 +5331,7 @@ export type ListMessagesQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -5450,6 +5344,7 @@ export type ListMessagesQuery = {
         offerID: string,
         lastMessageID: string,
         receiverHasRead?: boolean | null,
+        roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -5495,10 +5390,7 @@ export type GetSneakerQuery = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -5596,6 +5488,7 @@ export type ListSneakersQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -5638,10 +5531,7 @@ export type GetSoldSneakerQuery = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -5711,6 +5601,7 @@ export type ListSoldSneakersQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -5745,10 +5636,7 @@ export type GetClaimQuery = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -5816,6 +5704,7 @@ export type GetClaimQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -5859,6 +5748,7 @@ export type ListClaimsQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -5924,6 +5814,7 @@ export type GetListedItemQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -5958,10 +5849,7 @@ export type GetListedItemQuery = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -6049,6 +5937,7 @@ export type ListListedItemsQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6087,10 +5976,7 @@ export type GetOfferQuery = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -6142,10 +6028,7 @@ export type GetOfferQuery = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -6220,6 +6103,7 @@ export type GetOfferQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6259,6 +6143,7 @@ export type ListOffersQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6272,6 +6157,7 @@ export type ListOffersQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6417,6 +6303,7 @@ export type FollowingByUserQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6453,6 +6340,7 @@ export type FollowersByUserQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6490,6 +6378,7 @@ export type ChatRoomUserByUserQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6502,6 +6391,7 @@ export type ChatRoomUserByUserQuery = {
         offerID: string,
         lastMessageID: string,
         receiverHasRead?: boolean | null,
+        roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -6538,6 +6428,7 @@ export type MessagesByChatRoomQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6550,6 +6441,7 @@ export type MessagesByChatRoomQuery = {
         offerID: string,
         lastMessageID: string,
         receiverHasRead?: boolean | null,
+        roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
@@ -6598,6 +6490,7 @@ export type SneakerByUserQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6642,6 +6535,7 @@ export type SoldItemByUserQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6699,6 +6593,7 @@ export type ListedItemByUserQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6756,6 +6651,7 @@ export type ListedItemByZipCodeQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6813,6 +6709,7 @@ export type ListedItemByBrandQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6870,6 +6767,7 @@ export type ListedItemByPriceQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6927,6 +6825,7 @@ export type ListedItemBySizeQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -6984,6 +6883,7 @@ export type ListedItemByConditionQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -7042,6 +6942,7 @@ export type ListedItemByStatusQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -7082,6 +6983,7 @@ export type OfferByUserQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -7095,6 +6997,7 @@ export type OfferByUserQuery = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -7150,21 +7053,7 @@ export type OnCreateUserSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    soldSneakers?:  {
-      __typename: "ModelSoldSneakerConnection",
-      items:  Array< {
-        __typename: "SoldSneaker",
-        id: string,
-        brand: string,
-        primaryName: string,
-        secondaryName: string,
-        image: string,
-        userID: string,
-        createdAt?: string | null,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    transactions: number,
     offers?:  {
       __typename: "ModelOfferConnection",
       items:  Array< {
@@ -7269,21 +7158,7 @@ export type OnUpdateUserSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    soldSneakers?:  {
-      __typename: "ModelSoldSneakerConnection",
-      items:  Array< {
-        __typename: "SoldSneaker",
-        id: string,
-        brand: string,
-        primaryName: string,
-        secondaryName: string,
-        image: string,
-        userID: string,
-        createdAt?: string | null,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    transactions: number,
     offers?:  {
       __typename: "ModelOfferConnection",
       items:  Array< {
@@ -7388,21 +7263,7 @@ export type OnDeleteUserSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    soldSneakers?:  {
-      __typename: "ModelSoldSneakerConnection",
-      items:  Array< {
-        __typename: "SoldSneaker",
-        id: string,
-        brand: string,
-        primaryName: string,
-        secondaryName: string,
-        image: string,
-        userID: string,
-        createdAt?: string | null,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    transactions: number,
     offers?:  {
       __typename: "ModelOfferConnection",
       items:  Array< {
@@ -7571,10 +7432,7 @@ export type OnCreateFollowingSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -7637,10 +7495,7 @@ export type OnUpdateFollowingSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -7703,10 +7558,7 @@ export type OnDeleteFollowingSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -7769,10 +7621,7 @@ export type OnCreateFollowersSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -7835,10 +7684,7 @@ export type OnUpdateFollowersSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -7901,10 +7747,7 @@ export type OnDeleteFollowersSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -7967,10 +7810,7 @@ export type OnCreateChatRoomUserSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -8034,6 +7874,7 @@ export type OnCreateChatRoomUserSubscription = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -8059,10 +7900,7 @@ export type OnUpdateChatRoomUserSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -8126,6 +7964,7 @@ export type OnUpdateChatRoomUserSubscription = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -8151,10 +7990,7 @@ export type OnDeleteChatRoomUserSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -8218,6 +8054,7 @@ export type OnDeleteChatRoomUserSubscription = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -8271,6 +8108,7 @@ export type OnCreateChatRoomSubscription = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -8283,12 +8121,14 @@ export type OnCreateChatRoomSubscription = {
         offerID: string,
         lastMessageID: string,
         receiverHasRead?: boolean | null,
+        roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
     } | null,
     receiverHasRead?: boolean | null,
+    roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -8339,6 +8179,7 @@ export type OnUpdateChatRoomSubscription = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -8351,12 +8192,14 @@ export type OnUpdateChatRoomSubscription = {
         offerID: string,
         lastMessageID: string,
         receiverHasRead?: boolean | null,
+        roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
     } | null,
     receiverHasRead?: boolean | null,
+    roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -8407,6 +8250,7 @@ export type OnDeleteChatRoomSubscription = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -8419,12 +8263,14 @@ export type OnDeleteChatRoomSubscription = {
         offerID: string,
         lastMessageID: string,
         receiverHasRead?: boolean | null,
+        roomStatus: ChatRoomStatus,
         createdAt: string,
         updatedAt: string,
       } | null,
       updatedAt: string,
     } | null,
     receiverHasRead?: boolean | null,
+    roomStatus: ChatRoomStatus,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -8449,10 +8295,7 @@ export type OnCreateMessageSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -8516,6 +8359,7 @@ export type OnCreateMessageSubscription = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -8542,10 +8386,7 @@ export type OnUpdateMessageSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -8609,6 +8450,7 @@ export type OnUpdateMessageSubscription = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -8635,10 +8477,7 @@ export type OnDeleteMessageSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -8702,6 +8541,7 @@ export type OnDeleteMessageSubscription = {
         updatedAt: string,
       } | null,
       receiverHasRead?: boolean | null,
+      roomStatus: ChatRoomStatus,
       createdAt: string,
       updatedAt: string,
     } | null,
@@ -8741,10 +8581,7 @@ export type OnCreateSneakerSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -8838,10 +8675,7 @@ export type OnUpdateSneakerSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -8935,10 +8769,7 @@ export type OnDeleteSneakerSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -9020,10 +8851,7 @@ export type OnCreateSoldSneakerSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -9089,10 +8917,7 @@ export type OnUpdateSoldSneakerSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -9158,10 +8983,7 @@ export type OnDeleteSoldSneakerSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -9224,10 +9046,7 @@ export type OnCreateClaimSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -9295,6 +9114,7 @@ export type OnCreateClaimSubscription = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -9334,10 +9154,7 @@ export type OnUpdateClaimSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -9405,6 +9222,7 @@ export type OnUpdateClaimSubscription = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -9444,10 +9262,7 @@ export type OnDeleteClaimSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -9515,6 +9330,7 @@ export type OnDeleteClaimSubscription = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -9569,6 +9385,7 @@ export type OnCreateListedItemSubscription = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -9603,10 +9420,7 @@ export type OnCreateListedItemSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -9684,6 +9498,7 @@ export type OnUpdateListedItemSubscription = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -9718,10 +9533,7 @@ export type OnUpdateListedItemSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -9799,6 +9611,7 @@ export type OnDeleteListedItemSubscription = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -9833,10 +9646,7 @@ export type OnDeleteListedItemSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -9903,10 +9713,7 @@ export type OnCreateOfferSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -9958,10 +9765,7 @@ export type OnCreateOfferSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -10036,6 +9840,7 @@ export type OnCreateOfferSubscription = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -10071,10 +9876,7 @@ export type OnUpdateOfferSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -10126,10 +9928,7 @@ export type OnUpdateOfferSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -10204,6 +10003,7 @@ export type OnUpdateOfferSubscription = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,
@@ -10239,10 +10039,7 @@ export type OnDeleteOfferSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -10294,10 +10091,7 @@ export type OnDeleteOfferSubscription = {
         __typename: "ModelSneakerConnection",
         nextToken?: string | null,
       } | null,
-      soldSneakers?:  {
-        __typename: "ModelSoldSneakerConnection",
-        nextToken?: string | null,
-      } | null,
+      transactions: number,
       offers?:  {
         __typename: "ModelOfferConnection",
         nextToken?: string | null,
@@ -10372,6 +10166,7 @@ export type OnDeleteOfferSubscription = {
         username: string,
         email: string,
         avatarImageURL: string,
+        transactions: number,
         status?: string | null,
         zipCode: string,
         expoToken?: string | null,

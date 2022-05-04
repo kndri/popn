@@ -10,36 +10,39 @@ import { VerificationBage } from '../verification-badge/verification-badge';
 
 // I will fix the props later
 export const SneakerCard: React.FC<SneakerCardProps> = (props): JSX.Element => {
-    const { sneaker } = props;
-    const sneakerPointIcon = require('../../assets/images/sneakerpoint_icon.png');
-    return (
-        <>
-            <View style={styles.CARD}>
-                <View style={styles.BADGE}>
-                    {props.showVerificationBage && <VerificationBage type="icon" />}
-                </View>
+	const { sneaker } = props;
+	const sneakerPointIcon = require('../../assets/images/sneakerpoint_icon.png');
+	return (
+		<>
+			<View style={styles.CARD}>
+				{sneaker.claim.items[0] != undefined &&
+					sneaker.claim.items[0].status == 'verified' && (
+						<View style={styles.BADGE}>
+							<VerificationBage type="icon" />
+						</View>
+					)}
 
-                <Image source={{ uri: sneaker.image }} style={styles.PRODUCT} />
-            </View>
-            <View style={styles.CONTENT_CONTAINER}>
-                <Text preset="secondary">{sneaker.primaryName} </Text>
-                <Text preset="primaryProduct">{sneaker.secondaryName} </Text>
+				<Image source={{ uri: sneaker.image }} style={styles.PRODUCT} />
+			</View>
+			<View style={styles.CONTENT_CONTAINER}>
+				<Text preset="secondary">{sneaker.primaryName} </Text>
+				<Text preset="primaryProduct">{sneaker.secondaryName} </Text>
 
-                {props.sneakerPoint && (
-                    <View style={{ flexDirection: 'row' }}>
-                        <Image
-                            source={sneakerPointIcon}
-                            style={{
-                                width: 15,
-                                height: 20,
-                                resizeMode: 'contain',
-                                marginRight: 5,
-                            }}
-                        />
-                        <Text preset="bold">{props.sneakerPoint}</Text>
-                    </View>
-                )}
-            </View>
-        </>
-    );
+				{props.sneakerPoint && (
+					<View style={{ flexDirection: 'row' }}>
+						<Image
+							source={sneakerPointIcon}
+							style={{
+								width: 15,
+								height: 20,
+								resizeMode: 'contain',
+								marginRight: 5,
+							}}
+						/>
+						<Text preset="bold">{props.sneakerPoint}</Text>
+					</View>
+				)}
+			</View>
+		</>
+	);
 };

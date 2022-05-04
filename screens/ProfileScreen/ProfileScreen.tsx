@@ -27,6 +27,7 @@ import {
 	getFollowersFromUser,
 	getUserFromDb,
 } from '../../aws-functions/aws-functions';
+
 import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';

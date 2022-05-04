@@ -11,6 +11,7 @@ import {
 	createOffer,
 	createChatRoom,
 	createChatRoomUser,
+	deleteListedItem,
 } from '../src/graphql/mutations';
 import {
 	listSneakerStores,
@@ -63,6 +64,7 @@ export const addUserSneaker = async (sneakerObject: Object) => {
 			image: sneakerObject.image,
 			userID: currentUser.attributes.sub,
 			sneakerStoreID: sneakerObject.id,
+			prevSellers: [currentUser.attributes.sub],
 		};
 		await API.graphql(graphqlOperation(createSneaker, { input: newSneaker }));
 	} catch (e) {
@@ -82,6 +84,20 @@ export const deleteUserSneaker = async (id: string) => {
 			id: id,
 		};
 		await API.graphql(graphqlOperation(deleteSneaker, { input: newSneaker }));
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+//deletes shoe from user
+export const deleteUserListing = async (id: string) => {
+	try {
+		const newSneaker = {
+			id: id,
+		};
+		await API.graphql(
+			graphqlOperation(deleteListedItem, { input: newSneaker })
+		);
 	} catch (e) {
 		console.log(e);
 	}
@@ -336,7 +352,7 @@ export const getListingByAvailablity = async () => {
 
 		return listings.data.listedItemByStatus.items;
 	} catch (e) {
-		console.log('error: ', e);
+		console.log('errorsss: ', e);
 	}
 };
 
@@ -382,6 +398,7 @@ export const addChatRoom = async (offerID: string) => {
 			input: {
 				offerID: offerID,
 				lastMessageID: Math.round(Math.random() * 1000000),
+				roomStatus: 'active',
 			},
 		})
 	);

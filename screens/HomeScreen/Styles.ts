@@ -67,5 +67,10 @@ export default StyleSheet.create({
 		borderRadius: 5,
 		borderColor: '#FFFFFF',
 		backgroundColor: 'white',
+		justifyContent: 'center',
+	},
+
+	TEXT_STYLE: {
+		color: '#878C90',
 	},
 });
