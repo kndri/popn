@@ -21,7 +21,7 @@ import {
 } from "../../aws-functions/aws-functions";
 import { useToast } from "../../components/Toast";
 
-import styles from "./Styles";
+import styles from "./styles";
 
 export default function NewPostScreen(props: any) {
   const { comment } = props.route.params;

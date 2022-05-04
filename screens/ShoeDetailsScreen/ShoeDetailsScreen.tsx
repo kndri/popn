@@ -20,7 +20,7 @@ import {
 	getCurrentSneaker,
 } from '../../aws-functions/aws-functions';
 
-import styles from './Styles';
+import styles from './styles';
 import { useAuth } from '../../contexts/auth';
 
 const example = require('../../assets/images/verify_example.png');

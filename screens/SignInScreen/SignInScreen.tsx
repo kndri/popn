@@ -14,7 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../contexts/auth";
 import { useToast } from "../../components/Toast";
 
-import styles from "./Styles";
+import styles from "./styles";
 
 const eye = require("../../assets/images/reveal.png");
 

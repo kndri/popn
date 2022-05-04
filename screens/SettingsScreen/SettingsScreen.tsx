@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Screen, Text, Header } from '../../components';
 import { useAuth } from '../../contexts/auth';
 
-import styles from './Styles';
+import styles from './styles';
 
 const arrow = require('../../assets/images/arrow-ios-forward-outline.png');
 

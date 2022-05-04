@@ -22,7 +22,7 @@ const verified = require('../../assets/images/verified_badge.png');
 const location_icon = require('../../assets/images/zipcode-icon.png');
 
 // NOTE: This should be refactored
-import styles from './Styles';
+import styles from './styles';
 
 export default function UserProfileScreen(props?: any) {
 	const userID = props.route.params;

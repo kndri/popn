@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { listUsers } from '../../src/graphql/queries';
 
-import styles from './Styles';
+import styles from './styles';
 import { getListingByZipCode } from '../../aws-functions/aws-functions';
 
 export default function SearchUserScreen() {
