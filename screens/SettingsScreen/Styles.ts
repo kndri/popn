@@ -10,8 +10,8 @@ export default StyleSheet.create({
   },
 
   HEADING_TITLE: {
-    textAlign: "center",
-    marginBottom: 5,
+    color: "#B7B7B7",
+    marginBottom: 20,
   },
 
   SETTINGS_NAME: {
@@ -21,9 +21,6 @@ export default StyleSheet.create({
 
   FLATLIST: {
     marginBottom: 25,
-    borderWidth: 2,
-    borderColor: "black",
-    borderRadius: 4,
   },
 
   ARROW_ICON: {
