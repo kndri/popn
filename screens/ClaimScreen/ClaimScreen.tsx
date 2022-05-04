@@ -135,7 +135,7 @@ export default function ClaimScreen() {
 					</View>
 					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
 						<Image
-							source={{ uri: item.imageUrl }}
+							source={{ uri: item.image }}
 							style={{ height: 81, width: 100, resizeMode: 'contain' }}
 						/>
 					</View>
@@ -197,7 +197,7 @@ export default function ClaimScreen() {
 					</View>
 					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
 						<Image
-							source={{ uri: item.imageUrl }}
+							source={{ uri: item.image }}
 							style={{ height: 81, width: 100, resizeMode: 'contain' }}
 						/>
 					</View>

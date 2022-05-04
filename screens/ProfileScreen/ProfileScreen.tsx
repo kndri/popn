@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { View, Image, Alert, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+	View,
+	Image,
+	Alert,
+	FlatList,
+	TouchableOpacity,
+	ActivityIndicator,
+} from 'react-native';
 import {
 	useIsFocused,
 	useNavigation,
@@ -195,7 +202,7 @@ export default function ProfileScreen() {
 									<SneakerCard
 										sneaker={item}
 										showVerificationBage
-										sneakerPoint={100}
+										sneakerPoint={item.sneaker.points}
 									/>
 								</TouchableOpacity>
 							)}
