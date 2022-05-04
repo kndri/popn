@@ -6,14 +6,16 @@ import {
 	useRoute,
 } from '@react-navigation/native';
 import { GiftedChat, Bubble, Send, Composer } from 'react-native-gifted-chat';
-import { IMessage } from '../../types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { API, graphqlOperation } from 'aws-amplify';
 import {
 	createMessage,
 	updateChatRoom,
+	updateListedItem,
 	updateOffer,
+	updateSneaker,
+	updateUser,
 } from '../../src/graphql/mutations';
 import {
 	messagesByChatRoom,
@@ -24,14 +26,15 @@ import {
 	onCreateMessage,
 	onUpdateOffer,
 } from '../../src/graphql/subscriptions';
-import { spacing } from '../../theme';
+
 import { Header, Text, Button } from '../../components';
 import { useToast } from '../../components/Toast';
-
-import styles from './styles';
-import { useAuth } from '../../contexts/auth';
-
 import ConfirmationModal from './ConfirmationModal';
+import { useAuth } from '../../contexts/auth';
+import { IMessage } from '../../types';
+
+import { spacing } from '../../theme';
+import styles from './styles';
 
 // Styles
 const CONTAINER: ViewStyle = {
@@ -68,7 +71,6 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const [buyerModalVisible, setBuyerModalVisible] = React.useState(false);
 	const [sellerModalVisible, setSellerModalVisible] = React.useState(false);
 	const toast = useToast();
-
 	/**
 	 * createNotification will create a notification after a user accepts/declines/message a user
 	 * @param message
@@ -154,22 +156,60 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	const completeOffer = async () => {
 		// Complete the offer.
 		try {
-			await API.graphql(
-				graphqlOperation(updateOffer, {
-					input: {
-						id: offer.id,
-						status: 'completed',
-					},
-				})
-			);
-			await API.graphql(
-				graphqlOperation(updateChatRoom, {
-					input: {
-						id: id,
-						roomStatus: 'archive',
-					},
-				})
-			);
+			Promise.all([
+				await API.graphql(
+					graphqlOperation(updateOffer, {
+						input: {
+							id: offer.id,
+							status: 'completed',
+						},
+					})
+				),
+				await API.graphql(
+					graphqlOperation(updateListedItem, {
+						input: {
+							id: listing.id,
+							status: 'sold',
+						},
+					})
+				),
+				await API.graphql(
+					graphqlOperation(updateChatRoom, {
+						input: {
+							id: id,
+							roomStatus: 'archive',
+						},
+					})
+				),
+				await API.graphql(
+					graphqlOperation(updateUser, {
+						input: {
+							id: offer.sellingUserID,
+							transactions: offer.seller.transactions + 1,
+						},
+					})
+				),
+				await API.graphql(
+					graphqlOperation(updateUser, {
+						input: {
+							id: offer.buyingUserID,
+							transactions: offer.buyer.transactions + 1,
+						},
+					})
+				),
+				await API.graphql(
+					graphqlOperation(updateSneaker, {
+						input: {
+							id: listing.sneakerID,
+							userID: offer.buyingUserID,
+							prevSellers: [
+								...listing.sneakerData.prevSellers,
+								offer.sellingUserID,
+							],
+						},
+					})
+				),
+			]);
 		} catch (error) {
 			console.log(error);
 		}
@@ -219,7 +259,11 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	}, [isFocused]);
 
 	React.useEffect(() => {
-		if (offer.sellerConfirmed && offer.buyerConfirmed) {
+		if (
+			offer.status == 'accepted' &&
+			offer.sellerConfirmed &&
+			offer.buyerConfirmed
+		) {
 			completeOffer();
 		}
 	}, [offer]);

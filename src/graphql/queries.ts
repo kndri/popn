@@ -25,19 +25,7 @@ export const getUser = /* GraphQL */ `
 				}
 				nextToken
 			}
-			soldSneakers {
-				items {
-					id
-					brand
-					primaryName
-					secondaryName
-					image
-					userID
-					createdAt
-					updatedAt
-				}
-				nextToken
-			}
+			transactions
 			offers {
 				items {
 					id
@@ -123,9 +111,7 @@ export const listUsers = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -257,9 +243,7 @@ export const getFollowing = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -316,6 +300,7 @@ export const listFollowings = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -344,9 +329,7 @@ export const getFollowers = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -403,6 +386,7 @@ export const listFollowerss = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -431,9 +415,7 @@ export const getChatRoomUser = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -513,6 +495,7 @@ export const listChatRoomUsers = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -574,6 +557,7 @@ export const getChatRoom = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -649,9 +633,7 @@ export const getMessage = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -732,6 +714,7 @@ export const listMessages = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -780,9 +763,7 @@ export const getSneaker = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -865,6 +846,7 @@ export const listSneakers = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -910,9 +892,7 @@ export const getSoldSneaker = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -972,6 +952,7 @@ export const listSoldSneakers = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1000,9 +981,7 @@ export const getClaim = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1059,6 +1038,7 @@ export const getClaim = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1097,6 +1077,7 @@ export const listClaims = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1152,6 +1133,7 @@ export const getListedItem = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1183,9 +1165,7 @@ export const getListedItem = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1262,6 +1242,7 @@ export const listListedItems = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1294,9 +1275,7 @@ export const getOffer = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1340,9 +1319,7 @@ export const getOffer = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1408,6 +1385,7 @@ export const getOffer = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1443,6 +1421,7 @@ export const listOffers = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1455,6 +1434,7 @@ export const listOffers = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1598,6 +1578,7 @@ export const followingByUser = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1636,6 +1617,7 @@ export const followersByUser = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1676,6 +1658,7 @@ export const chatRoomUserByUser = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1743,6 +1726,7 @@ export const messagesByChatRoom = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1803,6 +1787,7 @@ export const sneakerByUser = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1858,6 +1843,7 @@ export const soldItemByUser = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1916,6 +1902,7 @@ export const listedItemByUser = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1974,6 +1961,7 @@ export const listedItemByZipCode = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2032,6 +2020,7 @@ export const listedItemByBrand = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2090,6 +2079,7 @@ export const listedItemByPrice = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2148,6 +2138,7 @@ export const listedItemBySize = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2206,6 +2197,7 @@ export const listedItemByCondition = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2266,6 +2258,7 @@ export const listedItemByStatus = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2308,6 +2301,7 @@ export const offerByUser = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2320,6 +2314,7 @@ export const offerByUser = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken

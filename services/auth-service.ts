@@ -71,7 +71,6 @@ const signUp = async (
 	// variable to store user id
 	let userId: any;
 	let new_image: any;
-	let token = (await Notifications.getExpoPushTokenAsync()).data;
 
 	if (image_url.includes('defaultUser') === false) {
 		new_image = await uploadImage(_username, image_url);
@@ -105,7 +104,7 @@ const signUp = async (
 				avatarImageURL: image_url,
 				email: email,
 				zipCode: zipCode,
-				expoToken: token,
+				transactions: 0,
 			};
 			try {
 				await Auth.signIn(email, _password);

@@ -36,19 +36,7 @@ export const createUser = /* GraphQL */ `
 				}
 				nextToken
 			}
-			soldSneakers {
-				items {
-					id
-					brand
-					primaryName
-					secondaryName
-					image
-					userID
-					createdAt
-					updatedAt
-				}
-				nextToken
-			}
+			transactions
 			offers {
 				items {
 					id
@@ -144,19 +132,7 @@ export const updateUser = /* GraphQL */ `
 				}
 				nextToken
 			}
-			soldSneakers {
-				items {
-					id
-					brand
-					primaryName
-					secondaryName
-					image
-					userID
-					createdAt
-					updatedAt
-				}
-				nextToken
-			}
+			transactions
 			offers {
 				items {
 					id
@@ -252,19 +228,7 @@ export const deleteUser = /* GraphQL */ `
 				}
 				nextToken
 			}
-			soldSneakers {
-				items {
-					id
-					brand
-					primaryName
-					secondaryName
-					image
-					userID
-					createdAt
-					updatedAt
-				}
-				nextToken
-			}
+			transactions
 			offers {
 				items {
 					id
@@ -442,9 +406,7 @@ export const createFollowing = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -502,9 +464,7 @@ export const updateFollowing = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -562,9 +522,7 @@ export const deleteFollowing = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -622,9 +580,7 @@ export const createFollowers = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -682,9 +638,7 @@ export const updateFollowers = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -742,9 +696,7 @@ export const deleteFollowers = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -802,9 +754,7 @@ export const createChatRoomUser = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -885,9 +835,7 @@ export const updateChatRoomUser = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -968,9 +916,7 @@ export const deleteChatRoomUser = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1075,6 +1021,7 @@ export const createChatRoom = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1141,6 +1088,7 @@ export const updateChatRoom = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1207,6 +1155,7 @@ export const deleteChatRoom = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -1251,9 +1200,7 @@ export const createMessage = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1335,9 +1282,7 @@ export const updateMessage = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1419,9 +1364,7 @@ export const deleteMessage = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1513,9 +1456,7 @@ export const createSneaker = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1588,8 +1529,6 @@ export const updateSneaker = /* GraphQL */ `
 				secondaryName
 				image
 				points
-				createdAt
-				updatedAt
 			}
 			userID
 			user {
@@ -1601,9 +1540,7 @@ export const updateSneaker = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1676,8 +1613,6 @@ export const deleteSneaker = /* GraphQL */ `
 				secondaryName
 				image
 				points
-				createdAt
-				updatedAt
 			}
 			userID
 			user {
@@ -1689,9 +1624,7 @@ export const deleteSneaker = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1766,9 +1699,7 @@ export const createSoldSneaker = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1829,9 +1760,7 @@ export const updateSoldSneaker = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1892,9 +1821,7 @@ export const deleteSoldSneaker = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -1952,9 +1879,7 @@ export const createClaim = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -2003,8 +1928,6 @@ export const createClaim = /* GraphQL */ `
 					secondaryName
 					image
 					points
-					createdAt
-					updatedAt
 				}
 				userID
 				user {
@@ -2013,6 +1936,7 @@ export const createClaim = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2052,9 +1976,7 @@ export const updateClaim = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -2103,8 +2025,6 @@ export const updateClaim = /* GraphQL */ `
 					secondaryName
 					image
 					points
-					createdAt
-					updatedAt
 				}
 				userID
 				user {
@@ -2113,6 +2033,7 @@ export const updateClaim = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2152,9 +2073,7 @@ export const deleteClaim = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -2203,8 +2122,6 @@ export const deleteClaim = /* GraphQL */ `
 					secondaryName
 					image
 					points
-					createdAt
-					updatedAt
 				}
 				userID
 				user {
@@ -2213,6 +2130,7 @@ export const deleteClaim = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2256,8 +2174,6 @@ export const createListedItem = /* GraphQL */ `
 					secondaryName
 					image
 					points
-					createdAt
-					updatedAt
 				}
 				userID
 				user {
@@ -2266,6 +2182,7 @@ export const createListedItem = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2297,9 +2214,7 @@ export const createListedItem = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -2361,8 +2276,6 @@ export const updateListedItem = /* GraphQL */ `
 					secondaryName
 					image
 					points
-					createdAt
-					updatedAt
 				}
 				userID
 				user {
@@ -2371,6 +2284,7 @@ export const updateListedItem = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2402,9 +2316,7 @@ export const updateListedItem = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -2466,8 +2378,6 @@ export const deleteListedItem = /* GraphQL */ `
 					secondaryName
 					image
 					points
-					createdAt
-					updatedAt
 				}
 				userID
 				user {
@@ -2476,6 +2386,7 @@ export const deleteListedItem = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2507,9 +2418,7 @@ export const deleteListedItem = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -2571,9 +2480,7 @@ export const createOffer = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -2617,9 +2524,7 @@ export const createOffer = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -2685,6 +2590,7 @@ export const createOffer = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2721,9 +2627,7 @@ export const updateOffer = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -2767,9 +2671,7 @@ export const updateOffer = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -2835,6 +2737,7 @@ export const updateOffer = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken
@@ -2871,9 +2774,7 @@ export const deleteOffer = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -2917,9 +2818,7 @@ export const deleteOffer = /* GraphQL */ `
 				sneakers {
 					nextToken
 				}
-				soldSneakers {
-					nextToken
-				}
+				transactions
 				offers {
 					nextToken
 				}
@@ -2985,6 +2884,7 @@ export const deleteOffer = /* GraphQL */ `
 					username
 					email
 					avatarImageURL
+					transactions
 					status
 					zipCode
 					expoToken

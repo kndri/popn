@@ -5,7 +5,7 @@ type User @model {
 	email: String!
 	avatarImageURL: String!
 	sneakers: [Sneaker] @connection(keyName: "byUser", fields: ["id"])
-	soldSneakers: [SoldSneaker] @connection(keyName: "byUser", fields: ["id"])
+	transactions: Int!
 	offers: [Offer] @connection(keyName: "byUser", fields: ["id"])
 	following: [Following] @connection(keyName: "byUser", fields: ["id"])
 	follower: [Followers] @connection(keyName: "byUser", fields: ["id"])

@@ -35,18 +35,17 @@ export default function ProfileScreen() {
 	const [followers, setFollowers] = React.useState<number>(0);
 	const [isLoading, setIsLoading] = React.useState(true);
 	const isFocused = useIsFocused();
-
 	/**
 	 * getUserData() will retrieve sneaker and following/followers data
 	 */
 	const getUserData = async () => {
-		const sneakerlist = await getSneakersFromUser(user!.id).catch((error) =>
+		const sneakerlist = await getSneakersFromUser(user?.id).catch((error) =>
 			console.log('error', error)
 		);
-		const following = await getFollowingFromUser(user!.id).catch((error) =>
+		const following = await getFollowingFromUser(user?.id).catch((error) =>
 			console.log('error', error)
 		);
-		const followers = await getFollowersFromUser(user!.id).catch((error) =>
+		const followers = await getFollowersFromUser(user?.id).catch((error) =>
 			console.log('error', error)
 		);
 
