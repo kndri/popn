@@ -171,7 +171,6 @@ export default function ProfileScreen() {
 
 	return (
 		<>
-			{console.log('user: ', user)}
 			{isLoading && (
 				<View style={{ flex: 1, justifyContent: 'center' }}>
 					<ActivityIndicator size="large" color="black" />
@@ -184,6 +183,8 @@ export default function ProfileScreen() {
 						<Header
 							rightIcon="settings"
 							onRightPress={() => navigation.navigate('Settings')}
+							leftIcon='plus'
+							onLeftPress={() => navigation.navigate('Claim')}
 						/>
 					</View>
 
@@ -212,11 +213,6 @@ export default function ProfileScreen() {
 									marginTop: 10,
 								}}
 							>
-								{/* <Image
-									source={location_icon}
-									style={{ width: 16, height: 16, marginRight: 5 }}
-								/> */}
-								{/* <Text>Charlotte, NC</Text> */}
 								<Text>Joined in {moment(userData.createdAt).format('YYYY')}</Text>
 							</View>
 

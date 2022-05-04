@@ -118,12 +118,12 @@ export default function SearchUserScreen() {
 					)}
 				</View>
 			) : (
-				<View>
+				<View style={{ backgroundColor: 'white', }}>
 					<View>
 						<FlatList
 							style={{
 								width: '100%',
-								backgroundColor: 'transparent',
+								backgroundColor: 'white',
 								marginHorizontal: 20,
 							}}
 							contentContainerStyle={{
@@ -141,7 +141,7 @@ export default function SearchUserScreen() {
 					<FlatList
 						style={{
 							width: '100%',
-							backgroundColor: 'transparent',
+							backgroundColor: 'white',
 							height: '100%',
 							marginTop: 20,
 							borderTopColor: 'black',

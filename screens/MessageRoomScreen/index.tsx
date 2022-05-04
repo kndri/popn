@@ -211,7 +211,7 @@ export default function MessageRoomScreen(props: MessageRoomScreenProps) {
 	}, [isFocused]);
 
 	React.useEffect(() => {
-		if (offer.sellerConfirmed && offer.buyerConfirmed) {
+		if (offer.status == 'pending' && offer.sellerConfirmed && offer.buyerConfirmed) {
 			completeOffer();
 		}
 	}, [offer]);

@@ -6,7 +6,7 @@ export const icons = {
 	settings: require('./icon-setting.png'),
 	profile: require('./profile.png'),
 	search: require('./icon-search.png'),
-	plus: require('./addUser.png'),
+	plus: require('./plus.png'),
 	message: require('./messages-icon2.png'),
 	close: require('./Cancel.png'),
 	more: require('./more.png'),
