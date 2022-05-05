@@ -50,6 +50,15 @@ export default StyleSheet.create({
     shadowRadius: 10,
   },
 
+  DATA_CONTAINER: {
+		backgroundColor: 'white',
+		flex: 1,
+		height: '100%',
+		paddingHorizontal: spacing[2],
+		paddingTop: 10,
+		width: '100%',
+	},
+
   TEXTCENTER: {
     textAlign: "center",
     alignItems: "center",
@@ -68,12 +77,6 @@ export default StyleSheet.create({
     alignSelf: "center",
   },
 
-  DATA_CONTAINER: {
-    flex: 1,
-    backgroundColor: "white",
-    width: "100%",
-    height: "100%",
-  },
   FOLLOW_BUTTON: {
     borderRadius: 4,
   }

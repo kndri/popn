@@ -12,10 +12,11 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import moment from 'moment';
 
-import { Button, Screen, Text, Header } from '../../components';
+import { Button, Screen, Text, Header, SneakerCard } from '../../components';
 import {
-	getUserFromDb,
 	getFollowersFromUser,
+	getSneakersFromUser,
+	getUserFromDb,
 } from '../../aws-functions/aws-functions';
 //required images
 const verified = require('../../assets/images/verified_badge.png');
@@ -42,11 +43,19 @@ export default function UserProfileScreen(props?: any) {
 	const getUserData = async () => {
 		const user = await getUserFromDb(userID);
 		setUser(user);
+		const sneakerlist = await getSneakersFromUser(user?.id).catch((error) =>
+			console.log('error', error)
+		);
 		const followers = await getFollowersFromUser(user!.id).catch((error) =>
 			console.log('error', error)
 		);
+
 		setFollowers(followers.length);
-		setSneakerCollection(user.sneakers.items);
+
+		if (sneakerlist !== undefined) {
+			setSneakerCollection(sneakerlist);
+		}
+
 		setIsLoading(false);
 	};
 
@@ -60,72 +69,7 @@ export default function UserProfileScreen(props?: any) {
 				navigation.navigate('ShoeDetails', { shoeID: item.id });
 			}}
 		>
-			<View
-				style={{
-					justifyContent: 'space-evenly',
-					height: 150,
-					width: 150,
-					borderWidth: 1,
-					borderColor: '#EBEBEB',
-					borderRadius: 10,
-					marginBottom: 40,
-					marginHorizontal: 10,
-				}}
-			>
-				<View
-					style={{
-						justifyContent: 'flex-start',
-						alignItems: 'flex-start',
-						marginLeft: 10,
-						marginTop: 10,
-					}}
-				>
-					<Text
-						text={`${item.primaryName}`}
-						style={{ fontSize: 12, color: '#979797' }}
-					/>
-					<Text text={`${item.secondaryName}`} style={{ fontSize: 10 }} />
-					{item.claim.items.length > 0 ? (
-						<>
-							{item.claim?.items[0].status === 'verified' ? (
-								<Image
-									source={verified}
-									style={{ marginTop: 5, height: 20, width: 20 }}
-								/>
-							) : null}
-						</>
-					) : null}
-				</View>
-				<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-					<Image
-						source={{ uri: item.image }}
-						style={{ height: 81, width: 100, resizeMode: 'contain' }}
-					/>
-				</View>
-				<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-					<Button
-						preset="none"
-						style={{
-							justifyContent: 'center',
-							width: '70%',
-							height: 20,
-							paddingVertical: 2,
-							borderRadius: 10,
-							marginBottom: 15,
-						}}
-						onPress={() => {
-							navigation.navigate('ShoeDetails', { shoeID: item.id });
-						}}
-					>
-						<Text
-							preset="bold"
-							style={{ fontSize: 12, color: 'white', fontWeight: 'bold' }}
-						>
-							View
-						</Text>
-					</Button>
-				</View>
-			</View>
+			<SneakerCard sneaker={item} sneakerPoint={item.sneaker.points} />
 		</TouchableOpacity>
 	);
 
@@ -182,9 +126,9 @@ export default function UserProfileScreen(props?: any) {
 							renderItem={renderSneaker}
 							keyExtractor={(sneaker) => String(sneaker.id)}
 							numColumns={2}
-							contentContainerStyle={{
+							columnWrapperStyle={{
 								justifyContent: 'space-between',
-								alignItems: 'center',
+								marginBottom: 15,
 							}}
 						/>
 					</View>
@@ -232,7 +176,6 @@ export default function UserProfileScreen(props?: any) {
 								preset="primary"
 								style={styles.FOLLOW_BUTTON}
 								text="Follow"
-							// onPress={() => { }}
 							/>
 						</View>
 
@@ -245,11 +188,6 @@ export default function UserProfileScreen(props?: any) {
 									marginTop: 10,
 								}}
 							>
-								{/* <Image
-									source={location_icon}
-									style={{ width: 16, height: 16, marginRight: 5 }}
-								/>
-								<Text>Charlotte, NC</Text> */}
 								<Text>Joined in {moment(user.createdAt).format('YYYY')} </Text>
 							</View>
 

@@ -1,10 +1,11 @@
 {
 	"expo": {
-		"name": "popnApp",
-		"slug": "popnApp",
+		"name": "POPN",
+		"slug": "POPN",
+		"privacy": "public",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/images/icon.png",
+		"icon": "./assets/images/popn-icon.png",
 		"scheme": "myapp",
 		"userInterfaceStyle": "automatic",
 		"splash": {
@@ -21,8 +22,8 @@
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/images/adaptive-icon.png",
-				"backgroundColor": "#ffffff"
+				"foregroundImage": "./assets/images/popn-icon.png",
+				"backgroundColor": "#000000"
 			}
 		},
 		"web": {
