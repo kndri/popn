@@ -81,7 +81,9 @@ export default function Home() {
 					<Text style={styles.TEXT_STYLE}> Search</Text>
 				</View>
 			</TouchableOpacity>
-			<View>{<Feed productData={listingData} />}</View>
+			<View>
+				<Feed productData={listingData} />
+			</View>
 		</Screen>
 	);
 }
