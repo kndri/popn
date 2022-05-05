@@ -130,7 +130,9 @@ export const confirmNewPassword = (
 	new_password: string
 ) => {
 	// Collect confirmation code and new password, then
-	Auth.forgotPasswordSubmit(username, code, new_password);
+	Auth.forgotPasswordSubmit(username, code, new_password)
+		.then(data => console.log(data))
+		.catch(err => console.log(err));
 };
 
 export type SneakerData = {

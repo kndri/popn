@@ -67,7 +67,6 @@ export default function ProfileScreen() {
 		setFollowers(followers.length);
 		setIsLoading(false);
 	};
-
 	React.useEffect(() => {
 		getUserData();
 		updateAuth();
@@ -94,7 +93,7 @@ export default function ProfileScreen() {
 	const renderCollection = () => {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center' }}>
-				{sneakerCollection == undefined ? (
+				{sneakerCollection.length == 0 ? (
 					renderEmptyCollection()
 				) : (
 					<View style={styles.DATA_CONTAINER}>

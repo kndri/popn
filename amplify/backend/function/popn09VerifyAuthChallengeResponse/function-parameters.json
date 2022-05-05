@@ -1,0 +1,17 @@
+{
+  "trigger": true,
+  "modules": [
+    "custom"
+  ],
+  "parentResource": "popn09",
+  "functionName": "popn09VerifyAuthChallengeResponse",
+  "resourceName": "popn09VerifyAuthChallengeResponse",
+  "parentStack": "auth",
+  "triggerEnvs": "[]",
+  "triggerDir": "/Users/haslhoff/.nvm/versions/node/v14.18.1/lib/node_modules/@aws-amplify/cli/node_modules/@aws-amplify/amplify-category-auth/provider-utils/awscloudformation/triggers/VerifyAuthChallengeResponse",
+  "triggerTemplate": "VerifyAuthChallengeResponse.json.ejs",
+  "triggerEventPath": "VerifyAuthChallengeResponse.event.json",
+  "roleName": "popn09VerifyAuthChallengeResponse",
+  "skipEdit": true,
+  "enableCors": false
+}

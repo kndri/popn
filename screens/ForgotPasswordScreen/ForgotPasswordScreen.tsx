@@ -1,17 +1,17 @@
 import * as React from "react";
-import { View, ViewStyle, TextStyle, Alert } from "react-native";
-import { color, spacing, typography } from "../../theme";
+import { View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 import {
   Button,
   Screen,
   Text,
   Header,
   TextField,
-  AutoImage as Image,
 } from "../../components";
+
 import { Auth } from "aws-amplify";
-import { useNavigation } from "@react-navigation/native";
-import { forgotPassword } from "../../aws-functions/aws-functions";
+// import { forgotPassword } from "../../aws-functions/aws-functions";
 
 import styles from "./styles";
 
@@ -62,7 +62,7 @@ export default function ForgotPasswordScreen() {
           text="Continue"
           preset="primary"
           onPress={() => {
-            // forgotPassword(email)
+            Auth.forgotPassword(email)
             navigation.navigate("ResetPassword", email);
           }}
         />

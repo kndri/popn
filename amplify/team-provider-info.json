@@ -95,6 +95,22 @@
         "pinpoint": {
           "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
           "s3Key": "amplify-builds/pinpoint-57444442557954796d6b-build.zip"
+        },
+        "popn09CreateAuthChallenge": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn09CreateAuthChallenge-6247314341424a476f67-build.zip"
+        },
+        "popn09DefineAuthChallenge": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn09DefineAuthChallenge-71397a626b663444414a-build.zip"
+        },
+        "popn09VerifyAuthChallengeResponse": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn09VerifyAuthChallengeResponse-6a35536c436175672b38-build.zip"
+        },
+        "popn09PreTokenGeneration": {
+          "deploymentBucketName": "amplify-popn-devhasler-110439-deployment",
+          "s3Key": "amplify-builds/popn09PreTokenGeneration-6d685056515633632b37-build.zip"
         }
       },
       "auth": {
