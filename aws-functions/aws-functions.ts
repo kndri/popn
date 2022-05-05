@@ -29,6 +29,7 @@ import {
 	listListedItems,
 	listedItemByStatus,
 } from '../src/graphql/queries';
+import { ConsoleLogger } from '@aws-amplify/core';
 
 export const getUserFromDb = async (userID: string) => {
 	let user: any;
@@ -124,15 +125,14 @@ export const forgotPassword = (username: string) => {
 	}
 };
 
-export const confirmNewPassword = (
+export const confirmNewPassword = async (
 	username: string,
 	code: string,
 	new_password: string
 ) => {
 	// Collect confirmation code and new password, then
-	Auth.forgotPasswordSubmit(username, code, new_password)
-		.then(data => console.log(data))
-		.catch(err => console.log(err));
+	const response = await Auth.forgotPasswordSubmit(username, code, new_password).catch(err => console.log(err));
+	return response
 };
 
 export type SneakerData = {

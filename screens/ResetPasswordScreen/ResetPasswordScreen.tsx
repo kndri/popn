@@ -173,9 +173,16 @@ export default function ResetPasswordScreen(props: any) {
               } else if (password != confirmedPassword) {
                 toast.show("'Your passwords don't match'", { color: "red" });
               } else {
-                confirmNewPassword(username, code, password);
-                toast.show("Your password has been reset");
-                navigation.navigate("SignIn");
+                confirmNewPassword(username, code, password).then((response) => {
+                  if (response == "SUCCESS") {
+                    toast.show("Your password has been reset");
+                    navigation.navigate("SignIn");
+                  }
+                  else {
+                    toast.show('Invalid verification code provided, try again', { color: 'red' })
+                  }
+                });
+
               }
             }}
           />

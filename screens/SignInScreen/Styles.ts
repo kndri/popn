@@ -14,4 +14,7 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  DISABLED: {
+    backgroundColor: 'rgba(52, 52, 52, 0.25)',
+  },
 });

@@ -9,15 +9,25 @@ import {
   Header,
   TextField,
 } from "../../components";
+import { useToast } from "../../components/Toast";
 
 import { Auth } from "aws-amplify";
-// import { forgotPassword } from "../../aws-functions/aws-functions";
 
 import styles from "./styles";
 
 export default function ForgotPasswordScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState("");
+  const toast = useToast();
+
+  const forgotPasswordPressed = () => {
+    if (email === "") {
+      toast.show("You must provide an email address", { color: "red" });
+    } else {
+      Auth.forgotPassword(email)
+      navigation.navigate("ResetPassword", email);
+    }
+  };
 
   return (
     <Screen style={styles.CONTAINER}>
@@ -62,8 +72,7 @@ export default function ForgotPasswordScreen() {
           text="Continue"
           preset="primary"
           onPress={() => {
-            Auth.forgotPassword(email)
-            navigation.navigate("ResetPassword", email);
+            forgotPasswordPressed()
           }}
         />
       </View>
