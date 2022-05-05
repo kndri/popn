@@ -12,10 +12,12 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import moment from 'moment';
 
-import { Button, Screen, Text, Header } from '../../components';
+import { Button, Screen, Text, Header, ProductCard } from '../../components';
 import {
 	getUserFromDb,
 	getFollowersFromUser,
+	getSneakersFromUser,
+	fetchListedItemByUser,
 } from '../../aws-functions/aws-functions';
 //required images
 const verified = require('../../assets/images/verified_badge.png');
@@ -28,6 +30,7 @@ export default function UserProfileScreen(props?: any) {
 	const userID = props.route.params;
 	const navigation = useNavigation();
 	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
+	const [listedItems, setListedItems] = React.useState<any>([]);
 	const [followers, setFollowers] = React.useState<number>(0);
 	const [transactions, setTransactions] = React.useState<number>(0);
 	const [user, setUser] = React.useState<any>();
@@ -41,12 +44,26 @@ export default function UserProfileScreen(props?: any) {
 
 	const getUserData = async () => {
 		const user = await getUserFromDb(userID);
-		setUser(user);
+		const sneakerList = await getSneakersFromUser(userID).catch((error) =>
+			console.log('error', error)
+		);
+
+		const listings = await fetchListedItemByUser(user?.id).catch((error) =>
+			console.log('error', error)
+		);
 		const followers = await getFollowersFromUser(user!.id).catch((error) =>
 			console.log('error', error)
 		);
+
+		if (sneakerList !== undefined) {
+			setSneakerCollection(sneakerList);
+		}
+		if (listings !== undefined) {
+			setListedItems(listings);
+		}
+		setUser(user);
+		setTransactions(user.transactions);
 		setFollowers(followers.length);
-		setSneakerCollection(user.sneakers.items);
 		setIsLoading(false);
 	};
 
@@ -136,11 +153,26 @@ export default function UserProfileScreen(props?: any) {
 					renderEmptyListings()
 				) : (
 					//needs to be refactored to a flatlist that shwos all listings of this user
-					<Text
-						style={styles.TEXTCENTER}
-						preset="bold"
-						text="Available Listings."
-					/>
+					<View style={styles.DATA_CONTAINER}>
+						<FlatList
+							data={listedItems}
+							renderItem={({ item }) => (
+								<TouchableOpacity
+									onPress={() => {
+										navigation.navigate('ListingDetails', item);
+									}}
+								>
+									<ProductCard product={item} showPrice showVerificationBage />
+								</TouchableOpacity>
+							)}
+							keyExtractor={(sneaker) => String(sneaker.id)}
+							numColumns={2}
+							columnWrapperStyle={{
+								justifyContent: 'space-between',
+								marginBottom: 15,
+							}}
+						/>
+					</View>
 				)}
 			</View>
 		);
@@ -198,7 +230,7 @@ export default function UserProfileScreen(props?: any) {
 	);
 
 	const ListingsRoute = () => (
-		<View style={styles.DATA_CONTAINER}>{renderEmptyListings()}</View>
+		<View style={styles.DATA_CONTAINER}>{renderListings()}</View>
 	);
 
 	const initialLayout = { width: Dimensions.get('window').width };
@@ -232,7 +264,7 @@ export default function UserProfileScreen(props?: any) {
 								preset="primary"
 								style={styles.FOLLOW_BUTTON}
 								text="Follow"
-							// onPress={() => { }}
+								// onPress={() => { }}
 							/>
 						</View>
 
@@ -255,7 +287,7 @@ export default function UserProfileScreen(props?: any) {
 
 							<View style={{ flexDirection: 'row', marginTop: 10 }}>
 								<View style={styles.PROFILE_DETAILS}>
-									<Text preset="bold" text={'0'} />
+									<Text preset="bold" text={`${transactions}`} />
 									<Text
 										preset="default"
 										style={{ marginLeft: 6 }}

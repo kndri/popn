@@ -12,7 +12,6 @@ import {
 	createChatRoom,
 	createChatRoomUser,
 	deleteListedItem,
-	updateSneaker,
 } from '../src/graphql/mutations';
 import {
 	listSneakerStores,
@@ -29,6 +28,7 @@ import {
 	offerByUser,
 	listListedItems,
 	listedItemByStatus,
+	listedItemByUser,
 } from '../src/graphql/queries';
 
 export const getUserFromDb = async (userID: string) => {
@@ -355,7 +355,21 @@ export const getListingByAvailablity = async () => {
 
 		return listings.data.listedItemByStatus.items;
 	} catch (e) {
-		console.log('errorsss: ', e);
+		console.log('error: ', e);
+	}
+};
+
+export const fetchListedItemByUser = async (userID: string) => {
+	try {
+		const listings = await API.graphql(
+			graphqlOperation(listedItemByUser, {
+				sellerID: userID,
+			})
+		);
+
+		return listings.data.listedItemByUser.items;
+	} catch (err) {
+		console.log('error: ', err);
 	}
 };
 
