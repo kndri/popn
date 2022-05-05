@@ -20,8 +20,8 @@ import {
 } from '../../components';
 import EditProfileModal from './EditProfileModal';
 import {
-	getSneakersFromUser,
 	getFollowersFromUser,
+	getSneakersFromUser,
 	getUserFromDb,
 } from '../../aws-functions/aws-functions';
 
@@ -94,7 +94,6 @@ export default function ProfileScreen() {
 	const renderCollection = () => {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center' }}>
-				{console.log('sneakerCollection: ', sneakerCollection)}
 				{sneakerCollection == undefined ? (
 					renderEmptyCollection()
 				) : (
@@ -109,7 +108,6 @@ export default function ProfileScreen() {
 								>
 									<SneakerCard
 										sneaker={item}
-										showVerificationBage
 										sneakerPoint={item.sneaker.points}
 									/>
 								</TouchableOpacity>

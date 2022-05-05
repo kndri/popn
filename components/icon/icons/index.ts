@@ -6,11 +6,11 @@ export const icons = {
 	settings: require('./icon-setting.png'),
 	profile: require('./profile.png'),
 	search: require('./icon-search.png'),
-	plus: require('./plus.png'),
+	plus: require('./Plus.png'),
 	message: require('./messages-icon2.png'),
 	close: require('./Cancel.png'),
 	more: require('./more.png'),
-	save: require('./save.png'),
+	save: require('./Save.png'),
 };
 
 export type IconTypes = keyof typeof icons;

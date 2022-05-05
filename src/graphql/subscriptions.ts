@@ -1409,17 +1409,39 @@ export const onCreateSneaker = /* GraphQL */ `
         updatedAt
       }
       claim {
-        items {
+        id
+        userID
+        sneakerID
+        user {
           id
-          userID
-          sneakerID
+          age
+          username
+          email
+          avatarImageURL
+          transactions
           status
-          refNumber
-          claimMessage
+          zipCode
+          expoToken
           createdAt
           updatedAt
         }
-        nextToken
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          sneakerStoreID
+          userID
+          createdAt
+          prevSellers
+          updatedAt
+        }
+        status
+        refNumber
+        claimMessage
+        createdAt
+        updatedAt
       }
       createdAt
       prevSellers
@@ -1490,17 +1512,39 @@ export const onUpdateSneaker = /* GraphQL */ `
         updatedAt
       }
       claim {
-        items {
+        id
+        userID
+        sneakerID
+        user {
           id
-          userID
-          sneakerID
+          age
+          username
+          email
+          avatarImageURL
+          transactions
           status
-          refNumber
-          claimMessage
+          zipCode
+          expoToken
           createdAt
           updatedAt
         }
-        nextToken
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          sneakerStoreID
+          userID
+          createdAt
+          prevSellers
+          updatedAt
+        }
+        status
+        refNumber
+        claimMessage
+        createdAt
+        updatedAt
       }
       createdAt
       prevSellers
@@ -1571,17 +1615,39 @@ export const onDeleteSneaker = /* GraphQL */ `
         updatedAt
       }
       claim {
-        items {
+        id
+        userID
+        sneakerID
+        user {
           id
-          userID
-          sneakerID
+          age
+          username
+          email
+          avatarImageURL
+          transactions
           status
-          refNumber
-          claimMessage
+          zipCode
+          expoToken
           createdAt
           updatedAt
         }
-        nextToken
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          sneakerStoreID
+          userID
+          createdAt
+          prevSellers
+          updatedAt
+        }
+        status
+        refNumber
+        claimMessage
+        createdAt
+        updatedAt
       }
       createdAt
       prevSellers
@@ -1843,7 +1909,14 @@ export const onCreateClaim = /* GraphQL */ `
           updatedAt
         }
         claim {
-          nextToken
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
         }
         createdAt
         prevSellers
@@ -1937,7 +2010,14 @@ export const onUpdateClaim = /* GraphQL */ `
           updatedAt
         }
         claim {
-          nextToken
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
         }
         createdAt
         prevSellers
@@ -2031,7 +2111,14 @@ export const onDeleteClaim = /* GraphQL */ `
           updatedAt
         }
         claim {
-          nextToken
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
         }
         createdAt
         prevSellers
@@ -2080,7 +2167,14 @@ export const onCreateListedItem = /* GraphQL */ `
           updatedAt
         }
         claim {
-          nextToken
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
         }
         createdAt
         prevSellers
@@ -2179,7 +2273,14 @@ export const onUpdateListedItem = /* GraphQL */ `
           updatedAt
         }
         claim {
-          nextToken
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
         }
         createdAt
         prevSellers
@@ -2278,7 +2379,14 @@ export const onDeleteListedItem = /* GraphQL */ `
           updatedAt
         }
         claim {
-          nextToken
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
         }
         createdAt
         prevSellers
