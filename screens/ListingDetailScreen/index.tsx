@@ -35,7 +35,6 @@ import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
 import { offerByUser } from '../../src/graphql/queries';
 import { spacing } from '../../theme';
 import { useAuth } from '../../contexts/auth';
-
 import styles from './styles';
 
 const example = require('../../assets/images/verify_example.png');

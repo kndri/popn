@@ -7,6 +7,7 @@ export default StyleSheet.create({
 		flex: 1,
 		height: '100%',
 		backgroundColor: 'white',
+		paddingHorizontal: spacing[4],
 	},
 	CLAIM_SEARCH: {
 		alignItems: 'center',
@@ -16,10 +17,10 @@ export default StyleSheet.create({
 		borderWidth: 1,
 		flexDirection: 'row',
 		height: 48,
-		marginBottom: 20,
 		justifyContent: 'center',
+		marginVertical: 25,
 		paddingHorizontal: spacing[4],
-		width: '100%',
+		width: '85%',
 	},
 	TEXTCENTER: {
 		textAlign: 'center',

@@ -21,6 +21,7 @@ import { useToast } from '../../components/Toast';
 import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';
+import { spacing } from '../../theme';
 
 const search_icon = require('../../assets/images/searchIcon.png');
 
@@ -246,26 +247,30 @@ export default function ClaimScreen() {
 
 			{!isLoading && (
 				<Screen style={styles.CONTAINER}>
-					<Header
-						headerTx="Claim"
-						leftIcon={'back'}
-						onLeftPress={() => navigation.goBack()}
-					/>
+					<View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: spacing[2], }}>
+						<View style={styles.CLAIM_SEARCH}>
+							<Image
+								source={search_icon}
+								style={{ width: 16, height: 16 }}
+							/>
+							<TextInput
+								style={styles.TEXTFIELD_STYLE}
+								value={query}
+								autoCorrect={false}
+								onChangeText={(text) => setQuery(text)}
+								placeholder="Search"
+								placeholderTextColor={'#878C90'}
+								keyboardAppearance="default"
+							/>
+						</View>
 
-					<View style={styles.CLAIM_SEARCH}>
-						<Image
-							source={search_icon}
-							style={{ marginLeft: 17, width: 16, height: 16 }}
-						/>
-						<TextInput
-							style={styles.TEXTFIELD_STYLE}
-							value={query}
-							autoCorrect={false}
-							onChangeText={(text) => setQuery(text)}
-							placeholder="Search"
-							placeholderTextColor={'#878C90'}
-						/>
+						<TouchableOpacity
+							style={{ marginLeft: 15 }}
+							onPress={() => { navigation.navigate('Root') }}>
+							<Text preset='default'>Cancel</Text>
+						</TouchableOpacity>
 					</View>
+
 
 					<View style={styles.COLLECTION_CONTAINER}>
 						<FlatList
@@ -274,7 +279,7 @@ export default function ClaimScreen() {
 							keyExtractor={(sneaker) => String(sneaker.id)}
 							numColumns={2}
 							contentContainerStyle={{
-								justifyContent: 'space-between',
+								justifyContent: 'space-evenly',
 								alignItems: 'center',
 							}}
 						/>

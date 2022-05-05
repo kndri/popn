@@ -9,6 +9,7 @@ import {
 	Header,
 	ProductCard,
 	AutoImage as Image,
+	Icon,
 } from '../../components';
 
 import { API, graphqlOperation } from 'aws-amplify';
@@ -89,72 +90,80 @@ export default function SearchUserScreen() {
 
 	return (
 		<Screen style={styles.CONTAINER}>
-			<View style={styles.HEADER}>
-				<Header leftIcon="back" onLeftPress={() => navigation.goBack()} />
-			</View>
-			<View style={styles.CLAIM_SEARCH}>
-				<Image source={search_icon} style={{ width: 16, height: 16 }} />
-				<TextInput
-					style={styles.TEXTFIELD_STYLE}
-					value={query}
-					autoCorrect={false}
-					onChangeText={(text) => setQuery(text)}
-					placeholder="Search"
-					placeholderTextColor={'#878C90'}
-					onPressIn={() => navigation.navigate('UserSearch')}
-					keyboardAppearance="default"
-					autoFocus
-				/>
-			</View>
-			{query.length === 0 ||
-				(searchedContacts.length === 0 && searchedSneakers.length === 0) ? (
-				<View style={{ alignItems: 'center', backgroundColor: 'transparent' }}>
-					{searchedContacts.length < 1 &&
-						searchedSneakers.length < 1 &&
-						query.length > 0 && <Text>Results Not Found</Text>}
+			<View style={{ flexDirection: 'row', alignItems: 'center', }}>
+				<View style={styles.CLAIM_SEARCH}>
+					<Image source={search_icon} style={{ width: 16, height: 16 }} />
+					<TextInput
+						style={styles.TEXTFIELD_STYLE}
+						value={query}
+						autoCorrect={false}
+						onChangeText={(text) => setQuery(text)}
+						placeholder="Search"
+						placeholderTextColor={'#878C90'}
+						onPressIn={() => navigation.navigate('UserSearch')}
+						keyboardAppearance="default"
+						autoFocus
+					/>
 				</View>
-			) : (
-				<View style={{ backgroundColor: 'white' }}>
+
+				<TouchableOpacity
+					style={{ marginLeft: 15 }}
+					onPress={() => { navigation.navigate('Root') }}>
+					<Text preset='default'>Cancel</Text>
+				</TouchableOpacity>
+			</View >
+
+			{
+				query.length === 0 ||
+					(searchedContacts.length === 0 && searchedSneakers.length === 0) ? (
+					<View style={{ alignItems: 'center', backgroundColor: 'transparent' }}>
+						{searchedContacts.length < 1 &&
+							searchedSneakers.length < 1 &&
+							query.length > 0 && <Text>Results Not Found</Text>}
+					</View>
+				) : (
 					<View style={{ backgroundColor: 'white' }}>
+						<View style={{ backgroundColor: 'white' }}>
+							<FlatList
+								style={{
+									width: '100%',
+									backgroundColor: 'white',
+									marginHorizontal: 20,
+								}}
+								contentContainerStyle={{
+									paddingRight: 50,
+								}}
+								horizontal
+								data={searchedSneakers}
+								renderItem={({ item }) => (
+									<TouchableOpacity
+										onPress={() => {
+											navigation.navigate('ListingDetails', item);
+										}}
+									>
+										<ProductCard product={item} />
+									</TouchableOpacity>
+								)}
+								keyExtractor={(item) => String(item.id)}
+							/>
+						</View>
+
 						<FlatList
 							style={{
 								width: '100%',
 								backgroundColor: 'white',
-								marginHorizontal: 20,
+								height: '100%',
+								marginTop: 20,
+								borderTopColor: 'black',
+								borderTopWidth: 2,
 							}}
-							contentContainerStyle={{
-								paddingRight: 50,
-							}}
-							horizontal
-							data={searchedSneakers}
-							renderItem={({ item }) => (
-								<TouchableOpacity
-									onPress={() => {
-										navigation.navigate('ListingDetails', item);
-									}}
-								>
-									<ProductCard product={item} />
-								</TouchableOpacity>
-							)}
+							data={searchedContacts}
+							renderItem={({ item }) => <SearchedUserListItem user={item} />}
 							keyExtractor={(item) => String(item.id)}
 						/>
 					</View>
-
-					<FlatList
-						style={{
-							width: '100%',
-							backgroundColor: 'white',
-							height: '100%',
-							marginTop: 20,
-							borderTopColor: 'black',
-							borderTopWidth: 2,
-						}}
-						data={searchedContacts}
-						renderItem={({ item }) => <SearchedUserListItem user={item} />}
-						keyExtractor={(item) => String(item.id)}
-					/>
-				</View>
-			)}
-		</Screen>
+				)
+			}
+		</Screen >
 	);
 }
