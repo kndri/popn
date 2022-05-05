@@ -12,7 +12,14 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import moment from 'moment';
 
-import { Button, Screen, Text, Header, ProductCard } from '../../components';
+import {
+	Button,
+	Screen,
+	Text,
+	Header,
+	ProductCard,
+	SneakerCard,
+} from '../../components';
 import {
 	getUserFromDb,
 	getFollowersFromUser,
@@ -102,9 +109,9 @@ export default function UserProfileScreen(props?: any) {
 						style={{ fontSize: 12, color: '#979797' }}
 					/>
 					<Text text={`${item.secondaryName}`} style={{ fontSize: 10 }} />
-					{item.claim.items.length > 0 ? (
+					{item.claim != undefined ? (
 						<>
-							{item.claim?.items[0].status === 'verified' ? (
+							{item.claim.status === 'verified' ? (
 								<Image
 									source={verified}
 									style={{ marginTop: 5, height: 20, width: 20 }}
@@ -205,18 +212,25 @@ export default function UserProfileScreen(props?: any) {
 	const renderCollection = () => {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center' }}>
-				{sneakerCollection.length == 0 ? (
+				{sneakerCollection == undefined ? (
 					renderEmptyCollection()
 				) : (
 					<View style={styles.DATA_CONTAINER}>
 						<FlatList
 							data={sneakerCollection}
-							renderItem={renderSneaker}
+							renderItem={({ item }) => (
+								<TouchableOpacity disabled>
+									<SneakerCard
+										sneaker={item}
+										sneakerPoint={item.sneaker.points}
+									/>
+								</TouchableOpacity>
+							)}
 							keyExtractor={(sneaker) => String(sneaker.id)}
 							numColumns={2}
-							contentContainerStyle={{
+							columnWrapperStyle={{
 								justifyContent: 'space-between',
-								alignItems: 'center',
+								marginBottom: 15,
 							}}
 						/>
 					</View>
