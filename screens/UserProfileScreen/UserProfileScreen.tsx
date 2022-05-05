@@ -48,10 +48,10 @@ export default function UserProfileScreen(props?: any) {
 			console.log('error', error)
 		);
 
-		const listings = await fetchListedItemByUser(user?.id).catch((error) =>
+		const listings = await fetchListedItemByUser(userID).catch((error) =>
 			console.log('error', error)
 		);
-		const followers = await getFollowersFromUser(user!.id).catch((error) =>
+		const followers = await getFollowersFromUser(userID).catch((error) =>
 			console.log('error', error)
 		);
 
