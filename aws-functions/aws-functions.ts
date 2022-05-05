@@ -12,6 +12,7 @@ import {
 	createChatRoom,
 	createChatRoomUser,
 	deleteListedItem,
+	updateSneaker,
 } from '../src/graphql/mutations';
 import {
 	listSneakerStores,
@@ -223,12 +224,14 @@ export const addClaim = async (sneakerID: any, refNumber: any) => {
 		});
 
 		const newClaim = {
+			id: sneakerID,
 			userID: currentUser.attributes.sub,
 			sneakerID: sneakerID,
 			status: 'pending',
 			refNumber: refNumber,
 			claimMessage: 'Sneaker is processing',
 		};
+
 		await API.graphql(graphqlOperation(createClaim, { input: newClaim }));
 	} catch (e) {
 		console.log(e);

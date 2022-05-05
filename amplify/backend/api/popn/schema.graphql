@@ -143,7 +143,7 @@ type Sneaker
 	sneaker: SneakerStore @connection(fields: ["sneakerStoreID"])
 	userID: ID!
 	user: User @connection(fields: ["userID"])
-	claim: [Claim] @connection(keyName: "bySneaker", fields: ["id"])
+	claim: Claim @connection(fields: ["id"])
 	createdAt: String
 	prevSellers: [String]
 }
@@ -159,7 +159,7 @@ type SoldSneaker
 	user: User @connection(fields: ["userID"])
 	createdAt: String
 }
-type Claim @model @key(name: "bySneaker", fields: ["sneakerID", "userID"]) {
+type Claim @model {
 	id: ID!
 	userID: ID!
 	sneakerID: ID!

@@ -41,7 +41,6 @@ const ChangePasswordScreen: FC<changePasswordProps> = () => {
 	const fetchCurrentUser = async () => {
 		try {
 			const userInfo = await Auth.currentAuthenticatedUser();
-			// console.log(userInfo)
 			setCurrentUser(userInfo);
 		} catch (e) {
 			console.log(e);
