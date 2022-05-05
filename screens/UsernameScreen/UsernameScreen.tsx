@@ -9,7 +9,7 @@ import { useFormState, useFormDispatch } from "../../contexts/form-context";
 import { authService } from "../../services/auth-service";
 import { useToast } from "../../components/Toast";
 
-import styles from "./Style";
+import styles from "./styles";
 
 //username validation schema
 const usernameValidationSchema = yup.object().shape({
