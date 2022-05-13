@@ -10,7 +10,7 @@ import {
 
 import { FontAwesome } from '@expo/vector-icons';
 import { SliderBox } from 'react-native-image-slider-box';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { API, graphqlOperation } from 'aws-amplify';
 
 import {
@@ -29,6 +29,7 @@ import {
 	addChatRoomUser,
 	addOffer,
 	deleteUserListing,
+	fetchListedItemByUser,
 } from '../../aws-functions/aws-functions';
 
 import { createMessage, updateChatRoom } from '../../src/graphql/mutations';
@@ -49,8 +50,21 @@ const ListingDetailsScreen = (props: any) => {
 	const [offerModalVisible, setOfferModalVisible] = React.useState(false);
 	const [authenticationModalVisible, setAuthenticationModalVisible] =
 		React.useState(false);
+	const isFocused = useIsFocused();
 	const [offerAmount, setOfferAmount] = React.useState('');
 	const [offerMessage, setOfferMessage] = React.useState('');
+	const [listingCount, setListingCount] = React.useState(0);
+
+	const fetchSellersListedItems = async () => {
+		const listings = await fetchListedItemByUser(seller.id).catch((err) =>
+			console.log('error', err)
+		);
+		setListingCount(listings.length);
+	};
+
+	React.useEffect(() => {
+		fetchSellersListedItems();
+	}, [isFocused]);
 
 	const createNotification = async (
 		message: string,
@@ -509,10 +523,10 @@ const ListingDetailsScreen = (props: any) => {
 						<Text preset="bold">{seller.username}</Text>
 						<TouchableOpacity
 							onPress={() => {
-								if (user?.id != seller.id) {
-									navigation.navigate('UserProfile', { userID: user?.id });
-								} else {
+								if (user?.id == seller.id) {
 									navigation.navigate('Profile');
+								} else {
+									navigation.navigate('UserProfile', seller.id);
 								}
 							}}
 						>
@@ -520,7 +534,7 @@ const ListingDetailsScreen = (props: any) => {
 								preset="default"
 								style={{ textDecorationLine: 'underline' }}
 							>
-								11 items for sale
+								{listingCount} items for sale
 							</Text>
 						</TouchableOpacity>
 					</View>

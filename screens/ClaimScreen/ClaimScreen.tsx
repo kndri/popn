@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { View, TextInput, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import {
+	View,
+	TextInput,
+	FlatList,
+	ActivityIndicator,
+	TouchableOpacity,
+} from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 import {
@@ -70,7 +76,7 @@ export default function ClaimScreen() {
 	 */
 	const getSneakers = async () => {
 		// sneakers from user
-		const sneakerlist = await getSneakersFromUser(user!.id).catch((error) =>
+		const sneakerlist = await getSneakersFromUser(user?.id).catch((error) =>
 			console.error(error)
 		);
 		// sneakers from sneaker store
@@ -81,7 +87,7 @@ export default function ClaimScreen() {
 		setSearchedArray(sneakersData);
 		setSneakerDb(sneakersData);
 		setCollection(sneakerlist);
-		setIsLoading(false)
+		setIsLoading(false);
 	};
 
 	/**
@@ -156,7 +162,7 @@ export default function ClaimScreen() {
 								paddingVertical: 2,
 								borderRadius: 10,
 								marginBottom: 15,
-								backgroundColor: '#00A542'
+								backgroundColor: '#00A542',
 							}}
 						>
 							<Text
@@ -286,8 +292,6 @@ export default function ClaimScreen() {
 					</View>
 				</Screen>
 			)}
-
 		</>
-
 	);
 }

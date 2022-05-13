@@ -1,7 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import * as React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 import { API, Auth, graphqlOperation } from 'aws-amplify';
 import { getListingByAvailablity } from '../../aws-functions/aws-functions';
@@ -18,6 +18,7 @@ const search_icon = require('../../assets/images/searchIcon.png');
 export default function Home() {
 	const navigation = useNavigation();
 	const [listingData, setListingData] = React.useState([]);
+	const isFocused = useIsFocused();
 
 	const getListing = async () => {
 		const dataAvailable = await getListingByAvailablity();
@@ -68,7 +69,7 @@ export default function Home() {
 
 	React.useEffect(() => {
 		getListing();
-	}, [listingData]);
+	}, [isFocused]);
 
 	return (
 		<Screen style={styles.CONTAINER}>

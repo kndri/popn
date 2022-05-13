@@ -37,7 +37,6 @@ const ShoeDetailsScreen = () => {
 	const [claim, setClaim] = React.useState<any>({});
 	const [isSignedinUser, setIsSignedinUser] = React.useState<boolean>();
 	const toast = useToast();
-
 	/**
 	 * If the signed in user ID matches with the current shoe owner
 	 * then the signed in user is viewing its own shoe
@@ -45,7 +44,6 @@ const ShoeDetailsScreen = () => {
 	 */
 	const getShoe = async () => {
 		const sneaker = await getCurrentSneaker(shoeID);
-
 		switch (sneaker.userID) {
 			case user?.id:
 				setIsSignedinUser(true);
@@ -54,8 +52,8 @@ const ShoeDetailsScreen = () => {
 				setIsSignedinUser(false);
 		}
 
-		if (sneaker.claim.items.length > 0) {
-			setClaim(sneaker.claim.items[0]);
+		if (sneaker.claim != undefined) {
+			setClaim(sneaker.claim);
 		}
 		setSneaker(sneaker);
 	};

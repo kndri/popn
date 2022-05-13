@@ -28,6 +28,7 @@ import {
 	offerByUser,
 	listListedItems,
 	listedItemByStatus,
+	listedItemByUser,
 } from '../src/graphql/queries';
 import { ConsoleLogger } from '@aws-amplify/core';
 
@@ -226,12 +227,14 @@ export const addClaim = async (sneakerID: any, refNumber: any) => {
 		});
 
 		const newClaim = {
+			id: sneakerID,
 			userID: currentUser.attributes.sub,
 			sneakerID: sneakerID,
 			status: 'pending',
 			refNumber: refNumber,
 			claimMessage: 'Sneaker is processing',
 		};
+
 		await API.graphql(graphqlOperation(createClaim, { input: newClaim }));
 	} catch (e) {
 		console.log(e);
@@ -355,7 +358,21 @@ export const getListingByAvailablity = async () => {
 
 		return listings.data.listedItemByStatus.items;
 	} catch (e) {
-		console.log('errorsss: ', e);
+		console.log('error: ', e);
+	}
+};
+
+export const fetchListedItemByUser = async (userID: string) => {
+	try {
+		const listings = await API.graphql(
+			graphqlOperation(listedItemByUser, {
+				sellerID: userID,
+			})
+		);
+
+		return listings.data.listedItemByUser.items;
+	} catch (err) {
+		console.log('error: ', err);
 	}
 };
 

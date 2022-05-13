@@ -15,12 +15,11 @@ export const SneakerCard: React.FC<SneakerCardProps> = (props): JSX.Element => {
 	return (
 		<>
 			<View style={styles.CARD}>
-				{/* {sneaker.claim.items != undefined &&
-					sneaker.claim.items[0].status == 'verified' && (
-						<View style={styles.BADGE}>
-							<VerificationBage type="icon" />
-						</View>
-					)} */}
+				{sneaker.claim != undefined && sneaker.claim.status == 'verified' && (
+					<View style={styles.BADGE}>
+						<VerificationBage type="icon" />
+					</View>
+				)}
 
 				<Image source={{ uri: sneaker.image }} style={styles.PRODUCT} />
 			</View>

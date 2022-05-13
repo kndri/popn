@@ -12,11 +12,18 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import moment from 'moment';
 
-import { Button, Screen, Text, Header, SneakerCard } from '../../components';
+import {
+	Button,
+	Screen,
+	Text,
+	Header,
+	ProductCard,
+	SneakerCard,
+} from '../../components';
 import {
 	getFollowersFromUser,
 	getSneakersFromUser,
-	getUserFromDb,
+	fetchListedItemByUser,
 } from '../../aws-functions/aws-functions';
 //required images
 const verified = require('../../assets/images/verified_badge.png');
@@ -29,6 +36,7 @@ export default function UserProfileScreen(props?: any) {
 	const userID = props.route.params;
 	const navigation = useNavigation();
 	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
+	const [listedItems, setListedItems] = React.useState<any>([]);
 	const [followers, setFollowers] = React.useState<number>(0);
 	const [transactions, setTransactions] = React.useState<number>(0);
 	const [user, setUser] = React.useState<any>();
@@ -42,20 +50,26 @@ export default function UserProfileScreen(props?: any) {
 
 	const getUserData = async () => {
 		const user = await getUserFromDb(userID);
-		setUser(user);
-		const sneakerlist = await getSneakersFromUser(user?.id).catch((error) =>
-			console.log('error', error)
-		);
-		const followers = await getFollowersFromUser(user!.id).catch((error) =>
+		const sneakerList = await getSneakersFromUser(userID).catch((error) =>
 			console.log('error', error)
 		);
 
-		setFollowers(followers.length);
+		const listings = await fetchListedItemByUser(userID).catch((error) =>
+			console.log('error', error)
+		);
+		const followers = await getFollowersFromUser(userID).catch((error) =>
+			console.log('error', error)
+		);
 
-		if (sneakerlist !== undefined) {
-			setSneakerCollection(sneakerlist);
+		if (sneakerList !== undefined) {
+			setSneakerCollection(sneakerList);
 		}
-
+		if (listings !== undefined) {
+			setListedItems(listings);
+		}
+		setUser(user);
+		setTransactions(user.transactions);
+		setFollowers(followers.length);
 		setIsLoading(false);
 	};
 
@@ -69,7 +83,72 @@ export default function UserProfileScreen(props?: any) {
 				navigation.navigate('ShoeDetails', { shoeID: item.id });
 			}}
 		>
-			<SneakerCard sneaker={item} sneakerPoint={item.sneaker.points} />
+			<View
+				style={{
+					justifyContent: 'space-evenly',
+					height: 150,
+					width: 150,
+					borderWidth: 1,
+					borderColor: '#EBEBEB',
+					borderRadius: 10,
+					marginBottom: 40,
+					marginHorizontal: 10,
+				}}
+			>
+				<View
+					style={{
+						justifyContent: 'flex-start',
+						alignItems: 'flex-start',
+						marginLeft: 10,
+						marginTop: 10,
+					}}
+				>
+					<Text
+						text={`${item.primaryName}`}
+						style={{ fontSize: 12, color: '#979797' }}
+					/>
+					<Text text={`${item.secondaryName}`} style={{ fontSize: 10 }} />
+					{item.claim != undefined ? (
+						<>
+							{item.claim.status === 'verified' ? (
+								<Image
+									source={verified}
+									style={{ marginTop: 5, height: 20, width: 20 }}
+								/>
+							) : null}
+						</>
+					) : null}
+				</View>
+				<View style={{ justifyContent: 'center', alignItems: 'center' }}>
+					<Image
+						source={{ uri: item.image }}
+						style={{ height: 81, width: 100, resizeMode: 'contain' }}
+					/>
+				</View>
+				<View style={{ justifyContent: 'center', alignItems: 'center' }}>
+					<Button
+						preset="none"
+						style={{
+							justifyContent: 'center',
+							width: '70%',
+							height: 20,
+							paddingVertical: 2,
+							borderRadius: 10,
+							marginBottom: 15,
+						}}
+						onPress={() => {
+							navigation.navigate('ShoeDetails', { shoeID: item.id });
+						}}
+					>
+						<Text
+							preset="bold"
+							style={{ fontSize: 12, color: 'white', fontWeight: 'bold' }}
+						>
+							View
+						</Text>
+					</Button>
+				</View>
+			</View>
 		</TouchableOpacity>
 	);
 
@@ -80,11 +159,26 @@ export default function UserProfileScreen(props?: any) {
 					renderEmptyListings()
 				) : (
 					//needs to be refactored to a flatlist that shwos all listings of this user
-					<Text
-						style={styles.TEXTCENTER}
-						preset="bold"
-						text="Available Listings."
-					/>
+					<View style={styles.DATA_CONTAINER}>
+						<FlatList
+							data={listedItems}
+							renderItem={({ item }) => (
+								<TouchableOpacity
+									onPress={() => {
+										navigation.navigate('ListingDetails', item);
+									}}
+								>
+									<ProductCard product={item} showPrice showVerificationBage />
+								</TouchableOpacity>
+							)}
+							keyExtractor={(sneaker) => String(sneaker.id)}
+							numColumns={2}
+							columnWrapperStyle={{
+								justifyContent: 'space-between',
+								marginBottom: 15,
+							}}
+						/>
+					</View>
 				)}
 			</View>
 		);
@@ -117,13 +211,20 @@ export default function UserProfileScreen(props?: any) {
 	const renderCollection = () => {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center' }}>
-				{sneakerCollection.length == 0 ? (
+				{sneakerCollection == undefined ? (
 					renderEmptyCollection()
 				) : (
 					<View style={styles.DATA_CONTAINER}>
 						<FlatList
 							data={sneakerCollection}
-							renderItem={renderSneaker}
+							renderItem={({ item }) => (
+								<TouchableOpacity disabled>
+									<SneakerCard
+										sneaker={item}
+										sneakerPoint={item.sneaker.points}
+									/>
+								</TouchableOpacity>
+							)}
 							keyExtractor={(sneaker) => String(sneaker.id)}
 							numColumns={2}
 							columnWrapperStyle={{
@@ -142,7 +243,7 @@ export default function UserProfileScreen(props?: any) {
 	);
 
 	const ListingsRoute = () => (
-		<View style={styles.DATA_CONTAINER}>{renderEmptyListings()}</View>
+		<View style={styles.DATA_CONTAINER}>{renderListings()}</View>
 	);
 
 	const initialLayout = { width: Dimensions.get('window').width };
@@ -176,6 +277,7 @@ export default function UserProfileScreen(props?: any) {
 								preset="primary"
 								style={styles.FOLLOW_BUTTON}
 								text="Follow"
+							// onPress={() => { }}
 							/>
 						</View>
 
@@ -193,7 +295,7 @@ export default function UserProfileScreen(props?: any) {
 
 							<View style={{ flexDirection: 'row', marginTop: 10 }}>
 								<View style={styles.PROFILE_DETAILS}>
-									<Text preset="bold" text={'0'} />
+									<Text preset="bold" text={`${transactions}`} />
 									<Text
 										preset="default"
 										style={{ marginLeft: 6 }}

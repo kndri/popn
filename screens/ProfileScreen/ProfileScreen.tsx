@@ -17,11 +17,13 @@ import {
 	Header,
 	SneakerCard,
 	AutoImage as Image,
+	ProductCard,
 } from '../../components';
 import EditProfileModal from './EditProfileModal';
 import {
-	getSneakersFromUser,
+	fetchListedItemByUser,
 	getFollowersFromUser,
+	getSneakersFromUser,
 	getUserFromDb,
 } from '../../aws-functions/aws-functions';
 
@@ -38,6 +40,7 @@ export default function ProfileScreen() {
 	const [index, setIndex] = React.useState(0);
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [sneakerCollection, setSneakerCollection] = React.useState<any>([]);
+	const [listedItems, setListedItems] = React.useState<any>([]);
 	const [userData, setUserData] = React.useState<any>();
 	const isFocused = useIsFocused();
 	const navigation = useNavigation();
@@ -53,15 +56,21 @@ export default function ProfileScreen() {
 	const getUserData = async () => {
 		const loggedUser = await getUserFromDb(user?.id);
 		setUserData(loggedUser);
-		const sneakerlist = await getSneakersFromUser(user?.id).catch((error) =>
+		const sneakerList = await getSneakersFromUser(user?.id).catch((error) =>
 			console.log('error', error)
 		);
 		const followers = await getFollowersFromUser(user?.id).catch((error) =>
 			console.log('error', error)
 		);
+		const listings = await fetchListedItemByUser(user?.id).catch((error) =>
+			console.log('error', error)
+		);
 
-		if (sneakerlist !== undefined) {
-			setSneakerCollection(sneakerlist);
+		if (sneakerList !== undefined) {
+			setSneakerCollection(sneakerList);
+		}
+		if (listings !== undefined) {
+			setListedItems(listings);
 		}
 
 		setFollowers(followers.length);
@@ -94,7 +103,7 @@ export default function ProfileScreen() {
 	const renderCollection = () => {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center' }}>
-				{sneakerCollection.length == 0 ? (
+				{sneakerCollection == undefined ? (
 					renderEmptyCollection()
 				) : (
 					<View style={styles.DATA_CONTAINER}>
@@ -108,7 +117,6 @@ export default function ProfileScreen() {
 								>
 									<SneakerCard
 										sneaker={item}
-										showVerificationBage
 										sneakerPoint={item.sneaker.points}
 									/>
 								</TouchableOpacity>
@@ -133,11 +141,26 @@ export default function ProfileScreen() {
 					renderEmptyListings()
 				) : (
 					//needs to be refactored to a flatlist that shwos all listings of this user
-					<Text
-						style={styles.TEXTCENTER}
-						preset="bold"
-						text="Available Listings."
-					/>
+					<View style={styles.DATA_CONTAINER}>
+						<FlatList
+							data={listedItems}
+							renderItem={({ item }) => (
+								<TouchableOpacity
+									onPress={() => {
+										navigation.navigate('ListingDetails', item);
+									}}
+								>
+									<ProductCard product={item} showPrice showVerificationBage />
+								</TouchableOpacity>
+							)}
+							keyExtractor={(sneaker) => String(sneaker.id)}
+							numColumns={2}
+							columnWrapperStyle={{
+								justifyContent: 'space-between',
+								marginBottom: 15,
+							}}
+						/>
+					</View>
 				)}
 			</View>
 		);
