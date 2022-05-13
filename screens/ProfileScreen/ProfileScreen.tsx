@@ -67,6 +67,7 @@ export default function ProfileScreen() {
 		setFollowers(followers.length);
 		setIsLoading(false);
 	};
+
 	React.useEffect(() => {
 		getUserData();
 		updateAuth();

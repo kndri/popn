@@ -799,17 +799,39 @@ export const getSneaker = /* GraphQL */ `
         updatedAt
       }
       claim {
-        items {
+        id
+        userID
+        sneakerID
+        user {
           id
-          userID
-          sneakerID
+          age
+          username
+          email
+          avatarImageURL
+          transactions
           status
-          refNumber
-          claimMessage
+          zipCode
+          expoToken
           createdAt
           updatedAt
         }
-        nextToken
+        sneaker {
+          id
+          brand
+          primaryName
+          secondaryName
+          image
+          sneakerStoreID
+          userID
+          createdAt
+          prevSellers
+          updatedAt
+        }
+        status
+        refNumber
+        claimMessage
+        createdAt
+        updatedAt
       }
       createdAt
       prevSellers
@@ -854,7 +876,14 @@ export const listSneakers = /* GraphQL */ `
           updatedAt
         }
         claim {
-          nextToken
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
         }
         createdAt
         prevSellers
@@ -1036,7 +1065,14 @@ export const getClaim = /* GraphQL */ `
           updatedAt
         }
         claim {
-          nextToken
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
         }
         createdAt
         prevSellers
@@ -1131,7 +1167,14 @@ export const getListedItem = /* GraphQL */ `
           updatedAt
         }
         claim {
-          nextToken
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
         }
         createdAt
         prevSellers
@@ -1769,7 +1812,14 @@ export const sneakerByUser = /* GraphQL */ `
           updatedAt
         }
         claim {
-          nextToken
+          id
+          userID
+          sneakerID
+          status
+          refNumber
+          claimMessage
+          createdAt
+          updatedAt
         }
         createdAt
         prevSellers

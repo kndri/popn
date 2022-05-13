@@ -15,7 +15,7 @@ import styles from './styles';
 export default function ChangeEmailScreen() {
 	const navigation = useNavigation();
 	const toast = useToast();
-	const { authData: user } = useAuth();
+	const { authData: user, updateAuth } = useAuth();
 	const [newEmail, setNewEmail] = useState('');
 	const goBack = () => navigation.goBack();
 
@@ -38,12 +38,10 @@ export default function ChangeEmailScreen() {
 			await Auth.updateUserAttributes(user, {
 				email: newEmail,
 			});
+			updateAuth();
+			// 4. send the user a verification code.
+			await Auth.confirmSignUp(newEmail, '420690')
 
-			// 4. Confirm the user's email.
-			await Auth.confirmSignUp(newEmail, '420690');
-
-			// 5. Navigate to verify email screen
-			navigation.navigate('verifyEmail');
 		} catch (error) {
 			console.log(error);
 		}
@@ -67,6 +65,8 @@ export default function ChangeEmailScreen() {
 				});
 			} else {
 				updateEmail(user?.id);
+				// 5. Navigate to verify email screen
+				navigation.navigate('verifyEmail');
 			}
 		} else {
 			toast.show(`You have entered an invalid email address!`, {

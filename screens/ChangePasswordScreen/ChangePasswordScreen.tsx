@@ -1,5 +1,8 @@
 import React, { FC, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+import { useToast } from '../../components/Toast';
 import {
 	Screen,
 	Text,
@@ -8,17 +11,16 @@ import {
 	Button,
 	AutoImage as Image,
 } from '../../components';
+const eye = require('../../assets/images/reveal.png');
 
-import { useNavigation } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
-import { useToast } from '../../components/Toast';
+import { useAuth } from '../../contexts/auth';
 
 import styles from './styles';
 
-const eye = require('../../assets/images/reveal.png');
-
-interface changePasswordProps {}
+interface changePasswordProps { }
 const ChangePasswordScreen: FC<changePasswordProps> = () => {
+	const { updateAuth } = useAuth();
 	const navigation = useNavigation();
 	const [password, setPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
@@ -192,7 +194,6 @@ const ChangePasswordScreen: FC<changePasswordProps> = () => {
 						}}
 					>
 						<Button
-							// style={!isValid ? DISABLED : null}
 							text="Confirm Changes"
 							preset="primary"
 							onPress={async () => {
@@ -203,17 +204,16 @@ const ChangePasswordScreen: FC<changePasswordProps> = () => {
 								) {
 									toast.show('passwords cannot be empty', { color: 'red' });
 								} else if (newPassword != confirmNewPassword) {
-									toast.show('Make sure you confirmed correctly', {
+									toast.show('Make sure you have confirmed correctly', {
 										color: 'red',
 									});
 								} else {
-									await Auth.changePassword(currentUser, password, newPassword)
-										.then(() => {
-											toast.show('Your password has been changed.');
-										})
-										.then(() => {
-											navigation.navigate('UserProfile');
-										});
+									await Auth.changePassword(currentUser, password, newPassword).then(() => {
+										updateAuth()
+										navigation.navigate('settings')
+										toast.show('Your password has been changed.');
+									})
+
 								}
 							}}
 						/>

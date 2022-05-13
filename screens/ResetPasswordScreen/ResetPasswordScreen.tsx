@@ -175,12 +175,15 @@ export default function ResetPasswordScreen(props: any) {
               } else {
                 confirmNewPassword(username, code, password).then((response) => {
                   if (response == "SUCCESS") {
-                    toast.show("Your password has been reset");
                     navigation.navigate("SignIn");
+                    toast.show("Your password has been reset.");
                   }
-                  else {
-                    toast.show('Invalid verification code provided, try again', { color: 'red' })
-                  }
+                  // else if (response == undefined) {
+                  //   toast.show('Invalid verification code provided', { color: 'red' })
+                  // }
+                  // else {
+                  //   toast.show('Attempt limit exceeded, please try again after some time.', { color: 'red' })
+                  // }
                 });
 
               }

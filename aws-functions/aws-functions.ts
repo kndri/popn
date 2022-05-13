@@ -132,6 +132,7 @@ export const confirmNewPassword = async (
 ) => {
 	// Collect confirmation code and new password, then
 	const response = await Auth.forgotPasswordSubmit(username, code, new_password).catch(err => console.log(err));
+	console.log('resp: ', response)
 	return response
 };
 

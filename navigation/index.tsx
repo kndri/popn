@@ -148,17 +148,9 @@ const SettingsNavigator = () => (
 	>
 		<settingStack.Screen name="settings" component={SettingsScreen} />
 		<settingStack.Screen name="changeEmail" component={ChangeEmailScreen} />
-		<settingStack.Screen
-			name="changeUsername"
-			component={ChangeUsernameScreen}
+		<settingStack.Screen name="verifyEmail" component={EmailVerificationCodeScreen}
 		/>
-		<settingStack.Screen
-			name="verifyEmail"
-			component={EmailVerificationCodeScreen}
-		/>
-		<settingStack.Screen
-			name="changePassword"
-			component={ChangePasswordScreen}
+		<settingStack.Screen name="changePassword" component={ChangePasswordScreen}
 		/>
 		<settingStack.Screen name="changeZipCode" component={ChangeZipCode} />
 	</settingStack.Navigator>
